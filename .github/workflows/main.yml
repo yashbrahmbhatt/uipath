@@ -1,3 +1,18 @@
 name: "Deploy"
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - release/*
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  start:
+    name: Package
+    runs-on: self-hosted
+    steps:
+      - name: "Initialize"
+        run: echo "Hello World"
