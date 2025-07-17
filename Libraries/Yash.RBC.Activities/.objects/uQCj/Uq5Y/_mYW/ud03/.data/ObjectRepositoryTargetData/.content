@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="uMi7rMyTuUujd517EXhVtw" Reference="WNjaHSKoL0-m35pLylBavw/ud03HgxO8kyeiXMYqXEhGQ" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" CVScreenId="c60c08a7-429e-43e4-ae04-40c26fa0c69d" CvElementArea="746, 493, 90, 27" CvTextArea="778, 500, 26, 12" CvTextArgument="Save" CvType="Button" DesignTimeRectangle="747, 494, 88, 26" DesignTimeScaleFactor="1" ElementType="Button" FullSelectorArgument="&lt;wnd ctrlid='1' title='&amp;amp;Save' /&gt;" FuzzySelectorArgument="&lt;wnd ctrlid='1' title='&amp;amp;Save' check:text='&amp;amp;Save' /&gt;" Guid="13207c34-13dc-41e0-8550-ad084cea0682" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAFwAAAAeCAYAAAChf3k/AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE7SURBVGhD7ZbBkYMwDEW3Jy7U4mZcCBe3klLcAR1oJRuDAWf3Ej5m8j3zJnakXJ7FJz/jOArBQeFgVuHzPJMLaQqfpolcwJ/Ch2EgH4TCwVA4GAoHQ+FgKBxM38L9S7b1Et/qeRj9CndBYi1Zz8FX9YfSr3Cb7hjEtWoPpl/hg9f5NufuVNsnjdfvnIRo26qvvrD0tJR1bzR1LNzIIpOmZpzYpUQJTvcmOMnPtXw89FhNC61LRNG58IVlQlfpuxEvMk1smV7dN6d7WdXFoHmGcMXlzDi8TO0J2KbXemx6y2f67a7/fvoV7vVfSYmBJVqSxFM2V3Fh56hzrmyC378L7qDjCc+i1rXGwJbrkuRWwkvtGBnHWGGkfA8UDobCwVA4GAoHQ+FgKBzMv8LJ53krnFzHSTjBQOFQRvkFXyLcUwmLOwMAAAAASUVORK5CYII=" ScopeSelectorArgument="&lt;wnd app='chrome.exe' cls='#32770' title='Save As' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive">
+      <imageRef attrName="InformativeScreenshot" originalValue="37a3381c43b7de6bd72afd01d203746f.png" xmlns="">0DQU6lG8yckucKJ0CtzK81A</imageRef>
+    </TargetAnchorable>
+    <x:String x:Key="ActivityType">Click</x:String>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

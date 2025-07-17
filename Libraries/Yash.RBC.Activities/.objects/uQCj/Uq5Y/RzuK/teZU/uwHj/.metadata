@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Download Transactions Link",
+  "Type": "Element",
+  "TaxonomyType": "Label",
+  "Id": "uwHj5ililEWrQz9vXNSTkg",
+  "Reference": "WNjaHSKoL0-m35pLylBavw/uwHj5ililEWrQz9vXNSTkg",
+  "ParentRef": "WNjaHSKoL0-m35pLylBavw/teZUPaq700K6qgsftd0qKg",
+  "Created": "2024-08-05T21:50:25.3111597Z",
+  "Updated": "2024-08-05T21:50:25.3111597Z",
+  "CreatedBy": [
+    "UiPath.Platform, Version=24.10.3.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

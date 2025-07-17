@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Comma Delimited",
+  "Type": "Element",
+  "TaxonomyType": "RadioButton",
+  "Id": "74B6FZJnnkqDxMVebiLglA",
+  "Reference": "WNjaHSKoL0-m35pLylBavw/74B6FZJnnkqDxMVebiLglA",
+  "ParentRef": "WNjaHSKoL0-m35pLylBavw/94KB7I59QEO--dh34ewbXw",
+  "Created": "2024-08-05T21:50:28.6346812Z",
+  "Updated": "2024-08-05T21:50:28.6346812Z",
+  "CreatedBy": [
+    "UiPath.Platform, Version=24.10.3.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

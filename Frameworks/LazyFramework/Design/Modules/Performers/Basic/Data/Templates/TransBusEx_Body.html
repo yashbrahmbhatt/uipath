@@ -1,0 +1,21 @@
+<html>
+  <h1>
+    {ProcessName} has encountered a business rule exception while processing
+    transaction with reference '{Reference}'. Please handle this item as
+    required.
+  </h1>
+  <hr />
+  <h3>Transaction Details</h3>
+  <p>Reference: {Reference}<br /></p>
+  <hr />
+  <h3>Exception Details</h3>
+  <p>Message: {Ex_Message}<br /></p>
+  <h3>Environment Details</h3>
+  <p>
+    Machine: {Env_MachineName}<br />
+    User: {Env_User}<br />
+    Date: {Env_Date}<br />
+    Time: {Env_Time}<br />
+  </p>
+  <hr />
+</html>

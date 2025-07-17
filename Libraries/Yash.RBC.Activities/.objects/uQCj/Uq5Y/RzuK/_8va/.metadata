@@ -1,0 +1,16 @@
+﻿{
+  "Name": "LoginPage",
+  "Type": "Element",
+  "TaxonomyType": "Group",
+  "Id": "_8vaPW6wm0qS8fQMKLrdRQ",
+  "Reference": "WNjaHSKoL0-m35pLylBavw/_8vaPW6wm0qS8fQMKLrdRQ",
+  "ParentRef": "WNjaHSKoL0-m35pLylBavw/RzuKUnLxd0WYKppramZYxA",
+  "Created": "2024-08-05T21:49:12.1902491Z",
+  "Updated": "2024-08-05T21:49:57.1389347Z",
+  "CreatedBy": [
+    "UiPath.Platform, Version=24.10.3.0, Culture=neutral, PublicKeyToken=null"
+  ],
+  "UpdatedBy": [
+    "UiPath.Platform, Version=24.10.3.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

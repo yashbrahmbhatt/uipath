@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Save As",
+  "Type": "Element",
+  "TaxonomyType": "Dropdown",
+  "Id": "XQo5ZdyiPUi7qGB42QLrJQ",
+  "Reference": "WNjaHSKoL0-m35pLylBavw/XQo5ZdyiPUi7qGB42QLrJQ",
+  "ParentRef": "WNjaHSKoL0-m35pLylBavw/_mYWzO3UHESGp35yNZ9xKQ",
+  "Created": "2024-08-05T20:52:21.6526486Z",
+  "Updated": "2024-08-05T20:52:21.6526486Z",
+  "CreatedBy": [
+    "UiPath.Platform, Version=24.10.3.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

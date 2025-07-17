@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryScreenData ContentHash="PVd5pm2WeU-q94WMTvIsow" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryScreenData.Data>
+    <TargetApp x:Key="TargetApp" Area="0, 0, 0, 0" BrowserType="Chrome" IconBase64="iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIRSURBVFhHzZbRkcMgDETdE5/XDz3xmX5cTDrw8YA1MnEcy77MHDM7IIGklRBOppcR0vI1nBqD0TyHjGlJKWz0l3BqGIMe+LEsy1SATmshxNiDHCCE7OvjMAZkH5tzZsgQkBkZIOvMJ7gJkPk8lD6YNShV+gaBoztXX1S8PzfCRcDe60iGsncCuQfM3hEuV0D3beVahVqJrxDAsQ26ZpyJFUgGhdDr63jtHwcBssJJiN0BDuWcCtF8CswaG64OsC+C3aeDAC9AJMYeQF6JtMDSKyhIqRKUnbsCzFzDHok1UNPTD5yLOeiS6p4IysbXA0NAZWxfByRVDWVf520llIyzCasjyTi2waTX2fIysp5g6oH6WnozO3ugl1UZCHvVoPSFSJ7ruhLthOkpJwEgJ/ZJApEYq2FfAXMh0mxD+PETEBRQsrIf71mAALB7lyogcL+rwxYc4HzUFX2WOW8rd4uAoIBbx7Vf1HRg74puXcGIsSdsIEE9sMp/UYE7cBNIac5l7CNmGX2MWz3n3tlID9wEFEiy1vxAaT3qn89nXj/WPQs3AQXSUKbSI88tYatntn6EywRYax71du/PCdgr0M1qj5Fy+oCx2lCVLNvKCG4CxahlM2aFLJzRl70zBOKO4X3wp4VfyjMVyIOPTChG24+NF/JBYHyWj5dnFCJOMj0ouBh4HHJSCLVSHsGeby7+65imX8ZiAPloMQblAAAAAElFTkSuQmCC" Selector="&lt;html app='chrome.exe' title='Personal Banking - RBC Royal Bank' /&gt;" Title="Personal Banking - RBC Royal Bank" Url="https://www.rbcroyalbank.com/personal.html">
+      <imageRef attrName="InformativeScreenshot" originalValue="88517637ab21c0db7567cb4bfcf8dabd.jpg" xmlns="">0A0Mgy0jhWUiZ-NN8llJR3A</imageRef>
+    </TargetApp>
+  </ObjectRepositoryScreenData.Data>
+</ObjectRepositoryScreenData>

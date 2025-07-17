@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="FUldpGX7pkmKqXIoBHzUGw" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" CVScreenId="c60c08a7-429e-43e4-ae04-40c26fa0c69d" CvElementArea="131, 451, 816, 24" CvTextArgument="Save" CvType="InputBox" DesignTimeRectangle="133, 451, 814, 23" DesignTimeScaleFactor="1" ElementType="DropDown" FullSelectorArgument="&lt;wnd aaname='Explorer Pane' cls='DirectUIHWND' /&gt;&lt;wnd aaname='Save as type:' cls='ComboBox' /&gt;" FuzzySelectorArgument="&lt;wnd aaname='Explorer Pane' cls='DirectUIHWND' /&gt;&lt;wnd aaname='Save as type:' cls='ComboBox' /&gt;" Guid="0e95d4a7-9b9a-4621-9a93-7a6fbfa2e462" ImageBase64="" ScopeSelectorArgument="&lt;wnd app='chrome.exe' cls='#32770' title='Save As' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive">
+      <imageRef attrName="InformativeScreenshot" originalValue="5ed38f516553580c6e20b84963f872d7.png" xmlns="">0hoKMQvC1JU6NTVuO-i_DTA</imageRef>
+    </TargetAnchorable>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

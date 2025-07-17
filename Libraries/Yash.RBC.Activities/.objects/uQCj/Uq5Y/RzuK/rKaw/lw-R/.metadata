@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Account Services Link",
+  "Type": "Element",
+  "TaxonomyType": "Label",
+  "Id": "lw-RPl9AwUuB6a3PMTg5Dw",
+  "Reference": "WNjaHSKoL0-m35pLylBavw/lw-RPl9AwUuB6a3PMTg5Dw",
+  "ParentRef": "WNjaHSKoL0-m35pLylBavw/rKawZhdVeUGu1IsTMf36rg",
+  "Created": "2024-08-05T21:50:22.6155308Z",
+  "Updated": "2024-08-05T21:50:22.6155308Z",
+  "CreatedBy": [
+    "UiPath.Platform, Version=24.10.3.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="W-AGnNlFk0a9yG7kcul04A" Reference="WNjaHSKoL0-m35pLylBavw/uwHj5ililEWrQz9vXNSTkg" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" BrowserURL="https://www1.royalbank.com/sgw1/olb/index-en/#/account-services" CVScreenId="071f6cee-3278-4544-9422-d4cb8de220e0" CvTextArea="382, 586, 171, 15" CvType="AnyWordGroup" DesignTimeRectangle="421, 549, 169, 22" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl tag='TABLE' /&gt;&lt;webctrl aaname='Download Transactions' tag='A' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='TABLE' /&gt;&lt;webctrl aaname='Download Transactions' tag='A' type='' class='ng-star-inserted' check:text='Download Transactions' /&gt;" Guid="db760d65-405b-48c7-bfb2-1e51526c5efd" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Account Services – RBC Online Banking' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive">
+      <imageRef attrName="InformativeScreenshot" originalValue="7c05a60ee9d9e547f29a80434121c64c.png" xmlns="">07154fyXsbUGHYu0g4baEoA</imageRef>
+    </TargetAnchorable>
+    <x:String x:Key="ActivityType">None</x:String>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

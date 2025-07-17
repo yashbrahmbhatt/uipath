@@ -1,0 +1,16 @@
+﻿{
+  "Name": "DownloadTransactionsPage",
+  "Type": "Element",
+  "TaxonomyType": "Group",
+  "Id": "94KB7I59QEO--dh34ewbXw",
+  "Reference": "WNjaHSKoL0-m35pLylBavw/94KB7I59QEO--dh34ewbXw",
+  "ParentRef": "WNjaHSKoL0-m35pLylBavw/RzuKUnLxd0WYKppramZYxA",
+  "Created": "2024-08-05T21:49:45.8989365Z",
+  "Updated": "2024-08-05T22:27:04.7164974Z",
+  "CreatedBy": [
+    "UiPath.Platform, Version=24.10.3.0, Culture=neutral, PublicKeyToken=null"
+  ],
+  "UpdatedBy": [
+    "UiPath.Platform, Version=24.10.3.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

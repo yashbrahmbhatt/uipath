@@ -1,0 +1,16 @@
+﻿{
+  "Name": "Scope",
+  "Type": "Element",
+  "TaxonomyType": "Dropdown",
+  "Id": "SF6E8FlNnES_U9Azc8e__w",
+  "Reference": "WNjaHSKoL0-m35pLylBavw/SF6E8FlNnES_U9Azc8e__w",
+  "ParentRef": "WNjaHSKoL0-m35pLylBavw/94KB7I59QEO--dh34ewbXw",
+  "Created": "2024-08-05T21:50:28.6076844Z",
+  "Updated": "2024-08-05T22:26:21.467055Z",
+  "CreatedBy": [
+    "UiPath.Platform, Version=24.10.3.0, Culture=neutral, PublicKeyToken=null"
+  ],
+  "UpdatedBy": [
+    "UiPath.Platform, Version=24.10.3.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

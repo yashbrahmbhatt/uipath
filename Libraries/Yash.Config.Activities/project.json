@@ -1,0 +1,63 @@
+{
+  "name": "Yash.Config.Activities",
+  "projectId": "6bd7398e-0dda-4c99-abad-5caf7cdd44e0",
+  "description": "A set of activities associated with creating and managing Configs.",
+  "main": "NewActivity.xaml",
+  "dependencies": {
+    "UiPath.Excel.Activities": "3.1.1",
+    "UiPath.Form.Activities": "25.4.1",
+    "UiPath.System.Activities": "25.6.1",
+    "UiPath.Testing.Activities": "25.4.0"
+  },
+  "webServices": [],
+  "entitiesStores": [],
+  "schemaVersion": "4.0",
+  "studioVersion": "25.0.167.0",
+  "projectVersion": "25.7.0",
+  "runtimeOptions": {
+    "autoDispose": false,
+    "netFrameworkLazyLoading": false,
+    "isPausable": true,
+    "isAttended": false,
+    "requiresUserInteraction": true,
+    "supportsPersistence": false,
+    "workflowSerialization": "NewtonsoftJson",
+    "excludedLoggedData": [
+      "Private:*",
+      "*password*"
+    ],
+    "executionType": "Workflow",
+    "readyForPiP": false,
+    "startsInPiP": false,
+    "mustRestoreAllDependencies": true,
+    "pipType": "ChildSession"
+  },
+  "designOptions": {
+    "projectProfile": "Developement",
+    "outputType": "Library",
+    "libraryOptions": {
+      "includeOriginalXaml": false,
+      "privateWorkflows": [
+        "Helpers\\ExcelToConfigFileDictionary.cs",
+        "Wizard/Wizard.uiform"
+      ]
+    },
+    "processOptions": {
+      "ignoredFiles": []
+    },
+    "fileInfoCollection": [
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "8f13d378-a2eb-493f-bd37-f840d7bef9da",
+        "testCaseType": "TestCase",
+        "fileName": "LoadConfig.Test.cs"
+      }
+    ],
+    "saveToCloud": false
+  },
+  "expressionLanguage": "CSharp",
+  "isTemplate": false,
+  "templateProjectData": {},
+  "publishData": {},
+  "targetFramework": "Windows"
+}

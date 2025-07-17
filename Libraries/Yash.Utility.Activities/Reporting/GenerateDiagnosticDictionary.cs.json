@@ -1,0 +1,45 @@
+{
+  "DisplayName": "Generate Diagnostic Dictionary",
+  "Tooltip": "Generate a diagnostic dictionary of information from an exception.",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "in_str_ProcessName",
+      "DisplayName": "Process Name",
+      "Category": "Input",
+      "Tooltip": "The value to give the 'ProcessName' key.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "ex",
+      "DisplayName": "Exception",
+      "Category": "Input",
+      "Tooltip": "The exception to add details to the dictionary with.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "Output",
+      "DisplayName": "Dictionary",
+      "Category": "Output",
+      "Tooltip": "The generated dictionary.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

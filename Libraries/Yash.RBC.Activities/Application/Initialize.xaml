@@ -1,0 +1,289 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="Initialize" this:Initialize.in_CredentialName="_creds_rbc" this:Initialize.in_CredentialFolder="Shared" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ss="clr-namespace:System.Security;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="The name of the credential asset to use for logging into RBC." Name="in_CredentialName" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="The folder of the credential asset to use for logging into RBC." Name="in_CredentialFolder" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="The window element to be used in later activities." Name="out_Window" Type="OutArgument(ui:UiElement)" />
+  </x:Members>
+  <sap2010:Annotation.AnnotationText>UPTF000000ECeyI8SGVscExpbms+a19fQmFja2luZ0ZpZWxkIjpudWxsLCI8SW5pdGlhbFRvb2x0aXA+a19fQmFja2luZ0ZpZWxkIjoiSW5pdGlhbGl6ZSBhIG5ldyBpbmNvZ25pdG8gY2hyb21lIHRhYiBhbmQgbG9nIGludG8gdGhlIFJCQyBhY2NvdW50IHByb3ZpZGVkLiIsIjxWZXJzaW9uPmtfX0JhY2tpbmdGaWVsZCI6MX0=</sap2010:Annotation.AnnotationText>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap:VirtualizedContainerService.HintSize>1154,2614</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationCore.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Models</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
+      <x:String>UiPath.Shared.Activities</x:String>
+      <x:String>UiPath.Platform.ObjectLibrary</x:String>
+      <x:String>UiPath.Platform.SyncObjects</x:String>
+      <x:String>UiPath.UIAutomationNext.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Models.CV</x:String>
+      <x:String>System.Security</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Linq.Expressions</x:String>
+      <x:String>Yash.RBC.Activities</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.Net.Mail</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
+      <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
+      <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Testing.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Platform</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>System.Runtime.InteropServices</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.EventBasedAsync</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
+      <AssemblyReference>System.Linq.Expressions</AssemblyReference>
+      <AssemblyReference>UiPath.Workflow</AssemblyReference>
+      <AssemblyReference>System.Collections</AssemblyReference>
+      <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
+      <AssemblyReference>Yash.RBC.Activities.Core</AssemblyReference>
+      <AssemblyReference>Yash.RBC.Activities.Core</AssemblyReference>
+      <AssemblyReference>Yash.RBC.Activities.Core</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.ViewModels</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Initialize a new incognito chrome tab and log into the RBC account provided." DisplayName="Initialize" sap:VirtualizedContainerService.HintSize="1223,2456" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="LM: Start" sap:VirtualizedContainerService.HintSize="702,173" sap2010:WorkflowViewState.IdRef="LogMessage_1">
+      <ui:LogMessage.Message>
+        <InArgument x:TypeArguments="x:Object">
+          <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_1">"Initializing RBC"</CSharpValue>
+        </InArgument>
+      </ui:LogMessage.Message>
+    </ui:LogMessage>
+    <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="Public Home Page" HealingAgentBehavior="Job" sap:VirtualizedContainerService.HintSize="702,2065" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" IsIncognito="True" OpenMode="Always" ScopeGuid="772ef8bf-fe61-471f-928d-0f05a8d12266" Version="V2">
+      <uix:NApplicationCard.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="668,1816" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:String" Name="User" />
+              <Variable x:TypeArguments="ss:SecureString" Name="Pass" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click 'Sign In' On Public Home" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="634,225" sap2010:WorkflowViewState.IdRef="NClick_1" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="772ef8bf-fe61-471f-928d-0f05a8d12266" Version="V3">
+              <uix:NClick.Target>
+                <uix:TargetAnchorable BrowserURL="https://www.rbcroyalbank.com/personal.html" CVScreenId="d7005bb5-34c0-4567-a0b2-695ef25c787c" ContentHash="fKAid3mE2E65jrWF9dRA7w" CvElementArea="1425, 171, 85, 45" CvTextArea="1442, 186, 50, 17" CvTextArgument="Sign In" CvType="Button" DesignTimeRectangle="1426, 173, 82, 42" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl id='header-sign-in-btn' tag='A' /&gt;" FuzzySelectorArgument="&lt;webctrl id='header-sign-in-btn' tag='A' type='' class='btn secondary fl-r' aaname='Sign In' check:innerText='Sign In' /&gt;" Guid="ef3ea448-ebaf-4b42-ba8d-533a25cb2775" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAFYAAAAuCAYAAACyJ+5bAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAL8SURBVGhD7Zs/SBtRHMetERORKtQEayRWMbeZKVPWTE62ixYK2USkbplCpgyFQCmhFJSAIUuHcIUigSKli4M0CBKKNCAiUshis2Vz89v37rzk/uQol/iDoL8HH8j7d/fe59793l3gRkbeHoMhoGchMzjGj4vra3AaLEmHDrEy/f01wgyATK5ib/88YfqAxRLBYolgsUSwWCJYLBEslggWSwSLJYLFEsFiiWCxRLBYIujF/g5ATc9jNa5AUQTxF9jJTuHy3GgzDnU9CiU5g/qFqR8B9aw+hvy33vX3Ca3Ys6fIakKXsbEdRCE3g/zWAlak4GQQdU3uGKopFuuJ1n5Ym8jLD35L+eXHiFa+uT9mKafm4Yl9H7DWXY2ifeZD+27Fqm/khMUKNrVplkPYSIiVrESReBVC9VNIvxhF/WLoksIoVaaRW1vW6lYSYeweuF8su9hWUR9fvjyJ3dSSfifFI8gV/bix9fUKqdjb8wnkk/pk4mvPUShO4rI+amvnFHvzJXQ3yXnkRPgoiBgdl3mBVaypTWYOqzIfC6HmElLcxCqxBaQz4hi5WWzEZJsIPv909vcCrVjJuR/VbBgJbcA68ddBHHUGbhdr5MNQT4w2YgXvzWt9rWIXUDrqtqllZFkUhcNumRk3sdlK92J3zjNgmKIXayBu/+aPKZS2I/rqi4VRPZV1drFilcv69Wk0Tf0NCfZQoGrH0LGLs+Mm1tzefp5+IRQrRB5OovY1gNaVta65pw8+tTcu8izWIz5835ITWUT+wBpX2+U5bfC9xXoJBY9SrOBkGptabO0+x3Y2ItdQ4GXzeqxiJfUJqFmxYxtvXrElIfkZah0hTrGSZiWITdPj1m6GV+w9MIrWqTV8NN4tigm77/jDxlCKbVdmRShYRiotny3Nr8EzaNg2wmFlOFfslQ+NchA7Sf2NyvnHzfAznGIfACyWCBZLBIslgsUSwWKJYLFEsFgiWCwRLJYIFkvEf8Uy/SOTQyx/QDd46vkBHXPP9CxkBuQY/wC+Z8KAXYt12gAAAABJRU5ErkJggg==" InformativeScreenshot="28d293f3f3eea119d2442fe87cd48326.png" Reference="WNjaHSKoL0-m35pLylBavw/cvjxC4zJrUGK4gGnqYuCHw" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Personal Banking - RBC Royal Bank' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NClick.Target>
+              <uix:NClick.VerifyOptions>
+                <uix:VerifyExecutionOptions DisplayName="{x:Null}" Mode="Appears">
+                  <uix:VerifyExecutionOptions.Retry>
+                    <InArgument x:TypeArguments="x:Boolean" />
+                  </uix:VerifyExecutionOptions.Retry>
+                  <uix:VerifyExecutionOptions.Timeout>
+                    <InArgument x:TypeArguments="x:Double" />
+                  </uix:VerifyExecutionOptions.Timeout>
+                </uix:VerifyExecutionOptions>
+              </uix:NClick.VerifyOptions>
+            </uix:NClick>
+            <ui:GetRobotCredential TimeoutMS="{x:Null}" CacheStrategy="None" DisplayName="Get Account Credentials" sap:VirtualizedContainerService.HintSize="634,175" sap2010:WorkflowViewState.IdRef="GetRobotCredential_1">
+              <ui:GetRobotCredential.AssetName>
+                <InArgument x:TypeArguments="x:String">
+                  <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_2">in_CredentialName</CSharpValue>
+                </InArgument>
+              </ui:GetRobotCredential.AssetName>
+              <ui:GetRobotCredential.FolderPath>
+                <InArgument x:TypeArguments="x:String">
+                  <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_3">in_CredentialFolder</CSharpValue>
+                </InArgument>
+              </ui:GetRobotCredential.FolderPath>
+              <ui:GetRobotCredential.Password>
+                <OutArgument x:TypeArguments="ss:SecureString">
+                  <CSharpReference x:TypeArguments="ss:SecureString" sap2010:WorkflowViewState.IdRef="CSharpReference`1_2">Pass</CSharpReference>
+                </OutArgument>
+              </ui:GetRobotCredential.Password>
+              <ui:GetRobotCredential.Username>
+                <OutArgument x:TypeArguments="x:String">
+                  <CSharpReference x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpReference`1_1">User</CSharpReference>
+                </OutArgument>
+              </ui:GetRobotCredential.Username>
+            </ui:GetRobotCredential>
+            <uix:NTypeInto ActivateBefore="True" ClickBeforeMode="Single" DisplayName="Type Into 'Username'" EmptyFieldMode="SingleLine" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="634,286" sap2010:WorkflowViewState.IdRef="NTypeInto_1" Version="V3">
+              <uix:NTypeInto.Target>
+                <uix:TargetAnchorable BrowserURL="https://secure.royalbank.com/statics/login-service-ui/index#/full/signin?_gl=1*rs3071*_gcl_au*NjUxMzk0OTcuMTcyMjg4OTg4Nw..*_ga*MTkxNjU0NDA2OC4xNzIyODg5ODg3*_ga_89NPCTDXQR*MTcyMjg4OTg4Ny4xLjEuMTcyMjg4OTk2Ni41OS4wLjA.&amp;_ga=2.258924866.994030836.1722889887-1916544068.1722889887&amp;LANGUAGE=ENGLISH" CVScreenId="e16e9fb1-1791-4ca7-9ab8-e9735b27c335" ContentHash="L1dvkkXnlUC0uuKfL5tBRg" CvElementArea="1190, 227, 405, 52" CvType="InputBox" DesignTimeRectangle="1193, 229, 400, 48" DesignTimeScaleFactor="1" ElementType="InputBox" FullSelectorArgument="&lt;webctrl id='userName' tag='INPUT' /&gt;" FuzzySelectorArgument="&lt;webctrl id='userName' tag='INPUT' type='' class='ng-pristine ng-invalid rbc-input ng-star-inserted ng-touched' aaname='Client Card or Username' /&gt;" Guid="ea7f639d-6fcc-4a7a-8d63-d43745c43772" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAZQAAAA0CAYAAACtrs76AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADqSURBVHhe7dUxDYAwAABBFCAA/yZQV6Y2YWBo+PEueQ1/DAAIGAoAiTWU+zolSdpueg0FAHYYCgAJQwEgYSgAJAwFgIShAJAwFAAShgJAwlAASBgKAAlDASBhKAAkDAWAhKEAkDAUABKGAkDCUABIGAoACUMBIGEoACQMBYCEoQCQMBQAEoYCQMJQAEgYCgAJQwEgYSgAJAwFgIShAJAwFAAShgJAwlAASBgKAAlDASBhKAAkDAWAhKEAkDAUABKGAkDCUABIGAoACUMBIGEoACQMBYCEoQCQ+ByKJEm7TWsoAPCHoQAQGOMBzNyw4vmX4ukAAAAASUVORK5CYII=" InformativeScreenshot="440ab9c3bf03b2b916da7927908d0485.png" Reference="WNjaHSKoL0-m35pLylBavw/DsO-eHwEgE-0PXWjsxBJ7w" ScopeSelectorArgument="&lt;html app='chrome.exe' title='RBC Royal Bank – Secure Sign In' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NTypeInto.Target>
+              <uix:NTypeInto.Text>
+                <InArgument x:TypeArguments="x:String">
+                  <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_4">User</CSharpValue>
+                </InArgument>
+              </uix:NTypeInto.Text>
+              <uix:NTypeInto.VerifyOptions>
+                <uix:VerifyExecutionTypeIntoOptions DisplayName="{x:Null}" Mode="Appears">
+                  <uix:VerifyExecutionTypeIntoOptions.Retry>
+                    <InArgument x:TypeArguments="x:Boolean" />
+                  </uix:VerifyExecutionTypeIntoOptions.Retry>
+                  <uix:VerifyExecutionTypeIntoOptions.Timeout>
+                    <InArgument x:TypeArguments="x:Double" />
+                  </uix:VerifyExecutionTypeIntoOptions.Timeout>
+                </uix:VerifyExecutionTypeIntoOptions>
+              </uix:NTypeInto.VerifyOptions>
+            </uix:NTypeInto>
+            <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click 'Next'" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="634,225" sap2010:WorkflowViewState.IdRef="NClick_2" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="772ef8bf-fe61-471f-928d-0f05a8d12266" Version="V3">
+              <uix:NClick.Target>
+                <uix:TargetAnchorable BrowserURL="https://secure.royalbank.com/statics/login-service-ui/index#/full/signin?_gl=1*rs3071*_gcl_au*NjUxMzk0OTcuMTcyMjg4OTg4Nw..*_ga*MTkxNjU0NDA2OC4xNzIyODg5ODg3*_ga_89NPCTDXQR*MTcyMjg4OTg4Ny4xLjEuMTcyMjg4OTk2Ni41OS4wLjA.&amp;_ga=2.258924866.994030836.1722889887-1916544068.1722889887&amp;LANGUAGE=ENGLISH" CVScreenId="e16e9fb1-1791-4ca7-9ab8-e9735b27c335" ContentHash="SDGm2fpZL0WjAcS-IazMWQ" CvElementArea="1191, 338, 403, 52" CvTextArea="1377, 357, 31, 13" CvTextArgument="Next" CvType="Button" DesignTimeRectangle="1193, 340, 400, 48" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl id='signinNext' tag='A' /&gt;" FuzzySelectorArgument="&lt;webctrl id='signinNext' tag='A' type='submit' class='full-width signinNextBtn rbc-cta rbc-cta--small' aaname=' Next ' check:innerText='Next' /&gt;" Guid="60c852ee-edc0-45b0-9b6d-e6325e3321ac" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAZQAAAA0CAYAAACtrs76AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAI9SURBVHhe7doxbtpgHMbhnLdrrpMj5AqZKnEEJJbMbEiVwpLBtbFfYwNJlf6Z+J6f9KgqhnRJ/cpf8tRJknSHDIok6S7Ng/L06zcA/FgyKACUJIMCQEkyKACUJIMCQEkyKACUJIMCQEkyKACUJIMCQEkyKACUJIMCQEkyKACUJIMCQEkyKACUJIMCQEkyKACUJIMCQEkyKACUJIMCQEkyKDTkvXs79t/sx0P3fHlt89Ff+OheLl//sfHf2G5uXYPHlAwKDZkGpe+we19fMyjw35JBoSHTzX4/jMdn9/a6uHZjUJ53n6f/G2Pn94+vLz8/DdX+zzxYQ1ejBQ8qGRQacn56eNn33/TLo6+LQTmNxjfXT5/f72+81xMK7UkGhYYsb/b7btt/389PEavBGK5dPMH0hhGZ3/966A79J7a74c/rpxWDQkuSQaEhFzf704hMY7AclGksbrU8xsqR2Ppoy6DQnmRQaMj1zX4++roalOsnlEvzz1imo6+RQaE9yaDQkFs3++no6ziMw/LI6x+jkNHZTEdf83sNCu1JBoWGfHGzPz2dDJ1/6D4+fZz/vh6Z8evkqGv9XoNCe5JBoSFf3+xPR1+rAclr5/K56/eOX3f1W19Dq6MweFzJoABQkgwKACXJoABQkgwKACXJoABQkgwKACXJoABQkgwKACXJoABQkgwKACXJoABQkgwKACXJoABQkgwKACXJoABQkgwKACXJoABQkgwKACXJoABQkuZBkSSpkkGRJN2hrvsLrTfs2g9F9fAAAAAASUVORK5CYII=" InformativeScreenshot="7768283bb6af431be76a894f0be5c326.png" Reference="WNjaHSKoL0-m35pLylBavw/aa7FyHdb7Ee7R147fNiVZQ" ScopeSelectorArgument="&lt;html app='chrome.exe' title='RBC Royal Bank – Secure Sign In' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NClick.Target>
+              <uix:NClick.VerifyOptions>
+                <uix:VerifyExecutionOptions DisplayName="{x:Null}" Mode="Appears">
+                  <uix:VerifyExecutionOptions.Retry>
+                    <InArgument x:TypeArguments="x:Boolean" />
+                  </uix:VerifyExecutionOptions.Retry>
+                  <uix:VerifyExecutionOptions.Timeout>
+                    <InArgument x:TypeArguments="x:Double" />
+                  </uix:VerifyExecutionOptions.Timeout>
+                </uix:VerifyExecutionOptions>
+              </uix:NClick.VerifyOptions>
+            </uix:NClick>
+            <uix:NTypeInto ActivateBefore="True" ClickBeforeMode="Single" DisplayName="Type Into 'Password'" EmptyFieldMode="SingleLine" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="634,286" sap2010:WorkflowViewState.IdRef="NTypeInto_2" Version="V3">
+              <uix:NTypeInto.SecureText>
+                <InArgument x:TypeArguments="ss:SecureString">
+                  <CSharpValue x:TypeArguments="ss:SecureString" sap2010:WorkflowViewState.IdRef="CSharpValue`1_5">Pass</CSharpValue>
+                </InArgument>
+              </uix:NTypeInto.SecureText>
+              <uix:NTypeInto.Target>
+                <uix:TargetAnchorable BrowserURL="https://secure.royalbank.com/statics/login-service-ui/index#/full/signinPass?_gl=1*rs3071*_gcl_au*NjUxMzk0OTcuMTcyMjg4OTg4Nw..*_ga*MTkxNjU0NDA2OC4xNzIyODg5ODg3*_ga_89NPCTDXQR*MTcyMjg4OTg4Ny4xLjEuMTcyMjg4OTk2Ni41OS4wLjA.&amp;_ga=2.258924866.994030836.1722889887-1916544068.1722889887&amp;LANGUAGE=ENGLISH" CVScreenId="d842daf4-2519-421d-a26f-4f138fc03920" ContentHash="K0q3v0ZkjE2J2AmX-rBF5A" CvElementArea="1191, 272, 404, 51" CvTextArgument="Sign In" CvType="InputBox" DesignTimeRectangle="1193, 273, 400, 48" DesignTimeScaleFactor="1" ElementType="InputBoxPassword" FullSelectorArgument="&lt;webctrl id='password' tag='INPUT' /&gt;" FuzzySelectorArgument="&lt;webctrl id='password' tag='INPUT' type='password' class='password-input ng-untouched ng-pristine ng-invalid rbc-input' aaname='Password' /&gt;" Guid="14d357a9-357b-4bc1-8c54-0f550251fa90" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAZQAAAA0CAYAAACtrs76AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGGSURBVHhe7dnBjYJQGIVRO7EZuqCD2doFZdiF62nAMuyCyU/EECZmZLhunuckNyjK+svTwwgAAYICQMQjKIevbzMzs82bCYqZme3a7FdQAOAVggJAhKAAECEoAEQICgARggJAhKAAECEoAEQICgARggJAhKAAECEoAEQICgARggJAxNuCcjwe768A+ASCAkCEoAAQISgARAgKABGCAkCEoAAQISgADTidTuPtdru/e109U88mCApAA87n87StUamY1HMJggLQiGEYNkWlYpI6nRRBAWhI13VTJC6Xy9Ow1Gd930/f/c/PZM8ICkAj6oRSMbler9O1olHXOrXUZ7W6V9f6znyiSREUgEbUyWOpYlLRqPu1OSpL62f2EBSARtVPWkt1KlnfSxIUgEZVQNaS/5msCQoAEYICQMTbggLAZxEUACIEBYAIQQEgQlAAiBAUACIEBYAIQQEgQlAAiBAUACIEBYAIQQEgQlAAiPgzKGZmZls2ExQzM9u12SMoALCHoAAQMI4/7t0Ps9xMrSwAAAAASUVORK5CYII=" InformativeScreenshot="5b5ca5e4c19da6452b046b6a974f6b83.png" Reference="WNjaHSKoL0-m35pLylBavw/MkEMN1i8UUqH722eFh5k9g" ScopeSelectorArgument="&lt;html app='chrome.exe' title='RBC Royal Bank – Secure Sign In' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NTypeInto.Target>
+              <uix:NTypeInto.VerifyOptions>
+                <uix:VerifyExecutionTypeIntoOptions DisplayName="{x:Null}" Mode="Appears">
+                  <uix:VerifyExecutionTypeIntoOptions.Retry>
+                    <InArgument x:TypeArguments="x:Boolean" />
+                  </uix:VerifyExecutionTypeIntoOptions.Retry>
+                  <uix:VerifyExecutionTypeIntoOptions.Timeout>
+                    <InArgument x:TypeArguments="x:Double" />
+                  </uix:VerifyExecutionTypeIntoOptions.Timeout>
+                </uix:VerifyExecutionTypeIntoOptions>
+              </uix:NTypeInto.VerifyOptions>
+            </uix:NTypeInto>
+            <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click 'Sign In'" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="634,225" sap2010:WorkflowViewState.IdRef="NClick_3" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="772ef8bf-fe61-471f-928d-0f05a8d12266" Version="V3">
+              <uix:NClick.Target>
+                <uix:TargetAnchorable BrowserURL="https://secure.royalbank.com/statics/login-service-ui/index#/full/signinPass?_gl=1*rs3071*_gcl_au*NjUxMzk0OTcuMTcyMjg4OTg4Nw..*_ga*MTkxNjU0NDA2OC4xNzIyODg5ODg3*_ga_89NPCTDXQR*MTcyMjg4OTg4Ny4xLjEuMTcyMjg4OTk2Ni41OS4wLjA.&amp;_ga=2.258924866.994030836.1722889887-1916544068.1722889887&amp;LANGUAGE=ENGLISH" CVScreenId="e8ffbc07-c6d2-4902-b45a-a53acc66e2fc" ContentHash="xgo_e5pqDUqJXD_mhVCujg" CvElementArea="1191, 335, 403, 52" CvTextArea="1369, 354, 46, 16" CvTextArgument="Sign In" CvType="Button" DesignTimeRectangle="1193, 337, 400, 48" DesignTimeScaleFactor="1" ElementType="Button" FullSelectorArgument="&lt;webctrl id='signinNext' tag='BUTTON' /&gt;" FuzzySelectorArgument="&lt;webctrl id='signinNext' tag='BUTTON' type='submit' class='full-width signinNextBtn rbc-cta rbc-cta--small ng-star-inserted' aaname=' Sign In ' check:innerText='Sign In' /&gt;" Guid="0cf39363-87f6-4a86-bda3-d8674e80bd1c" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAZQAAAA0CAYAAACtrs76AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIxSURBVHhe7dsxbuJQGIXRrHfabCdLyBZSjZQlINGkpqNKmhQeY7jIzxiU6PcUmPNJR8oAoRq9Kxvy1EmStEAGRZK0SOdBefrzFwB+LRkUAEqSQQGgJBkUAEqSQQGgJBkUAEqSQQGgJBkUAEqSQQGgJBkUAEqSQQGgJBkUAEqSQQGgJBkUAEqSQQGgJBkUAEqSQQGgJBkUAEqSQQGgJBkUVuije/s6/cdOu93o+V236R/avI9/ZyHvn/07f3Yvc8/BSiWDwsocx2S//bh4rPvad8/Na/8Dg8IDSgaFdXndd/vuu3t7vfX49AqlvaLZbKev7X/eHoYi3RiMyaA8b7/7q6N98/7t2MH9SwaFlTmORXuLa6odlJdd/4/z1UvGpR2fi+evvf/coPSdx2t4fmbw4I4lg8L6DFcj46YH+HhQTlcg4+ebQ78dn4NhJK7dPpsblOa1l+8H9y4ZFNZtOOBPnQ/20aE+jM/kFtbN22MGBaaSQeFBjA9ygwJLSgaFVbl+2I+//TUdF7e8oCIZFFbmeGBffGjeHPTtof6TD+UNClyXDAor1H4NeOjmod6+/vi14fnxOTAo0EoGBabmPlcBrkoGhQd3ecUw3AK7+XcswFgyKDDcphplTOBXkkEBoCQZFABKkkEBoCQZFABKkkEBoCQZFABKkkEBoCQZFABKkkEBoCQZFABKkkEBoCQZFABKkkEBoCQZFABKkkEBoCQZFABK0nlQJEmqZFAkSQvUdf8A54VDg1uuzmsAAAAASUVORK5CYII=" InformativeScreenshot="0e37a3f081e7e809e5a1276d97de3571.png" Reference="WNjaHSKoL0-m35pLylBavw/XTD7gzwsq02hnZEjgnaeVw" ScopeSelectorArgument="&lt;html app='chrome.exe' title='RBC Royal Bank – Secure Sign In' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NClick.Target>
+              <uix:NClick.VerifyOptions>
+                <uix:VerifyExecutionOptions DisplayName="{x:Null}" Mode="Appears">
+                  <uix:VerifyExecutionOptions.Retry>
+                    <InArgument x:TypeArguments="x:Boolean" />
+                  </uix:VerifyExecutionOptions.Retry>
+                  <uix:VerifyExecutionOptions.Timeout>
+                    <InArgument x:TypeArguments="x:Double" />
+                  </uix:VerifyExecutionOptions.Timeout>
+                </uix:VerifyExecutionOptions>
+              </uix:NClick.VerifyOptions>
+            </uix:NClick>
+            <uix:NCheckState DisplayName="Check App State 'Account Services Link'" HealingAgentBehavior="Disabled" sap:VirtualizedContainerService.HintSize="634,332" sap2010:WorkflowViewState.IdRef="NCheckState_1" ScopeIdentifier="772ef8bf-fe61-471f-928d-0f05a8d12266" Timeout="30" Version="V3">
+              <uix:NCheckState.IfNotExists>
+                <Throw DisplayName="Throw CouldNotVerifySuccess" sap:VirtualizedContainerService.HintSize="330,90" sap2010:WorkflowViewState.IdRef="Throw_1">
+                  <InArgument x:TypeArguments="s:Exception">
+                    <CSharpValue x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="CSharpValue`1_7">new Exception(Exceptions.Application.Initialize.CouldNotVerifyLogin)</CSharpValue>
+                  </InArgument>
+                </Throw>
+              </uix:NCheckState.IfNotExists>
+              <uix:NCheckState.Target>
+                <uix:TargetAnchorable BrowserURL="https://www1.royalbank.com/sgw1/olb/index-en/#/summary?signin=" CVScreenId="3a81d536-6f9e-423e-aeca-07de1bcf46aa" ContentHash="QRmiPZUurU6oClRBVRqf6A" CvTextArea="1146, 824, 128, 15" CvTextArgument="Account Services" CvType="Text" DesignTimeRectangle="1148, 820, 342, 24" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl tag='TABLE' /&gt;&lt;webctrl id='accountServicesLocal' tableRow='1' tag='A' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='TABLE' /&gt;&lt;webctrl id='accountServicesLocal' type='' tag='A' class='' aaname=' Account Services ' check:innerText='Account Services' /&gt;" Guid="a5f96b4a-b725-4b15-a846-dc5fde56753d" ImageBase64="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" InformativeScreenshot="7a98e5da35a635e17e39d3cdecc3901d.png" Reference="WNjaHSKoL0-m35pLylBavw/lw-RPl9AwUuB6a3PMTg5Dw" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Accounts Summary - RBC Online Banking' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NCheckState.Target>
+            </uix:NCheckState>
+          </Sequence>
+        </ActivityAction>
+      </uix:NApplicationCard.Body>
+      <uix:NApplicationCard.OutUiElement>
+        <OutArgument x:TypeArguments="ui:UiElement">
+          <CSharpReference x:TypeArguments="ui:UiElement" sap2010:WorkflowViewState.IdRef="CSharpReference`1_3">out_Window</CSharpReference>
+        </OutArgument>
+      </uix:NApplicationCard.OutUiElement>
+      <uix:NApplicationCard.TargetApp>
+        <uix:TargetApp Area="0, 0, 0, 0" BrowserType="Chrome" ContentHash="PVd5pm2WeU-q94WMTvIsow" IconBase64="iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIRSURBVFhHzZbRkcMgDETdE5/XDz3xmX5cTDrw8YA1MnEcy77MHDM7IIGklRBOppcR0vI1nBqD0TyHjGlJKWz0l3BqGIMe+LEsy1SATmshxNiDHCCE7OvjMAZkH5tzZsgQkBkZIOvMJ7gJkPk8lD6YNShV+gaBoztXX1S8PzfCRcDe60iGsncCuQfM3hEuV0D3beVahVqJrxDAsQ26ZpyJFUgGhdDr63jtHwcBssJJiN0BDuWcCtF8CswaG64OsC+C3aeDAC9AJMYeQF6JtMDSKyhIqRKUnbsCzFzDHok1UNPTD5yLOeiS6p4IysbXA0NAZWxfByRVDWVf520llIyzCasjyTi2waTX2fIysp5g6oH6WnozO3ugl1UZCHvVoPSFSJ7ruhLthOkpJwEgJ/ZJApEYq2FfAXMh0mxD+PETEBRQsrIf71mAALB7lyogcL+rwxYc4HzUFX2WOW8rd4uAoIBbx7Vf1HRg74puXcGIsSdsIEE9sMp/UYE7cBNIac5l7CNmGX2MWz3n3tlID9wEFEiy1vxAaT3qn89nXj/WPQs3AQXSUKbSI88tYatntn6EywRYax71du/PCdgr0M1qj5Fy+oCx2lCVLNvKCG4CxahlM2aFLJzRl70zBOKO4X3wp4VfyjMVyIOPTChG24+NF/JBYHyWj5dnFCJOMj0ouBh4HHJSCLVSHsGeby7+65imX8ZiAPloMQblAAAAAElFTkSuQmCC" InformativeScreenshot="88517637ab21c0db7567cb4bfcf8dabd.jpg" Reference="WNjaHSKoL0-m35pLylBavw/RzuKUnLxd0WYKppramZYxA" Selector="&lt;html app='chrome.exe' title='Personal Banking - RBC Royal Bank' /&gt;" Url="https://www.rbcroyalbank.com/personal.html" />
+      </uix:NApplicationCard.TargetApp>
+    </uix:NApplicationCard>
+    <ui:LogMessage DisplayName="LM: Done" sap:VirtualizedContainerService.HintSize="702,164" sap2010:WorkflowViewState.IdRef="LogMessage_2">
+      <ui:LogMessage.Message>
+        <InArgument x:TypeArguments="x:Object">
+          <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_8">"Signed into RBC successfully"</CSharpValue>
+        </InArgument>
+      </ui:LogMessage.Message>
+    </ui:LogMessage>
+  </Sequence>
+</Activity>

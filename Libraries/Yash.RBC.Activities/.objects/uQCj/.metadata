@@ -1,0 +1,14 @@
+﻿{
+  "Name": "RBC",
+  "Type": "App",
+  "Id": "uQCj9z0G3EOhQSvjojOh4Q",
+  "Reference": "WNjaHSKoL0-m35pLylBavw/uQCj9z0G3EOhQSvjojOh4Q",
+  "Created": "2024-08-05T20:31:16.2441036Z",
+  "Updated": "2024-08-05T20:50:33.2255448Z",
+  "CreatedBy": [
+    "UiPath.Platform, Version=24.10.3.0, Culture=neutral, PublicKeyToken=null"
+  ],
+  "UpdatedBy": [
+    "UiPath.Platform, Version=24.10.3.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "DisplayName": "Load Config To Dictionary",
+  "Tooltip": "Load a configuration file into a dictionary to be used with the ConfigFactory static class to create Config classes. Ie. DispatcherConfig = ConfigFactory.FromDictionary<DispatcherConfig>(DictionaryConfig).",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "in_str_Path",
+      "DisplayName": "File Path",
+      "Category": "Input",
+      "Tooltip": "The file path to the config file.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_list_ConfigNames",
+      "DisplayName": "Config Names",
+      "Category": "Input",
+      "Tooltip": "The list of config names to load.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "Output",
+      "DisplayName": "Config Dictionary",
+      "Category": "Output",
+      "Tooltip": "A dictionary to be used with the ConfigFactory static class to create Config classes. Ie. DispatcherConfig = ConfigFactory.FromDictionary<DispatcherConfig>(DictionaryConfig).",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "DisplayName": "Convert DataTable To HTML",
+  "Tooltip": "Convert a DataTable to its HTML representation. Options are provided for custom tags.",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "in_dt_Table",
+      "DisplayName": "DataTable",
+      "Category": "Input",
+      "Tooltip": "The DataTable to convert.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_options_DataTableToHTML",
+      "DisplayName": "Options",
+      "Category": "Input",
+      "Tooltip": "The options to use for the conversion. Use null for default values.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": false,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "Output",
+      "DisplayName": "HTML String",
+      "Category": "Output",
+      "Tooltip": "The output HTML string.",
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="aB9AhhmR3UqcBe__7CQtLQ" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" BrowserURL="https://www1.royalbank.com/cgi-bin/rbaccess/rbcgi3m01" CVScreenId="301eb972-4c47-4d2f-afb0-0c60ed817ee9" DesignTimeRectangle="632, 536, 13, 13" DesignTimeScaleFactor="1" ElementType="RadioButton" FullSelectorArgument="&lt;webctrl id='Excel' tableRow='13' tag='INPUT' /&gt;" FuzzySelectorArgument="&lt;webctrl id='Excel' type='radio' tag='INPUT' class='' aaname='Comma Delimited (.csv for Excel, Quattro Pro, Lotus, etc.)' /&gt;" Guid="bed12476-98f9-4f0e-ba21-575413a6dc94" ImageBase64="" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Download Transactions - RBC Online Banking' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

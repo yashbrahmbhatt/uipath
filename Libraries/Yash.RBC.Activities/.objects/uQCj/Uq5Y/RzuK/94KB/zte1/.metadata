@@ -1,0 +1,13 @@
+﻿{
+  "Name": "AccountTypes",
+  "Type": "Element",
+  "TaxonomyType": "Dropdown",
+  "Id": "zte10VIuCUe1g2zCXHlz1g",
+  "Reference": "WNjaHSKoL0-m35pLylBavw/zte10VIuCUe1g2zCXHlz1g",
+  "ParentRef": "WNjaHSKoL0-m35pLylBavw/94KB7I59QEO--dh34ewbXw",
+  "Created": "2024-08-05T22:27:04.7204107Z",
+  "Updated": "2024-08-05T22:27:04.7204107Z",
+  "CreatedBy": [
+    "UiPath.Platform, Version=24.10.3.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

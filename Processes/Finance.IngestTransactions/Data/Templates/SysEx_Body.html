@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Action Required: System Exception Notification</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #e67e22;
+      font-size: 22px;
+    }
+
+    .section {
+      margin-top: 30px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      background-color: #fdfdfd;
+    }
+
+    .section h3 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    .stack-trace {
+      background-color: #f2f2f2;
+      padding: 10px;
+      border-left: 4px solid #e67e22;
+      font-family: monospace;
+      white-space: pre-wrap;
+      margin-top: 10px;
+    }
+    
+
+    .button-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .button-link:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Action Required: System Exception in {ProcessName}</h1>
+
+    <p>
+      A system error occurred while processing the transaction for <strong>{ProcessName}</strong>. As a result, the transaction was not completed successfully.
+    </p>
+
+    <p>
+      This issue may require <strong>manual review or intervention</strong> to ensure it is processed correctly. Please review the details below and take any necessary follow-up actions.
+    </p>
+
+    <div class="section">
+      <h3>Transaction Details</h3>
+      <p>
+        <strong>Reference ID:</strong> {ReferenceID}<br />
+        <strong>Date:</strong> {Env_Date}<br />
+        <strong>Action Needed:</strong> {RequiredAction}
+      </p>
+
+      <div class="stack-trace">
+        {FormattedJsonPayload}
+      </div>
+    </div>
+
+    
+    <div class="section">
+      <h3>Environment Details</h3>
+      <p>
+        <strong>Machine:</strong> {Env_MachineName}<br />
+        <strong>User:</strong> {Env_User}<br />
+        <strong>Date:</strong> {Env_Date}<br />
+        <strong>Time:</strong> {Env_Time}
+      </p>
+    </div>
+    
+    <div class="section">
+      <h3>Exception Details</h3>
+      <p>
+        <strong>Message:</strong> {Ex_Message}<br />
+        <strong>Source:</strong> {Ex_Source}
+      </p>
+      <div class="stack-trace">
+        {Ex_Stack}
+      </div>
+    </div>
+    <a href="{Logs_URL}" class="button-link" target="_blank">View Logs</a>
+    
+    <p style="margin-top: 30px; font-size: 14px; color: #777;">
+      This message was generated automatically. If you are unsure of the next steps, please contact your system administrator or business process owner.
+    </p>
+  </div>
+</body>
+</html>

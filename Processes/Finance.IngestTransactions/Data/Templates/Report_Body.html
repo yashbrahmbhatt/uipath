@@ -1,0 +1,33 @@
+﻿<html>
+  <body>
+    <h1>{ProcessName} Report - {Today}</h1>
+    <p>
+      Hello, please find attached the report for {Today}. Here is a quick
+      summary:
+    </p>
+    <ul>
+      <li>
+        <p>Document Understanding</p>
+        <ul>
+          <li>Total Transactions: {DUTotalCount}</li>
+          <li>Successful Transactions: {DUSuccessCount}</li>
+          <li>Failed Transactions: {DUFailedCount}</li>
+        </ul>
+      </li>
+	  <li>
+        <p>Performer</p>
+        <ul>
+          <li>Total Transactions: {PerformerTotalCount}</li>
+          <li>Successful Transactions: {PerformerSuccessCount}</li>
+          <li>Failed Transactions: {PerformerFailedCount}</li>
+        </ul>
+      </li>
+    </ul>
+    <hr />
+    <h3>Document Understanding Queue Summary</h3>
+    {DUSummaryTable}
+
+    <h3>Performer Queue Summary</h3>
+    {PerformerSummaryTable}
+  </body>
+</html>

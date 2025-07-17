@@ -1,0 +1,21 @@
+{
+  "Tags": [
+    {
+      "Key": "uipath"
+    },
+    {
+      "Key": "uipath studio"
+    },
+    {
+      "Key": "framework"
+    },
+    {
+      "Key": "template"
+    },
+    {
+      "Key": "lazyframework"
+    }
+  ],
+  "SeparateRuntimeDependencies": true,
+  "IncludeSources": true
+}

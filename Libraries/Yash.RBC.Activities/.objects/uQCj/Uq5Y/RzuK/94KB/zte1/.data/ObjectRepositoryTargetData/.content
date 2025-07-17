@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="3zsWqDeqckm1aV53gMf5HA" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" BrowserURL="https://www1.royalbank.com/cgi-bin/rbaccess/rbcgi3m01" CVScreenId="59aad410-4c12-4b4e-85b7-45d2eedc5c8a" CvElementArea="664, 580, 375, 21" CvType="InputBox" DesignTimeRectangle="664, 581, 376, 19" DesignTimeScaleFactor="1" ElementType="DropDown" FullSelectorArgument="&lt;webctrl id='accountInfo' tableRow='1' tag='SELECT' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='TABLE' /&gt;&lt;webctrl id='accountInfo' type='' tag='SELECT' class='' aaname='Select which account or accounts to download' /&gt;" Guid="d3e0f11e-ad7a-4839-a503-3b5f0e25f5c3" ImageBase64="" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Download Transactions - RBC Online Banking' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive">
+      <imageRef attrName="InformativeScreenshot" originalValue="9ed9e635e194707b6a73b0eed53dc99c.png" xmlns="">0c8vT30Zr7U2oXQzJSFZe9Q</imageRef>
+    </TargetAnchorable>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>
