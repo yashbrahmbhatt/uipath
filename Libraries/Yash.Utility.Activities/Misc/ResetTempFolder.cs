@@ -9,8 +9,15 @@ using UiPath.Orchestrator.Client.Models;
 
 namespace Yash.Utility.Activities.Misc
 {
+    /// <summary>
+    /// A coded workflow activity that resets a temporary folder by deleting its contents and recreating it.
+    /// </summary>
     public class ResetTempFolder : CodedWorkflow
     {
+        /// <summary>
+        /// Deletes the specified folder and all its contents if it exists, then recreates the folder.
+        /// </summary>
+        /// <param name="in_str_FolderPath">The full path of the folder to reset.</param>
         [Workflow]
         public void Execute(string in_str_FolderPath)
         {

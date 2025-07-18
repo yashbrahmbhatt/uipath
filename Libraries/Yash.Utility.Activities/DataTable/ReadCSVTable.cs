@@ -11,28 +11,22 @@ using DT = System.Data.DataTable;
 namespace Yash.Utility.Activities.DataTable
 {
     /// <summary>
-    /// Reads a CSV file and converts it into a DataTable.
+    /// A coded workflow activity that reads a CSV file and converts its contents into a <see cref="DataTable"/>.
     /// </summary>
     public class ReadCSVTable : CodedWorkflow
     {
         /// <summary>
-        /// Default table name if none is provided.
+        /// Reads a CSV file and returns its contents as a <see cref="DataTable"/>.
+        /// The first row is assumed to contain column headers.
         /// </summary>
-        public string DefaultTableName { get; }
-
-        public ReadCSVTable()
-        {
-            DefaultTableName = Guid.NewGuid().ToString();
-        }
-
-        /// <summary>
-        /// Reads a CSV file and returns its contents as a DataTable.
-        /// </summary>
-        /// <param name="in_str_FilePath">The CSV file path.</param>
-        /// <param name="in_str_TableName">Optional table name. If null, a GUID is used.</param>
-        /// <returns>A DataTable representation of the CSV file.</returns>
+        /// <param name="in_str_FilePath">The full path to the CSV file.</param>
+        /// <param name="in_str_TableName">Optional name for the resulting DataTable. If null or empty, a GUID is used.</param>
+        /// <returns>
+        /// A <see cref="DT"/> representing the CSV content, where each line is a row and the first line defines column names.
+        /// </returns>
+        /// <exception cref="FileNotFoundException">Thrown when the CSV file does not exist at the specified path.</exception>
         [Workflow]
-        public DT Execute(string in_str_FilePath = "Data\\Mappings\\MemoTextKeyword.csv", string in_str_TableName = null)
+        public DT Execute(string in_str_FilePath, string in_str_TableName)
         {
             if (!File.Exists(in_str_FilePath))
             {
@@ -41,15 +35,16 @@ namespace Yash.Utility.Activities.DataTable
             }
 
             Log($"Reading CSV from {in_str_FilePath}", LogLevel.Trace);
+
             string csvContent = File.ReadAllText(in_str_FilePath);
 
             // Normalize all line endings to \n (Unix style)
             csvContent = csvContent.Replace("\r\n", "\n");
 
-            // Split the content into rows and parse each row
+            // Parse content into rows
             var rows = ParseCsvContent(csvContent);
 
-            DT dt = new(in_str_TableName ?? DefaultTableName);
+            DT dt = new(in_str_TableName ?? Guid.NewGuid().ToString());
 
             if (rows.Length == 0)
             {
@@ -57,20 +52,19 @@ namespace Yash.Utility.Activities.DataTable
                 return dt;
             }
 
-            // Read headers and create columns
-            var columnNames = rows[0]; // First row contains column names
+            // First row = headers
+            var columnNames = rows[0];
             foreach (var columnName in columnNames)
             {
                 dt.Columns.Add(columnName.Trim());
             }
 
-            // Read data rows
+            // Remaining rows = data
             for (int i = 1; i < rows.Length; i++)
             {
                 var rowValues = rows[i];
-
-                // Ensure row values align with columns
                 DataRow dataRow = dt.NewRow();
+
                 for (int j = 0; j < columnNames.Length; j++)
                 {
                     dataRow[j] = j < rowValues.Length ? rowValues[j].Trim() : DBNull.Value;
@@ -84,11 +78,14 @@ namespace Yash.Utility.Activities.DataTable
         }
 
         /// <summary>
-        /// Parses CSV content into rows and columns.
+        /// Parses raw CSV content into a jagged string array of rows and columns.
+        /// Handles quoted fields, escaped quotes, and multiline rows.
         /// </summary>
-        /// <param name="csvContent">The CSV content as a string.</param>
-        /// <returns>An array of rows, each containing an array of column values.</returns>
-        private string[][] ParseCsvContent(string csvContent)
+        /// <param name="csvContent">The full CSV content as a string.</param>
+        /// <returns>
+        /// A two-dimensional string array where each sub-array represents a row, and each element in the sub-array is a cell value.
+        /// </returns>
+        public string[][] ParseCsvContent(string csvContent)
         {
             var rows = new List<string[]>();
             var currentValues = new List<string>();
@@ -103,15 +100,14 @@ namespace Yash.Utility.Activities.DataTable
                 {
                     if (currentChar == '"')
                     {
-                        // Check if next char is also a quote (escaped quote)
                         if (i + 1 < csvContent.Length && csvContent[i + 1] == '"')
                         {
                             currentField.Append('"');
-                            i++; // Skip the escaped quote
+                            i++; // skip escaped quote
                         }
                         else
                         {
-                            insideQuotes = false; // Close quoted field
+                            insideQuotes = false;
                         }
                     }
                     else
@@ -131,20 +127,20 @@ namespace Yash.Utility.Activities.DataTable
                         if (currentField.Length > 0 || currentValues.Count > 0)
                         {
                             currentValues.Add(currentField.ToString());
-                            rows.Add(currentValues.ToArray());
+                            rows.Add([.. currentValues]);
                         }
+
                         currentField.Clear();
                         currentValues.Clear();
 
-                        // Handle cases where \r\n might be together
                         if (currentChar == '\r' && i + 1 < csvContent.Length && csvContent[i + 1] == '\n')
                         {
-                            i++; // Skip \n if it's part of \r\n
+                            i++; // Skip \n
                         }
                     }
                     else if (currentChar == '"')
                     {
-                        insideQuotes = true; // Start quoted value
+                        insideQuotes = true;
                     }
                     else
                     {
@@ -153,16 +149,14 @@ namespace Yash.Utility.Activities.DataTable
                 }
             }
 
-            // Add last row if present
+            // Add last line if needed
             if (currentField.Length > 0 || currentValues.Count > 0)
             {
                 currentValues.Add(currentField.ToString());
-                rows.Add(currentValues.ToArray());
+                rows.Add([.. currentValues]);
             }
 
-            return rows.ToArray();
+            return [.. rows];
         }
-
-
     }
 }

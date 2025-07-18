@@ -1,11 +1,10 @@
 {
-  "name": "Yash.Utility.Activities",
-  "projectId": "049b6beb-506e-476a-b1ed-4b24b3b8e3cf",
-  "description": "A set of utility activities used by various libraries and processes.",
+  "name": "Yash.Testing",
+  "projectId": "c70df416-19e8-4788-b350-131a5d18535b",
+  "description": "Shit for testing",
   "main": "NewActivity.xaml",
   "dependencies": {
-    "UiPath.Excel.Activities": "3.1.1",
-    "UiPath.System.Activities": "25.6.1",
+    "UiPath.System.Activities": "25.4.4",
     "UiPath.Testing.Activities": "25.4.0"
   },
   "webServices": [],
@@ -41,20 +40,7 @@
     "processOptions": {
       "ignoredFiles": []
     },
-    "fileInfoCollection": [
-      {
-        "editingStatus": "InProgress",
-        "testCaseId": "b5c41368-eb9f-4179-b680-c00c621e09c9",
-        "testCaseType": "TestCase",
-        "fileName": "DataTable\\ReadExcelFile.Test.cs"
-      },
-      {
-        "editingStatus": "InProgress",
-        "testCaseId": "af871881-9ca5-487d-96a0-9951577f1802",
-        "testCaseType": "TestCase",
-        "fileName": "DataTable\\ReadCSVTable.Test.cs"
-      }
-    ],
+    "fileInfoCollection": [],
     "saveToCloud": false
   },
   "expressionLanguage": "CSharp",

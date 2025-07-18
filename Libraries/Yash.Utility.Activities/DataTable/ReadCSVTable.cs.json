@@ -19,7 +19,7 @@
     },
     {
       "Name": "in_str_TableName",
-      "DisplayName": "Table Name",
+      "DisplayName": "Table Name (Optional)",
       "Category": "Input",
       "Tooltip": "The name of the table (optional)",
       "Placeholder": null,
