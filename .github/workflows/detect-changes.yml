@@ -18,8 +18,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install jq
-        run: sudo apt-get install -y jq
+      - name: Download jq
+        run: |
+          Invoke-WebRequest -Uri https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe -OutFile jq.exe
+        shell: powershell
+
+      - name: Add jq to PATH
+        run: |
+          $env:PATH = "$PWD;$env:PATH"
+          jq.exe --version
+        shell: powershell
 
       - name: Detect Changed Projects
         id: set-matrix
