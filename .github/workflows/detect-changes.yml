@@ -31,7 +31,7 @@ jobs:
 
       - name: Detect Changed Projects
         id: set-matrix
-        shell: pwsh
+        shell: powershell
         run: |
           Write-Host "Detecting changes..."
           $changedFiles = git diff --name-only $env:GITHUB_EVENT_BEFORE $env:GITHUB_SHA
