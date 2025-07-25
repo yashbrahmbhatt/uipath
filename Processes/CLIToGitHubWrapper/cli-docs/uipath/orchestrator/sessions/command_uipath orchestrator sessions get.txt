@@ -1,0 +1,35 @@
+NAME:
+   uipath orchestrator sessions get - Gets the sessions for the current folder.
+
+USAGE:
+   uipath orchestrator sessions get [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Robots or OR.Robots.Read.
+
+   Required permissions: Robots.View.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --select string
+      Limits the properties returned in the result.
+
+   --skip integer
+      Excludes the specified number of items of the queried collection from the result.
+
+   --top integer
+      Limits the number of items returned from a collection. The maximum value is 1000.

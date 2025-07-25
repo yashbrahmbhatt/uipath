@@ -1,0 +1,12 @@
+NAME:
+   uipath identity group get-groups - Get all local and built-in groups from a partition
+
+USAGE:
+   uipath identity group get-groups [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: PM.Group or PM.Group.Read.
+
+OPTIONS:
+   --partition-global-id string (required)
+      partition id

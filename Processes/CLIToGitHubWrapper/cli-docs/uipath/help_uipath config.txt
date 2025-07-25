@@ -1,0 +1,17 @@
+NAME:
+   uipath config - Interactive Configuration
+
+USAGE:
+   uipath config [command options]
+
+DESCRIPTION:
+   Interactive command to configure the CLI
+
+COMMANDS:
+   set      Set config parameters
+   cache    Caching-related commands
+   offline  Downloads external dependencies
+
+OPTIONS:
+   --auth value     Authorization type: credentials, login, pat
+   --profile value  Profile to configure (default: "default") [%UIPATH_PROFILE%]

@@ -1,0 +1,13 @@
+NAME:
+   uipath orchestrator maintenance get - Gets the host admin logs.
+
+USAGE:
+   uipath orchestrator maintenance get [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Administration or OR.Administration.Read.
+
+   Host only. Required permissions: Audit.View.
+
+OPTIONS:
+   --tenant-id integer

@@ -1,0 +1,11 @@
+NAME:
+   uipath orchestrator test-case-definitions - Specifications for running test cases
+
+USAGE:
+   uipath orchestrator test-case-definitions
+
+DESCRIPTION:
+   Test case definitions are the specifications for how a test case is to be run.
+
+COMMANDS:
+   get  Returns a list of Test Case Definitions

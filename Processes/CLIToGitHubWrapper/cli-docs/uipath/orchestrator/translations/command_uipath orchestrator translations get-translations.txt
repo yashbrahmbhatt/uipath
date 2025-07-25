@@ -1,0 +1,8 @@
+NAME:
+   uipath orchestrator translations get-translations - Returns a json with translation resources
+
+USAGE:
+   uipath orchestrator translations get-translations [command options] [arguments...]
+
+OPTIONS:
+   --lang string

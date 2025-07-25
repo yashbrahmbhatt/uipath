@@ -1,0 +1,14 @@
+NAME:
+   uipath studio package - UiPath Studio project packaging
+
+USAGE:
+   uipath studio package
+
+DESCRIPTION:
+   Restore, analyze, package and publish your UiPath studio projects.
+
+COMMANDS:
+   analyze  Runs static code analysis on the project to detect common errors
+   pack     Packs a project into a single package
+   publish  Publishes the package to orchestrator
+   restore  Restores the packages of the project

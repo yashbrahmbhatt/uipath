@@ -1,0 +1,95 @@
+name: uipath-orchestrator-assets-get-robot-asset-by-name-for-robot-key
+description: |
+  NAME:
+     uipath orchestrator assets get-robot-asset-by-name-for-robot-key - Returns the named asset associated to the given robot key.
+
+  USAGE:
+     uipath orchestrator assets get-robot-asset-by-name-for-robot-key [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Assets or OR.Assets.Write.
+
+     Required permissions: Assets.View.
+
+  OPTIONS:
+     --asset-name string (required)
+
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --robot-key string (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --supports-credentials-proxy-disconnected boolean
+     
+on:
+  workflow_call:
+    inputs:
+      asset_name:
+        description: 'The asset name to get (required).'
+        required: true
+        type: string
+      folder_id:
+        description: 'The folder or OrganizationUnit Id (required).'
+        required: true
+        type: string
+      robot_key:
+        description: 'The robot key (required).'
+        required: true
+        type: string
+      expand:
+        description: 'Indicates the related entities to be represented inline. Max depth 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      supports_credentials_proxy_disconnected:
+        description: 'Supports credentials proxy disconnected flag (true or false).'
+        required: false
+        type: boolean
+        default: false
+    
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    # Using PowerShell shell to construct and run the CLI command
+    steps:
+      - name: Run uipath orchestrator assets get-robot-asset-by-name-for-robot-key
+        shell: pwsh
+        run: |
+          $args = @()
+          # Required parameters
+          $args += '--asset-name'
+          $args += "'${{ inputs.asset_name }}'"
+          $args += '--folder-id'
+          $args += ${{ inputs.folder_id }}
+          $args += '--robot-key'
+          $args += "'${{ inputs.robot_key }}'"
+
+          # Optional parameters: only add if non empty or true
+          if (${{ inputs.expand }} -and '${{ inputs.expand }}'.Trim().Length -gt 0) {
+            $args += '--expand'
+            $args += "'${{ inputs.expand }}'"
+          }
+          if (${{ inputs.select }} -and '${{ inputs.select }}'.Trim().Length -gt 0) {
+            $args += '--select'
+            $args += "'${{ inputs.select }}'"
+          }
+          if (${{ inputs.supports_credentials_proxy_disconnected }}) {
+            $args += '--supports-credentials-proxy-disconnected'
+            $args += 'true'
+          }
+
+          # Compose and run the command
+          $command = "uipath orchestrator assets get-robot-asset-by-name-for-robot-key " + ($args -join ' ')
+          Write-Host "Running command: $command"
+          iex $command

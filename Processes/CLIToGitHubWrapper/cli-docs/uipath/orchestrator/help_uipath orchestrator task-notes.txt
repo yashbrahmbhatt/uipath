@@ -1,0 +1,12 @@
+NAME:
+   uipath orchestrator task-notes - Additional details for tasks
+
+USAGE:
+   uipath orchestrator task-notes
+
+DESCRIPTION:
+   Task notes are additional context or details added to tasks.
+
+COMMANDS:
+   create-task-note  Adds a task note.
+   get-by-task-id    Gets Task Notes for a Task

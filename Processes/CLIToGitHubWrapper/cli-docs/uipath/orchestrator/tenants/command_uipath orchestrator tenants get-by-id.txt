@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator tenants get-by-id - Gets a single tenant based on its id.
+
+USAGE:
+   uipath orchestrator tenants get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Administration or OR.Administration.Read.
+
+   Host only. Requires authentication.
+
+OPTIONS:
+   --key integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

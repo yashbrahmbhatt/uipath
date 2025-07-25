@@ -1,0 +1,80 @@
+name: uipath-orchestrator-calendars-post
+description: |
+  NAME:
+     uipath orchestrator calendars post - Creates a new calendar.
+
+  USAGE:
+     uipath orchestrator calendars post [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+     Required permissions: (Settings.Create).
+
+  OPTIONS:
+     --excluded-dates string,string,...
+     --id integer
+     --key string
+     --name string
+     --time-zone-id string
+
+on:
+  workflow_call:
+    inputs:
+      excluded_dates:
+        description: 'Comma separated list of excluded dates'
+        required: false
+        type: string
+      id:
+        description: 'ID of the calendar'
+        required: false
+        type: number
+      key:
+        description: 'Key of the calendar'
+        required: false
+        type: string
+      name:
+        description: 'Name of the calendar'
+        required: false
+        type: string
+      time_zone_id:
+        description: 'Time zone ID'
+        required: false
+        type: string
+
+jobs:
+  post_calendar:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator calendars post
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'calendars', 'post')
+
+          if (${{ inputs.excluded_dates }}) {
+            $args += "--excluded-dates"
+            $args += "${{ inputs.excluded_dates }}"
+          }
+
+          if (${{ inputs.id }}) {
+            $args += "--id"
+            $args += ${{ inputs.id }}
+          }
+
+          if (${{ inputs.key }}) {
+            $args += "--key"
+            $args += "${{ inputs.key }}"
+          }
+
+          if (${{ inputs.name }}) {
+            $args += "--name"
+            $args += "${{ inputs.name }}"
+          }
+          
+          if (${{ inputs.time_zone_id }}) {
+            $args += "--time-zone-id"
+            $args += "${{ inputs.time_zone_id }}"
+          }
+
+          Write-Host "Running command: uipath $($args -join ' ')"
+          uipath @args

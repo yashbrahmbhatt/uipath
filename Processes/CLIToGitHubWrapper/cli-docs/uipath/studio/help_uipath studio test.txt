@@ -1,0 +1,11 @@
+NAME:
+   uipath studio test - Run workflow tests
+
+USAGE:
+   uipath studio test
+
+DESCRIPTION:
+   Tests your UiPath studio packages
+
+COMMANDS:
+   run  Tests a given package

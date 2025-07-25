@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator calendars calendar-exists - Validate calendar name, and check if it already exists.
+
+USAGE:
+   uipath orchestrator calendars calendar-exists [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+   Required permissions: (Settings.Edit).
+
+OPTIONS:
+   --calendar-name string (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

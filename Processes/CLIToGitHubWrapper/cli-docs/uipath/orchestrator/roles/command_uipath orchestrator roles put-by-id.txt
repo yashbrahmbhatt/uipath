@@ -1,0 +1,44 @@
+NAME:
+   uipath orchestrator roles put-by-id - Edits a role.
+
+USAGE:
+   uipath orchestrator roles put-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Users or OR.Users.Write.
+
+   Required permissions: Roles.Edit.
+
+OPTIONS:
+   --key integer (required)
+
+   --display-name string
+      An alternative name used for UI display.
+
+   --groups string
+      Allows grouping multiple roles together.
+
+   --id integer
+
+   --is-editable boolean
+      States whether the permissions for this role can be modified or not.
+
+   --is-static boolean
+      States whether this role is defined by the application and cannot be deleted or it is user defined and can be deleted.
+
+   --name string
+      A custom name for the role.
+
+   --permissions object (multiple)
+      The collection of application permissions associated with the role.
+
+      Example:
+         Id=integer; IsGranted=boolean; Name=string; RoleId=integer; Scope=string
+
+   --type string
+      Can be: Mixed, Tenant or Folder based on the permissions it includes
+
+      Allowed values:
+      - Mixed
+      - Tenant
+      - Folder

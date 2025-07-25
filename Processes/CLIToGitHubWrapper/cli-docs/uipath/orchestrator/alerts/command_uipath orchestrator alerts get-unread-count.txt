@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator alerts get-unread-count - Returns the total number of alerts, per tenant, that haven't been read by the current user.
+
+USAGE:
+   uipath orchestrator alerts get-unread-count [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Monitoring or OR.Monitoring.Read.
+
+   Required permissions: Alerts.View.
+   DEPRECATED: 
+   Please refer to https://docs.uipath.com/orchestrator/reference
+
+OPTIONS:
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

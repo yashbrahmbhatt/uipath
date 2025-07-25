@@ -1,0 +1,27 @@
+NAME:
+   uipath orchestrator test-set-schedules get-by-id - Return a specific test set execution schedule identified by key
+
+USAGE:
+   uipath orchestrator test-set-schedules get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSetSchedules or OR.TestSetSchedules.Read.
+
+   Required permissions: TestSetSchedules.View.
+
+   Responses:
+   200 Return a specific test set execution schedule identified by key
+   403 If the caller doesn't have permissions to view test set execution schedules
+   404 It the test set execution schedule is not found
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

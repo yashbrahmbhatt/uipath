@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator folders-navigation get-folders-for-current-user - Returns a filtered subset (paginated) of the folders the current user has access to.
+
+USAGE:
+   uipath orchestrator folders-navigation get-folders-for-current-user [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth authentication is not supported.
+
+   Requires authentication.
+
+OPTIONS:
+   --folder-types string,string,...
+
+   --search-text string
+
+   --skip integer
+
+   --take integer

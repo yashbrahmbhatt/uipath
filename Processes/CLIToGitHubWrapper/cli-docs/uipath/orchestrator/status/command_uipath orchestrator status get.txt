@@ -1,0 +1,5 @@
+NAME:
+   uipath orchestrator status get - Returns whether the current endpoint should be serving traffic
+
+USAGE:
+   uipath orchestrator status get [arguments...]

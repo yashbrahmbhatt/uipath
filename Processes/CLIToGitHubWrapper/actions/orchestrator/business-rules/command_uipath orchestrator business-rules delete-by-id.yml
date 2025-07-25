@@ -1,0 +1,54 @@
+name: 'uipath orchestrator business-rules delete-by-id'
+
+description: |
+  NAME:
+     uipath orchestrator business-rules delete-by-id - Delete business rule
+
+  USAGE:
+     uipath orchestrator business-rules delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.BusinessRules or OR.BusinessRules.Write.
+
+     Required permissions: (BusinessRules.Delete).
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key string (required)
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      key:
+        description: 'Business rule key'
+        required: true
+        type: string
+
+jobs:
+  delete-business-rule:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator business-rules delete-by-id
+        shell: pwsh
+        run: |
+          # Build argument list for the CLI command
+          $args = @('orchestrator', 'business-rules', 'delete-by-id')
+
+          # Add required folder-id parameter
+          $args += '--folder-id'
+          $args += ${{ inputs.folder-id }}
+
+          # Add required key parameter
+          $args += '--key'
+          $args += '${{ inputs.key }}'
+
+          # Execute the CLI command with constructed arguments
+          Write-Host "Running: uipath $args"
+          uipath @args

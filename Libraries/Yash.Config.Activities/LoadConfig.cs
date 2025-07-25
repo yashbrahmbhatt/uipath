@@ -61,9 +61,9 @@ namespace Yash.Config.Activities
                             system.DownloadStorageFile(file.Path, file.Bucket, file.Folder, tempPath, 10000);
 
                         if (file.Type.Equals("csv", StringComparison.OrdinalIgnoreCase))
-                            dict[file.Name] = workflows.ReadCSVTable(tempPath, file.Name);
+                            dict[file.Name] = yashUtilityActivities.ReadCSVTable(tempPath, file.Name);
                         else if (file.Type.Equals("xlsx", StringComparison.OrdinalIgnoreCase) || file.Type.Equals("xls", StringComparison.OrdinalIgnoreCase))
-                            dict[file.Name] = workflows.ReadExcelFile(tempPath);
+                            dict[file.Name] = yashUtilityActivities.ReadExcelFile(tempPath);
                         else if (file.Type.Equals("txt", StringComparison.OrdinalIgnoreCase))
                             dict[file.Name] = File.ReadAllText(file.Path);
 

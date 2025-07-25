@@ -1,0 +1,130 @@
+name: 'UiPath Orchestrator Assign Tasks'
+
+description: |
+  NAME:
+     uipath orchestrator tasks assign-tasks - Assigns the tasks to given users.
+
+  USAGE:
+     uipath orchestrator tasks assign-tasks [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Requires authentication.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --task-assignments object (multiple) (required)
+
+        Example:
+           AssigneeNamesOrEmails=string,string,...; AssigneeUserIds=integer,integer,...; AssignmentCriteria=string; TaskId=integer; UserId=integer; UserNameOrEmail=string
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      task_assignments:
+        description: 'Task assignments (can specify multiple). Example: AssigneeNamesOrEmails=string,string,...; AssigneeUserIds=integer,integer,...; AssignmentCriteria=string; TaskId=integer; UserId=integer; UserNameOrEmail=string'
+        required: true
+        type: array
+      count:
+        description: 'Return total count of items within the collection'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Related entities to be represented inline. Max depth 2'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restricts the set of items returned. Max 100 expressions'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Specifies the order in which items are returned. Max 5 expressions'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  assign_tasks:
+    runs-on: [windows, self-hosted]
+    outputs:
+      command: ${{ steps.run_command.outputs.command }}
+    steps:
+      - name: Build and run uipath orchestrator tasks assign-tasks command
+        id: run_command
+        shell: pwsh
+        run: |
+          # Initialize the args array to construct the CLI command
+          $args = @('orchestrator', 'tasks', 'assign-tasks')
+
+          # Add required folder-id argument
+          $args += '--folder-id'
+          $args += ${{ inputs.folder_id }}
+
+          # Add each task assignment with multiple entries
+          foreach ($assignment in ${{ toJson(inputs.task_assignments) }} | ConvertFrom-Json) {
+            $args += '--task-assignments'
+            $args += $assignment
+          }
+
+          # Add optional boolean count argument if true
+          if (${{ inputs.count }}) {
+            $args += '--count'
+          }
+
+          # Add optional string arguments only if not empty
+          if (${{ inputs.expand }}) {
+            $args += '--expand'
+            $args += '${{ inputs.expand }}'
+          }
+          if (${{ inputs.filter }}) {
+            $args += '--filter'
+            $args += '${{ inputs.filter }}'
+          }
+          if (${{ inputs.orderby }}) {
+            $args += '--orderby'
+            $args += '${{ inputs.orderby }}'
+          }
+          if (${{ inputs.select }}) {
+            $args += '--select'
+            $args += '${{ inputs.select }}'
+          }
+
+          # Compose complete command string with proper quoting
+          $cmd = "uipath " + ($args | ForEach-Object { if ($_ -match '\s') { '"'+$_+'"' } else { $_ } }) -join ' '
+
+          Write-Host "Running command: $cmd"
+          # Execute the assembled command
+          & uipath @args
+
+          # Set output for debugging or chaining
+          Write-Output "::set-output name=command::$cmd"

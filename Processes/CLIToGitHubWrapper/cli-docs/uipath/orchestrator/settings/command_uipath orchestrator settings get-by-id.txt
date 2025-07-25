@@ -1,0 +1,28 @@
+NAME:
+   uipath orchestrator settings get-by-id - Gets a settings value based on its key.
+
+USAGE:
+   uipath orchestrator settings get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+   Required permissions: Settings.View.
+
+OPTIONS:
+   --key string (required)
+
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --select string
+      Limits the properties returned in the result.

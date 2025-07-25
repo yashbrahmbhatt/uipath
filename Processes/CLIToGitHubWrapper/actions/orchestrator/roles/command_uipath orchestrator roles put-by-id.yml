@@ -1,0 +1,186 @@
+name: uipath-orchestrator-roles-put-by-id
+description: |
+  NAME:
+     uipath orchestrator roles put-by-id - Edits a role.
+
+  USAGE:
+     uipath orchestrator roles put-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Write.
+
+     Required permissions: Roles.Edit.
+
+  OPTIONS:
+     --key integer (required)
+
+     --display-name string
+        An alternative name used for UI display.
+
+     --groups string
+        Allows grouping multiple roles together.
+
+     --id integer
+
+     --is-editable boolean
+        States whether the permissions for this role can be modified or not.
+
+     --is-static boolean
+        States whether this role is defined by the application and cannot be deleted or it is user defined and can be deleted.
+
+     --name string
+        A custom name for the role.
+
+     --permissions object (multiple)
+        The collection of application permissions associated with the role.
+
+        Example:
+           Id=integer; IsGranted=boolean; Name=string; RoleId=integer; Scope=string
+
+     --type string
+        Can be: Mixed, Tenant or Folder based on the permissions it includes
+
+        Allowed values:
+        - Mixed
+        - Tenant
+        - Folder
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: "The key identifier (required)."
+        required: true
+        type: number
+      display-name:
+        description: "An alternative name used for UI display."
+        required: false
+        type: string
+        default: ''
+      groups:
+        description: "Allows grouping multiple roles together."
+        required: false
+        type: string
+        default: ''
+      id:
+        description: "Role ID."
+        required: false
+        type: number
+      is-editable:
+        description: "States whether the permissions for this role can be modified or not."
+        required: false
+        type: boolean
+        default: false
+      is-static:
+        description: "States whether this role is defined by the application and cannot be deleted or it is user defined and can be deleted."
+        required: false
+        type: boolean
+        default: false
+      name:
+        description: "A custom name for the role."
+        required: false
+        type: string
+        default: ''
+      permissions:
+        description: |
+          The collection of application permissions associated with the role.
+          Each permission should be provided as a string in the form:
+          Id=integer; IsGranted=boolean; Name=string; RoleId=integer; Scope=string
+          This input supports multiple values separated by newlines.
+        required: false
+        type: string
+        default: ''
+      type:
+        description: |
+          The role type. Can be: Mixed, Tenant or Folder based on the permissions it includes.
+        required: false
+        type: string
+        default: Mixed
+        options:
+          - Mixed
+          - Tenant
+          - Folder
+jobs:
+  call-uipath-orchestrator-roles-put-by-id:
+    runs-on: [windows, self-hosted]
+    outputs:
+      command: ${{ steps.run.outputs.command }}
+    steps:
+    - name: Run uipath orchestrator roles put-by-id
+      id: run
+      shell: pwsh
+      run: |
+        # Build argument list for the CLI command
+        $args = @("orchestrator", "roles", "put-by-id")
+
+        # --key (required input)
+        $args += "--key"
+        $args += ${{ inputs.key }}
+
+        # Optional inputs - add if specified and non-empty/null
+
+        if (${{ inputs.'display-name' }} -and ${{ inputs.'display-name' }}.Trim() -ne '') {
+          $args += "--display-name"
+          $args += "`"${{ inputs.'display-name' }}`""
+        }
+
+        if (${{ inputs.groups }} -and ${{ inputs.groups }}.Trim() -ne '') {
+          $args += "--groups"
+          $args += "`"${{ inputs.groups }}`""
+        }
+
+        if (${{ inputs.id }}) {
+          $args += "--id"
+          $args += ${{ inputs.id }}
+        }
+
+        # Booleans: add only if true or explicitly pass their false values accordingly
+        if (${{ inputs.'is-editable' }} -eq $true) {
+          $args += "--is-editable"
+          $args += "true"
+        }
+        elseif (${{ inputs.'is-editable' }} -eq $false) {
+          $args += "--is-editable"
+          $args += "false"
+        }
+
+        if (${{ inputs.'is-static' }} -eq $true) {
+          $args += "--is-static"
+          $args += "true"
+        }
+        elseif (${{ inputs.'is-static' }} -eq $false) {
+          $args += "--is-static"
+          $args += "false"
+        }
+
+        if (${{ inputs.name }} -and ${{ inputs.name }}.Trim() -ne '') {
+          $args += "--name"
+          $args += "`"${{ inputs.name }}`""
+        }
+
+        # Permissions supports multiple objects separated by newline
+        if (${{ inputs.permissions }}.Trim() -ne '') {
+          $permissionsArray = ${{ inputs.permissions }} -split "`n"
+          foreach ($permission in $permissionsArray) {
+            if ($permission.Trim() -ne '') {
+              $args += "--permissions"
+              $args += "`"$permission`""
+            }
+          }
+        }
+
+        # Type option with default 'Mixed'
+        if (${{ inputs.type }} -and ${{ inputs.type }}.Trim() -ne '') {
+          $args += "--type"
+          $args += ${{ inputs.type }}
+        }
+
+        # Join the args into a single command string
+        $command = "uipath " + ($args -join " ")
+
+        Write-Output "Running command: $command"
+
+        # Execute the command
+        & uipath @args
+
+        # Output the command executed for debugging/future usage
+        Write-Output "::set-output name=command::$command"

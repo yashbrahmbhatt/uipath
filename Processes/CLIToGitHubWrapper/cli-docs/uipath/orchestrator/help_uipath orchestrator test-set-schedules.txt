@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator test-set-schedules - Rules for automatic test runs
+
+USAGE:
+   uipath orchestrator test-set-schedules
+
+DESCRIPTION:
+   Test set schedules define when a test set is automatically run on a robot.
+
+COMMANDS:
+   delete-by-id  Delete an existing test set execution schedule
+   get           Returns a list of test set execution schedules
+   get-by-id     Return a specific test set execution schedule identified by key
+   post          Creates a new test set execution schedule
+   put-by-id     Update an existing test set execution schedule
+   set-enabled   Enables / disables a list of test set execution schedules.

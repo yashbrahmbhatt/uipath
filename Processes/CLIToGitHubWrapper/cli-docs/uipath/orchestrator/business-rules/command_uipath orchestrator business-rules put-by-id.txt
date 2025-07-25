@@ -1,0 +1,21 @@
+NAME:
+   uipath orchestrator business-rules put-by-id - Update Business Rule
+
+USAGE:
+   uipath orchestrator business-rules put-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.BusinessRules or OR.BusinessRules.Write.
+
+   Required permissions: (BusinessRules.Edit).
+
+OPTIONS:
+   --business-rule string (required)
+      The BusinessRuleDto object
+
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key string (required)
+
+   --file binary

@@ -1,0 +1,17 @@
+NAME:
+   uipath orchestrator task-definitions delete-by-id - Deletes Task Defintion/Version.
+
+USAGE:
+   uipath orchestrator task-definitions delete-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+   Required permissions: ActionDesign.Delete.
+
+OPTIONS:
+   --key integer (required)
+      Id of the task definition to be deleted
+
+   --task-definition-version integer
+      Version of task definition to be deleted

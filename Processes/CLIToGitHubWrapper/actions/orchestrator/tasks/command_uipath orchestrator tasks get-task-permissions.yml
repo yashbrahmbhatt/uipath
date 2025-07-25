@@ -1,0 +1,103 @@
+name: UiPath Orchestrator Get Task Permissions
+description: |
+  NAME:
+     uipath orchestrator tasks get-task-permissions - Gets all the tasks related permissions for the logged in user on the folder in session
+
+  USAGE:
+     uipath orchestrator tasks get-task-permissions [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: string
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restricts the set of items returned. The maximum number of expressions is 100.'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Specifies the order in which items are returned. The maximum number of expressions is 5.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      UIPATH_AUTH_TOKEN:
+        description: 'Authentication token required for OAuth'
+jobs:
+  get-task-permissions:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator tasks get-task-permissions command
+        shell: pwsh
+        env:
+          UIPATH_AUTH_TOKEN: ${{ secrets.UIPATH_AUTH_TOKEN }}
+        run: |
+          # Initialize argument list with the base command and required folder-id
+          $args = @("orchestrator","tasks","get-task-permissions","--folder-id", "${{ inputs.folder-id }}")
+
+          # Add --count flag if true
+          if (${{ inputs.count }}) {
+              $args += "--count"
+          }
+
+          # Add options if provided and not empty
+          if (-not [string]::IsNullOrEmpty("${{ inputs.expand }}")) {
+              $args += "--expand"
+              $args += "${{ inputs.expand }}"
+          }
+          if (-not [string]::IsNullOrEmpty("${{ inputs.filter }}")) {
+              $args += "--filter"
+              $args += "${{ inputs.filter }}"
+          }
+          if (-not [string]::IsNullOrEmpty("${{ inputs.orderby }}")) {
+              $args += "--orderby"
+              $args += "${{ inputs.orderby }}"
+          }
+          if (-not [string]::IsNullOrEmpty("${{ inputs.select }}")) {
+              $args += "--select"
+              $args += "${{ inputs.select }}"
+          }
+
+          # Execute the uipath CLI command with constructed arguments
+          uipath $args -AuthToken $env:UIPATH_AUTH_TOKEN

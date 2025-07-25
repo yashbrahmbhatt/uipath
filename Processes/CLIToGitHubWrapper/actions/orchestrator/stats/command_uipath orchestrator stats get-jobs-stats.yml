@@ -1,0 +1,64 @@
+name: 'UiPath Orchestrator Stats Get Jobs Stats'
+description: |
+  OAuth required scopes: OR.Monitoring or OR.Monitoring.Read.
+
+  Required permissions: Jobs.View.
+
+  Returns the total number of Successful, Faulted and Canceled jobs respectively.
+  Example of returned result:
+      [
+            {
+              "title": "Successful",
+              "count": 0
+            },
+            {
+              "title": "Faulted",
+              "count": 0
+            },
+            {
+              "title": "Canceled",
+              "count": 0
+            }
+      ]
+  
+on:
+  workflow_call:
+    inputs:
+      oauth_token:
+        description: 'OAuth token with OR.Monitoring or OR.Monitoring.Read scope'
+        required: true
+        type: string
+      orchestrator_url:
+        description: 'Base URL of the UiPath Orchestrator instance'
+        required: true
+        type: string
+
+jobs:
+  get-jobs-stats:
+    runs-on: [windows, self-hosted]
+    outputs:
+      stats: ${{ steps.get_stats.outputs.stats }}
+    steps:
+      - name: Get Jobs Stats
+        id: get_stats
+        shell: pwsh
+        env:
+          OAUTH_TOKEN: ${{ inputs.oauth_token }}
+          ORCHESTRATOR_URL: ${{ inputs.orchestrator_url }}
+        run: |
+          # Build the command arguments array
+          $args = @(
+            'orchestrator', 'stats', 'get-jobs-stats'
+            '--url', $env:ORCHESTRATOR_URL
+            '--token', $env:OAUTH_TOKEN
+          )
+
+          # Execute the UiPath CLI command and capture output
+          $output = & uipath @args | Out-String
+          
+          # Trim output to remove trailing newline characters
+          $trimmedOutput = $output.Trim()
+
+          # Set the output for the workflow
+          Write-Output "Stats output:`n$trimmedOutput"
+          echo "::set-output name=stats::$trimmedOutput"

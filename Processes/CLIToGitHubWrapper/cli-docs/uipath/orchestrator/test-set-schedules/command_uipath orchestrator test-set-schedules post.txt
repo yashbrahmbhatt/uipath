@@ -1,0 +1,52 @@
+NAME:
+   uipath orchestrator test-set-schedules post - Creates a new test set execution schedule
+
+USAGE:
+   uipath orchestrator test-set-schedules post [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSetSchedules or OR.TestSetSchedules.Write.
+
+   Required permissions: TestSetSchedules.Create.
+
+   Responses:
+   201 Returns the newly created test set execution schedule
+   403 If the caller doesn't have permissions to create test set execution schedules
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --name string (required)
+
+   --test-set-id integer (required)
+
+   --time-zone-id string (required)
+
+   --calendar-id integer
+
+   --calendar-name string
+
+   --cron-details string
+
+   --cron-expression string
+
+   --cron-summary string
+
+   --description string
+
+   --disable-date string
+
+   --enabled boolean
+
+   --external-job-key string
+
+   --external-job-key-scheduler string
+
+   --id integer
+
+   --next-occurrence string
+
+   --test-set-name string
+
+   --time-zone-iana string

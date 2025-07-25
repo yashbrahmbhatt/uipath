@@ -1,0 +1,11 @@
+NAME:
+   uipath orchestrator licenses-named-user - User-specific licenses
+
+USAGE:
+   uipath orchestrator licenses-named-user
+
+DESCRIPTION:
+   Licenses granted to a specific user in the system, typically identified by their username.
+
+COMMANDS:
+   get-licenses-named-user-by-robottype  Gets named-user licenses.

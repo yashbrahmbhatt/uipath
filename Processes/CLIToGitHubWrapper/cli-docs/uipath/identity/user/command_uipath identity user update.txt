@@ -1,0 +1,48 @@
+NAME:
+   uipath identity user update - Updates the specified user.
+
+USAGE:
+   uipath identity user update [command options] [arguments...]
+
+DESCRIPTION:
+   Updating user groups requires partition administrator group membership.
+
+OPTIONS:
+   --user-id string (required)
+      The database identifier of the user.
+
+   --bypass-basic-auth-restriction boolean
+      Flag indicating if this user will bypass the basic authentication restriction.
+
+   --display-name string
+      Display name of the user
+
+   --email string
+      The user's email address.
+
+   --extension-user-attributes-to-add-or-update object
+      Extension user attributes this user should be added to or updated on.
+
+   --extension-user-attributes-to-remove string,string,...
+      Extension user attributes this user should be removed from.
+
+   --group-ids-to-add string,string,...
+      IDs of the groups this user should be added to.
+
+   --group-ids-to-remove string,string,...
+      IDs of the groups this user should be removed from.
+
+   --invitation-accepted boolean
+      Flag indicating whether the user has accepted invitation or not.
+
+   --is-active boolean
+      Flag indicating if the user is active.
+
+   --name string
+      The name of the user.
+
+   --password string
+      The user's new password.
+
+   --surname string
+      The name of the user.

@@ -1,0 +1,18 @@
+NAME:
+   uipath orchestrator settings verify-smtp-setting - Verify whether the given SMTP settings are correct or not by sending an email to a recipient.
+
+USAGE:
+   uipath orchestrator settings verify-smtp-setting [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+   Required permissions: Settings.Edit.
+
+OPTIONS:
+   --send-to string (required)
+
+   --smtp-setting-model object
+
+      Example:
+         DefaultFromAddress=string; DefaultFromDisplayName=string; Domain=string; EnableSsl=boolean; Host=string; Password=string; Port=integer; UseDefaultCredentials=boolean; UserName=string

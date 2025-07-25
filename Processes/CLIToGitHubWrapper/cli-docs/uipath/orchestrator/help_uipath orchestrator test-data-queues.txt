@@ -1,0 +1,15 @@
+NAME:
+   uipath orchestrator test-data-queues - Storage for test data
+
+USAGE:
+   uipath orchestrator test-data-queues
+
+DESCRIPTION:
+   Test data queues are used to store test data for consumption in test cases.
+
+COMMANDS:
+   delete-by-id  Delete an existing test data queue
+   get           Return a list of test data queues
+   get-by-id     Return a specific test data queue identified by key
+   post          Create a new test data queue
+   put-by-id     Update an existing test data queue

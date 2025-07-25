@@ -1,0 +1,25 @@
+NAME:
+   uipath studio test run - Tests a given package
+
+USAGE:
+   uipath studio test run [command options] [arguments...]
+
+OPTIONS:
+   --source string,string,... (default: .)
+      Path to one or more project.json files or folders containing project.json files
+
+   --attach-robot-logs boolean
+      Attaches Robot Logs for each testcases along with Test Report.
+
+   --folder string (default: Shared)
+      The Orchestrator Folder
+
+   --results-output string (default: uipath)
+      Output type for the test results report (default: uipath)
+
+      Allowed values:
+      - uipath
+      - junit
+
+   --timeout integer (default: 3600)
+      Time to wait in seconds for tests to finish

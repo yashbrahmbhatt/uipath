@@ -1,0 +1,48 @@
+NAME:
+   uipath orchestrator test-data-queues put-by-id - Update an existing test data queue
+
+USAGE:
+   uipath orchestrator test-data-queues put-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+   Required permissions: TestDataQueues.Edit.
+
+   Responses:
+   200 Returns the updated test data queue
+   403 If the caller doesn't have permissions to update test data queues
+   409 If trying to change the queue name
+
+OPTIONS:
+   --content-json-schema string (required)
+
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      Id of the test data queue to be updated
+
+   --name string (required)
+
+   --consumed-items-count integer
+
+   --creation-time string
+
+   --creator-user-id integer
+
+   --deleter-user-id integer
+
+   --deletion-time string
+
+   --description string
+
+   --id integer
+
+   --is-deleted boolean
+
+   --items-count integer
+
+   --last-modification-time string
+
+   --last-modifier-user-id integer

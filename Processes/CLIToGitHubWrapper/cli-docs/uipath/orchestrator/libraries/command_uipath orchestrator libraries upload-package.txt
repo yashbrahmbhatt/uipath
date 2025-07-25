@@ -1,0 +1,48 @@
+NAME:
+   uipath orchestrator libraries upload-package - Uploads a new package or a new version of an existing package. The content of the package is sent as a .nupkg file embedded in the HTTP request.
+
+USAGE:
+   uipath orchestrator libraries upload-package [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Write.
+
+   Required permissions: Libraries.Create.
+
+OPTIONS:
+   --file binary (required)
+
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --feed-id string
+
+   --file1 binary
+
+   --file2 binary
+
+   --file3 binary
+
+   --file4 binary
+
+   --file5 binary
+
+   --file6 binary
+
+   --file7 binary
+
+   --file8 binary
+
+   --file9 binary
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --select string
+      Limits the properties returned in the result.

@@ -1,0 +1,18 @@
+NAME:
+   uipath orchestrator roles - User permissions management system
+
+USAGE:
+   uipath orchestrator roles
+
+DESCRIPTION:
+   Roles allow users to assign and manage different permissions to users or groups.
+
+COMMANDS:
+   delete-by-id                  Deletes a role.
+   get                           Gets roles.
+   get-by-id                     Gets role based on its id.
+   get-user-ids-for-role-by-key  Returns a collection of all the ids of the users associated to a role based on role Id.
+   get-users-for-role-by-key     Returns a collection of all users and, if no other sorting is provided, will place first those associated to a role.Allows odata query options.
+   post                          Creates a new role - Creating mixed roles will not be supported in 21.10
+   put-by-id                     Edits a role.
+   set-users-by-id               Associates a group of users with and dissociates another group of users from the given role.

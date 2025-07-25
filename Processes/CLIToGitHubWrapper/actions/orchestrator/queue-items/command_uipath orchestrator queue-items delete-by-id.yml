@@ -1,0 +1,53 @@
+name: uipath-orchestrator-queue-items-delete-by-id
+description: |
+  NAME:
+     uipath orchestrator queue-items delete-by-id - Deletes a queue item by Id.
+
+  USAGE:
+     uipath orchestrator queue-items delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+     Required permissions: Queues.View and Transactions.Delete.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: integer
+      key:
+        description: 'Id of the queue item to delete (required)'
+        required: true
+        type: integer
+
+jobs:
+  delete_queue_item_by_id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Delete queue item by Id
+        shell: pwsh
+        run: |
+          # Initialize argument list for CLI command
+          $args = @('orchestrator', 'queue-items', 'delete-by-id')
+
+          # Add required folder-id argument
+          $folderId = "${{ inputs.folder-id }}"
+          $args += "--folder-id"
+          $args += $folderId
+
+          # Add required key argument
+          $key = "${{ inputs.key }}"
+          $args += "--key"
+          $args += $key
+
+          # Execute UiPath CLI command with constructed arguments
+          uipath @args

@@ -1,0 +1,13 @@
+NAME:
+   uipath orchestrator machines delete-bulk - Deletes multiple machines based on their keys.
+
+USAGE:
+   uipath orchestrator machines delete-bulk [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Machines or OR.Machines.Write.
+
+   Required permissions: Machines.Delete.
+
+OPTIONS:
+   --machine-ids integer,integer,...

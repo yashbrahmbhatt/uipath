@@ -1,0 +1,15 @@
+NAME:
+   uipath orchestrator stats - Performance metrics
+
+USAGE:
+   uipath orchestrator stats
+
+DESCRIPTION:
+   Stats provide analytics and metrics about the performance and usage of robots and processes.
+
+COMMANDS:
+   get-consumption-license-stats  Gets the consumption licensing usage statistics
+   get-count-stats                Gets the total number of various entities registered in Orchestrator
+   get-jobs-stats                 Gets the total number of jobs aggregated by Job State
+   get-license-stats              Gets the licensing usage statistics
+   get-sessions-stats             Gets the total number of robots aggregated by Robot State

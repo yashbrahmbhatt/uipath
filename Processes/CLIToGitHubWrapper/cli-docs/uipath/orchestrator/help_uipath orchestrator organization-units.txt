@@ -1,0 +1,18 @@
+NAME:
+   uipath orchestrator organization-units - Divisions for resource management
+
+USAGE:
+   uipath orchestrator organization-units
+
+DESCRIPTION:
+   Entities that can have their own separate robots, processes, assets, queues, etc..
+
+COMMANDS:
+   delete-by-id                  Deletes an organization unit.
+   get                           Gets the organization units.
+   get-by-id                     Gets an organization unit.
+   get-user-ids-for-unit-by-key  Returns a collection of all the ids of the users associated to an unit based on unit Id.
+   get-users-for-unit-by-key     Returns a collection of all non robot users and, if no other sorting is provided, will place first those associated to an unit. Allows odata query options.
+   post                          Creates an organization unit.
+   put-by-id                     Edits an organization unit.
+   set-users-by-id               Associates a group of users with and dissociates another group of users from the given unit.

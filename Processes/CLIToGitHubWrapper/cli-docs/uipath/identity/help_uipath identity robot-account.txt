@@ -1,0 +1,16 @@
+NAME:
+   uipath identity robot-account - Manage robot accounts
+
+USAGE:
+   uipath identity robot-account
+
+DESCRIPTION:
+   Use these endpoints to manage robot accounts.
+
+COMMANDS:
+   bulk-delete           Deletes multiple robot accounts from a partition
+   create-robot-account  Creates a new  robot account
+   delete                Deletes a robot account
+   get-robot-account     Get robot account by partition and robot account Id
+   get-robot-accounts    Get all robot accounts from a partition
+   update-robot-account  Updates a robot account information.

@@ -1,0 +1,146 @@
+name: uipath-orchestrator-tasks-get-task-users-by-organizationunitid
+description: |
+  NAME:
+     uipath orchestrator tasks get-task-users-by-organizationunitid - Gets users in given Organization Unit, who have Tasks.View and Tasks.Edit permissions
+
+  USAGE:
+     uipath orchestrator tasks get-task-users-by-organizationunitid [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+     Required permissions: Tasks.View and Tasks.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --organization-unit-id integer (required)
+        organizationUnitId of the task
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      organization_unit_id:
+        description: 'organizationUnitId of the task (required)'
+        required: true
+        type: number
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restricts the set of items returned. The maximum number of expressions is 100.'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Specifies the order in which items are returned. The maximum number of expressions is 5.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Excludes the specified number of items of the queried collection from the result.'
+        required: false
+        type: number
+        default: 0
+      top:
+        description: 'Limits the number of items returned from a collection. The maximum value is 1000.'
+        required: false
+        type: number
+        default: 0
+
+jobs:
+  call-get-task-users-by-organizationunitid:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator get-task-users-by-organizationunitid command
+        shell: pwsh
+        run: |
+          # Initialize arguments array with base command and required parameters
+          $args = @(
+            'orchestrator', 'tasks', 'get-task-users-by-organizationunitid',
+            '--folder-id', "${{ inputs.folder_id }}",
+            '--organization-unit-id', "${{ inputs.organization_unit_id }}"
+          )
+
+          # Conditionally add --count if true
+          if (${{ inputs.count }}) {
+            $args += '--count'
+            $args += 'true'
+          }
+
+          # Conditionally add --expand if not empty
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += '--expand'
+            $args += '${{ inputs.expand }}'
+          }
+
+          # Conditionally add --filter if not empty
+          if ('${{ inputs.filter }}' -ne '') {
+            $args += '--filter'
+            $args += '${{ inputs.filter }}'
+          }
+
+          # Conditionally add --orderby if not empty
+          if ('${{ inputs.orderby }}' -ne '') {
+            $args += '--orderby'
+            $args += '${{ inputs.orderby }}'
+          }
+
+          # Conditionally add --select if not empty
+          if ('${{ inputs.select }}' -ne '') {
+            $args += '--select'
+            $args += '${{ inputs.select }}'
+          }
+
+          # Conditionally add --skip if greater than 0
+          if (${{ inputs.skip }} -gt 0) {
+            $args += '--skip'
+            $args += "${{ inputs.skip }}"
+          }
+
+          # Conditionally add --top if greater than 0
+          if (${{ inputs.top }} -gt 0) {
+            $args += '--top'
+            $args += "${{ inputs.top }}"
+          }
+
+          # Execute the constructed command
+          uipath $args

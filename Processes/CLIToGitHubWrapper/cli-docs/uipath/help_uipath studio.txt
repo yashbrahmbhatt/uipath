@@ -1,0 +1,12 @@
+NAME:
+   uipath studio - UiPath Studio
+
+USAGE:
+   uipath studio
+
+DESCRIPTION:
+   UiPath Studio commands for analyzing, packaging, testing and publishing your UiPath Studio projects.
+
+COMMANDS:
+   package  UiPath Studio project packaging
+   test     Run workflow tests

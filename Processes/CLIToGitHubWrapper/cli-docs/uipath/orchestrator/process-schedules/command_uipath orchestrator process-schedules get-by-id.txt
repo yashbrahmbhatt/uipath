@@ -1,0 +1,22 @@
+NAME:
+   uipath orchestrator process-schedules get-by-id - Gets a single process schedule based on its key.
+
+USAGE:
+   uipath orchestrator process-schedules get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Jobs or OR.Jobs.Read.
+
+   Required permissions: Schedules.View.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

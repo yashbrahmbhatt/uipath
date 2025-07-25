@@ -1,0 +1,5 @@
+﻿Here is the help text for a CLI command. Please convert this into a reusable GitHub Actions workflow definition using `workflow_call` with appropriate `inputs`, `secrets`, and `steps`.
+
+The command should be run using PowerShell and constructed using a `$args` array.
+
+{HELPTEXT}

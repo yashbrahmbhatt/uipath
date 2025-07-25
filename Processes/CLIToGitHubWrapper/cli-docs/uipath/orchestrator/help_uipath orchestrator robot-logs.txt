@@ -1,0 +1,15 @@
+NAME:
+   uipath orchestrator robot-logs - Records of robot events
+
+USAGE:
+   uipath orchestrator robot-logs
+
+DESCRIPTION:
+   robot Logs are records of the different actions and events tracked during a robot's operation.
+
+COMMANDS:
+   export           Requests a CSV export of filtered items.
+   get              Gets the robot logs.
+   get-total-count  Gets the total count of robot logs.
+                    This might be different than the size of the count returned by GetRobotLogs which
+                    is limited by the max_result_window parameter for an Elasticsearch source.

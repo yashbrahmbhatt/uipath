@@ -1,0 +1,53 @@
+name: uipath-orchestrator-test-automation-get-assertion-screenshot
+description: |
+  NAME:
+     uipath orchestrator test-automation get-assertion-screenshot - Get the screenshot for the specified test case assertion.
+
+  USAGE:
+     uipath orchestrator test-automation get-assertion-screenshot [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Read.
+
+     Required permissions: TestSetExecutions.View.
+
+     Responses:
+     200 OK
+     404 If the test case assertion is not found or the screenshot storage location is not found
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --test-case-assertion-id integer
+        Id of the test case assertion
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      test_case_assertion_id:
+        description: 'Id of the test case assertion (optional)'
+        required: false
+        type: string
+    secrets: {}
+jobs:
+  call-get-assertion-screenshot:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator test-automation get-assertion-screenshot
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'test-automation', 'get-assertion-screenshot')
+          # Add required --folder-id argument
+          $args += '--folder-id'
+          $args += "${{ inputs.folder_id }}"
+          # Add optional --test-case-assertion-id argument if provided
+          if ('${{ inputs.test_case_assertion_id }}'.Length -gt 0) {
+              $args += '--test-case-assertion-id'
+              $args += "${{ inputs.test_case_assertion_id }}"
+          }
+          # Run the CLI command with constructed arguments
+          uipath @args

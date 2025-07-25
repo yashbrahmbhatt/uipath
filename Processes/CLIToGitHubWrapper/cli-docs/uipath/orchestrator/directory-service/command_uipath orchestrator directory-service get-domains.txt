@@ -1,0 +1,10 @@
+NAME:
+   uipath orchestrator directory-service get-domains - Gets domains
+
+USAGE:
+   uipath orchestrator directory-service get-domains [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Users or OR.Users.Read.
+
+   Required permissions: (Users.View or Units.Edit or SubFolders.Edit).

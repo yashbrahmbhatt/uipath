@@ -1,0 +1,32 @@
+NAME:
+   uipath orchestrator folders get-move-folder-machines-changes - Gets the machine changes when moving a folder
+
+USAGE:
+   uipath orchestrator folders get-move-folder-machines-changes [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Folders or OR.Folders.Read.
+
+   Required permissions: (SubFolders.Delete - Deletes folder only if user has SubFolders.Delete permission on it) and (Units.Create or SubFolders.Create - Creates root or subfolder or only subfolder if user has SubFolders.Create permission on parent) and (Units.Edit or SubFolders.Edit - Edits any folder or only if user has SubFolders.Edit permission on it).
+
+OPTIONS:
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --folder-id integer
+      Id of the folder to be moved
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --select string
+      Limits the properties returned in the result.
+
+   --target-parent-id integer
+      Id of the target parent

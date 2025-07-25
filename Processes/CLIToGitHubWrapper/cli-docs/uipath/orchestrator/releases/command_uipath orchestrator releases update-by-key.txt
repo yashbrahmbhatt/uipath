@@ -1,0 +1,22 @@
+NAME:
+   uipath orchestrator releases update-by-key - Updates the package entry point for the given release.
+
+USAGE:
+   uipath orchestrator releases update-by-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Write.
+
+   Required permissions: Processes.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --release-key string (required)
+
+   --entry-point-path string
+
+   --input-args string
+
+   --process-version string

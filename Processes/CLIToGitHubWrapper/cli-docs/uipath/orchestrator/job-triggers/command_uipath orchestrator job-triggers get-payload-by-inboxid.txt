@@ -1,0 +1,11 @@
+NAME:
+   uipath orchestrator job-triggers get-payload-by-inboxid - Get payload for trigger inboxId.
+
+USAGE:
+   uipath orchestrator job-triggers get-payload-by-inboxid [command options] [arguments...]
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --inbox-id string (required)

@@ -1,0 +1,53 @@
+NAME:
+   uipath orchestrator task-forms create-form-task - Creates a new Form Task.
+
+USAGE:
+   uipath orchestrator task-forms create-form-task [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+   Required permissions: Tasks.Create.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --title string (required)
+      Gets or sets title of this task.
+
+   --bulk-form-layout-id integer
+      Unique BulkFormLayoutId for a form layout
+
+   --data object
+      Task data
+
+   --external-tag string
+      Reference or name of external system
+
+   --form-layout object
+      Text representing the form layout schema
+
+   --form-layout-id integer
+      Unique FormLayoutId for a form layout
+
+   --parent-operation-id string
+      Operation id which created the task.
+
+   --priority string
+      Gets or sets priority of this task.
+
+      Allowed values:
+      - Low
+      - Medium
+      - High
+      - Critical
+
+   --tags object (multiple)
+      List of tags associated to the task.
+
+      Example:
+         DisplayName=string; DisplayValue=string; Name=string; Value=string
+
+   --task-catalog-name string
+      Gets or sets the task catalog/category of the task

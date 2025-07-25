@@ -1,0 +1,22 @@
+NAME:
+   uipath orchestrator jobs stop-jobs - Cancels or terminates the specified jobs.
+
+USAGE:
+   uipath orchestrator jobs stop-jobs [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+   Required permissions: Jobs.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --job-ids integer,integer,... (required)
+
+   --strategy string (required)
+
+      Allowed values:
+      - SoftStop
+      - Kill

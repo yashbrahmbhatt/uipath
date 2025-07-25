@@ -1,0 +1,150 @@
+name: Update UiPath Orchestrator Webhook by ID
+
+description: |
+  NAME:
+     uipath orchestrator webhooks put-by-id - Update an existing webhook subscription
+
+  USAGE:
+     uipath orchestrator webhooks put-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Webhooks or OR.Webhooks.Write.
+
+     Required permissions: Webhooks.Edit.
+
+  OPTIONS:
+     --allow-insecure-ssl boolean (required)
+
+     --enabled boolean (required)
+
+     --key integer (required)
+
+     --name string (required)
+
+     --subscribe-to-all-events boolean (required)
+
+     --url string (required)
+
+     --description string
+
+     --events object (multiple)
+
+        Example:
+           EventType=string
+
+     --id integer
+
+     --secret string
+
+on:
+  workflow_call:
+    inputs:
+      allow_insecure_ssl:
+        description: 'Allow insecure SSL (boolean)'
+        required: true
+        type: boolean
+      enabled:
+        description: 'Enable webhook (boolean)'
+        required: true
+        type: boolean
+      key:
+        description: 'Key integer identifier'
+        required: true
+        type: integer
+      name:
+        description: 'Name of the webhook'
+        required: true
+        type: string
+      subscribe_to_all_events:
+        description: 'Subscribe to all events (boolean)'
+        required: true
+        type: boolean
+      url:
+        description: 'URL for the webhook'
+        required: true
+        type: string
+      description:
+        description: 'Optional description for the webhook'
+        required: false
+        type: string
+        default: ''
+      events:
+        description: 'List of event objects formatted as EventType=string; multiple allowed'
+        required: false
+        type: string
+        default: ''
+      id:
+        description: 'Webhook ID (integer)'
+        required: false
+        type: integer
+      secret:
+        description: 'Optional secret string'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      UIPATH_CLI_TOKEN:
+        description: 'Secret token for authentication if needed'
+
+jobs:
+  update-webhook:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator webhooks put-by-id
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'webhooks', 'put-by-id')
+
+          # Required boolean parameters
+          $args += '--allow-insecure-ssl'
+          $args += ${{ inputs.allow_insecure_ssl }}
+
+          $args += '--enabled'
+          $args += ${{ inputs.enabled }}
+
+          # Required integer parameter
+          $args += '--key'
+          $args += ${{ inputs.key }}
+
+          # Required string parameter
+          $args += '--name'
+          $args += "'${{ inputs.name }}'"
+
+          # Required boolean parameter
+          $args += '--subscribe-to-all-events'
+          $args += ${{ inputs.subscribe_to_all_events }}
+
+          # Required URL string parameter
+          $args += '--url'
+          $args += "'${{ inputs.url }}'"
+
+          # Optional description
+          if ('${{ inputs.description }}' -ne '') {
+            $args += '--description'
+            $args += "'${{ inputs.description }}'"
+          }
+
+          # Optional multiple events - input expected as a semicolon separated list of EventType=string entries
+          if ('${{ inputs.events }}' -ne '') {
+            $eventsArray = '${{ inputs.events }}'.Split(';') | Where-Object { $_.Trim() -ne '' }
+            foreach ($ev in $eventsArray) {
+              $args += '--events'
+              $args += "'$ev'"
+            }
+          }
+
+          # Optional id (integer)
+          if (${{ inputs.id }} -ne 0) {
+            $args += '--id'
+            $args += ${{ inputs.id }}
+          }
+
+          # Optional secret string
+          if ('${{ inputs.secret }}' -ne '') {
+            $args += '--secret'
+            $args += "'${{ inputs.secret }}'"
+          }
+
+          # Execute the CLI command
+          Write-Host "Executing: uipath $($args -join ' ')"
+          uipath @args

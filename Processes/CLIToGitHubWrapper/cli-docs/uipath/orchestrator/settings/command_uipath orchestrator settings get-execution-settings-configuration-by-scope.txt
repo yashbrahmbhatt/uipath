@@ -1,0 +1,27 @@
+NAME:
+   uipath orchestrator settings get-execution-settings-configuration-by-scope - Gets the execution settings configuration (display name, value type, etc.).
+                                                                                If scope is 0 (Global), the default values will be the initial ones. If scope is 1 (Robot), then
+                                                                                the default values will be the actual values set globally.
+                                                                                e.g., Resolution width
+                                                                                Assume it was set globally to 720.
+                                                                                Then within the config returned by this function, the default value for this setting will be:
+                                                                                - 0 for scope = 0 and
+                                                                                - 720 for scope = 1.
+
+USAGE:
+   uipath orchestrator settings get-execution-settings-configuration-by-scope [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+   Required permissions: Settings.Edit or Robots.Create or Robots.Edit.
+
+OPTIONS:
+   --scope integer (required)
+      Scope of the configuration; 0 for Global, 1 for Robot
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

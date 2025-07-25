@@ -1,0 +1,14 @@
+NAME:
+   uipath orchestrator release-retention - Rules for retaining release information
+
+USAGE:
+   uipath orchestrator release-retention
+
+DESCRIPTION:
+   Release retention define the rules for how long the information about a release is retained in Orchestrator's storage.
+
+COMMANDS:
+   delete-by-id  
+   get           
+   get-by-id     
+   put-by-id

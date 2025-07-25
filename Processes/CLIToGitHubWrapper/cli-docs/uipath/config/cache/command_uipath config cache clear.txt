@@ -1,0 +1,8 @@
+NAME:
+   uipath config cache clear - Clears the cache
+
+USAGE:
+   uipath config cache clear
+
+DESCRIPTION:
+   Clears the cache

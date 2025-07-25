@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator generic-tasks - Basic, undefined task types
+
+USAGE:
+   uipath orchestrator generic-tasks
+
+DESCRIPTION:
+   Manage basic unit of work assigned by a process or a robot.
+
+COMMANDS:
+   complete-task           Complete the task by saving task data and action taken
+   create-task             Creates a new Generic Task.
+   get-task-data-by-id     Returns task data dto
+   save-and-reassign-task  Save changes done by the current user and Reassign Task to another user
+   save-task-data          Save Task data
+   save-task-tags          Save tags for a task

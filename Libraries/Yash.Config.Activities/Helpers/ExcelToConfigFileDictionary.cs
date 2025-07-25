@@ -16,7 +16,7 @@ namespace Yash.Config.Activities.Helpers
         [Workflow]
         public Dictionary<string, ConfigFile> Execute(string path = "Data\\Config.xlsx")
         {
-            var dataset = workflows.ReadExcelFile(path);
+            var dataset = yashUtilityActivities.ReadExcelFile(path);
             List<DataTable> tables = dataset.Tables.Cast<DataTable>().ToList();
             List<string> names = tables.Select(dt => dt.TableName.Split("_")[0]).Distinct().ToList();
             Dictionary<string, ConfigFile> configs = new();

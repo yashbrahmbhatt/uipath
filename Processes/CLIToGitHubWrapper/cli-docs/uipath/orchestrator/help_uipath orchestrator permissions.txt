@@ -1,0 +1,11 @@
+NAME:
+   uipath orchestrator permissions - Access rights
+
+USAGE:
+   uipath orchestrator permissions
+
+DESCRIPTION:
+   Permissions define the level of access a user has within the system. They are used to control which features and resources a user can view, edit, or manage.
+
+COMMANDS:
+   get  Gets permissions.

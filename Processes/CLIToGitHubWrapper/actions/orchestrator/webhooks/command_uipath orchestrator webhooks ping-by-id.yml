@@ -1,0 +1,89 @@
+name: UiPath Orchestrator Webhooks Ping-By-Id
+description: |
+  NAME:
+     uipath orchestrator webhooks ping-by-id - Sends a Ping request to webhook endpoint.
+                                               Used for testing connectivity and availability of target URL
+
+  USAGE:
+     uipath orchestrator webhooks ping-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Webhooks or OR.Webhooks.Write.
+
+     Required permissions: Webhooks.View.
+
+  OPTIONS:
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The key of the webhook to ping (required).'
+        required: true
+        type: string
+      expand:
+        description: 'Indicates the related entities to be represented inline. Optional.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result. Optional.'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      ORCHESTRATOR_API_TOKEN:
+        description: 'OAuth token to authenticate against UiPath Orchestrator'
+        required: true
+
+jobs:
+  ping-webhook:
+    runs-on: [windows, self-hosted]
+    name: Ping UiPath Orchestrator Webhook by ID
+    steps:
+      - name: Execute uipath orchestrator webhooks ping-by-id
+        shell: pwsh
+        env:
+          ORCHESTRATOR_API_TOKEN: ${{ secrets.ORCHESTRATOR_API_TOKEN }}
+        run: |
+          # Initialize argument list
+          $args = @()
+          
+          # Required --key argument
+          if (-not [string]::IsNullOrEmpty('${{ inputs.key }}')) {
+            $args += "--key"
+            $args += "${{ inputs.key }}"
+          } else {
+            Write-Error "The 'key' input is required."
+            exit 1
+          }
+          
+          # Optional --expand argument
+          if (-not [string]::IsNullOrEmpty('${{ inputs.expand }}')) {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+          
+          # Optional --select argument
+          if (-not [string]::IsNullOrEmpty('${{ inputs.select }}')) {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Construct and invoke the CLI command
+          $command = "uipath orchestrator webhooks ping-by-id " + ($args -join " ")
+          Write-Host "Running command: $command"
+          
+          # Set the Authorization header or environment if required by CLI tool; assuming env token usage or CLI handles OAuth token internally
+          & $command
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Command failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }

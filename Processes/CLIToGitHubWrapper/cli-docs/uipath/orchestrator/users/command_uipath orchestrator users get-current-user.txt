@@ -1,0 +1,15 @@
+NAME:
+   uipath orchestrator users get-current-user - Returns details about the user currently logged into Orchestrator.
+
+USAGE:
+   uipath orchestrator users get-current-user [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Users or OR.Users.Read.
+
+OPTIONS:
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

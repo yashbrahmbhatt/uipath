@@ -1,0 +1,80 @@
+name: uipath-orchestrator-settings-get-execution-settings-configuration-by-scope
+description: |
+  Gets the execution settings configuration (display name, value type, etc.).
+  If scope is 0 (Global), the default values will be the initial ones. If scope is 1 (Robot), then
+  the default values will be the actual values set globally.
+  e.g., Resolution width
+  Assume it was set globally to 720.
+  Then within the config returned by this function, the default value for this setting will be:
+  - 0 for scope = 0 and
+  - 720 for scope = 1.
+
+  OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+  Required permissions: Settings.Edit or Robots.Create or Robots.Edit.
+
+on:
+  workflow_call:
+    inputs:
+      scope:
+        description: 'Scope of the configuration; 0 for Global, 1 for Robot'
+        required: true
+        type: integer
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      access_token:
+        description: 'OAuth access token with required scopes.'
+        required: true
+        type: string
+        # This will be a secret so better to handle that as a secret in 'secrets' mapping
+
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator settings get-execution-settings-configuration-by-scope
+        shell: pwsh
+        env:
+          ACCESS_TOKEN: ${{ inputs.access_token }}
+        run: |
+          # Initialize args array with base command
+          $args = @('orchestrator', 'settings', 'get-execution-settings-configuration-by-scope')
+
+          # Add required scope argument (integer, required)
+          $args += "--scope"
+          $args += "${{ inputs.scope }}"
+
+          # Add optional expand argument if provided and not empty
+          if ('${{ inputs.expand }}' -ne '') {
+              $args += "--expand"
+              $args += '${{ inputs.expand }}'
+          }
+
+          # Add optional select argument if provided and not empty
+          if ('${{ inputs.select }}' -ne '') {
+              $args += "--select"
+              $args += '${{ inputs.select }}'
+          }
+
+          # Construct the final command string with quoting
+          $quotedArgs = $args | ForEach-Object { if ($_ -match '\s') { '"{0}"' -f $_ } else { $_ } }
+          $command = "uipath $($quotedArgs -join ' ')"
+
+          # Write out the constructed command for debugging
+          Write-Host "Executing command: $command"
+
+          # Execute the command with the OAuth token set in environment variable (assuming CLI uses it)
+          & uipath $quotedArgs
+
+          if ($LASTEXITCODE -ne 0) {
+              Write-Error "Command failed with exit code $LASTEXITCODE"
+              exit $LASTEXITCODE
+          }

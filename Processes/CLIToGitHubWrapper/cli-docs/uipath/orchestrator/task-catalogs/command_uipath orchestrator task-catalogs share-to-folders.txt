@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator task-catalogs share-to-folders - Makes the task catalogs visible in the specified folders.
+
+USAGE:
+   uipath orchestrator task-catalogs share-to-folders [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+   Requires authentication.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --task-catalog-ids integer,integer,...
+
+   --to-add-folder-ids integer,integer,...
+
+   --to-remove-folder-ids integer,integer,...

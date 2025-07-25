@@ -1,0 +1,58 @@
+name: 'uipath orchestrator buckets delete-by-id'
+
+description: |
+  NAME:
+     uipath orchestrator buckets delete-by-id - Delete a bucket
+
+  USAGE:
+     uipath orchestrator buckets delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Administration or OR.Administration.Write.
+
+     Required permissions: Buckets.Delete.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      key:
+        description: 'Bucket key (required)'
+        required: true
+        type: string
+
+jobs:
+  delete_bucket:
+    runs-on:
+      - windows
+      - self-hosted
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator buckets delete-by-id
+        shell: pwsh
+        run: |
+          $args = @()
+          # Add fixed command parts
+          $args += 'orchestrator'
+          $args += 'buckets'
+          $args += 'delete-by-id'
+
+          # Add required parameters
+          $args += '--folder-id'
+          $args += "${{ inputs.folder-id }}"
+
+          $args += '--key'
+          $args += "${{ inputs.key }}"
+
+          # Execute the CLI with constructed arguments
+          uipath $args

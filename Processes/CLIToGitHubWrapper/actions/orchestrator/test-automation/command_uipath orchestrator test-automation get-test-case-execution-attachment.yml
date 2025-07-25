@@ -1,0 +1,44 @@
+name: Get Test Case Execution Attachment
+description: |
+  OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Read.
+
+  Required permissions: TestSetExecutions.View.
+
+  Responses:
+  200 OK
+  404 If the test case execution attachment is not found or the storage location is not found
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: Folder/OrganizationUnit Id
+        required: true
+        type: number
+      test-case-execution-attachment-id:
+        description: Id of the test case execution attachment
+        required: false
+        type: number
+
+jobs:
+  get-test-case-execution-attachment:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # Optionally can set outputs if needed, otherwise omit
+    steps:
+      - name: Run uipath orchestrator test-automation get-test-case-execution-attachment
+        shell: pwsh
+        run: |
+          $args = @("orchestrator", "test-automation", "get-test-case-execution-attachment")
+          # Add required folder-id argument
+          $args += "--folder-id"
+          $args += "${{ inputs.folder-id }}"
+          
+          # Add optional test-case-execution-attachment-id argument if provided
+          if ("${{ inputs.test-case-execution-attachment-id }}" -ne "") {
+            $args += "--test-case-execution-attachment-id"
+            $args += "${{ inputs.test-case-execution-attachment-id }}"
+          }
+
+          # Execute the command
+          uipath $args

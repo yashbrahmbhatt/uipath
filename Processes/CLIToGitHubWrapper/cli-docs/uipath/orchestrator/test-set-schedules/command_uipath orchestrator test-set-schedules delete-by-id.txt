@@ -1,0 +1,21 @@
+NAME:
+   uipath orchestrator test-set-schedules delete-by-id - Delete an existing test set execution schedule
+
+USAGE:
+   uipath orchestrator test-set-schedules delete-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSetSchedules or OR.TestSetSchedules.Write.
+
+   Required permissions: TestSetSchedules.Delete.
+
+   Responses:
+   204 The test set execution schedule was deleted
+   403 If the caller doesn't have permissions to delete test set execution schedules
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      ID of the test set execution schedule to be deleted

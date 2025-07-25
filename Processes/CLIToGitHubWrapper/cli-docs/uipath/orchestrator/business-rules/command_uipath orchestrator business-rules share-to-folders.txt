@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator business-rules share-to-folders - Makes the business rule visible in the specified folders.
+
+USAGE:
+   uipath orchestrator business-rules share-to-folders [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.BusinessRules or OR.BusinessRules.Write.
+
+   Requires authentication.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --business-rule-keys string,string,...
+
+   --to-add-folder-ids integer,integer,...
+
+   --to-remove-folder-ids integer,integer,...

@@ -1,0 +1,23 @@
+NAME:
+   uipath orchestrator task-catalogs get-task-catalog-extended-details-by-taskcatalogid - Validates task catalog deletion request.
+
+USAGE:
+   uipath orchestrator task-catalogs get-task-catalog-extended-details-by-taskcatalogid [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+   Requires authentication.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --task-catalog-id integer (required)
+      Id of task catalog
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

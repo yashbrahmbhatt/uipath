@@ -1,0 +1,15 @@
+NAME:
+   uipath identity setting get-settings-bulk - Get an application settings for a list of keys in a tenant
+
+USAGE:
+   uipath identity setting get-settings-bulk [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: PM.Setting or PM.Setting.Read.
+
+OPTIONS:
+   --key string,string,...
+
+   --partition-global-id string
+
+   --user-id string

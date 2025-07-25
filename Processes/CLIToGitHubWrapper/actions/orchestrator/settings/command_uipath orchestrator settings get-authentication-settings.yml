@@ -1,0 +1,65 @@
+name: 'UiPath Orchestrator Settings Get Authentication Settings'
+
+description: |
+  NAME:
+     uipath orchestrator settings get-authentication-settings - Gets the authentication settings
+
+  USAGE:
+     uipath orchestrator settings get-authentication-settings [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+  OPTIONS:
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      UIPATH_CLI_TOKEN:
+        description: 'Authentication token for UiPath CLI if needed'
+        required: false
+
+jobs:
+  get-authentication-settings:
+    runs-on: [windows, self-hosted]
+
+    steps:
+      - name: Run uipath orchestrator settings get-authentication-settings
+        shell: pwsh
+        env:
+          UIPATH_CLI_TOKEN: ${{ secrets.UIPATH_CLI_TOKEN }}
+        run: |
+          # Initialize arguments array
+          $args = @('orchestrator', 'settings', 'get-authentication-settings')
+
+          # Append --expand option if provided
+          if ('${{ inputs.expand }}' -ne '') {
+              $args += ('--expand', '${{ inputs.expand }}')
+          }
+
+          # Append --select option if provided
+          if ('${{ inputs.select }}' -ne '') {
+              $args += ('--select', '${{ inputs.select }}')
+          }
+
+          # Prepare the command string with proper quoting
+          $quotedArgs = $args | ForEach-Object { '"' + $_ + '"' } | Join-String ' '
+          
+          # Execute the command
+          uipath $quotedArgs

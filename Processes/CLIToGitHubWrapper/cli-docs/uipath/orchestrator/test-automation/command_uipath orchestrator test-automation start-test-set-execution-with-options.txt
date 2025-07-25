@@ -1,0 +1,74 @@
+NAME:
+   uipath orchestrator test-automation start-test-set-execution-with-options - Start a test set execution with additional options.
+
+USAGE:
+   uipath orchestrator test-automation start-test-set-execution-with-options [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Write.
+
+   Required permissions: TestSetExecutions.Create.
+
+   Responses:
+   200 OK returns test set execution Id
+   403 If the caller doesn't have permissions to execute a test set
+   404 If the test set was not found
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --batch-execution-key string
+
+   --enforce-execution-order boolean
+
+   --execute-only-specified-test-cases boolean
+
+   --machine-id integer
+
+   --machine-session-id integer
+
+   --robot-id integer
+
+   --runtime-type string
+
+      Allowed values:
+      - NonProduction
+      - Attended
+      - Unattended
+      - Development
+      - Studio
+      - RpaDeveloper
+      - StudioX
+      - CitizenDeveloper
+      - Headless
+      - StudioPro
+      - RpaDeveloperPro
+      - TestAutomation
+      - AutomationCloud
+      - Serverless
+      - AutomationKit
+      - ServerlessTestAutomation
+      - AutomationCloudTestAutomation
+      - AttendedStudioWeb
+      - Hosting
+      - AssistantWeb
+      - ProcessOrchestration
+      - AgentService
+
+   --test-cases object (multiple)
+
+      Example:
+         executionOrder=integer; packageIdentifier=string; testManagerTestCaseId=string; uniqueId=string
+
+   --test-set-id integer
+
+   --test-set-key string
+
+   --trigger-type string
+
+      Allowed values:
+      - Manual
+      - Scheduled
+      - ExternalTool
+      - TestManager

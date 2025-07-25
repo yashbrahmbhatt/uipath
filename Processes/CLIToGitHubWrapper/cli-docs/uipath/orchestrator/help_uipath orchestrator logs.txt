@@ -1,0 +1,12 @@
+NAME:
+   uipath orchestrator logs - Recorded activities and events
+
+USAGE:
+   uipath orchestrator logs
+
+DESCRIPTION:
+   Records of the activities and events that occur during the execution of a process.
+
+COMMANDS:
+   post         Inserts a log entry with a specified message in JSON format.
+   submit-logs  Inserts a collection of log entries, each in a specific JSON format.

@@ -1,0 +1,88 @@
+name: uipath-orchestrator-queue-items-get-by-id
+description: |
+  NAME:
+     uipath orchestrator queue-items get-by-id - Gets a queue item by Id.
+
+  USAGE:
+     uipath orchestrator queue-items get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Read.
+
+     Required permissions: Queues.View and Transactions.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      key:
+        description: 'Queue item key Id (required)'
+        required: true
+        type: string
+      expand:
+        description: 'Related entities to be represented inline (optional)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Properties to limit in the result (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  get-queue-item-by-id:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator queue-items get-by-id command
+        shell: pwsh
+        run: |
+          $args = @()
+          # Add required parameters
+          $args += '--folder-id'
+          $args += ${{ inputs.folder_id }}
+          $args += '--key'
+          $args += ${{ inputs.key }}
+
+          # Add optional parameters if specified
+          if ("${{ inputs.expand }}" -ne '') {
+            $args += '--expand'
+            $args += "${{ inputs.expand }}"
+          }
+          if ("${{ inputs.select }}" -ne '') {
+            $args += '--select'
+            $args += "${{ inputs.select }}"
+          }
+
+          # Build and execute command
+          $command = "uipath orchestrator queue-items get-by-id"
+          foreach ($arg in $args) {
+            # Quote argument if it contains spaces or special characters
+            if ($arg -match '\s' -or $arg -match '[\"\'\`$]') {
+              $escaped = $arg.replace('"', '\"')
+              $command += " `"" + $escaped + "`""
+            }
+            else {
+              $command += " $arg"
+            }
+          }
+          Write-Host "Executing command:"
+          Write-Host $command
+          iex $command

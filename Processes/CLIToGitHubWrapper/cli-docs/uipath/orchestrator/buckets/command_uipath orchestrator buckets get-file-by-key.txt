@@ -1,0 +1,26 @@
+NAME:
+   uipath orchestrator buckets get-file-by-key - Gets a file metadata.
+
+USAGE:
+   uipath orchestrator buckets get-file-by-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Administration or OR.Administration.Read.
+
+   Required permissions: Buckets.View and BlobFiles.View.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      The Bucket Id
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --path string
+      The BlobFile full path
+
+   --select string
+      Limits the properties returned in the result.

@@ -1,0 +1,66 @@
+name: uipath-orchestrator-buckets-upload
+description: |
+  NAME:
+     uipath orchestrator buckets upload - Uploads the provided file to the bucket
+
+  USAGE:
+     uipath orchestrator buckets upload [command options] [arguments...]
+
+  OPTIONS:
+     --file binary (required)
+        The file to upload
+
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+        The Bucket Id
+
+     --path string (required)
+        The BlobFile full path
+
+on:
+  workflow_call:
+    inputs:
+      file:
+        description: The file to upload (path to the file)
+        required: true
+        type: string
+      folder_id:
+        description: Folder/OrganizationUnit Id
+        required: true
+        type: number
+      key:
+        description: The Bucket Id
+        required: true
+        type: number
+      path:
+        description: The BlobFile full path
+        required: true
+        type: string
+
+jobs:
+  upload-file:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # Could add outputs if needed
+    steps:
+      - name: Upload file to UiPath Orchestrator bucket
+        shell: pwsh
+        run: |
+          # Build argument array for CLI command
+          $args = @()
+          $args += 'orchestrator'
+          $args += 'buckets'
+          $args += 'upload'
+          $args += '--file'
+          $args += "'${{ inputs.file }}'"
+          $args += '--folder-id'
+          $args += "${{ inputs.folder_id }}"
+          $args += '--key'
+          $args += "${{ inputs.key }}"
+          $args += '--path'
+          $args += "'${{ inputs.path }}'"
+          
+          # Invoke the command with the constructed arguments
+          uipath @args

@@ -1,0 +1,22 @@
+NAME:
+   uipath orchestrator assets get-folders-for-asset-by-id - Get all accesible folders where the asset is shared, and the total count of folders where it is shared (including unaccessible folders).
+
+USAGE:
+   uipath orchestrator assets get-folders-for-asset-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Assets or OR.Assets.Read.
+
+   Requires authentication.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --id integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

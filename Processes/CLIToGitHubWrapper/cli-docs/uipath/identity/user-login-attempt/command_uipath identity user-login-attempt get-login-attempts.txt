@@ -1,0 +1,34 @@
+NAME:
+   uipath identity user-login-attempt get-login-attempts - Get the login attempts of a user
+
+USAGE:
+   uipath identity user-login-attempt get-login-attempts [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: PM.UserLoginAttempt or PM.UserLoginAttempt.Read.
+
+OPTIONS:
+   --user-id string (required)
+      The data used to create a new user.
+
+   --since string
+      The date since records should be returned.
+
+   --skip integer
+      The number of records to skip. Default is 0.
+
+   --sort-by string
+      The name of the field to sort by.
+
+   --sort-order string
+      The sort order.
+
+      Allowed values:
+      - asc
+      - desc
+
+   --top integer
+      The number of records to return. Default is 10. Range is 0 to 1000.
+
+   --user-sid string
+      The AD user SID.

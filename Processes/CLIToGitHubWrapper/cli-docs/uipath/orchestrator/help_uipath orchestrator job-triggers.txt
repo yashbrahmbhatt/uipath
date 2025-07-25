@@ -1,0 +1,14 @@
+NAME:
+   uipath orchestrator job-triggers - Initiators of jobs
+
+USAGE:
+   uipath orchestrator job-triggers
+
+DESCRIPTION:
+   Triggers are used to schedule the execution of processes.
+
+COMMANDS:
+   deliver-payload-by-inboxid     Deliver payload for trigger inboxId.
+   get                            Gets JobTriggers.
+   get-payload-by-inboxid         Get payload for trigger inboxId.
+   get-with-wait-events-by-jobid  Gets Trigger option for a job instance along with wait event details    .

@@ -1,0 +1,12 @@
+NAME:
+   uipath identity audit-query - Inspect audit events
+
+USAGE:
+   uipath identity audit-query
+
+DESCRIPTION:
+   As an organization admin, use these endpoints to list and download audit events.
+
+COMMANDS:
+   download-audit-events  
+   get-audit-events

@@ -1,0 +1,62 @@
+name: 'uipath orchestrator users set-active-by-id'
+
+description: |
+  NAME:
+     uipath orchestrator users set-active-by-id - Activate or deactivate a user
+
+  USAGE:
+     uipath orchestrator users set-active-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Write.
+
+     Required permissions: Users.Edit.
+     DEPRECATED: 
+     This API is deprecated. Please do not use it any longer.
+     Please refer to https://docs.uipath.com/orchestrator/reference
+
+  OPTIONS:
+     --active boolean (required)
+
+     --key integer (required)
+
+on:
+  workflow_call:
+    inputs:
+      active:
+        description: 'Activate or deactivate the user (true or false).'
+        required: true
+        type: boolean
+      key:
+        description: 'The integer ID of the user to activate or deactivate.'
+        required: true
+        type: number
+    # No secrets specified in help text
+
+jobs:
+  set-active-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator users set-active-by-id
+        shell: pwsh
+        run: |
+          # Initialize argument array
+          $args = @()
+
+          # Add command and options with proper quoting
+          $args += 'orchestrator'
+          $args += 'users'
+          $args += 'set-active-by-id'
+
+          # Required boolean parameter --active (converted to string for CLI)
+          $activeString = if (${{ inputs.active }}) { 'true' } else { 'false' }
+          $args += '--active'
+          $args += $activeString
+
+          # Required integer parameter --key
+          $args += '--key'
+          $args += "${{ inputs.key }}"
+
+          # Execute the command
+          uipath $args -join ' ' | Write-Host
+          & uipath @args

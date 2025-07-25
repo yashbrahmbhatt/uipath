@@ -1,0 +1,25 @@
+NAME:
+   uipath orchestrator users - Manage users
+
+USAGE:
+   uipath orchestrator users
+
+DESCRIPTION:
+   Users are individuals who have access to the Orchestrator's features.
+
+COMMANDS:
+   assign-roles-by-id         
+   change-culture             Changes the culture for the current user
+   change-user-culture-by-id  Changes the culture for the specified user
+   delete-by-id               Deletes a user.
+   get                        Gets users.
+   get-by-id                  Gets a user based on its id.
+   get-current-permissions    Returns a user permission collection containing data about the current user and all the permissions it has.
+   get-current-user           Returns details about the user currently logged into Orchestrator.
+   patch-by-id                Partially updates a user.
+                              Cannot update roles or organization units via this endpoint.
+   post                       Creates a new user.
+   put-by-id                  Edits a user.
+   set-active-by-id           Activate or deactivate a user
+   toggle-role-by-id          Associates/dissociates the given user with/from a role based on toggle parameter.
+   validate-by-userids        Validates if the robots for the given users are busy

@@ -1,0 +1,150 @@
+name: 'UiPath Orchestrator Queue Items Get Item Last Retry By Id'
+
+description: |
+  NAME:
+     uipath orchestrator queue-items get-item-last-retry-by-id - Returns the last retry of a queue item.
+
+  USAGE:
+     uipath orchestrator queue-items get-item-last-retry-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Read.
+
+     Required permissions: Queues.View and Transactions.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      key:
+        description: 'Key of the queue item (required)'
+        required: true
+        type: number
+      count:
+        description: 'Indicates whether the total count of items is returned in the result'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Related entities to be represented inline (max depth 2)'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Filter expression to restrict items returned (max 100 expressions)'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Specifies ordering of items returned (max 5 expressions)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Number of items to exclude from the queried collection'
+        required: false
+        type: number
+        default: 0
+      top:
+        description: 'Limits the number of items returned (max 1000)'
+        required: false
+        type: number
+        default: 0
+
+jobs:
+  get-item-last-retry-by-id:
+    runs-on:
+      - windows
+      - self-hosted
+    outputs:
+      cli-command: ${{ steps.build-command.outputs.cli-command }}
+    steps:
+      - name: Build CLI command
+        id: build-command
+        shell: pwsh
+        run: |
+          # Prepare arguments array for the CLI command
+          $args = @('uipath','orchestrator','queue-items','get-item-last-retry-by-id')
+
+          # Required parameters
+          $args += @('--folder-id', ${{ inputs.folder_id }})
+          $args += @('--key', ${{ inputs.key }})
+
+          # Optional boolean count parameter
+          if (${{ inputs.count }}) {
+            $args += '--count'
+          }
+
+          # Optional string parameters, added only if non-empty
+          if ('${{ inputs.expand }}'.Trim() -ne '') {
+            $args += @('--expand', '${{ inputs.expand }}')
+          }
+          if ('${{ inputs.filter }}'.Trim() -ne '') {
+            $args += @('--filter', '${{ inputs.filter }}')
+          }
+          if ('${{ inputs.orderby }}'.Trim() -ne '') {
+            $args += @('--orderby', '${{ inputs.orderby }}')
+          }
+          if ('${{ inputs.select }}'.Trim() -ne '') {
+            $args += @('--select', '${{ inputs.select }}')
+          }
+
+          # Optional numeric parameters, added only if greater than zero
+          if (${{ inputs.skip }} -gt 0) {
+            $args += @('--skip', ${{ inputs.skip }})
+          }
+          if (${{ inputs.top }} -gt 0) {
+            $args += @('--top', ${{ inputs.top }})
+          }
+
+          # Join arguments to form the command string safely
+          $command = $args | ForEach-Object {
+            # Quote argument if it contains spaces or special chars
+            if ($_ -match '\s|["'']') {
+              '"' + ($_ -replace '"', '\"') + '"'
+            }
+            else {
+              $_
+            }
+          } -join ' '
+
+          Write-Output "::set-output name=cli-command::$command"
+
+      - name: Execute UiPath Orchestrator CLI command
+        shell: pwsh
+        run: ${{ steps.build-command.outputs.cli-command }}

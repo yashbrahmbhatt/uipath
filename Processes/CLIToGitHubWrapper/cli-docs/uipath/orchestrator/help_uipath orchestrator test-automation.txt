@@ -1,0 +1,23 @@
+NAME:
+   uipath orchestrator test-automation - Management and execution of tests
+
+USAGE:
+   uipath orchestrator test-automation
+
+DESCRIPTION:
+   Test automation is a feature that allows you to plan, manage, and run your automated tests.
+
+COMMANDS:
+   cancel-test-case-execution               Cancels the specified test case execution.
+   cancel-test-set-execution                Cancels the specified test set execution.
+   create-test-set-for-release-version      This will create a test set with source type API.This endpoint it is supposed to be used by API integration.
+   get-assertion-screenshot                 Get the screenshot for the specified test case assertion.
+   get-package-info-by-test-case-unique-id  Get the package identifier and the latest version for the specified test case.
+   get-releases-for-package-version         This will list all the processes filtered by package identifier and version cross-folder when no current folder is sent by header.
+   get-test-case-execution-attachment       Get the attachment for the specified test case execution attachment.
+   get-test-case-execution-attachments      This will list all test case execution attachments filtered by identifier and tags
+   get-test-set-execution-attachment        Get the attachment for the specified test set execution attachment.
+   get-test-set-execution-attachments       This will list all test set execution attachments filtered by identifier and tags
+   reexecute-test-cases                     Re-execute the specified test case executions within the same test set execution.
+   start-test-set-execution                 Start a test set execution.
+   start-test-set-execution-with-options    Start a test set execution with additional options.

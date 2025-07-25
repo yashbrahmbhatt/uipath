@@ -1,0 +1,88 @@
+name: uipath-orchestrator-webhooks-get
+description: |
+  OAuth required scopes: OR.Webhooks or OR.Webhooks.Read.
+
+  Required permissions: Webhooks.View.
+
+  Usage:
+     uipath orchestrator webhooks get [command options] [arguments...]
+
+on:
+  workflow_call:
+    inputs:
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+      filter:
+        description: 'Restricts the set of items returned. The maximum number of expressions is 100.'
+        required: false
+        type: string
+      orderby:
+        description: 'Specifies the order in which items are returned. The maximum number of expressions is 5.'
+        required: false
+        type: string
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+      skip:
+        description: 'Excludes the specified number of items of the queried collection from the result.'
+        required: false
+        type: integer
+        default: 0
+      top:
+        description: 'Limits the number of items returned from a collection. The maximum value is 1000.'
+        required: false
+        type: integer
+        default: 0
+
+jobs:
+  build:
+    runs-on: [windows, self-hosted]
+    outputs:
+      command: ${{ steps.build-command.outputs.command }}
+    steps:
+      - id: build-command
+        shell: pwsh
+        run: |
+          $args = @("orchestrator", "webhooks", "get")
+          if (${{ inputs.count }}) {
+            $args += "--count"
+            $args += ${{ inputs.count }}.ToString()
+          }
+          if (${{ inputs.expand }}) {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+          if (${{ inputs.filter }}) {
+            $args += "--filter"
+            $args += "${{ inputs.filter }}"
+          }
+          if (${{ inputs.orderby }}) {
+            $args += "--orderby"
+            $args += "${{ inputs.orderby }}"
+          }
+          if (${{ inputs.select }}) {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+          if (${{ inputs.skip }} -gt 0) {
+            $args += "--skip"
+            $args += ${{ inputs.skip }}.ToString()
+          }
+          if (${{ inputs.top }} -gt 0) {
+            $args += "--top"
+            $args += ${{ inputs.top }}.ToString()
+          }
+          $command = "uipath " + ($args -join " ")
+          Write-Output "Command to run: $command"
+          # Execute the command
+          iex $command
+        outputs:
+          command: ${{ steps.build-command.outputs.command }}

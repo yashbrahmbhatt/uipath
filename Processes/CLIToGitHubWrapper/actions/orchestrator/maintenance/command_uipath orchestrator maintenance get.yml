@@ -1,0 +1,33 @@
+name: UiPath Orchestrator Maintenance Get
+
+description: |-
+  uipath orchestrator maintenance get - Gets the host admin logs.
+
+  OAuth required scopes: OR.Administration or OR.Administration.Read.
+
+  Host only. Required permissions: Audit.View.
+
+  OPTIONS:
+     --tenant-id integer
+
+on:
+  workflow_call:
+    inputs:
+      tenant-id:
+        description: 'Tenant ID (integer) to specify the tenant for the command.'
+        required: false
+        type: number
+
+jobs:
+  get-host-admin-logs:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath Orchestrator Maintenance Get Command
+        shell: pwsh
+        run: |
+          $args = @("uipath", "orchestrator", "maintenance", "get")
+          if (${{ inputs.tenant-id }} -ne $null) {
+            $args += "--tenant-id"
+            $args += "${{ inputs.tenant-id }}"
+          }
+          & $args[0] $args[1..($args.Length - 1)]

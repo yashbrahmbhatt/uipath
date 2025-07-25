@@ -1,0 +1,51 @@
+name: uipath-orchestrator-job-triggers-deliver-payload-by-inboxid
+
+description: |-
+  NAME:
+     uipath orchestrator job-triggers deliver-payload-by-inboxid - Deliver payload for trigger inboxId.
+
+  USAGE:
+     uipath orchestrator job-triggers deliver-payload-by-inboxid [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+     Required permissions: Jobs.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --inbox-id string (required)
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      inbox_id:
+        description: 'Inbox Id string'
+        required: true
+        type: string
+
+jobs:
+  deliver_payload:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator command deliver-payload-by-inboxid
+        shell: pwsh
+        run: |
+          # Construct the uipath command with required arguments
+          $args = @(
+            'orchestrator'
+            'job-triggers'
+            'deliver-payload-by-inboxid'
+            '--folder-id', "${{ inputs.folder_id }}"
+            '--inbox-id', "${{ inputs.inbox_id }}"
+          )
+
+          # Execute the CLI command with arguments
+          uipath @args

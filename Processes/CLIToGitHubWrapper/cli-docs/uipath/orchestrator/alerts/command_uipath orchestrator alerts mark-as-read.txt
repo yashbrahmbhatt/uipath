@@ -1,0 +1,21 @@
+NAME:
+   uipath orchestrator alerts mark-as-read - Marks alerts as read and returns the remaining number of unread notifications.
+
+USAGE:
+   uipath orchestrator alerts mark-as-read [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Monitoring or OR.Monitoring.Write.
+
+   Required permissions: Alerts.View.
+   DEPRECATED: 
+   Please refer to https://docs.uipath.com/orchestrator/reference
+
+OPTIONS:
+   --ids string,string,... (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

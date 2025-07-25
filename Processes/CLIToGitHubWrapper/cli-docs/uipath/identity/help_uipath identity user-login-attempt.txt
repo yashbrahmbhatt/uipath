@@ -1,0 +1,11 @@
+NAME:
+   uipath identity user-login-attempt - Inspect user login attempts
+
+USAGE:
+   uipath identity user-login-attempt
+
+DESCRIPTION:
+   Review login attempts of your users.
+
+COMMANDS:
+   get-login-attempts  Get the login attempts of a user

@@ -1,0 +1,26 @@
+NAME:
+   uipath orchestrator jobs validate-dynamic-job - Validates the input which would start a job.
+
+USAGE:
+   uipath orchestrator jobs validate-dynamic-job [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+   Required permissions: Jobs.Create.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --start-info object (required)
+      The Start Process transfers information from client to the server during JobsController.StartJobs custom action.
+
+      Example:
+         AlertPendingExpression=string; AlertRunningExpression=string; AutopilotForRobots.Enabled=boolean; AutopilotForRobots.HealingEnabled=boolean; BatchExecutionKey=string; InputArguments=string; JobPriority=string; JobsCount=integer; KillProcessExpression=string; MachineRobots[0].MachineId=integer; MachineRobots[0].MachineName=string; MachineRobots[0].RobotId=integer; MachineRobots[0].RobotUserName=string; MachineSessionIds=integer,integer,...; NoOfRobots=integer; ParentOperationId=string; ProfilingOptions=string; Reference=string; ReleaseKey=string; RemoteControlAccess=string; RequiresUserInteraction=boolean; ResumeOnSameContext=boolean; RobotIds=integer,integer,...; RunAsMe=boolean; RuntimeType=string; Source=string; SpecificPriorityValue=integer; StopProcessExpression=string; StopStrategy=string; Strategy=string; TargetFramework=string
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

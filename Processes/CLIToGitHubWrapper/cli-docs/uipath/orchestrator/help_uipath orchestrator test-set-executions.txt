@@ -1,0 +1,14 @@
+NAME:
+   uipath orchestrator test-set-executions - Instances of test sets running
+
+USAGE:
+   uipath orchestrator test-set-executions
+
+DESCRIPTION:
+   Test set executions are instances of a set of test cases running on a robot.
+
+COMMANDS:
+   get        Returns a list of Test Set Executions cross-folder when no current folder is sent by header.
+              It will return Test Set Executions from folder where current user has TestSetExecutionsView.
+              If there is none, will return forbidden.
+   get-by-id  Return a specific Test Set Execution identified by key

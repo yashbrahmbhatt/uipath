@@ -1,0 +1,15 @@
+NAME:
+   uipath orchestrator directory-service get-directory-permissions - Gets directory permissions
+
+USAGE:
+   uipath orchestrator directory-service get-directory-permissions [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Users or OR.Users.Read.
+
+   Required permissions: Users.View.
+
+OPTIONS:
+   --domain string
+
+   --username string

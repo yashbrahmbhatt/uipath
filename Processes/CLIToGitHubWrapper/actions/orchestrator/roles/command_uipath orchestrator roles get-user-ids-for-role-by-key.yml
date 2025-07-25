@@ -1,0 +1,109 @@
+name: uipath-orchestrator-roles-get-user-ids-for-role-by-key
+description: |
+  NAME:
+     uipath orchestrator roles get-user-ids-for-role-by-key - Returns a collection of all the ids of the users associated to a role based on role Id.
+
+  USAGE:
+     uipath orchestrator roles get-user-ids-for-role-by-key [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Read.
+
+     Required permissions: Roles.View or Users.View.
+
+  OPTIONS:
+     --key integer (required)
+        The Id of the role for which the robot ids are fetched.
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: The Id of the role for which the robot ids are fetched.
+        required: true
+        type: number
+      count:
+        description: Indicates whether the total count of items within a collection are returned in the result.
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: Restricts the set of items returned. The maximum number of expressions is 100.
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: Specifies the order in which items are returned. The maximum number of expressions is 5.
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  call-uipath-orchestrator:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator roles get-user-ids-for-role-by-key
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'roles', 'get-user-ids-for-role-by-key')
+
+          # Required --key argument
+          $args += "--key"
+          $args += ${{ inputs.key }}
+
+          # Optional --count argument (boolean)
+          if (${{ inputs.count }}) {
+            $args += "--count"
+          }
+
+          # Optional --expand argument
+          if (${{ inputs.expand }} -ne '') {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+
+          # Optional --filter argument
+          if (${{ inputs.filter }} -ne '') {
+            $args += "--filter"
+            $args += "${{ inputs.filter }}"
+          }
+
+          # Optional --orderby argument
+          if (${{ inputs.orderby }} -ne '') {
+            $args += "--orderby"
+            $args += "${{ inputs.orderby }}"
+          }
+
+          # Optional --select argument
+          if (${{ inputs.select }} -ne '') {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Invoke the uipath CLI with constructed arguments
+          Write-Host "Executing: uipath $($args -join ' ')"
+          & uipath @args

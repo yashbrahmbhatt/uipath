@@ -1,0 +1,199 @@
+name: uipath-orchestrator-test-data-queues-post
+description: |
+  NAME:
+     uipath orchestrator test-data-queues post - Create a new test data queue
+
+  USAGE:
+     uipath orchestrator test-data-queues post [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+     Required permissions: TestDataQueues.Create.
+
+     Responses:
+     201 Returns the newly created test data queue
+     403 If the caller doesn't have permissions to create test data queues
+     409 If a queue with the same name already exists
+
+  OPTIONS:
+     --content-json-schema string (required)
+
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --name string (required)
+
+     --consumed-items-count integer
+
+     --creation-time string
+
+     --creator-user-id integer
+
+     --deleter-user-id integer
+
+     --deletion-time string
+
+     --description string
+
+     --id integer
+
+     --is-deleted boolean
+
+     --items-count integer
+
+     --last-modification-time string
+
+     --last-modifier-user-id integer
+on:
+  workflow_call:
+    inputs:
+      content-json-schema:
+        description: 'JSON schema content (required)'
+        required: true
+        type: string
+      folder-id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: integer
+      name:
+        description: 'Name of the test data queue (required)'
+        required: true
+        type: string
+      consumed-items-count:
+        description: 'Consumed items count'
+        required: false
+        type: integer
+      creation-time:
+        description: 'Creation time'
+        required: false
+        type: string
+      creator-user-id:
+        description: 'Creator user Id'
+        required: false
+        type: integer
+      deleter-user-id:
+        description: 'Deleter user Id'
+        required: false
+        type: integer
+      deletion-time:
+        description: 'Deletion time'
+        required: false
+        type: string
+      description:
+        description: 'Description'
+        required: false
+        type: string
+      id:
+        description: 'Id'
+        required: false
+        type: integer
+      is-deleted:
+        description: 'Is deleted'
+        required: false
+        type: boolean
+      items-count:
+        description: 'Items count'
+        required: false
+        type: integer
+      last-modification-time:
+        description: 'Last modification time'
+        required: false
+        type: string
+      last-modifier-user-id:
+        description: 'Last modifier user Id'
+        required: false
+        type: integer
+
+jobs:
+  post-test-data-queue:
+    runs-on: [windows, self-hosted]
+    outputs:
+      result: ${{ steps.post.outputs.result }}
+    steps:
+      - name: Post Test Data Queue
+        id: post
+        shell: pwsh
+        run: |
+          # Prepare argument list for the CLI command
+          $args = @('orchestrator', 'test-data-queues', 'post')
+
+          # Required parameters
+          $args += '--content-json-schema'
+          $args += "'${{ inputs['content-json-schema'] }}'"
+
+          $args += '--folder-id'
+          $args += ${{ inputs['folder-id'] }}
+
+          $args += '--name'
+          $args += "'${{ inputs.name }}'"
+
+          # Optional parameters, only add if provided
+          if ('${{ inputs.consumed-items-count }}' -ne '') {
+            $args += '--consumed-items-count'
+            $args += ${{ inputs['consumed-items-count'] }}
+          }
+
+          if ('${{ inputs.creation-time }}' -ne '') {
+            $args += '--creation-time'
+            $args += "'${{ inputs['creation-time'] }}'"
+          }
+
+          if ('${{ inputs['creator-user-id'] }}' -ne '') {
+            $args += '--creator-user-id'
+            $args += ${{ inputs['creator-user-id'] }}
+          }
+
+          if ('${{ inputs['deleter-user-id'] }}' -ne '') {
+            $args += '--deleter-user-id'
+            $args += ${{ inputs['deleter-user-id'] }}
+          }
+
+          if ('${{ inputs['deletion-time'] }}' -ne '') {
+            $args += '--deletion-time'
+            $args += "'${{ inputs['deletion-time'] }}'"
+          }
+
+          if ('${{ inputs.description }}' -ne '') {
+            $args += '--description'
+            $args += "'${{ inputs.description }}'"
+          }
+
+          if ('${{ inputs.id }}' -ne '') {
+            $args += '--id'
+            $args += ${{ inputs.id }}
+          }
+
+          if ('${{ inputs['is-deleted'] }}' -ne '') {
+            $args += '--is-deleted'
+            $args += ${{ inputs['is-deleted'] }}
+          }
+
+          if ('${{ inputs['items-count'] }}' -ne '') {
+            $args += '--items-count'
+            $args += ${{ inputs['items-count'] }}
+          }
+
+          if ('${{ inputs['last-modification-time'] }}' -ne '') {
+            $args += '--last-modification-time'
+            $args += "'${{ inputs['last-modification-time'] }}'"
+          }
+
+          if ('${{ inputs['last-modifier-user-id'] }}' -ne '') {
+            $args += '--last-modifier-user-id'
+            $args += ${{ inputs['last-modifier-user-id'] }}
+          }
+
+          # Compose and invoke the CLI command
+          $command = "uipath $($args -join ' ')"
+
+          Write-Host "Executing command: $command"
+
+          # Execute and capture output
+          $output = & uipath $args 2>&1
+
+          Write-Host "Command output:"
+          Write-Host $output
+
+          # Set the output so it can be consumed by other jobs
+          echo "::set-output name=result::$output"

@@ -1,0 +1,42 @@
+name: uipath-orchestrator-users-delete-by-id
+description: |-
+  NAME:
+     uipath orchestrator users delete-by-id - Deletes a user.
+
+  USAGE:
+     uipath orchestrator users delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Write.
+
+     Required permissions: Users.Delete.
+
+  OPTIONS:
+     --key integer (required)
+  
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'User ID to delete (required)'
+        required: true
+        type: number
+    secrets: {}
+
+jobs:
+  delete_user_by_id:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Delete user by ID
+        shell: pwsh
+        run: |
+          # Build the argument list for the CLI command
+          $args = @("orchestrator", "users", "delete-by-id")
+
+          # Add the required --key argument
+          $args += "--key"
+          $args += "${{ inputs.key }}"
+
+          # Invoke the CLI command with constructed arguments
+          uipath $args

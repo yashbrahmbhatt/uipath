@@ -1,0 +1,12 @@
+NAME:
+   uipath orchestrator tenants - Tenants to model your organization structure
+
+USAGE:
+   uipath orchestrator tenants
+
+DESCRIPTION:
+   Tenants are independent spaces where you can isolate data, with its own robots, processes and users.
+
+COMMANDS:
+   get        Gets tenants.
+   get-by-id  Gets a single tenant based on its id.

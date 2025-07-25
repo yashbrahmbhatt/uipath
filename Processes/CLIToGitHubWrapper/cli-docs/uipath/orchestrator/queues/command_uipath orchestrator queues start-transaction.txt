@@ -1,0 +1,26 @@
+NAME:
+   uipath orchestrator queues start-transaction - Starts a transaction.
+
+USAGE:
+   uipath orchestrator queues start-transaction [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+   Required permissions: Queues.View and Transactions.View and Transactions.Create and Transactions.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --transaction-data object (required)
+      Stores data sent when processing of an existing or a new item starts.
+
+      Example:
+         DeferDate=string; DueDate=string; Name=string; ParentOperationId=string; Reference=string; ReferenceFilterOption=string; RobotIdentifier=string
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

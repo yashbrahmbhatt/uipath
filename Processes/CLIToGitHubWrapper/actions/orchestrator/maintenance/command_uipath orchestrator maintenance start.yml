@@ -1,0 +1,81 @@
+name: 'uipath orchestrator maintenance start'
+description: |
+  OAuth required scopes: OR.Administration or OR.Administration.Write.
+
+  Host only. Requires authentication.
+
+  Starts a maintenance window.
+
+on:
+  workflow_call:
+    inputs:
+      force:
+        description: Whether to ignore errors during transition
+        required: false
+        default: 'false'
+        type: boolean
+      kill_jobs:
+        description: Whether to force-kill running jobs when transitioning to Suspended
+        required: false
+        default: 'false'
+        type: boolean
+      phase:
+        description: Phase - UiPath.Orchestrator.DataContracts.MaintenanceState.Draining or Suspended
+        required: false
+        default: 'None'
+        type: string
+        options:
+          - None
+          - Draining
+          - Suspended
+      tenant_id:
+        description: If tenant id is set, maintenance will start only for this tenant
+        required: false
+        type: string
+
+jobs:
+  start-maintenance:
+    runs-on: [windows, self-hosted]
+    outputs:
+      command: ${{ steps.invoke.outputs.command }}
+    steps:
+      - name: Run uipath orchestrator maintenance start
+        id: invoke
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'maintenance', 'start')
+          # Append --force if true
+          if (${{ inputs.force }}) {
+              $args += '--force'
+              $args += 'true'
+          } else {
+              $args += '--force'
+              $args += 'false'
+          }
+          # Append --kill-jobs if true
+          if (${{ inputs.kill_jobs }}) {
+              $args += '--kill-jobs'
+              $args += 'true'
+          } else {
+              $args += '--kill-jobs'
+              $args += 'false'
+          }
+          # Append --phase if not None
+          if ('${{ inputs.phase }}' -ne 'None' -and [string]::IsNullOrEmpty('${{ inputs.phase }}') -eq $false) {
+              $args += '--phase'
+              $args += '${{ inputs.phase }}'
+          }
+          # Append --tenant-id if set and not empty
+          if ([string]::IsNullOrEmpty('${{ inputs.tenant_id }}') -eq $false) {
+              $args += '--tenant-id'
+              $args += '${{ inputs.tenant_id }}'
+          }
+          # Construct the command string for output/debugging
+          $command = "uipath " + ($args -join ' ')
+          Write-Host "Running command: $command"
+          
+          # Execute the command
+          & uipath @args
+
+          # Set the command as output for possible downstream usage
+          Write-Output "::set-output name=command::$command"

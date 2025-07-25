@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator calendars - Scheduling automation tasks
+
+USAGE:
+   uipath orchestrator calendars
+
+DESCRIPTION:
+   Calendars allow users to fine-tune schedules for jobs in your automations.
+
+COMMANDS:
+   calendar-exists  Validate calendar name, and check if it already exists.
+   delete-by-id     Deletes a calendar.
+   get              Gets calendars for current tenant.
+   get-by-id        Gets calendar based on its id.
+   post             Creates a new calendar.
+   put-by-id        Edits a calendar.

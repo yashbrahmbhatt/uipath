@@ -1,0 +1,29 @@
+NAME:
+   uipath identity robot-account get-robot-accounts - Get all robot accounts from a partition
+
+USAGE:
+   uipath identity robot-account get-robot-accounts [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: PM.RobotAccount or PM.RobotAccount.Read.
+
+OPTIONS:
+   --partition-global-id string (required)
+
+   --search-term string
+
+   --skip integer
+      The number of records to skip. Default is 0.
+
+   --sort-by string
+      The name of the field to sort by.
+
+   --sort-order string
+      The sort order.
+
+      Allowed values:
+      - asc
+      - desc
+
+   --top integer
+      The number of records to return. Default is 10. Range is 0 to 1000.

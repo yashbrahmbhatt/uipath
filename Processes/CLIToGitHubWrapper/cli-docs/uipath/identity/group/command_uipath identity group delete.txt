@@ -1,0 +1,13 @@
+NAME:
+   uipath identity group delete - Deletes a local group
+
+USAGE:
+   uipath identity group delete [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: PM.Group or PM.Group.Write.
+
+OPTIONS:
+   --group-id string (required)
+
+   --partition-global-id string (required)

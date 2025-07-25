@@ -1,0 +1,39 @@
+NAME:
+   uipath orchestrator queue-item-events get-queue-item-events-history-by-queueitemid - Returns a collection of Queue Item Events associated to a Queue Item and all its related Queue Items.
+                                                                                        A Queue Item is related to another if it was created as a retry of a failed Queue Item. They also share the same Key.
+
+USAGE:
+   uipath orchestrator queue-item-events get-queue-item-events-history-by-queueitemid [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Queues or OR.Queues.Read.
+
+   Required permissions: Queues.View and Transactions.View.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --queue-item-id integer (required)
+      The Id of the Queue Item for which the event history is requested.
+
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --select string
+      Limits the properties returned in the result.
+
+   --skip integer
+      Excludes the specified number of items of the queried collection from the result.
+
+   --top integer
+      Limits the number of items returned from a collection. The maximum value is 1000.

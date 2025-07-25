@@ -1,0 +1,18 @@
+NAME:
+   uipath orchestrator settings set-calendar - Sets custom calendar, with excluded dates in UTC, for current tenant
+
+USAGE:
+   uipath orchestrator settings set-calendar [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+   Required permissions: Settings.Edit.
+   DEPRECATED: 
+   This API is deprecated. Please do not use it any longer. Use /odata/Calendars instead.
+   Please refer to https://docs.uipath.com/orchestrator/reference
+
+OPTIONS:
+   --excluded-dates string,string,...
+
+   --time-zone-id string

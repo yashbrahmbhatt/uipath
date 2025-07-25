@@ -1,0 +1,145 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Yash.Config.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Yash.Config.csproj": {
+      "version": "1.0.206-dev.54186",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Yash.Config.csproj",
+        "projectName": "Yash.Config",
+        "projectPath": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Yash.Config.csproj",
+        "packagesPath": "C:\\Users\\eyash\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\eyash\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0-windows7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Output": {},
+          "C:\\Users\\eyash\\source\\repos\\Company.Product1\\Company.Product1.Activities.Design\\bin\\Debug": {},
+          "C:\\Users\\eyash\\source\\repos\\LazyFramework.DX\\src\\bin\\Debug": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://pkgs.dev.azure.com/uipath/Public.Feeds/_packaging/UiPath-Official/nuget/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0-windows7.0": {
+            "targetAlias": "net6.0-windows7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net6.0-windows7.0": {
+          "targetAlias": "net6.0-windows7.0",
+          "dependencies": {
+            "ClosedXML": {
+              "target": "Package",
+              "version": "[0.105.0, )"
+            },
+            "Microsoft.CodeAnalysis.CSharp": {
+              "target": "Package",
+              "version": "[4.5.0-2.22527.10, )"
+            },
+            "Microsoft.CodeAnalysis.CSharp.Scripting": {
+              "target": "Package",
+              "version": "[4.5.0-2.22527.10, )"
+            },
+            "Microsoft.CodeAnalysis.Common": {
+              "target": "Package",
+              "version": "[4.5.0-2.22527.10, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[112.1.0, )"
+            },
+            "System.Activities.Core.Presentation": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.0-20231204.1, )"
+            },
+            "System.Activities.Metadata": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.0-20240517.13, )"
+            },
+            "System.Activities.ViewModels": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.0.0-20250625.2, )"
+            },
+            "UiPath.Activities.Api": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[24.10.1, )"
+            },
+            "UiPath.Workflow": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.0-20240401-07, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.36, 6.0.36]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.36, 6.0.36]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.36, 6.0.36]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WindowsForms": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

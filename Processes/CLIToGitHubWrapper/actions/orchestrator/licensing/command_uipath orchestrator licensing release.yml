@@ -1,0 +1,78 @@
+name: uipath-orchestrator-licensing-release
+description: |
+  NAME:
+     uipath orchestrator licensing release - Release acquired license units
+
+  USAGE:
+     uipath orchestrator licensing release [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Administration or OR.Administration.Write.
+
+     Requires authentication.
+
+  OPTIONS:
+     --count integer
+
+     --reference string
+
+     --type string
+
+on:
+  workflow_call:
+    inputs:
+      count:
+        description: 'The count of license units to release (integer).'
+        required: false
+        default: ''
+      reference:
+        description: 'Reference string associated with the license release.'
+        required: false
+        default: ''
+      type:
+        description: 'Type of license to release.'
+        required: false
+        default: ''
+      # Assuming authentication is handled externally or via environment
+    secrets: {}
+
+jobs:
+  release_license:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator licensing release command
+        shell: pwsh
+        run: |
+          # Initialize argument array
+          $args = @('orchestrator', 'licensing', 'release')
+
+          # Add --count option if provided and not empty
+          if ('${{ inputs.count }}' -ne '') {
+            # Validate integer input
+            if (-not [int]::TryParse('${{ inputs.count }}', [ref]0)) {
+              Write-Error "Input count must be an integer."
+              exit 1
+            }
+            $args += '--count'
+            $args += '${{ inputs.count }}'
+          }
+
+          # Add --reference option if provided and not empty
+          if ('${{ inputs.reference }}' -ne '') {
+            $args += '--reference'
+            $args += "'${{ inputs.reference }}'"
+          }
+
+          # Add --type option if provided and not empty
+          if ('${{ inputs.type }}' -ne '') {
+            $args += '--type'
+            $args += "'${{ inputs.type }}'"
+          }
+
+          # Execute the command with arguments
+          # Join arguments with space, removing redundant quotes on integers
+          $command = "uipath " + ($args | ForEach-Object { $_ } | Out-String).Trim().Replace("`'", '"').Replace("`n", "").Replace("`r", "")
+          # Run command as an executable string with proper escaping
+          Write-Host "Executing: $command"
+          Invoke-Expression $command

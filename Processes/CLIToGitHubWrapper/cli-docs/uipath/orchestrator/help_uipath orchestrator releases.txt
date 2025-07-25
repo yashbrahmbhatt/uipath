@@ -1,0 +1,22 @@
+NAME:
+   uipath orchestrator releases - Packages prepared for robot execution
+
+USAGE:
+   uipath orchestrator releases
+
+DESCRIPTION:
+   Releases represent the processes or packages that are prepared for execution on robots.
+
+COMMANDS:
+   delete-by-id                                Deletes a release.
+   delete-by-key                               
+   get                                         Gets multiple releases.
+   get-by-id                                   Gets a release by id.
+   patch-by-id                                 Partially updates a release.
+   post                                        Creates a new release.
+   put-by-id                                   Edits a release.
+   rollback-to-previous-release-version-by-id  Reverts the package versions for the given release to the last version it had before the current one.
+   update-by-key                               Updates the package entry point for the given release.
+   update-to-latest-package-version-bulk       Updates the package versions for the given releases to the latest available.
+   update-to-latest-package-version-by-id      Updates the package version for the given release to the latest available.
+   update-to-specific-package-version-by-id    Updates the package version for the given release.

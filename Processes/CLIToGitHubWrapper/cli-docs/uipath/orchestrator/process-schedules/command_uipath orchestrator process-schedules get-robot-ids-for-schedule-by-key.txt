@@ -1,0 +1,32 @@
+NAME:
+   uipath orchestrator process-schedules get-robot-ids-for-schedule-by-key - Returns a collection of all the ids of the robots associated to an schedule based on schedule Id.
+
+USAGE:
+   uipath orchestrator process-schedules get-robot-ids-for-schedule-by-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Jobs or OR.Jobs.Read.
+
+   Required permissions: Schedules.View.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      The Id of the schedule for which the robot ids are fetched.
+
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --select string
+      Limits the properties returned in the result.

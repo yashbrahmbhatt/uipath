@@ -1,0 +1,15 @@
+NAME:
+   uipath orchestrator personal-workspaces - Individual work areas
+
+USAGE:
+   uipath orchestrator personal-workspaces
+
+DESCRIPTION:
+   Users can have personal workspaces where they can publish, test, and run their processes. Personal workspaces serve as a staging or development area for users to refine their automation before moving it to a shared workspace or production.
+
+COMMANDS:
+   convert-to-folder-by-id  Converts a Personal Workspace to a standard Folder.
+   get                      Gets Personal Workspaces.
+   get-personal-workspace   Gets Personal Workspace for current User
+   start-exploring-by-id    Assigns the current User to explore a Personal Workspace.
+   stop-exploring-by-id     Unassigns the current User from exploring a Personal Workspace.

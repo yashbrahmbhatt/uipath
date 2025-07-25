@@ -1,0 +1,7 @@
+﻿{
+  "Yash.Config.AutoGeneration.FilePath": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Yash.Config.StudioTestProject\\Data\\Config.xlsx",
+  "Yash.Config.AutoGeneration.OutputDirectory": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Yash.Config.StudioTestProject\\Models\\Configs",
+  "Yash.Config.AutoGeneration.ClassName": "Config",
+  "Yash.Config.AutoGeneration.Namespace": "Yash.Config.StudioTestProject.Models.Configs",
+  "Yash.Config.AutoGeneration.AdditionalUsings": "System,System.Collections.Generic"
+}

@@ -1,0 +1,12 @@
+NAME:
+   uipath identity message-template update-template - Update existing message template.
+
+USAGE:
+   uipath identity message-template update-template [command options] [arguments...]
+
+OPTIONS:
+   --template-id integer (required)
+
+   --id integer
+
+   --value string

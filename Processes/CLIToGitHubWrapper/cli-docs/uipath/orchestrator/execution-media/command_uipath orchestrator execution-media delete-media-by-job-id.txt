@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator execution-media delete-media-by-job-id - Deletes the execution media for the given job key.
+
+USAGE:
+   uipath orchestrator execution-media delete-media-by-job-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Monitoring or OR.Monitoring.Write.
+
+   Required permissions: ExecutionMedia.Delete.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --job-id integer (required)

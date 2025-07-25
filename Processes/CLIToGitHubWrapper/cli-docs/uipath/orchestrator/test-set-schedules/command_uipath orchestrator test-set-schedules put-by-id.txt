@@ -1,0 +1,55 @@
+NAME:
+   uipath orchestrator test-set-schedules put-by-id - Update an existing test set execution schedule
+
+USAGE:
+   uipath orchestrator test-set-schedules put-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSetSchedules or OR.TestSetSchedules.Write.
+
+   Required permissions: TestSetSchedules.Edit.
+
+   Responses:
+   201 Returns the updated test set execution schedule
+   403 If the caller doesn't have permissions to update test set execution schedules
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      ID of the test set execution schedule to be updated
+
+   --name string (required)
+
+   --test-set-id integer (required)
+
+   --time-zone-id string (required)
+
+   --calendar-id integer
+
+   --calendar-name string
+
+   --cron-details string
+
+   --cron-expression string
+
+   --cron-summary string
+
+   --description string
+
+   --disable-date string
+
+   --enabled boolean
+
+   --external-job-key string
+
+   --external-job-key-scheduler string
+
+   --id integer
+
+   --next-occurrence string
+
+   --test-set-name string
+
+   --time-zone-iana string

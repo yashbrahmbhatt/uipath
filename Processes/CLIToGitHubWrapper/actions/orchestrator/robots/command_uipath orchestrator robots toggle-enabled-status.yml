@@ -1,0 +1,62 @@
+name: UiPath Orchestrator Robots Toggle-Enabled-Status
+description: |
+  Toggles the status of the robots (enabled/disabled).
+
+  OAuth required scopes: OR.Robots or OR.Robots.Write.
+  Required permissions: Robots.Edit.
+
+  OPTIONS:
+     --enabled boolean (required)
+     --folder-id integer (required)
+     --robot-ids integer,integer,... (required)
+  
+on:
+  workflow_call:
+    inputs:
+      enabled:
+        description: 'Enabled status to set (true or false)'
+        required: true
+        type: boolean
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (integer)'
+        required: true
+        type: string
+      robot_ids:
+        description: 'Comma-separated list of robot IDs (e.g. 123,456)'
+        required: true
+        type: string
+
+jobs:
+  toggle-robot-status:
+    runs-on: [windows, self-hosted]
+    outputs:
+      exit-code: ${{ steps.run-toggle-status.outcome }}
+    steps:
+      - name: Toggle Robots Enabled Status
+        shell: pwsh
+        id: run-toggle-status
+        run: |
+          # Initialize argument array
+          $args = @("orchestrator", "robots", "toggle-enabled-status")
+
+          # Append required parameters with proper formatting
+          $args += "--enabled"
+          $args += ("$(${{ inputs.enabled }})")
+
+          $args += "--folder-id"
+          $args += ("${{ inputs.folder_id }}")
+
+          $args += "--robot-ids"
+          $args += ("${{ inputs.robot_ids }}")
+
+          # Construct command string for logging or debugging purposes if needed
+          $cmd = "uipath " + ($args -join " ")
+          Write-Host "Executing command: $cmd"
+
+          # Execute the command
+          & uipath @args
+
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Command failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }

@@ -1,0 +1,21 @@
+NAME:
+   uipath orchestrator environments set-robots-by-id - Associates a group of robots with and dissociates another group of robots from the given environment.
+
+USAGE:
+   uipath orchestrator environments set-robots-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+   Required permissions: Environments.Edit.
+
+OPTIONS:
+   --added-robot-ids integer,integer,... (required)
+
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      The environment id.
+
+   --removed-robot-ids integer,integer,... (required)

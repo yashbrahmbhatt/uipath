@@ -1,0 +1,113 @@
+name: Run UiPath Job
+
+on:
+  workflow_call:
+    inputs:
+      process_name:
+        required: true
+        type: string
+      tenant:
+        required: true
+        type: string
+      folder:
+        required: false
+        type: string
+        default: ""
+      organization:
+        required: true
+        type: string
+      application_id:
+        required: true
+        type: string
+      application_secret:
+        required: true
+        type: string
+      application_scope:
+        required: true
+        type: string
+      input_path:
+        required: false
+        type: string
+        default: ""
+      jobscount:
+        required: false
+        type: number
+        default: 1
+      result_path:
+        required: false
+        type: string
+        default: ""
+      priority:
+        required: false
+        type: string
+        default: "Normal"
+      robots:
+        required: false
+        type: string
+        default: ""
+      fail_when_job_fails:
+        required: false
+        type: boolean
+        default: true
+      wait:
+        required: false
+        type: boolean
+        default: true
+      job_type:
+        required: false
+        type: string
+        default: "Unattended"
+      language:
+        required: false
+        type: string
+        default: ""
+      identity_url:
+        required: false
+        type: string
+        default: ""
+
+    secrets:
+      orchestrator_url:
+        required: true
+
+jobs:
+  run-job:
+    runs-on: [windows]
+
+    steps:
+      - name: Install uipcli
+        uses: ./.github/workflows/install-uipcli.yml
+        with:
+          uipcli-version: "25.4.9301.33152"
+          install-root: "C:\\Tools"
+          cli-folder-name: "UiPathCLI"
+          nuget-path: "${{ runner.temp }}\\nuget.exe"
+
+      - name: Run uipcli job run
+        shell: pwsh
+        run: |
+          $args = @(
+            "job", "run",
+            "${{ inputs.process_name }}",
+            "https://cloud.uipath.com/",
+            "${{ inputs.tenant }}",
+            "-A", "${{ inputs.organization }}",
+            "-I", "${{ inputs.application_id }}",
+            "-S", "${{ inputs.application_secret }}",
+            "--applicationScope", "${{ inputs.application_scope }}",
+            "--traceLevel", "Information"
+          )
+          if ('${{ inputs.folder }}' -ne '') { $args += @("-o", "${{ inputs.folder }}") }
+          if ('${{ inputs.input_path }}' -ne '') { $args += @("-i", "${{ inputs.input_path }}") }
+          if (${{ inputs.jobscount }} -ne 1) { $args += @("-j", "${{ inputs.jobscount }}") }
+          if ('${{ inputs.result_path }}' -ne '') { $args += @("-R", "${{ inputs.result_path }}") }
+          if ('${{ inputs.priority }}' -ne "Normal") { $args += @("-P", "${{ inputs.priority }}") }
+          if ('${{ inputs.robots }}' -ne '') { $args += @("-r", "${{ inputs.robots }}") }
+          if (${{ inputs.fail_when_job_fails }}) { $args += @("-f", "true") } else { $args += @("-f", "false") }
+          if (${{ inputs.wait }}) { $args += @("-w", "true") } else { $args += @("-w", "false") }
+          if ('${{ inputs.job_type }}' -ne "Unattended") { $args += @("-b", "${{ inputs.job_type }}") }
+          if ('${{ inputs.language }}' -ne '') { $args += @("-l", "${{ inputs.language }}") }
+          if ('${{ inputs.identity_url }}' -ne '') { $args += @("--identityUrl", "${{ inputs.identity_url }}") }
+          
+          Write-Host "Running: uipcli $($args -join ' ')"
+          uipcli @args

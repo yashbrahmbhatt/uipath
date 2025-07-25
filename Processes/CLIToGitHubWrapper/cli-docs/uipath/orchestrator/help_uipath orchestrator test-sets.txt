@@ -1,0 +1,17 @@
+NAME:
+   uipath orchestrator test-sets - Groups of test cases
+
+USAGE:
+   uipath orchestrator test-sets
+
+DESCRIPTION:
+   Test sets are groups of test cases that are set to run together.
+
+COMMANDS:
+   delete-by-id  Delete a test set
+   get           Returns a list of Test Sets cross-folder when no current folder is sent by header.
+                 It will return Test Sets from folder where current user has TestSetsView.
+                 If there is none, will return forbidden.
+   get-by-id     Return a specific Test Set identified by key
+   post          Creates a new Test Set
+   put-by-id     Update an existing Test Set

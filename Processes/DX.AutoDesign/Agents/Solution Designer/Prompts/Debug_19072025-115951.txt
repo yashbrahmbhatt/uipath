@@ -1,0 +1,48 @@
+```json
+{
+  "Processes": [
+    {
+      "Name": "BankTransactionProcessing",
+      "Type": "MultiTransactionPerformer",
+      "Description": "Logs into banking website, downloads transactions for all accounts, classifies transactions and saves to database.",
+      "Steps": [
+        {
+          "Name": "LoginToBankWebsite",
+          "Description": "Navigate to banking website and login with provided credentials",
+          "Type": "WebGUIInteraction",
+          "DownstreamSteps": {
+            "Next": {
+              "Name": "DownloadTransactions",
+              "Description": "Download all transactions for available accounts",
+              "Type": "WebGUIInteraction",
+              "DownstreamSteps": {
+                "Next": {
+                  "Name": "ClassifyTransactions",
+                  "Description": "Classify each transaction into buckets",
+                  "Type": "DataManipulation",
+                  "DownstreamSteps": {
+                    "Next": {
+                      "Name": "SaveToDatabase",
+                      "Description": "Save classified transactions to the database via SQL query",
+                      "Type": "DatabaseInteraction",
+                      "DownstreamSteps": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "Triggers": [
+    {
+      "Name": "DailyScheduledTrigger",
+      "Type": "Time",
+      "Description": "Trigger the bank transaction processing workflow every day at a scheduled time",
+      "ProcessName": "BankTransactionProcessing"
+    }
+  ]
+}
+```

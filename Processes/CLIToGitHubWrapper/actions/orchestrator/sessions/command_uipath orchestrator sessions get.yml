@@ -1,0 +1,151 @@
+name: 'uipath-orchestrator-sessions-get'
+description: |
+  NAME:
+     uipath orchestrator sessions get - Gets the sessions for the current folder.
+
+  USAGE:
+     uipath orchestrator sessions get [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Robots or OR.Robots.Read.
+
+     Required permissions: Robots.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      count:
+        description: 'Return total count of items (boolean)'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Related entities to be represented inline'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restrict set of items returned'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Order in which items are returned'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limit properties returned'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Exclude number of items from the result'
+        required: false
+        type: number
+        default: 0
+      top:
+        description: 'Limit number of items returned (max 1000)'
+        required: false
+        type: number
+        default: 0
+
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    outputs:
+      session_output: ${{ steps.run-cli.outputs.session_output }}
+    steps:
+      - name: Run uipath orchestrator sessions get
+        id: run-cli
+        shell: pwsh
+        run: |
+          $args = @("orchestrator", "sessions", "get")
+
+          # Required parameter --folder-id
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          # Optional --count boolean flag
+          if (${{ inputs.count }}) {
+            $args += "--count"
+            $args += "true"
+          }
+
+          # Optional --expand string
+          if ("${{ inputs.expand }}" -ne "") {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+
+          # Optional --filter string
+          if ("${{ inputs.filter }}" -ne "") {
+            $args += "--filter"
+            $args += "${{ inputs.filter }}"
+          }
+
+          # Optional --orderby string
+          if ("${{ inputs.orderby }}" -ne "") {
+            $args += "--orderby"
+            $args += "${{ inputs.orderby }}"
+          }
+
+          # Optional --select string
+          if ("${{ inputs.select }}" -ne "") {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Optional --skip integer
+          if (${{ inputs.skip }} -gt 0) {
+            $args += "--skip"
+            $args += "${{ inputs.skip }}"
+          }
+
+          # Optional --top integer
+          if (${{ inputs.top }} -gt 0) {
+            $args += "--top"
+            $args += "${{ inputs.top }}"
+          }
+
+          # Compose command string for debug
+          Write-Host "Invoking: uipath $($args -join ' ')"
+
+          # Run command
+          $result = uipath @args
+
+          # Output the result (convert to string)
+          $resultString = $result | Out-String
+
+          Write-Output $resultString
+
+          echo "::set-output name=session_output::$resultString"

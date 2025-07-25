@@ -1,0 +1,141 @@
+name: 'UiPath Orchestrator Tasks Get'
+description: |
+  NAME:
+     uipath orchestrator tasks get - Gets Task objects from classic folders with the given OData queries.
+
+  USAGE:
+     uipath orchestrator tasks get [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      count:
+        description: 'Return total count of items within the collection'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Related entities to represent inline, max depth is 2'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Filter expression to restrict returned items, max 100 expressions'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Order in which items are returned, max 5 expressions'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limit properties returned in the result'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Number of items to exclude from the beginning of the collection'
+        required: false
+        type: number
+        default: 0
+      top:
+        description: 'Limit number of items returned, max 1000'
+        required: false
+        type: number
+        default: 1000
+
+jobs:
+  run-task-get:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # Potentially output any information here if needed
+    steps:
+      - name: Run UiPath Orchestrator tasks get command
+        shell: pwsh
+        run: |
+          $args = @()
+          # Required parameter --folder-id
+          $args += '--folder-id'
+          $args += '${{ inputs.folder_id }}'
+
+          # Optional boolean --count, only add if true
+          if ('${{ inputs.count }}'.ToLower() -eq 'true') {
+              $args += '--count'
+          }
+
+          # Optional string --expand
+          if (-not [string]::IsNullOrEmpty('${{ inputs.expand }}')) {
+              $args += '--expand'
+              $args += '${{ inputs.expand }}'
+          }
+
+          # Optional string --filter
+          if (-not [string]::IsNullOrEmpty('${{ inputs.filter }}')) {
+              $args += '--filter'
+              $args += '${{ inputs.filter }}'
+          }
+
+          # Optional string --orderby
+          if (-not [string]::IsNullOrEmpty('${{ inputs.orderby }}')) {
+              $args += '--orderby'
+              $args += '${{ inputs.orderby }}'
+          }
+
+          # Optional string --select
+          if (-not [string]::IsNullOrEmpty('${{ inputs.select }}')) {
+              $args += '--select'
+              $args += '${{ inputs.select }}'
+          }
+
+          # Optional integer --skip (only add if greater than 0)
+          if ([int]('${{ inputs.skip }}') -gt 0) {
+              $args += '--skip'
+              $args += '${{ inputs.skip }}'
+          }
+
+          # Optional integer --top (add only if less than 1000 or not default)
+          $topVal = [int]('${{ inputs.top }}')
+          if ($topVal -gt 0 -and $topVal -lt 1000) {
+              $args += '--top'
+              $args += $topVal.ToString()
+          }
+
+          # Construct and run the command
+          $cmd = "uipath orchestrator tasks get " + ($args -join ' ')
+          Write-Host "Executing command: $cmd"
+          Invoke-Expression $cmd

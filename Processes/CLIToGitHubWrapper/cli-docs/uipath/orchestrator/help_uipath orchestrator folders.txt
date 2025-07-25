@@ -1,0 +1,41 @@
+NAME:
+   uipath orchestrator folders - Organizational structure for resources
+
+USAGE:
+   uipath orchestrator folders
+
+DESCRIPTION:
+   Folders are organizational units that help manage and organize resources such as robots, processes, queues, assets, and more.
+
+COMMANDS:
+   assign-domain-user                                    Assigns a directory user or group to a set of folders with an optional set of roles per folder.
+   assign-machines                                       Assigns one or more machines to a set of folders.
+   assign-users                                          Assigns one or more users to a set of folders with an optional set of roles per folder.
+   delete-by-id                                          Deletes a folder. Succeeds only if no entities or user associations
+                                                         exist in this folder or any of its descendants.
+   delete-by-key                                         Deletes a folder. Succeeds only if no entities or user associations
+                                                         exist in this folder or any of its descendants.
+   get                                                   Gets folders.
+   get-all-for-current-user                              Returns a subset (paginated) of the folders the current user has access to.
+                                                         The response will be a list of folders;
+   get-all-roles-for-user-by-username-and-skip-and-take  Returns a page of the user-folder assignments for the input user, including the roles for each folder.
+                                                         The response also includes the folders assigned to the directory groups of the user.
+                                                         The distinction between the folders assigned directly to the user and the ones assigned to one of his groups
+                                                         can be made via the User field of the response.
+                                                         LIMITATION: If URI parameters contain special characters (eg. \, /), use instead api/FoldersNavigation/GetAllRolesForUser endpoint.
+   get-by-id                                             Gets a single folder, based on its Id.
+   get-by-key-by-identifier                              Gets a single folder, based on its Key.
+   get-machines-for-folder-by-key                        Returns the machines assigned to a folder.
+   get-move-folder-machines-changes                      Gets the machine changes when moving a folder
+   get-subfolders-with-assigned-machine                  Gets direct machine assignments for all subfolders of the specific folder
+   get-users-for-folder-by-key-and-includeinherited      Returns the users who have access to a folder and optionally the fine-grained roles each one
+                                                         has on that folder.
+   move-folder-by-folderid                               Move a folder.
+   patch-name-description                                Edits a folder.
+   post                                                  Creates a new folder.
+   put-by-id                                             Edits a folder.
+   remove-machines-from-folder-by-id                     Remove user assignment from a folder.
+   remove-user-from-folder-by-id                         Remove user assignment from a folder.
+   remove-user-from-folder-by-key                        Remove user assignment from a folder.
+   toggle-folder-machine-inherit                         Toggle machine propagation for a folder to all subfolders.
+   update-machines-to-folder-associations                Add and remove machine associations to a folder

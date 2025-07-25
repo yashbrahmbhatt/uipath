@@ -1,0 +1,53 @@
+NAME:
+   uipath orchestrator queue-items put-by-id - Updates the QueueItem properties with the new values provided.
+
+USAGE:
+   uipath orchestrator queue-items put-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+   Required permissions: Queues.Edit and Transactions.Edit.
+
+   Only UiPath.Orchestrator.Application.Dto.Queues.QueueItemDto.Progress, UiPath.Orchestrator.Application.Dto.Queues.QueueItemDto.Priority, UiPath.Orchestrator.Application.Dto.Queues.QueueItemDto.DueDate, UiPath.Orchestrator.Application.Dto.Queues.QueueItemDto.DeferDate and UiPath.Orchestrator.Application.Dto.Queues.QueueItemDto.SpecificContent will be updated from given queueItemDto object.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+
+   --defer-date string
+      The earliest date and time at which the item is available for processing. If empty the item can be processed as soon as possible.
+
+   --due-date string
+      The latest date and time at which the item should be processed. If empty the item can be processed at any given time.
+
+   --name string
+      The name of the queue into which the item will be added.
+
+   --parent-operation-id string
+      Operation id which started the job.
+
+   --priority string
+      Sets the processing importance for a given item.
+
+      Allowed values:
+      - High
+      - Normal
+      - Low
+
+   --progress string
+      String field which is used to keep track of the business flow progress.
+
+   --reference string
+      An optional, user-specified value for queue item identification.
+
+   --risk-sla-date string
+      The RiskSla date at time which is considered as risk zone for the item to be processed.
+
+   --source string
+      The Source type of the item.
+
+   --specific-content object
+      A collection of key value pairs containing custom data configured in the Add Queue Item activity, in UiPath Studio.

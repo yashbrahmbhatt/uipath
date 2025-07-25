@@ -1,0 +1,131 @@
+name: uipath-orchestrator-releases-get
+description: |
+  OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+  Required permissions: Processes.View.
+
+  Gets multiple releases.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: integer
+      at_least_one_permissions:
+        description: >
+          If in a cross-folder scenario, these represent the additional permissions
+          required in the folders the data is retrieved from; at least one permission in this set must be met.
+          Comma-separated string list.
+        required: false
+        type: string
+        default: ''
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restricts the set of items returned. The maximum number of expressions is 100.'
+        required: false
+        type: string
+        default: ''
+      mandatory_permissions:
+        description: >
+          If in a cross-folder scenario, these represent the additional permissions
+          required in the folders the data is retrieved from; all permissions in this set must be met.
+          Comma-separated string list.
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Specifies the order in which items are returned. The maximum number of expressions is 5.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Excludes the specified number of items of the queried collection from the result.'
+        required: false
+        type: integer
+        default: 0
+      top:
+        description: 'Limits the number of items returned from a collection. The maximum value is 1000.'
+        required: false
+        type: integer
+        default: 0
+
+jobs:
+  run-uipath-orchestrator-releases-get:
+    runs-on: [windows, self-hosted]
+    steps:
+    - name: Execute uipath orchestrator releases get command
+      shell: pwsh
+      run: |
+        # Initialize arguments array with base command and required parameter
+        $args = @('orchestrator', 'releases', 'get')
+
+        # Add required folder-id parameter
+        $args += '--folder-id'
+        $args += ${{ inputs.folder_id }}
+
+        # Add optional parameters if provided and valid
+
+        if ('${{ inputs.at_least_one_permissions }}' -ne '') {
+          $args += '--at-least-one-permissions'
+          $args += "${{ inputs.at_least_one_permissions }}"
+        }
+
+        if ('${{ inputs.count }}' -eq 'True') {
+          $args += '--count'
+          $args += 'true'
+        }
+
+        if ('${{ inputs.expand }}' -ne '') {
+          $args += '--expand'
+          $args += "${{ inputs.expand }}"
+        }
+
+        if ('${{ inputs.filter }}' -ne '') {
+          $args += '--filter'
+          $args += "${{ inputs.filter }}"
+        }
+
+        if ('${{ inputs.mandatory_permissions }}' -ne '') {
+          $args += '--mandatory-permissions'
+          $args += "${{ inputs.mandatory_permissions }}"
+        }
+
+        if ('${{ inputs.orderby }}' -ne '') {
+          $args += '--orderby'
+          $args += "${{ inputs.orderby }}"
+        }
+
+        if ('${{ inputs.select }}' -ne '') {
+          $args += '--select'
+          $args += "${{ inputs.select }}"
+        }
+
+        if ( [int]${{ inputs.skip }} -gt 0 ) {
+          $args += '--skip'
+          $args += "${{ inputs.skip }}"
+        }
+
+        if ( [int]${{ inputs.top }} -gt 0) {
+          $args += '--top'
+          $args += "${{ inputs.top }}"
+        }
+
+        # Run the constructed CLI command
+        Write-Host "Running command: uipath $($args -join ' ')"
+        uipath @args

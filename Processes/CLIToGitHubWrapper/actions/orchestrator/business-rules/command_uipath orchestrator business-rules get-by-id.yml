@@ -1,0 +1,74 @@
+name: uipath-orchestrator-business-rules-get-by-id
+description: |
+  NAME:
+     uipath orchestrator business-rules get-by-id - Get Business Rule by key
+
+  USAGE:
+     uipath orchestrator business-rules get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.BusinessRules or OR.BusinessRules.Read.
+
+     Required permissions: (BusinessRules.View).
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key string (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: Folder/OrganizationUnit Id (required)
+        required: true
+        type: number
+      key:
+        description: Business Rule key (required)
+        required: true
+        type: string
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator business-rules get-by-id
+        shell: pwsh
+        run: |
+          # Construct argument list for the CLI command
+          $args = @(
+            'orchestrator', 'business-rules', 'get-by-id',
+            "--folder-id", ${{ inputs.folder-id }},
+            "--key", "'${{ inputs.key }}'"
+          )
+
+          # Add optional parameters if they are provided and not empty
+          if (${{ inputs.expand }} -and ${{ inputs.expand }}.Trim() -ne '') {
+            $args += @("--expand", "'${{ inputs.expand }}'")
+          }
+          if (${{ inputs.select }} -and ${{ inputs.select }}.Trim() -ne '') {
+            $args += @("--select", "'${{ inputs.select }}'")
+          }
+
+          # Join the arguments array to build the final command string
+          $command = "uipath " + ($args -join ' ')
+
+          Write-Host "Running command: $command"
+          Invoke-Expression $command

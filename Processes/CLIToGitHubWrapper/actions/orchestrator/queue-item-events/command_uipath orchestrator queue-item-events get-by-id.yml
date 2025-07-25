@@ -1,0 +1,72 @@
+name: "UiPath Orchestrator Queue Item Events Get By Id"
+description: |
+  NAME:
+     uipath orchestrator queue-item-events get-by-id - Gets a QueueItemEvent by Id.
+
+  USAGE:
+     uipath orchestrator queue-item-events get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Read.
+
+     Required permissions: Queues.View and Transactions.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+  
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: integer
+      key:
+        description: 'Key Id (required)'
+        required: true
+        type: integer
+      expand:
+        description: 'Related entities to be represented inline (optional)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  get_queue_item_event_by_id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath Orchestrator queue-item-events get-by-id command
+        shell: pwsh
+        run: |
+          # Construct the CLI arguments array
+          $args = @("orchestrator", "queue-item-events", "get-by-id")
+          $args += @("--folder-id", "${{ inputs.folder_id }}")
+          $args += @("--key", "${{ inputs.key }}")
+
+          # Add optional --expand if specified
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += @("--expand", "${{ inputs.expand }}")
+          }
+
+          # Add optional --select if specified
+          if ('${{ inputs.select }}' -ne '') {
+            $args += @("--select", "${{ inputs.select }}")
+          }
+
+          # Invoke the UiPath CLI with the constructed arguments
+          uipath @args

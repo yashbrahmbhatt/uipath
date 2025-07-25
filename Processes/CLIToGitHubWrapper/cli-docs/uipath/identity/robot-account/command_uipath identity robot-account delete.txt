@@ -1,0 +1,13 @@
+NAME:
+   uipath identity robot-account delete - Deletes a robot account
+
+USAGE:
+   uipath identity robot-account delete [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: PM.RobotAccount or PM.RobotAccount.Write.
+
+OPTIONS:
+   --partition-global-id string (required)
+
+   --robot-account-id string (required)

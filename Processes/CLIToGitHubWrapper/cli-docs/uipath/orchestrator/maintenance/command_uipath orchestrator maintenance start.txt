@@ -1,0 +1,28 @@
+NAME:
+   uipath orchestrator maintenance start - Starts a maintenance window
+
+USAGE:
+   uipath orchestrator maintenance start [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Administration or OR.Administration.Write.
+
+   Host only. Requires authentication.
+
+OPTIONS:
+   --force boolean (default: false)
+      Whether to ignore errors during transition
+
+   --kill-jobs boolean (default: false)
+      Whether to force-kill running jobs when transitioning to UiPath.Orchestrator.DataContracts.MaintenanceState.Suspended
+
+   --phase string
+      Phase - UiPath.Orchestrator.DataContracts.MaintenanceState.Draining or UiPath.Orchestrator.DataContracts.MaintenanceState.Suspended
+
+      Allowed values:
+      - None
+      - Draining
+      - Suspended
+
+   --tenant-id integer
+      If tenant id is set, maintenance will start only for this tenant

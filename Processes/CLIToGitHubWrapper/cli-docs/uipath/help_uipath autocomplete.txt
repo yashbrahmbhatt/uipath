@@ -1,0 +1,12 @@
+NAME:
+   uipath autocomplete - Autocompletion
+
+USAGE:
+   uipath autocomplete
+
+DESCRIPTION:
+   Commands for autocompletion
+
+COMMANDS:
+   enable    Enable auto complete
+   complete  Autocomplete suggestions

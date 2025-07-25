@@ -1,0 +1,15 @@
+NAME:
+   uipath orchestrator libraries - Repositories for reusable components
+
+USAGE:
+   uipath orchestrator libraries
+
+DESCRIPTION:
+   Manage reusable components used in automation workflows.
+
+COMMANDS:
+   delete-by-id               Deletes a package.
+   download-package-by-key    Downloads the .nupkg file of a Package.
+   get                        Gets the library packages.
+   get-versions-by-packageid  Returns a collection of all available versions of a given package. Allows odata query options.
+   upload-package             Uploads a new package or a new version of an existing package. The content of the package is sent as a .nupkg file embedded in the HTTP request.

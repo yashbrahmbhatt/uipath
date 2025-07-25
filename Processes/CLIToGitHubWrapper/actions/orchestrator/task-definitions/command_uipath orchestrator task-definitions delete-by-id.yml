@@ -1,0 +1,63 @@
+name: uipath-orchestrator-task-definitions-delete-by-id
+description: |
+  NAME:
+     uipath orchestrator task-definitions delete-by-id - Deletes Task Defintion/Version.
+
+  USAGE:
+     uipath orchestrator task-definitions delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Required permissions: ActionDesign.Delete.
+
+  OPTIONS:
+     --key integer (required)
+        Id of the task definition to be deleted
+
+     --task-definition-version integer
+        Version of task definition to be deleted
+
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'Id of the task definition to be deleted'
+        required: true
+        type: number
+      task_definition_version:
+        description: 'Version of task definition to be deleted'
+        required: false
+        type: number
+
+jobs:
+  delete_task_definition:
+    runs-on: [windows, self-hosted]
+    outputs:
+      deleted_task_id: ${{ steps.delete_task_def.outputs.deleted_task_id }}
+    steps:
+      - name: Delete UiPath Orchestrator Task Definition by ID
+        id: delete_task_def
+        shell: pwsh
+        run: |
+          # Construct the argument list
+          $args = @('orchestrator', 'task-definitions', 'delete-by-id')
+
+          # Add required --key argument with value
+          $args += '--key'
+          $args += ${{ inputs.key }}
+
+          # Add optional --task-definition-version argument if provided
+          if ('${{ inputs.task_definition_version }}' -ne '') {
+            $args += '--task-definition-version'
+            $args += ${{ inputs.task_definition_version }}
+          }
+
+          # Run the uipath CLI command with collected arguments
+          Write-Host "Running: uipath $($args -join ' ')"
+          $output = uipath @args 2>&1
+          Write-Host $output
+
+          # Optionally set output or parse response for downstream jobs here
+          # For now, just output the deleted task key
+          echo "::set-output name=deleted_task_id::${{ inputs.key }}"

@@ -1,0 +1,26 @@
+NAME:
+   uipath orchestrator business-rules get-read-uri-by-name - Get Read URI by Name
+
+USAGE:
+   uipath orchestrator business-rules get-read-uri-by-name [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.BusinessRules or OR.BusinessRules.Read.
+
+   Required permissions: (BusinessRules.View).
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --name string (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --expiry-in-minutes integer (default: 0)
+
+   --select string
+      Limits the properties returned in the result.
+
+   --version-number string

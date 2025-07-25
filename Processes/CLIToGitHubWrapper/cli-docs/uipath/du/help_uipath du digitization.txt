@@ -1,0 +1,13 @@
+NAME:
+   uipath du digitization - Extracting Document Object Model (DOM) and text
+
+USAGE:
+   uipath du digitization
+
+DESCRIPTION:
+   Digitization is the process of obtaining machine readable text from a given incoming file, so that a robot can then understand its contents and act upon them.
+
+COMMANDS:
+   digitize  Digitize the given file
+   get       Get digitization result
+   start     Digitize document

@@ -1,0 +1,171 @@
+name: 'UiPath Orchestrator Test Set Schedules Post'
+
+description: |
+  OAuth required scopes: OR.TestSetSchedules or OR.TestSetSchedules.Write.
+  
+  Required permissions: TestSetSchedules.Create.
+  
+  Creates a new test set execution schedule.
+  
+  Responses:
+  201 Returns the newly created test set execution schedule
+  403 If the caller doesn't have permissions to create test set execution schedules
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: string
+      name:
+        description: 'Name of the test set schedule'
+        required: true
+        type: string
+      test-set-id:
+        description: 'Test set Id'
+        required: true
+        type: string
+      time-zone-id:
+        description: 'Time Zone Id'
+        required: true
+        type: string
+      calendar-id:
+        description: 'Calendar Id (optional)'
+        required: false
+        type: string
+        default: ''
+      calendar-name:
+        description: 'Calendar Name (optional)'
+        required: false
+        type: string
+        default: ''
+      cron-details:
+        description: 'Cron Details (optional)'
+        required: false
+        type: string
+        default: ''
+      cron-expression:
+        description: 'Cron Expression (optional)'
+        required: false
+        type: string
+        default: ''
+      cron-summary:
+        description: 'Cron Summary (optional)'
+        required: false
+        type: string
+        default: ''
+      description:
+        description: 'Description (optional)'
+        required: false
+        type: string
+        default: ''
+      disable-date:
+        description: 'Disable Date (optional)'
+        required: false
+        type: string
+        default: ''
+      enabled:
+        description: 'Enabled flag (optional)'
+        required: false
+        type: boolean
+        default: true
+      external-job-key:
+        description: 'External Job Key (optional)'
+        required: false
+        type: string
+        default: ''
+      external-job-key-scheduler:
+        description: 'External Job Key Scheduler (optional)'
+        required: false
+        type: string
+        default: ''
+      id:
+        description: 'ID (optional)'
+        required: false
+        type: string
+        default: ''
+      next-occurrence:
+        description: 'Next Occurrence (optional)'
+        required: false
+        type: string
+        default: ''
+      test-set-name:
+        description: 'Test Set Name (optional)'
+        required: false
+        type: string
+        default: ''
+      time-zone-iana:
+        description: 'Time Zone IANA (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  post_test_set_schedule:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator test-set-schedules post
+        shell: pwsh
+        run: |
+          # Build the argument list for the CLI command
+          $args = @(
+            "orchestrator", "test-set-schedules", "post"
+            "--folder-id", "$(${{ inputs.folder-id }})"
+            "--name", "$(${{ inputs.name }})"
+            "--test-set-id", "$(${{ inputs['test-set-id'] }})"
+            "--time-zone-id", "$(${{ inputs['time-zone-id'] }})"
+          )
+
+          # Append optional parameters if provided (non-empty for strings, true for booleans)
+          if (${{ inputs['calendar-id'] }} -and ${{ inputs['calendar-id'] }} -ne '') {
+            $args += @("--calendar-id", ${{ inputs['calendar-id'] }}) 
+          }
+          if (${{ inputs['calendar-name'] }} -and ${{ inputs['calendar-name'] }} -ne '') {
+            $args += @("--calendar-name", ${{ inputs['calendar-name'] }})
+          }
+          if (${{ inputs['cron-details'] }} -and ${{ inputs['cron-details'] }} -ne '') {
+            $args += @("--cron-details", ${{ inputs['cron-details'] }})
+          }
+          if (${{ inputs['cron-expression'] }} -and ${{ inputs['cron-expression'] }} -ne '') {
+            $args += @("--cron-expression", ${{ inputs['cron-expression'] }})
+          }
+          if (${{ inputs['cron-summary'] }} -and ${{ inputs['cron-summary'] }} -ne '') {
+            $args += @("--cron-summary", ${{ inputs['cron-summary'] }})
+          }
+          if (${{ inputs.description }} -and ${{ inputs.description }} -ne '') {
+            $args += @("--description", ${{ inputs.description }})
+          }
+          if (${{ inputs['disable-date'] }} -and ${{ inputs['disable-date'] }} -ne '') {
+            $args += @("--disable-date", ${{ inputs['disable-date'] }})
+          }
+          
+          # Enabled is boolean, only add if false to override default true
+          if (-not [bool]::Parse("${{ inputs.enabled }}")) {
+            $args += @("--enabled", "false")
+          }
+          # Only add enabled "true" parameter if explicitly passed false is not default (default true)
+          # So do nothing if enabled is true because default is true
+          
+          if (${{ inputs['external-job-key'] }} -and ${{ inputs['external-job-key'] }} -ne '') {
+            $args += @("--external-job-key", ${{ inputs['external-job-key'] }})
+          }
+          if (${{ inputs['external-job-key-scheduler'] }} -and ${{ inputs['external-job-key-scheduler'] }} -ne '') {
+            $args += @("--external-job-key-scheduler", ${{ inputs['external-job-key-scheduler'] }})
+          }
+          if (${{ inputs.id }} -and ${{ inputs.id }} -ne '') {
+            $args += @("--id", ${{ inputs.id }})
+          }
+          if (${{ inputs['next-occurrence'] }} -and ${{ inputs['next-occurrence'] }} -ne '') {
+            $args += @("--next-occurrence", ${{ inputs['next-occurrence'] }})
+          }
+          if (${{ inputs['test-set-name'] }} -and ${{ inputs['test-set-name'] }} -ne '') {
+            $args += @("--test-set-name", ${{ inputs['test-set-name'] }})
+          }
+          if (${{ inputs['time-zone-iana'] }} -and ${{ inputs['time-zone-iana'] }} -ne '') {
+            $args += @("--time-zone-iana", ${{ inputs['time-zone-iana'] }})
+          }
+
+          # Invoke the CLI command with constructed arguments
+          uipath @args

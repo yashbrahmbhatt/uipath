@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator folders-navigation get-all-folders-for-current-user - Returns the folders the current user has access to.
+                                                                             The response will be a list of folders; the hierarchy can be reconstructed
+                                                                             using the ParentId properties. From the root to the folders the user has
+                                                                             actually been assigned to, the folders will be marked as non-selectable
+                                                                             and only the paths to the assigned-to folders will be included.
+                                                                             From the assigned-to folders down to the leaves, the nodes will be marked as
+                                                                             selectable and their children lists fully populated.
+
+USAGE:
+   uipath orchestrator folders-navigation get-all-folders-for-current-user [arguments...]
+
+DESCRIPTION:
+   OAuth authentication is not supported.
+
+   Requires authentication.

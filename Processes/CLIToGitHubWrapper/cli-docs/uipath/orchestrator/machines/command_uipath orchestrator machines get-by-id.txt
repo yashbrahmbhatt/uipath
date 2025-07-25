@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator machines get-by-id - Gets a single machine based on its id.
+
+USAGE:
+   uipath orchestrator machines get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Machines or OR.Machines.Read.
+
+   Required permissions: Machines.View.
+
+OPTIONS:
+   --key integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

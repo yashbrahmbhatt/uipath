@@ -1,0 +1,18 @@
+NAME:
+   uipath du validation - Ensuring accuracy of extracted data
+
+USAGE:
+   uipath du validation
+
+DESCRIPTION:
+   Validation is an optional step which refers to a human review step, in which knowledge workers can review the results and correct them when necessary.
+
+COMMANDS:
+   get-classification-validation            Retrieve classification validation result
+   get-classification-validation-by-tag     Retrieve classification validation result
+   get-docType-extraction-validation        Retrieve the extraction validation result
+   get-extraction-validation                Retrieve extraction validation result
+   start-classification-validation          Start classification validation
+   start-classification-validation-by-tag   Start classification validation
+   start-extraction-validation              Start extraction validation
+   start-extraction-validation-by-doc-type  Start extraction validation

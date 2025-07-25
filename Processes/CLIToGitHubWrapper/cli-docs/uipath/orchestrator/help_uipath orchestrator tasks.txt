@@ -1,0 +1,22 @@
+NAME:
+   uipath orchestrator tasks - Actions to be completed
+
+USAGE:
+   uipath orchestrator tasks
+
+DESCRIPTION:
+   Tasks are actions to be completed in a business process, they may be attended (requires human interaction) or unattended.
+
+COMMANDS:
+   assign-tasks                          Assigns the tasks to given users.
+   delete-tasks                          Deletes the tasks.
+   edit-task-metadata                    Edits the metadata of a task
+   get                                   Gets Task objects from classic folders with the given OData queries.
+   get-by-id                             Gets a Task with the given primary key.
+   get-by-key-by-identifier              Gets a Task with the given guid.
+   get-task-permissions                  Gets all the tasks related permissions for the logged in user on the folder in session
+   get-task-users-by-organizationunitid  Gets users in given Organization Unit, who have Tasks.View and Tasks.Edit permissions
+   get-tasks-across-folders              Gets Task objects across folders (including Modern folders) with the given OData queries.
+   get-tasks-across-folders-for-admin    Gets Task objects across folders (including Modern folders) where the current user has task admin permissions, with the given OData query options
+   reassign-tasks                        Reassigns the tasks to given users.
+   unassign-tasks                        Unassigns the tasks from the users.

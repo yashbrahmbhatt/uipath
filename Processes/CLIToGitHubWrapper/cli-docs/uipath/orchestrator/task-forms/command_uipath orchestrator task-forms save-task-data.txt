@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator task-forms save-task-data - Save task data
+
+USAGE:
+   uipath orchestrator task-forms save-task-data [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+   Required permissions: Tasks.Edit.
+
+OPTIONS:
+   --data object (required)
+      Task data json
+
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --task-id integer (required)
+      TaskId to retrieve form

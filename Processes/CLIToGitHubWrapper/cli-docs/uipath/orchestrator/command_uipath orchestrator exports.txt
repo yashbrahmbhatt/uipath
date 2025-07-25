@@ -1,0 +1,12 @@
+NAME:
+   uipath orchestrator exports - Data exported from Orchestrator
+
+USAGE:
+   uipath orchestrator exports
+
+DESCRIPTION:
+   Extract and download data into a file that you can use for reporting, analysis, or for backup and archival purposes.
+
+COMMANDS:
+   get-by-id                
+   get-download-link-by-id

@@ -1,0 +1,23 @@
+NAME:
+   uipath orchestrator assets - Shared, reusable workflow values
+
+USAGE:
+   uipath orchestrator assets
+
+DESCRIPTION:
+   Assets usually represent shared variables or credentials that can be used in different automation projects. They allow you to store specific information so that the robots can easily access it.
+
+COMMANDS:
+   delete-by-id                              Delete an asset
+   get                                       Get Assets
+   get-assets-across-folders                 Get the assets from all the folders in which the current user has the Assets.View permission, except the one specified.
+   get-by-id                                 Gets a single asset based on its id
+   get-filtered                              Get Filtered Assets
+   get-folders-for-asset-by-id               Get all accesible folders where the asset is shared, and the total count of folders where it is shared (including unaccessible folders).
+   get-robot-asset-by-name-for-robot-key     Returns the named asset associated to the given robot key.
+   get-robot-asset-by-robot-id               Returns the named asset associated to the given robot Id.
+   get-robot-asset-by-robotid-and-assetname  Returns the named asset associated to the given robot key.
+   post                                      Creates an asset
+   put-by-id                                 Edit an asset
+   set-robot-asset-by-robot-key              Set the asset value associated to the given robot key.
+   share-to-folders                          Adds the assets to the folders specified in 'ToAddFolderIds'. Removes the assets from the folders specified in 'ToRemoveFolderIds'.

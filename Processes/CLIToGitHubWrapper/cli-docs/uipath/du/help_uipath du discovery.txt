@@ -1,0 +1,19 @@
+NAME:
+   uipath du discovery - Discover projects and resources
+
+USAGE:
+   uipath du discovery
+
+DESCRIPTION:
+   Using the Discovery Service for retrieving information about the newly created project and its resources.
+
+COMMANDS:
+   classifier-by-id     Retrieve classifier details
+   classifiers          Retrieve classifiers
+   document-type-by-id  Retrieve document type details
+   document-types       Retrieve document types
+   extractor-by-id      Retrieve extractor details
+   extractors           Retrieve extractors
+   project-by-id        Retrieve project details
+   projects             Retrieve all projects
+   tags                 Retrieve tags

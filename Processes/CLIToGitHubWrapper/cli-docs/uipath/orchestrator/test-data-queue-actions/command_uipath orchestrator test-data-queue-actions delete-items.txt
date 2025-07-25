@@ -1,0 +1,18 @@
+NAME:
+   uipath orchestrator test-data-queue-actions delete-items - Delete specific test data queue items
+
+USAGE:
+   uipath orchestrator test-data-queue-actions delete-items [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+   Required permissions: TestDataQueueItems.Delete.
+
+   Responses:
+   204 Deleted the test data queue items
+   403 If the caller doesn't have permissions to delete test data queue items
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id

@@ -1,0 +1,49 @@
+name: Activate UiPath Orchestrator Process Schedule by ID
+description: |
+  NAME:
+     uipath orchestrator process-schedules activate-by-id - Activates a process schedule associated with a queue
+
+  USAGE:
+     uipath orchestrator process-schedules activate-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+     Required permissions: Schedules.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        required: true
+        type: number
+        description: Folder/OrganizationUnit Id (integer)
+      key:
+        required: true
+        type: number
+        description: Key (integer)
+
+jobs:
+  activate-process-schedule:
+    runs-on: [windows, self-hosted]
+    name: Activate Process Schedule
+    steps:
+      - name: Run uipath orchestrator process-schedules activate-by-id
+        shell: pwsh
+        run: |
+          # Initialize arguments array
+          $args = @()
+          # Add folder-id argument
+          $args += '--folder-id'
+          $args += ${{ inputs.folder-id }}
+          # Add key argument
+          $args += '--key'
+          $args += ${{ inputs.key }}
+          # Execute the CLI command
+          uipath orchestrator process-schedules activate-by-id @args

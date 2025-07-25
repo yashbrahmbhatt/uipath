@@ -1,0 +1,27 @@
+NAME:
+   uipath orchestrator directory-service get-domain-user-id - Gets an orchestrator user Id by searching for the domain user information.
+
+USAGE:
+   uipath orchestrator directory-service get-domain-user-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Users or OR.Users.Read.
+
+   Required permissions: (Users.View or Units.Edit or SubFolders.Edit).
+
+OPTIONS:
+   --directory-identifier string
+
+   --domain string
+
+   --user-name string
+
+   --user-type string
+
+      Allowed values:
+      - User
+      - Robot
+      - DirectoryUser
+      - DirectoryGroup
+      - DirectoryRobot
+      - DirectoryExternalApplication

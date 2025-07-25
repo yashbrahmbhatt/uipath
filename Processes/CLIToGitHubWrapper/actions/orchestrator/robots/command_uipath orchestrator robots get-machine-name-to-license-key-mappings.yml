@@ -1,0 +1,123 @@
+name: uipath-orchestrator-robots-get-machine-name-to-license-key-mappings
+description: |
+  NAME:
+     uipath orchestrator robots get-machine-name-to-license-key-mappings - Gets machine name to license key mapping.
+
+  USAGE:
+     uipath orchestrator robots get-machine-name-to-license-key-mappings [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Robots or OR.Robots.Read.
+
+     Required permissions: Robots.Create and Machines.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restricts the set of items returned. The maximum number of expressions is 100.'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Specifies the order in which items are returned. The maximum number of expressions is 5.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath Orchestrator CLI command
+        shell: pwsh
+        run: |
+          # Initialize argument array with base command
+          $args = @('uipath', 'orchestrator', 'robots', 'get-machine-name-to-license-key-mappings')
+
+          # Add required --folder-id argument
+          $args += '--folder-id'
+          $args += '${{ inputs.folder_id }}'
+
+          # Conditionally add --count if true
+          if (${{ inputs.count }}) {
+            $args += '--count'
+          }
+
+          # Conditionally add --expand if not empty
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += '--expand'
+            $args += '${{ inputs.expand }}'
+          }
+
+          # Conditionally add --filter if not empty
+          if ('${{ inputs.filter }}' -ne '') {
+            $args += '--filter'
+            $args += '${{ inputs.filter }}'
+          }
+
+          # Conditionally add --orderby if not empty
+          if ('${{ inputs.orderby }}' -ne '') {
+            $args += '--orderby'
+            $args += '${{ inputs.orderby }}'
+          }
+
+          # Conditionally add --select if not empty
+          if ('${{ inputs.select }}' -ne '') {
+            $args += '--select'
+            $args += '${{ inputs.select }}'
+          }
+
+          # Join arguments with spaces, quoting arguments appropriately
+          $escapedArgs = $args | ForEach-Object {
+            # Escape and quote if contains spaces or special characters
+            if ($_ -match '\s' -or $_ -match '[^a-zA-Z0-9\-\_\.]') {
+              '"' + $_.Replace('"','`"') + '"'
+            } else {
+              $_
+            }
+          }
+          $command = $escapedArgs -join ' '
+
+          Write-Host "Running command: $command"
+
+          # Invoke the CLI command
+          iex $command

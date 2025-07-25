@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <title>[yashbdev] [CreateSamples] Automation Incident Report</title>
+    
+  </head>
+  <body style="margin: 0;padding: 2em;background-color: #f5f7fa;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+    <div class="card theme-warning" style="margin: auto;padding: 2em;background-color: #ffffff;border-radius: 10px;box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);border-left: 8px solid;border-color: #ffeeba">
+      <h1 style="margin-top: 0;font-size: 1.75em;color: #856404">Automation Exception Report</h1>
+      <p class="description" style="font-size: 1em;margin-bottom: 1.5em">
+        An error occurred during the execution of the
+        <strong>CreateSamples</strong> automation process on
+        <strong>YASH-MAIN</strong> under tenant
+        <strong>yashbdev</strong>. Below are the captured details that
+        may assist in identifying and resolving the issue.
+      </p>
+
+      <div class="details-section">
+        <h2 style="font-size: 1.25em;margin: 1.5em 0 0.5em;color: #333">Automation Context</h2>
+        <div class="details-card" style="background-color: #f9f9f9;padding: 1em 1.25em;border-radius: 8px;border: 1px solid #ddd;margin-bottom: 1em">
+          <table>
+            <tbody><tr>
+              <th>Process Name</th>
+              <td>CreateSamples</td>
+            </tr>
+            <tr>
+              <th>Tenant Name</th>
+              <td>yashbdev</td>
+            </tr>
+            <tr>
+              <th>Folder Path</th>
+              <td>LazyFramework/Subfolder</td>
+            </tr>
+          </tbody></table>
+        </div>
+
+        <h2 style="font-size: 1.25em;margin: 1.5em 0 0.5em;color: #333">Execution Environment</h2>
+        <div class="details-card" style="background-color: #f9f9f9;padding: 1em 1.25em;border-radius: 8px;border: 1px solid #ddd;margin-bottom: 1em">
+          <table>
+            <tbody><tr>
+              <th>Machine Name</th>
+              <td>YASH-MAIN</td>
+            </tr>
+            <tr>
+              <th>User</th>
+              <td>YASH-MAIN\eyash</td>
+            </tr>
+            <tr>
+              <th>Date</th>
+              <td>Jul 19, 2025</td>
+            </tr>
+            <tr>
+              <th>Time</th>
+              <td>20:45:44</td>
+            </tr>
+          </tbody></table>
+        </div>
+
+        <h2 style="font-size: 1.25em;margin: 1.5em 0 0.5em;color: #333">Exception Details</h2>
+        <div class="details-card" style="background-color: #f9f9f9;padding: 1em 1.25em;border-radius: 8px;border: 1px solid #ddd;margin-bottom: 1em">
+          <table>
+            <tbody><tr>
+              <th>Exception Message</th>
+              <td>Could not find file 'C:\Users\eyash\UiPath\Libraries\Yash.Utility.Activities\2'.</td>
+            </tr>
+            <tr>
+              <th>Exception Source</th>
+              <td>System.Private.CoreLib</td>
+            </tr>
+            <tr>
+              <th>Stack Trace</th>
+              <td><pre style="white-space: pre-wrap;word-break: break-word;background: rgba(0, 0, 0, 0.05);padding: 0.75em;border-radius: 6px">   at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 p...</pre></td>
+            </tr>
+            <tr>
+              <th>Exception Data</th>
+              <td><pre style="white-space: pre-wrap;word-break: break-word;background: rgba(0, 0, 0, 0.05);padding: 0.75em;border-radius: 6px">{
+  "ExceptionDataField": "ExceptionDataFieldValue"
+}</pre></td>
+            </tr>
+          </tbody></table>
+        </div>
+      </div>
+
+      <div class="button-container" style="margin-bottom: 2em">
+        <a class="logs-button" href="https://cloud.uipath.com/78d41308-fb92-4856-bef3-a4f3bc457638/yashbdev/orchestrator_/jobs(sidepanel:sidepanel/jobs/a5d9391a-67b0-4dae-8b59-8cfceb3ec002/logs)?tid=82135&amp;fid=521680" target="_blank" style="display: inline-block;padding: 0.75em 1.5em;font-size: 1em;font-weight: 600;background-color: #007bff;color: white;text-decoration: none;border-radius: 6px;transition: background-color 0.2s ease">
+          View Full Logs in Orchestrator
+        </a>
+      </div>
+
+      <footer style="font-size: 0.95em;color: #333;border-top: 1px solid #ccc;padding-top: 1em;margin-top: 2em">
+        <p>
+          If you are not the intended recipient of this message, please
+          disregard or forward it to the responsible team.
+        </p>
+        <p>warning</p>
+      </footer>
+    </div>
+  
+
+</body></html>

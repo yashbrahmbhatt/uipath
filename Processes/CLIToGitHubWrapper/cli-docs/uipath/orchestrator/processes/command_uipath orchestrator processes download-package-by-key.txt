@@ -1,0 +1,15 @@
+NAME:
+   uipath orchestrator processes download-package-by-key - Downloads the .nupkg file of a Package.
+
+USAGE:
+   uipath orchestrator processes download-package-by-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+   Required permissions: (Packages.View - Downloads a package from a Tenant Feed) and (FolderPackages.View - Downloads a package from a Folder Feed).
+
+OPTIONS:
+   --key string (required)
+
+   --feed-id string

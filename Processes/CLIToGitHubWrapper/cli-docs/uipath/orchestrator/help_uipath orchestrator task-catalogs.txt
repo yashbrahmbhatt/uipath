@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator task-catalogs - Collections of business task definitions
+
+USAGE:
+   uipath orchestrator task-catalogs
+
+DESCRIPTION:
+   Task catalogs are organized collections of task definitions for various business processes.
+
+COMMANDS:
+   create-task-catalog                                 Creates a new Task Catalog.
+   delete-by-id                                        Deletes Task Catalog.
+   get                                                 Gets Task Catalog objects with the given OData queries.
+   get-by-id                                           Gets a Task Catalog item by Id.
+   get-folders-for-task-catalog-by-id                  Get all accessible folders where the task catalog is shared, and the total count of folders where it is shared (including unaccessible folders).
+   get-task-catalog-extended-details-by-taskcatalogid  Validates task catalog deletion request.
+   get-task-catalogs-from-folders-with-permissions     Gets Task Catalogs across folders having given permission with the given OData queries .
+   share-to-folders                                    Makes the task catalogs visible in the specified folders.
+   update-task-catalog-by-id                           Updates Task Catalog.

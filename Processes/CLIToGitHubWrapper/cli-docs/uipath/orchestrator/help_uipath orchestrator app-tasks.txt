@@ -1,0 +1,15 @@
+NAME:
+   uipath orchestrator app-tasks - Tasks executed within Orchestrator apps
+
+USAGE:
+   uipath orchestrator app-tasks
+
+DESCRIPTION:
+   App Tasks are activities and assignments that need human intervention in a robotic process automation (RPA) workflow.
+
+COMMANDS:
+   complete-app-task            Complete the task by saving app task data and action taken
+   create-app-task              Creates a new App Task.
+   get-app-task-by-id           Returns dto to render app task
+   save-and-reassign-app-tasks  Save changes done by the current user and Reassign Task to another user
+   save-app-tasks-data          Save task data

@@ -1,0 +1,133 @@
+name: 'UiPath Orchestrator Get Tasks Across Folders For Admin'
+
+description: |
+  Gets Task objects across folders (including Modern folders) where the current user has task admin permissions, with the given OData query options
+
+  OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+  Requires authentication.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        type: boolean
+        default: false
+      event:
+        description: |
+          Operation performed on the task. Allowed values: ForwardedEver
+        required: false
+        type: string
+        default: ''
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restricts the set of items returned. The maximum number of expressions is 100.'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Specifies the order in which items are returned. The maximum number of expressions is 5.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Excludes the specified number of items of the queried collection from the result.'
+        required: false
+        type: number
+        default: 0
+      top:
+        description: 'Limits the number of items returned from a collection. The maximum value is 1000.'
+        required: false
+        type: number
+        default: 1000
+
+jobs:
+  get_tasks_across_folders_for_admin:
+    runs-on: [windows, self-hosted]
+    outputs:
+      result: ${{ steps.run_cli.outputs.stdout }}
+    steps:
+      - name: Run UiPath Orchestrator CLI Command
+        id: run_cli
+        shell: pwsh
+        run: |
+          # Build argument list for uipath orchestrator command
+          $args = @('orchestrator','tasks','get-tasks-across-folders-for-admin')
+
+          # Add required folder-id argument
+          $args += '--folder-id'
+          $args += ${{ inputs.folder_id }}
+
+          # Add optional boolean parameter --count if true
+          if (${{ inputs.count }}) {
+            $args += '--count'
+            $args += 'true'
+          }
+
+          # Add optional string parameters if specified
+          if ([string]::IsNullOrEmpty('${{ inputs.event }}') -eq $false) {
+            $args += '--event'
+            $args += '${{ inputs.event }}'
+          }
+          if ([string]::IsNullOrEmpty('${{ inputs.expand }}') -eq $false) {
+            $args += '--expand'
+            $args += '${{ inputs.expand }}'
+          }
+          if ([string]::IsNullOrEmpty('${{ inputs.filter }}') -eq $false) {
+            $args += '--filter'
+            $args += '${{ inputs.filter }}'
+          }
+          if ([string]::IsNullOrEmpty('${{ inputs.orderby }}') -eq $false) {
+            $args += '--orderby'
+            $args += '${{ inputs.orderby }}'
+          }
+          if ([string]::IsNullOrEmpty('${{ inputs.select }}') -eq $false) {
+            $args += '--select'
+            $args += '${{ inputs.select }}'
+          }
+
+          # Add optional numeric parameters --skip and --top if greater than zero or specified
+          if ( (${{ inputs.skip }}) -gt 0 ) {
+            $args += '--skip'
+            $args += ${{ inputs.skip }}
+          }
+          if ( (${{ inputs.top }}) -gt 0 -and (${{ inputs.top }}) -le 1000 ) {
+            $args += '--top'
+            $args += ${{ inputs.top }}
+          }
+
+          # Execute the CLI command with constructed arguments
+          $processInfo = @{
+            FilePath = 'uipath'
+            ArgumentList = $args
+            RedirectStandardOutput = $true
+            RedirectStandardError = $true
+            NoNewWindow = $true
+            UseNewWindow = $false
+          }
+          $proc = Start-Process @processInfo -PassThru
+          $stdout = $proc.StandardOutput.ReadToEnd()
+          $stderr = $proc.StandardError.ReadToEnd()
+          $proc.WaitForExit()
+          Write-Output "StdOut:`n$stdout"
+          Write-Error "StdErr:`n$stderr"
+          if ($proc.ExitCode -ne 0) {
+            Write-Error "Command failed with exit code $($proc.ExitCode)"
+            exit $proc.ExitCode
+          }
+          echo "::set-output name=stdout::$stdout"

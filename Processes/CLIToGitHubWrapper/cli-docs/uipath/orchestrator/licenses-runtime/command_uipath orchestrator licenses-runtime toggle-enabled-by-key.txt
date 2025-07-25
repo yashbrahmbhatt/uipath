@@ -1,0 +1,41 @@
+NAME:
+   uipath orchestrator licenses-runtime toggle-enabled-by-key - Toggles machine licensing on/off.
+
+USAGE:
+   uipath orchestrator licenses-runtime toggle-enabled-by-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.License or OR.License.Write.
+
+   Required permissions: Machines.Edit.
+
+OPTIONS:
+   --enabled boolean (required)
+
+   --key string (required)
+
+   --robot-type string (required)
+
+      Allowed values:
+      - NonProduction
+      - Attended
+      - Unattended
+      - Development
+      - Studio
+      - RpaDeveloper
+      - StudioX
+      - CitizenDeveloper
+      - Headless
+      - StudioPro
+      - RpaDeveloperPro
+      - TestAutomation
+      - AutomationCloud
+      - Serverless
+      - AutomationKit
+      - ServerlessTestAutomation
+      - AutomationCloudTestAutomation
+      - AttendedStudioWeb
+      - Hosting
+      - AssistantWeb
+      - ProcessOrchestration
+      - AgentService

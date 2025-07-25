@@ -1,0 +1,23 @@
+NAME:
+   uipath orchestrator settings update-user-setting - Edits a user setting.
+
+USAGE:
+   uipath orchestrator settings update-user-setting [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+   Requires authentication.
+
+OPTIONS:
+   --setting object (required)
+      Used to store various predefined application configurations like time zone or account e-mail information.
+
+      Example:
+         Id=string; Name=string; Scope=string; Value=string
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

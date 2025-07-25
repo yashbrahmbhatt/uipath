@@ -1,0 +1,54 @@
+name: Deploy Orchestrator Assets
+
+on:
+  workflow_call:
+    inputs:
+      assets_file:
+        required: true
+        type: string
+      tenant:
+        required: true
+        type: string
+      folder:
+        required: true
+        type: string
+      organization:
+        required: true
+        type: string
+      application_id:
+        required: true
+        type: string
+      application_secret:
+        required: true
+        type: string
+      application_scope:
+        required: true
+        type: string
+    secrets:
+      orchestrator_url:
+        required: true
+
+jobs:
+  deploy-assets:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install CLI
+        uses: ./.github/workflows/install-cli.yml
+
+      - name: Run uipcli asset deploy
+        shell: pwsh
+        run: |
+          uipcli asset deploy `
+            "${{ inputs.assets_file }}" `
+            "${{ secrets.orchestrator_url }}" `
+            "${{ inputs.tenant }}" `
+            -A "${{ inputs.organization }}" `
+            -I "${{ inputs.application_id }}" `
+            -S "${{ inputs.application_secret }}" `
+            --applicationScope "${{ inputs.application_scope }}" `
+            -o "${{ inputs.folder }}" `
+            --traceLevel "Information"

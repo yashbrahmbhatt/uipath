@@ -1,0 +1,36 @@
+NAME:
+   uipath orchestrator folders get-subfolders-with-assigned-machine - Gets direct machine assignments for all subfolders of the specific folder
+
+USAGE:
+   uipath orchestrator folders get-subfolders-with-assigned-machine [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Folders or OR.Folders.Read.
+
+   Required permissions: (Units.View or SubFolders.View - Gets the subfolders in which the machines is directly assigned for any folder or for subfolders only).
+
+OPTIONS:
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --machine-id integer
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --root-folder-id integer
+
+   --select string
+      Limits the properties returned in the result.
+
+   --skip integer
+      Excludes the specified number of items of the queried collection from the result.
+
+   --top integer
+      Limits the number of items returned from a collection. The maximum value is 1000.

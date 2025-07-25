@@ -1,0 +1,72 @@
+name: uipath-orchestrator-sessions-toggle-machine-session-debug-mode-by-id
+description: |
+  NAME:
+     uipath orchestrator sessions toggle-machine-session-debug-mode-by-id - Toggles the debug mode for the specified machine session
+
+  USAGE:
+     uipath orchestrator sessions toggle-machine-session-debug-mode-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+     Required permissions: Robots.Edit.
+
+  OPTIONS:
+     --enabled boolean (required)
+
+     --key integer (required)
+
+     --minutes integer
+
+on:
+  workflow_call:
+    inputs:
+      enabled:
+        description: "Enable or disable debug mode (true or false)"
+        required: true
+        type: boolean
+      key:
+        description: "The machine session key (integer)"
+        required: true
+        type: number
+      minutes:
+        description: "Optional duration for debug mode in minutes"
+        required: false
+        type: number
+
+jobs:
+  toggle-debug-mode:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Build and run uipath orchestrator sessions toggle-machine-session-debug-mode-by-id command
+        shell: pwsh
+        run: |
+          # Initialize an array for command arguments
+          $args = @()
+          # Add required parameters with proper formatting
+          $args += "--enabled"
+          $args += "${{ inputs.enabled }}"
+          $args += "--key"
+          $args += "${{ inputs.key }}"
+          # Add optional --minutes parameter if specified
+          if (${{ inputs.minutes }}) {
+            $args += "--minutes"
+            $args += "${{ inputs.minutes }}"
+          }
+
+          # Join arguments into a single string, quoting as necessary
+          $argsString = $args | ForEach-Object {
+            # If the argument is boolean or numeric, no quotes needed, otherwise add quotes
+            if ($_ -is [bool] -or ($_ -as [int] -ne $null)) {
+              $_
+            } else {
+              "\"$_\""
+            }
+          } | Out-String
+          $argsString = $argsString -replace '\s+', ' ' # normalize whitespace
+
+          # Compose and execute command
+          $command = "uipath orchestrator sessions toggle-machine-session-debug-mode-by-id $argsString"
+          Write-Host "Executing command: $command"
+          iex $command

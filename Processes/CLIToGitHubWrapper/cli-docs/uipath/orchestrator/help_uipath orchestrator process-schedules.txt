@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator process-schedules - Planned schedules for process execution
+
+USAGE:
+   uipath orchestrator process-schedules
+
+DESCRIPTION:
+   Process schedules allow you to automate when your processes or jobs are run, without having to manually start them each time.
+
+COMMANDS:
+   activate-by-id                     Activates a process schedule associated with a queue
+   delete-by-id                       Deletes a process schedule.
+   get                                Gets the process schedules.
+   get-by-id                          Gets a single process schedule based on its key.
+   get-robot-ids-for-schedule-by-key  Returns a collection of all the ids of the robots associated to an schedule based on schedule Id.
+   post                               Creates a new process schedule.
+   put-by-id                          Edits a process schedule.
+   set-enabled                        Enables/disables a group of schedules.
+   validate-process-schedule          Validates the input which would be used to create a process schedule.

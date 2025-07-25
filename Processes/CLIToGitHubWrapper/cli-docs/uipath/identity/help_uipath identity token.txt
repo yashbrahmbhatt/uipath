@@ -1,0 +1,11 @@
+NAME:
+   uipath identity token - Access tokens
+
+USAGE:
+   uipath identity token
+
+DESCRIPTION:
+   Endpoint to retrieve short-lived access tokens.
+
+COMMANDS:
+   create  Creates a new token

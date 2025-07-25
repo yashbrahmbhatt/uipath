@@ -1,0 +1,93 @@
+name: UiPath Orchestrator Test Data Queues Get By Id
+description: |
+  NAME:
+     uipath orchestrator test-data-queues get-by-id - Return a specific test data queue identified by key
+
+  USAGE:
+     uipath orchestrator test-data-queues get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Read.
+
+     Required permissions: TestDataQueues.View.
+
+     Responses:
+     200 Returns a specific test data queue identified by key
+     403 If the caller doesn't have permissions to view test data queues
+     404 If the test data queue is not found
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      key:
+        description: 'Key of the test data queue (required)'
+        required: true
+        type: number
+      expand:
+        description: 'Related entities to be represented inline (optional)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result (optional)'
+        required: false
+        type: string
+        default: ''
+jobs:
+  run-test-data-queues-get-by-id:
+    runs-on: [windows, self-hosted]
+    outputs:
+      result: ${{ steps.run-command.outputs.result }}
+    steps:
+      - name: Run UiPath Orchestrator test-data-queues get-by-id
+        id: run-command
+        shell: pwsh
+        run: |
+          # Initialize the argument array for the CLI command
+          $args = @('orchestrator', 'test-data-queues', 'get-by-id')
+
+          # Add required parameters
+          $args += '--folder-id'
+          $args += ${{ inputs.folder_id }}
+
+          $args += '--key'
+          $args += ${{ inputs.key }}
+
+          # Add optional parameters conditionally if provided (non-empty)
+          if ([string]::IsNullOrEmpty('${{ inputs.expand }}') -eq $false) {
+            $args += '--expand'
+            $args += "${{ inputs.expand }}"
+          }
+          if ([string]::IsNullOrEmpty('${{ inputs.select }}') -eq $false) {
+            $args += '--select'
+            $args += "${{ inputs.select }}"
+          }
+
+          # Build the full command string, properly quoted to handle spaces or special characters
+          $command = 'uipath ' + ($args | ForEach-Object { '"' + $_ + '"' }) -join ' '
+
+          Write-Host "Running command: $command"
+
+          # Execute the command and capture output and errors
+          $output = & uipath @args 2>&1
+
+          # Output the result as an output variable for later job steps if needed
+          echo "::set-output name=result::$output"
+
+          # Also print output to the workflow log
+          Write-Host $output

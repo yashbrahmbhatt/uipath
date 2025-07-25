@@ -1,0 +1,62 @@
+name: UiPath Orchestrator Task Definitions Get By Id
+description: |
+  NAME:
+     uipath orchestrator task-definitions get-by-id - Gets a Task Definition item by Id.
+
+  USAGE:
+     uipath orchestrator task-definitions get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+     Required permissions: ActionDesign.View.
+
+  OPTIONS:
+     --key integer (required)
+        id of the object
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'ID of the object (required)'
+        required: true
+        type: string
+      expand:
+        description: 'Related entities to be represented inline (optional, max depth 2)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result (optional)'
+        required: false
+        type: string
+        default: ''
+jobs:
+  get-task-definition-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath Orchestrator get-by-id command
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'task-definitions', 'get-by-id')
+          # Add required key parameter
+          $args += '--key'
+          $args += "`"$(${{ inputs.key }})`""
+          # Conditionally add --expand if provided and non-empty
+          if ('${{ inputs.expand }}' -and '${{ inputs.expand }}' -ne '') {
+            $args += '--expand'
+            $args += "`"$(${{ inputs.expand }})`""
+          }
+          # Conditionally add --select if provided and non-empty
+          if ('${{ inputs.select }}' -and '${{ inputs.select }}' -ne '') {
+            $args += '--select'
+            $args += "`"$(${{ inputs.select }})`""
+          }
+          # Execute the command
+          uipath @args

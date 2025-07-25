@@ -1,0 +1,14 @@
+NAME:
+   uipath orchestrator queue-item-events - Events related to queue items
+
+USAGE:
+   uipath orchestrator queue-item-events
+
+DESCRIPTION:
+   Events are triggered when the status of a queue item changes, such as when it is added, started, failed, successful etc.
+
+COMMANDS:
+   get                                           Gets the QueueItemEvents.
+   get-by-id                                     Gets a QueueItemEvent by Id.
+   get-queue-item-events-history-by-queueitemid  Returns a collection of Queue Item Events associated to a Queue Item and all its related Queue Items.
+                                                 A Queue Item is related to another if it was created as a retry of a failed Queue Item. They also share the same Key.

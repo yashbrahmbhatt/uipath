@@ -1,0 +1,71 @@
+name: UiPath Orchestrator Assets Get-By-Id
+description: |
+  Gets a single asset based on its id
+  
+  OAuth required scopes: OR.Assets or OR.Assets.Read.
+  
+  Required permissions: Assets.View.
+  
+  Options:
+  --folder-id integer (required)
+     Folder/OrganizationUnit Id
+  
+  --key integer (required)
+  
+  --expand string
+     Indicates the related entities to be represented inline. The maximum depth is 2.
+  
+  --select string
+     Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      key:
+        description: 'Key (required)'
+        required: true
+        type: string
+      expand:
+        description: 'Include related entities inline (optional)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limit properties returned (optional)'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  get-asset-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Get asset by ID
+        shell: pwsh
+        run: |
+          # Initialize argument list with command base and required parameters
+          $args = @('orchestrator', 'assets', 'get-by-id')
+          $args += '--folder-id'
+          $args += "'${{ inputs.folder_id }}'"
+          $args += '--key'
+          $args += "'${{ inputs.key }}'"
+
+          # Append optional --expand argument if provided
+          if ('${{ inputs.expand }}'.Trim() -ne '') {
+            $args += '--expand'
+            $args += "'${{ inputs.expand }}'"
+          }
+
+          # Append optional --select argument if provided
+          if ('${{ inputs.select }}'.Trim() -ne '') {
+            $args += '--select'
+            $args += "'${{ inputs.select }}'"
+          }
+
+          # Run the final command
+          uipath $args -join ' ' | Write-Output
+          & uipath @args

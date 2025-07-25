@@ -1,0 +1,18 @@
+NAME:
+   uipath orchestrator users set-active-by-id - Activate or deactivate a user
+
+USAGE:
+   uipath orchestrator users set-active-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Users or OR.Users.Write.
+
+   Required permissions: Users.Edit.
+   DEPRECATED: 
+   This API is deprecated. Please do not use it any longer.
+   Please refer to https://docs.uipath.com/orchestrator/reference
+
+OPTIONS:
+   --active boolean (required)
+
+   --key integer (required)

@@ -1,0 +1,150 @@
+name: 'UiPath Orchestrator Users Get'
+
+description: |
+  NAME:
+     uipath orchestrator users get - Gets users.
+
+  USAGE:
+     uipath orchestrator users get [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Read.
+
+     Required permissions: Users.View.
+
+  OPTIONS:
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'The related entities to be represented inline (max depth 2).'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restricts the set of items returned. (max 100 expressions)'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Specifies the order in which items are returned. (max 5 expressions)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Number of items to exclude from the queried collection.'
+        required: false
+        type: integer
+        default: 0
+      top:
+        description: 'Limits the number of items returned (max 1000).'
+        required: false
+        type: integer
+        default: 0
+
+jobs:
+  run-uipath-orchestrator-users-get:
+    runs-on: [windows, self-hosted]
+    outputs:
+      exit-code: ${{ steps.run-uipath-users-get.outputs.exit-code }}
+    steps:
+      - name: Run "uipath orchestrator users get"
+        id: run-uipath-users-get
+        shell: pwsh
+        run: |
+          # Initialize the arguments array with the base command and subcommands
+          $args = @('orchestrator', 'users', 'get')
+
+          # Add --count if true
+          if (${{ inputs.count }}) {
+            $args += '--count'
+            $args += 'true'
+          }
+
+          # Add --expand if provided and not empty
+          if (-not [string]::IsNullOrEmpty('${{ inputs.expand }}')) {
+            $args += '--expand'
+            $args += '${{ inputs.expand }}'
+          }
+
+          # Add --filter if provided and not empty
+          if (-not [string]::IsNullOrEmpty('${{ inputs.filter }}')) {
+            $args += '--filter'
+            $args += '${{ inputs.filter }}'
+          }
+
+          # Add --orderby if provided and not empty
+          if (-not [string]::IsNullOrEmpty('${{ inputs.orderby }}')) {
+            $args += '--orderby'
+            $args += '${{ inputs.orderby }}'
+          }
+
+          # Add --select if provided and not empty
+          if (-not [string]::IsNullOrEmpty('${{ inputs.select }}')) {
+            $args += '--select'
+            $args += '${{ inputs.select }}'
+          }
+
+          # Add --skip if greater than 0
+          if (${ { inputs.skip } } -gt 0) {
+            $args += '--skip'
+            $args += '${{ inputs.skip }}'
+          }
+
+          # Add --top if greater than 0
+          if (${ { inputs.top } } -gt 0) {
+            $args += '--top'
+            $args += '${{ inputs.top }}'
+          }
+
+          # Build the full command string by joining all arguments with spaces and quoting as needed.
+          # Quotes needed around arguments that may contain spaces or special characters.
+          $command = @()
+          foreach ($arg in $args) {
+            if ($arg -match '\s') {
+              $command += '"' + $arg + '"'
+            }
+            else {
+              $command += $arg
+            }
+          }
+          $commandString = 'uipath ' + ($command -join ' ')
+
+          Write-Host "Running command: $commandString"
+
+          # Run the command
+          iex $commandString
+
+          # Return exit code
+          exit $LASTEXITCODE

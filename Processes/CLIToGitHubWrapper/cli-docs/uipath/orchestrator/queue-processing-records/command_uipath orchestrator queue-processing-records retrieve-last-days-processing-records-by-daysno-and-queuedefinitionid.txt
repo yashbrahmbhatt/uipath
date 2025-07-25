@@ -1,0 +1,35 @@
+NAME:
+   uipath orchestrator queue-processing-records retrieve-last-days-processing-records-by-daysno-and-queuedefinitionid - Returns the computed processing status for a given queue in the last specified days.
+
+USAGE:
+   uipath orchestrator queue-processing-records retrieve-last-days-processing-records-by-daysno-and-queuedefinitionid [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Queues or OR.Queues.Read.
+
+   Required permissions: Queues.View and Transactions.View.
+
+OPTIONS:
+   --days-no integer (required)
+      The number of days to go back from the present moment when calculating the report. If it is 0 the report will be computed for the last hour.
+
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --queue-definition-id integer (required)
+      The Id of the queue for which the report is computed.
+
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --select string
+      Limits the properties returned in the result.

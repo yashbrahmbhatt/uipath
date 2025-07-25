@@ -1,0 +1,14 @@
+NAME:
+   uipath orchestrator folders delete-by-key - Deletes a folder. Succeeds only if no entities or user associations
+                                               exist in this folder or any of its descendants.
+
+USAGE:
+   uipath orchestrator folders delete-by-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Folders or OR.Folders.Write.
+
+   Required permissions: (Units.Delete or SubFolders.Delete - Deletes any folder or only if user has SubFolders.Delete permission on the provided folder).
+
+OPTIONS:
+   --key string

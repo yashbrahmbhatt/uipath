@@ -1,0 +1,18 @@
+NAME:
+   uipath orchestrator alerts raise-process-alert - Creates a Process Alert
+
+USAGE:
+   uipath orchestrator alerts raise-process-alert [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Monitoring or OR.Monitoring.Write.
+
+   Required permissions: Alerts.Create.
+   DEPRECATED: 
+   Please refer to https://docs.uipath.com/orchestrator/reference
+
+OPTIONS:
+   --process-alert object (required)
+
+      Example:
+         Id=string; Message=string; ProcessName=string; RobotName=string; Severity=string

@@ -1,0 +1,87 @@
+name: uipath-orchestrator-test-automation-get-test-set-execution-attachments
+description: |
+  NAME:
+     uipath orchestrator test-automation get-test-set-execution-attachments - This will list all test set execution attachments filtered by identifier and tags
+
+  USAGE:
+     uipath orchestrator test-automation get-test-set-execution-attachments [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Write.
+
+     Required permissions: TestSetExecutions.View.
+
+     Responses:
+     200 OK
+     404 If there is no test set execution for the specified identifier
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --batch-execution-key string
+
+     --tags string,string,...
+
+     --test-set-execution-id integer
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      batch_execution_key:
+        description: 'Batch execution key string (optional)'
+        required: false
+        type: string
+        default: ''
+      tags:
+        description: 'Comma-separated tags string (optional)'
+        required: false
+        type: string
+        default: ''
+      test_set_execution_id:
+        description: 'Test set execution ID integer (optional)'
+        required: false
+        type: number
+        default: 0
+
+jobs:
+  get-test-set-execution-attachments:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath Orchestrator CLI to get test set execution attachments
+        shell: pwsh
+        env:
+          # Add environment variables here if needed (e.g., for authentication)
+        run: |
+          # Construct the command with required and optional parameters
+          $args = @("orchestrator", "test-automation", "get-test-set-execution-attachments")
+
+          # Required folder-id argument
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          # Optional batch-execution-key
+          if ("${{ inputs.batch_execution_key }}" -ne "") {
+            $args += "--batch-execution-key"
+            $args += "${{ inputs.batch_execution_key }}"
+          }
+
+          # Optional tags parameter
+          if ("${{ inputs.tags }}" -ne "") {
+            $args += "--tags"
+            $args += "${{ inputs.tags }}"
+          }
+
+          # Optional test-set-execution-id
+          if (${{ inputs.test_set_execution_id }} -ne 0) {
+            $args += "--test-set-execution-id"
+            $args += "${{ inputs.test_set_execution_id }}"
+          }
+
+          # Execute the CLI with all arguments
+          Write-Host "Executing: uipath $($args -join ' ')"
+          uipath $args

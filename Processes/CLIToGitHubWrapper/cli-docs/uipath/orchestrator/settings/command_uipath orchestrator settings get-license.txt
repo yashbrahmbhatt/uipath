@@ -1,0 +1,17 @@
+NAME:
+   uipath orchestrator settings get-license - Retrieves the current license information.
+
+USAGE:
+   uipath orchestrator settings get-license [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+   Requires authentication.
+
+OPTIONS:
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

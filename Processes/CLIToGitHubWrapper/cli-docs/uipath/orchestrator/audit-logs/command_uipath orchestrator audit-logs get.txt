@@ -1,0 +1,38 @@
+NAME:
+   uipath orchestrator audit-logs get - Gets Audit logs.
+
+USAGE:
+   uipath orchestrator audit-logs get [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Audit or OR.Audit.Read.
+
+   Required permissions: Audit.View.
+
+OPTIONS:
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --select string
+      Limits the properties returned in the result.
+
+   --skip integer
+      Excludes the specified number of items of the queried collection from the result.
+
+   --top integer
+      Limits the number of items returned from a collection. The maximum value is 1000.
+
+   --x-uipath-audited-service string (default: Orchestrator)
+
+      Allowed values:
+      - Orchestrator
+      - TestAutomation

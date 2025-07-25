@@ -1,0 +1,11 @@
+NAME:
+   uipath autocomplete enable - Enable auto complete
+
+USAGE:
+   uipath autocomplete enable [command options]
+
+DESCRIPTION:
+   Enables auto complete in your shell
+
+OPTIONS:
+   --shell value  powershell, bash

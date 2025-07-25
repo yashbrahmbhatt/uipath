@@ -1,0 +1,69 @@
+name: uipath-orchestrator-stats-get-license-stats
+description: |
+  NAME:
+     uipath orchestrator stats get-license-stats - Gets the licensing usage statistics
+  
+  USAGE:
+     uipath orchestrator stats get-license-stats [command options] [arguments...]
+  
+  DESCRIPTION:
+     OAuth required scopes: OR.Monitoring or OR.Monitoring.Read.
+  
+     Required permissions: License.View.
+  
+  OPTIONS:
+     --days integer
+        Number of reported license usage days
+  
+     --tenant-id integer
+        The Tenant's Id - can be used when authenticated as Host
+
+on:
+  workflow_call:
+    inputs:
+      days:
+        description: "Number of reported license usage days"
+        required: false
+        type: number
+      tenant_id:
+        description: "The Tenant's Id - can be used when authenticated as Host"
+        required: false
+        type: number
+
+jobs:
+  get-license-stats:
+    runs-on: [windows, self-hosted]
+    outputs:
+      output: ${{ steps.run.outputs.result }}
+    steps:
+      - name: Run uipath orchestrator stats get-license-stats
+        id: run
+        shell: pwsh
+        run: |
+          # Initialize the argument list with the base command
+          $args = @("orchestrator", "stats", "get-license-stats")
+
+          # Add --days argument if provided
+          if ($env:INPUT_DAYS) {
+            $args += "--days"
+            $args += "$env:INPUT_DAYS"
+          }
+
+          # Add --tenant-id argument if provided
+          if ($env:INPUT_TENANT_ID) {
+            $args += "--tenant-id"
+            $args += "$env:INPUT_TENANT_ID"
+          }
+
+          # Join the arguments into a single command string with proper spacing
+          $command = "uipath " + ($args -join ' ')
+
+          # Output the command for debugging
+          Write-Host "Executing command: $command"
+
+          # Invoke the command and capture output
+          $output = & $command
+
+          # Write output to stdout and set as step output
+          Write-Host $output
+          echo "::set-output name=result::$output"

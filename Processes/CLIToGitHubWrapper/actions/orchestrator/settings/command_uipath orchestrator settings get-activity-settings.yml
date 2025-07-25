@@ -1,0 +1,58 @@
+name: UiPath Orchestrator Get Activity Settings
+description: |
+  NAME:
+     uipath orchestrator settings get-activity-settings - Returns Orchestrator settings used by activities
+
+  USAGE:
+     uipath orchestrator settings get-activity-settings [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  get-activity-settings:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run UiPath Orchestrator get-activity-settings command
+        shell: pwsh
+        run: |
+          # Initialize arguments array with base command
+          $args = @('orchestrator', 'settings', 'get-activity-settings')
+
+          # Add --expand argument if provided
+          if ('${{ inputs.expand }}' -ne '') {
+              $args += @('--expand', '${{ inputs.expand }}')
+          }
+
+          # Add --select argument if provided
+          if ('${{ inputs.select }}' -ne '') {
+              $args += @('--select', '${{ inputs.select }}')
+          }
+
+          # Execute the uipath CLI with assembled arguments
+          uipath @args

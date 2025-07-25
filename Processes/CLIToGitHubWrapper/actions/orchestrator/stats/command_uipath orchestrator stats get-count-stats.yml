@@ -1,0 +1,54 @@
+name: UiPath Orchestrator Get Count Stats
+description: |
+  NAME:
+     uipath orchestrator stats get-count-stats - Gets the total number of various entities registered in Orchestrator
+
+  USAGE:
+     uipath orchestrator stats get-count-stats [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Monitoring or OR.Monitoring.Read.
+
+     Requires authentication.
+
+     Returns the name and the total number of entities registered in Orchestrator for a set of entities.
+     All the counted entity types can be seen in the result below.
+          [
+                {
+                  "title": "Processes",
+                  "count": 1
+                },
+                {
+                  "title": "Assets",
+                  "count": 0
+                },
+                {
+                  "title": "Queues",
+                  "count": 0
+                },
+                {
+                  "title": "Schedules",
+                  "count": 0
+                }
+          ]
+  
+on:
+  workflow_call:
+
+    # No parameters because usage indicates none needed for this command
+
+jobs:
+  get-count-stats:
+    runs-on:
+      - windows
+      - self-hosted
+    outputs: {}
+    steps:
+      - name: Run UiPath Orchestrator Count Stats command
+        shell: pwsh
+        run: |
+          # Build the arguments array for the CLI command
+          $args = @("orchestrator", "stats", "get-count-stats")
+          
+          # Execute the command with constructed arguments
+          uipath @args

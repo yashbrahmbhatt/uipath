@@ -1,0 +1,26 @@
+NAME:
+   uipath orchestrator robots - Entities executing automation processes
+
+USAGE:
+   uipath orchestrator robots
+
+DESCRIPTION:
+   robots are the entities that execute the automation processes.
+
+COMMANDS:
+   convert-to-floating                          Convert a Standard Attended Robot to a Floating Robot.
+   delete-bulk                                  Deletes multiple robots based on their keys.
+   delete-by-id                                 Deletes a robot based on its key.
+   find-all-across-folders                      Get robots across all accessible folders.
+   get                                          Gets robots.
+   get-by-id                                    Gets a single robot based on its key.
+   get-configured-robots                        Gets robots autoprovisioned from users
+   get-folder-robots-by-folderid-and-machineid  Get folder robots
+   get-machine-name-to-license-key-mappings     Gets machine name to license key mapping.
+   get-robots-for-process-by-processid          Returns a collection of all robots that can execute the process with the provided Id.
+   get-robots-from-folder-by-folderid           Gets all robots from a folder
+   get-usernames                                Gets usernames.
+   patch-by-id                                  Partially updates a robot.
+   post                                         Creates a new robot.
+   put-by-id                                    Edits a robot based on its key.
+   toggle-enabled-status                        Toggles the status of the robots (enabled/disabled)

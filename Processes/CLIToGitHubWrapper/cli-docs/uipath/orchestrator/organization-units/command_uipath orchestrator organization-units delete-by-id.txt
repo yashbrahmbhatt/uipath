@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator organization-units delete-by-id - Deletes an organization unit.
+
+USAGE:
+   uipath orchestrator organization-units delete-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Folders or OR.Folders.Write.
+
+   Required permissions: Units.Delete.
+   DEPRECATED: 
+   Kept for backwards compatibility. Use Delete from FoldersController  instead
+   Please refer to https://docs.uipath.com/orchestrator/reference
+
+OPTIONS:
+   --key integer (required)

@@ -1,0 +1,45 @@
+NAME:
+   uipath orchestrator task-forms bulk-complete-tasks - Bulk Complete the task by merging form data and action taken
+
+USAGE:
+   uipath orchestrator task-forms bulk-complete-tasks [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+   Required permissions: Tasks.Edit.
+
+OPTIONS:
+   --action string (required)
+      Action taken on this task
+
+   --data object (required)
+      Task data json
+
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --task-ids integer,integer,... (required)
+      List of Task Ids which have to be Bulk edited
+
+   --note-text string
+      Comment to be added while doing the bulk operation
+
+   --priority string
+      Priority of tasks
+
+      Allowed values:
+      - Low
+      - Medium
+      - High
+      - Critical
+
+   --task-catalog-id integer
+      Action Catalog to be associated with the tasks
+
+   --title string
+      Title of tasks
+
+   --unset-task-catalog boolean
+      Unset/Unassociate action catalogs with the tasks
+      Set to true for unassociating catalog

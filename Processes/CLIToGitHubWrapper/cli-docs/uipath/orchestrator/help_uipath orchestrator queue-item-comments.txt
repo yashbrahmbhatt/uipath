@@ -1,0 +1,17 @@
+NAME:
+   uipath orchestrator queue-item-comments - Notes for queue items
+
+USAGE:
+   uipath orchestrator queue-item-comments
+
+DESCRIPTION:
+   Add comments or notes to a specific queue item.
+
+COMMANDS:
+   delete-by-id                                    Deletes a QueueItemComment.
+   get                                             Gets the QueueItemComments.
+   get-by-id                                       Gets a QueueItemComment by Id.
+   get-queue-item-comments-history-by-queueitemid  Returns a collection of Queue Item Comments associated to a Queue Item and all its related Queue Items.
+                                                   A Queue Item is related to another if it was created as a retry of a failed Queue Item. They also share the same Key.
+   post                                            Creates a QueueItemComment.
+   put-by-id                                       Updates a QueueItemComment

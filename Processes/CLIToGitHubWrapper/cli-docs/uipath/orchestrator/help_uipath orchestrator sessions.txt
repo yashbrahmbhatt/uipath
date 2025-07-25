@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator sessions - Instance of robot execution
+
+USAGE:
+   uipath orchestrator sessions
+
+DESCRIPTION:
+   Sessions represent an instance of a robot's execution of a process.
+
+COMMANDS:
+   delete-inactive-unattended-sessions        Deletes disconnected or unresponsive sessions
+   get                                        Gets the sessions for the current folder.
+   get-global-sessions                        Gets all the tenant sessions.
+   get-machine-session-runtimes               Gets machine runtime sessions
+   get-machine-session-runtimes-by-folder-id  Gets machine runtime sessions by folder id
+   get-machine-sessions-by-key                Get sessions for a machine
+   get-usernames                              Gets usernames.
+   set-maintenance-mode                       Sets the execution capabilities for a specified host
+   toggle-machine-session-debug-mode-by-id    Toggles the debug mode for the specified machine session

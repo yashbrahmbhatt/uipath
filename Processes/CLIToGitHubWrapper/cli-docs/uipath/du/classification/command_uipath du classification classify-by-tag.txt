@@ -1,0 +1,31 @@
+NAME:
+   uipath du classification classify-by-tag - Classify document
+
+USAGE:
+   uipath du classification classify-by-tag [command options] [arguments...]
+
+DESCRIPTION:
+   Classify a document.
+
+   Required scopes: <b>Du.Classification.Api</b></br>
+
+OPTIONS:
+   --api-version string (default: 1.0)
+      Version of the APIs.
+
+      Allowed values:
+      - 1.0
+
+   --project-id string (default: 00000000-0000-0000-0000-000000000000)
+      The identifier of the project in which the classifier exists.
+
+   --tag string (required)
+      The tag associated with the project version to use for the classification.
+
+   --document-id string
+      Id of the document obtained from the Digitization operation.
+
+   --prompts object (multiple)
+
+      Example:
+         description=string; name=string

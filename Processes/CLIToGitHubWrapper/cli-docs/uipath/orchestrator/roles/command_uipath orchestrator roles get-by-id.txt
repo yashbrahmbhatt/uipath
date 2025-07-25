@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator roles get-by-id - Gets role based on its id.
+
+USAGE:
+   uipath orchestrator roles get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Users or OR.Users.Read.
+
+   Required permissions: Roles.View.
+
+OPTIONS:
+   --key integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

@@ -1,0 +1,21 @@
+NAME:
+   uipath orchestrator calendars put-by-id - Edits a calendar.
+
+USAGE:
+   uipath orchestrator calendars put-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+   Required permissions: (Settings.Edit).
+
+OPTIONS:
+   --key integer (required)
+
+   --excluded-dates string,string,...
+
+   --id integer
+
+   --name string
+
+   --time-zone-id string

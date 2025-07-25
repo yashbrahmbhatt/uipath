@@ -1,0 +1,15 @@
+NAME:
+   uipath orchestrator folders remove-user-from-folder-by-key - Remove user assignment from a folder.
+
+USAGE:
+   uipath orchestrator folders remove-user-from-folder-by-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Folders or OR.Folders.Write.
+
+   Required permissions: (Units.Edit or SubFolders.Edit - Remove user from any folder or only if caller has SubFolders.Edit permission on provided folder).
+
+OPTIONS:
+   --key integer (required)
+
+   --user-key string (required)

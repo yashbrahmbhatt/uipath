@@ -1,0 +1,23 @@
+NAME:
+   uipath orchestrator test-data-queue-actions bulk-add-items - Bulk adds an array of data queue items
+
+USAGE:
+   uipath orchestrator test-data-queue-actions bulk-add-items [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+   Required permissions: TestDataQueueItems.Create.
+
+   Responses:
+   200 Returns the number of items added
+   403 If the caller doesn't have permissions to create test data queue items
+   409 If the test data queue items violates the content JSON schema set on the queue
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --items object (multiple) (required)
+
+   --queue-name string (required)

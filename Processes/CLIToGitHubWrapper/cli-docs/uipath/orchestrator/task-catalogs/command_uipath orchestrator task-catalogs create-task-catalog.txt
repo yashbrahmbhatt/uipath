@@ -1,0 +1,47 @@
+NAME:
+   uipath orchestrator task-catalogs create-task-catalog - Creates a new Task Catalog.
+
+USAGE:
+   uipath orchestrator task-catalogs create-task-catalog [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+   Required permissions: TaskCatalogs.Create.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --name string (required)
+      Name of the Task Catalog.
+
+   --description string
+      Description of this task catalog.
+
+   --encrypted boolean
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --retention-action string
+      Action to take at retention limit
+
+      Allowed values:
+      - Delete
+      - Archive
+      - None
+
+   --retention-bucket-id integer
+      Retention bucket Id
+
+   --retention-period integer
+      Retention period
+
+   --select string
+      Limits the properties returned in the result.
+
+   --tags object (multiple)
+
+      Example:
+         DisplayName=string; DisplayValue=string; Name=string; Value=string

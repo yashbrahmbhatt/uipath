@@ -1,0 +1,110 @@
+name: 'UiPath Orchestrator Tasks Reassign-Tasks'
+
+description: |
+  NAME:
+     uipath orchestrator tasks reassign-tasks - Reassigns the tasks to given users.
+
+  USAGE:
+     uipath orchestrator tasks reassign-tasks [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Requires authentication.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --task-assignments object (multiple) (required)
+
+        Example:
+           AssigneeNamesOrEmails=string,string,...; AssigneeUserIds=integer,integer,...; AssignmentCriteria=string; TaskId=integer; UserId=integer; UserNameOrEmail=string
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      task_assignments:
+        description: >
+          Task assignments to reassign tasks to given users.
+          Provide as a semicolon-separated string with keys and values, for example:
+          "AssigneeNamesOrEmails=string,string,...; AssigneeUserIds=integer,integer,...; AssignmentCriteria=string; TaskId=integer; UserId=integer; UserNameOrEmail=string"
+        required: true
+        type: string
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restricts the set of items returned. The maximum number of expressions is 100.'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Specifies the order in which items are returned. The maximum number of expressions is 5.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  reassign_tasks:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator tasks reassign-tasks
+        shell: pwsh
+        run: |
+          $args = @()
+          $args += 'orchestrator tasks reassign-tasks'
+          # Required parameters
+          $args += "--folder-id `"$(${{ inputs.folder_id }})`""
+          $args += "--task-assignments `"$(${{ inputs.task_assignments }})`""
+          # Optional parameters conditionally added
+          if (${{ inputs.count }}) {
+            $args += "--count $(${{ inputs.count }})"
+          }
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += "--expand `"$(${{ inputs.expand }})`""
+          }
+          if ('${{ inputs.filter }}' -ne '') {
+            $args += "--filter `"$(${{ inputs.filter }})`""
+          }
+          if ('${{ inputs.orderby }}' -ne '') {
+            $args += "--orderby `"$(${{ inputs.orderby }})`""
+          }
+          if ('${{ inputs.select }}' -ne '') {
+            $args += "--select `"$(${{ inputs.select }})`""
+          }
+
+          $command = "uipath " + ($args -join ' ')
+          Write-Host "Running command: $command"
+          Invoke-Expression $command

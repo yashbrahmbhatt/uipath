@@ -1,0 +1,22 @@
+NAME:
+   uipath orchestrator business-rules get-by-id - Get Business Rule by key
+
+USAGE:
+   uipath orchestrator business-rules get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.BusinessRules or OR.BusinessRules.Read.
+
+   Required permissions: (BusinessRules.View).
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key string (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

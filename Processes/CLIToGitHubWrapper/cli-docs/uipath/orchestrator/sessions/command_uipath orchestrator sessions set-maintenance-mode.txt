@@ -1,0 +1,25 @@
+NAME:
+   uipath orchestrator sessions set-maintenance-mode - Sets the execution capabilities for a specified host
+
+USAGE:
+   uipath orchestrator sessions set-maintenance-mode [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+   Required permissions: Robots.Edit.
+
+OPTIONS:
+   --maintenance-mode string
+
+      Allowed values:
+      - Default
+      - Enabled
+
+   --session-id integer
+
+   --stop-jobs-strategy string
+
+      Allowed values:
+      - SoftStop
+      - Kill

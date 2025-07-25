@@ -1,0 +1,90 @@
+{
+  "Processes": [
+    {
+      "Name": "TransactionDispatch",
+      "Type": "Dispatcher",
+      "Description": "Logs into banking site, downloads transactions for all accounts, and dispatches individual transactions to a queue for processing.",
+      "Steps": [
+        {
+          "Name": "LoginToBankWebsite",
+          "Description": "Access banking website and login using provided credentials.",
+          "Type": "WebGUIInteraction",
+          "DownstreamSteps": {
+            "Next": "DownloadTransactions"
+          },
+          "UpstreamSteps": []
+        },
+        {
+          "Name": "DownloadTransactions",
+          "Description": "Download transactions for all available accounts.",
+          "Type": "WebGUIInteraction",
+          "DownstreamSteps": {
+            "Next": "DispatchTransactionsToQueue"
+          },
+          "UpstreamSteps": [
+            "LoginToBankWebsite"
+          ]
+        },
+        {
+          "Name": "DispatchTransactionsToQueue",
+          "Description": "Dispatch each individual transaction as a unit of work into a UiPath queue.",
+          "Type": "UiPathPlatformInteraction",
+          "DownstreamSteps": {},
+          "UpstreamSteps": [
+            "DownloadTransactions"
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "TransactionClassifierAndDBUpdater",
+      "Type": "SingleTransactionPerformer",
+      "Description": "Retrieves individual transactions from queue, classifies them into buckets, and saves each classified transaction to the database via SQL query.",
+      "Steps": [
+        {
+          "Name": "RetrieveTransactionFromQueue",
+          "Description": "Fetch a single transaction item from the queue.",
+          "Type": "UiPathPlatformInteraction",
+          "DownstreamSteps": {
+            "Next": "ClassifyTransaction"
+          },
+          "UpstreamSteps": []
+        },
+        {
+          "Name": "ClassifyTransaction",
+          "Description": "Classify the transaction into the appropriate bucket/category.",
+          "Type": "DataManipulation",
+          "DownstreamSteps": {
+            "Next": "UpdateDatabase"
+          },
+          "UpstreamSteps": [
+            "RetrieveTransactionFromQueue"
+          ]
+        },
+        {
+          "Name": "UpdateDatabase",
+          "Description": "Save the classified transaction to the database using a SQL query.",
+          "Type": "DatabaseInteraction",
+          "DownstreamSteps": {},
+          "UpstreamSteps": [
+            "ClassifyTransaction"
+          ]
+        }
+      ]
+    }
+  ],
+  "Triggers": [
+    {
+      "Name": "DailyScheduledTrigger",
+      "Type": "Time",
+      "Description": "Trigger the TransactionDispatch process every day at a specific time (e.g., 7 AM).",
+      "ProcessName": "TransactionDispatch"
+    },
+    {
+      "Name": "TransactionQueueTrigger",
+      "Type": "Queue",
+      "Description": "Trigger the TransactionClassifierAndDBUpdater process when there are transaction items in the queue.",
+      "ProcessName": "TransactionClassifierAndDBUpdater"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+NAME:
+   uipath orchestrator webhooks put-by-id - Update an existing webhook subscription
+
+USAGE:
+   uipath orchestrator webhooks put-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Webhooks or OR.Webhooks.Write.
+
+   Required permissions: Webhooks.Edit.
+
+OPTIONS:
+   --allow-insecure-ssl boolean (required)
+
+   --enabled boolean (required)
+
+   --key integer (required)
+
+   --name string (required)
+
+   --subscribe-to-all-events boolean (required)
+
+   --url string (required)
+
+   --description string
+
+   --events object (multiple)
+
+      Example:
+         EventType=string
+
+   --id integer
+
+   --secret string

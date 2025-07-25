@@ -1,0 +1,11 @@
+NAME:
+   uipath autocomplete complete - Autocomplete suggestions
+
+USAGE:
+   uipath autocomplete complete [command options]
+
+DESCRIPTION:
+   Returns the autocomplete suggestions
+
+OPTIONS:
+   --command value  The command to autocomplete

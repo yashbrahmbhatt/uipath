@@ -1,0 +1,65 @@
+name: Uipath Orchestrator Webhooks Get-By-Id
+
+description: |
+  NAME:
+     uipath orchestrator webhooks get-by-id - Gets a single webhook
+
+  USAGE:
+     uipath orchestrator webhooks get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Webhooks or OR.Webhooks.Read.
+
+     Required permissions: Webhooks.View.
+
+  OPTIONS:
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The ID of the webhook to retrieve (required).'
+        required: true
+        type: number
+      expand:
+        description: 'Related entities to be represented inline (optional).'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result (optional).'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  get-webhook-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator webhooks get-by-id
+        shell: pwsh
+        run: |
+          # Initialize argument list with base command and required --key parameter
+          $args = @("orchestrator", "webhooks", "get-by-id", "--key", ${{ inputs.key }})
+
+          # Add --expand parameter if provided and not empty
+          if ('${{ inputs.expand }}'.Trim() -ne '') {
+            $args += '--expand'
+            $args += '${{ inputs.expand }}'
+          }
+
+          # Add --select parameter if provided and not empty
+          if ('${{ inputs.select }}'.Trim() -ne '') {
+            $args += '--select'
+            $args += '${{ inputs.select }}'
+          }
+
+          # Execute the CLI command with constructed arguments
+          uipath @args

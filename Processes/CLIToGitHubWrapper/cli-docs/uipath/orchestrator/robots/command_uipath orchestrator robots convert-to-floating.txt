@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator robots convert-to-floating - Convert a Standard Attended Robot to a Floating Robot.
+
+USAGE:
+   uipath orchestrator robots convert-to-floating [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+   Required permissions: Robots.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --robot-id integer (required)

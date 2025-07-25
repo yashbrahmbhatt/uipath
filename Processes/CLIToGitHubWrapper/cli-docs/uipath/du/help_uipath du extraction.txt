@@ -1,0 +1,16 @@
+NAME:
+   uipath du extraction - Extracting and processing data from documents
+
+USAGE:
+   uipath du extraction
+
+DESCRIPTION:
+   Data Extraction is a component that helps in identifying very specific information that you are interested in, from your document types.
+
+COMMANDS:
+   extract              Extract document fields
+   extract-by-doc-type  Start extraction
+   get                  Retrieve extraction result
+   get-doc-type         Retrieve extraction result
+   start                Start extraction
+   start-by-doc-type    Start extraction

@@ -1,0 +1,36 @@
+NAME:
+   uipath du extraction start - Start extraction
+
+USAGE:
+   uipath du extraction start [command options] [arguments...]
+
+DESCRIPTION:
+   Start extraction operation. To monitor the status and retrieve the extraction result, use the "Get Extraction Result" route.
+
+   Required scopes: <b>Du.Extraction.Api</b></br>
+
+OPTIONS:
+   --api-version string (default: 1.0)
+      Version of the APIs.
+
+      Allowed values:
+      - 1.0
+
+   --extractor-id string (default: invoices)
+      The identifier of the extractor used for extraction.
+
+   --project-id string (default: 00000000-0000-0000-0000-000000000000)
+      The identifier of the project in which the extractor exists.
+
+   --configuration object
+
+      Example:
+         autoValidationConfidenceThreshold=integer
+
+   --document-id string
+      Id of the document obtained from the Digitization operation.
+
+   --prompts object (multiple)
+
+      Example:
+         id=string; question=string

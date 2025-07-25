@@ -1,0 +1,63 @@
+name: 'uipath orchestrator releases update-by-key'
+
+description: |
+  OAuth required scopes: OR.Execution or OR.Execution.Write.
+
+  Required permissions: Processes.Edit.
+
+  Updates the package entry point for the given release.
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      release-key:
+        description: 'Release key'
+        required: true
+        type: string
+      entry-point-path:
+        description: 'Entry point path'
+        required: false
+        type: string
+        default: ''
+      input-args:
+        description: 'Input arguments'
+        required: false
+        type: string
+        default: ''
+      process-version:
+        description: 'Process version'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  update_release_by_key:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator releases update-by-key
+        shell: pwsh
+        run: |
+          $args = @()
+          $args += 'orchestrator releases update-by-key'
+          $args += '--folder-id'
+          $args += ${{ inputs.folder-id }}
+          $args += '--release-key'
+          $args += ('"{0}"' -f ${{ inputs.release-key }})
+          if ('${{ inputs.entry-point-path }}'.Trim().Length -gt 0) {
+              $args += '--entry-point-path'
+              $args += ('"{0}"' -f ${{ inputs.entry-point-path }})
+          }
+          if ('${{ inputs.input-args }}'.Trim().Length -gt 0) {
+              $args += '--input-args'
+              $args += ('"{0}"' -f ${{ inputs.input-args }})
+          }
+          if ('${{ inputs.process-version }}'.Trim().Length -gt 0) {
+              $args += '--process-version'
+              $args += ('"{0}"' -f ${{ inputs.process-version }})
+          }
+          # Invoke the CLI command with constructed arguments
+          uipath $args -join ' ' | Invoke-Expression

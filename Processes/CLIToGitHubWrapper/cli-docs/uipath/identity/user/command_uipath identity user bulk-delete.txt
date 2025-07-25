@@ -1,0 +1,10 @@
+NAME:
+   uipath identity user bulk-delete - Bulk deletes the specified list of users.
+
+USAGE:
+   uipath identity user bulk-delete [command options] [arguments...]
+
+OPTIONS:
+   --partition-global-id string
+
+   --user-ids string,string,...

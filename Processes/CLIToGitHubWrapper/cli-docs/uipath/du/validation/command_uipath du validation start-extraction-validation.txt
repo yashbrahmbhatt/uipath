@@ -1,0 +1,65 @@
+NAME:
+   uipath du validation start-extraction-validation - Start extraction validation
+
+USAGE:
+   uipath du validation start-extraction-validation [command options] [arguments...]
+
+DESCRIPTION:
+   Start extraction validation operation. To monitor the status and retrieve the validation result, use the "Get Extraction Validation Result" route.
+
+   Required scopes: <b>Du.Validation.Api</b></br>
+
+OPTIONS:
+   --api-version string (default: 1.0)
+      Version of the APIs.
+
+      Allowed values:
+      - 1.0
+
+   --extractor-id string (default: invoices)
+      The identifier of the extractor used for extraction.
+
+   --project-id string (default: 00000000-0000-0000-0000-000000000000)
+      The identifier of the project in which the extractor exists.
+
+   --action-catalog string
+      The name of the catalog in which the action is created.
+
+   --action-folder string
+      The name of the folder in which the action is created.
+
+   --action-priority string
+
+      Allowed values:
+      - Low
+      - Medium
+      - High
+      - Critical
+
+   --action-title string
+      The Title of the action that will be created in action center
+
+   --allow-change-of-document-type boolean
+      Flag indicating whether the validator user can change the type associated to the Document in the Validation Station with another one from the used Document Understanding project. Not applicable for the generative extraction.
+
+   --document-id string
+      The Document ID associated with the Extraction Result that needs validation
+
+   --extraction-result object
+
+      Example:
+         businessRulesResults[0].brokenRules[0].comparisonOperator=string; businessRulesResults[0].brokenRules[0].expression=string; businessRulesResults[0].brokenRules[0].logicalOperator=string; businessRulesResults[0].brokenRules[0].name=string; businessRulesResults[0].brokenRules[0].setValues=string,string,...; businessRulesResults[0].brokenRules[0].type=string; businessRulesResults[0].criticality=string; businessRulesResults[0].fieldId=string; businessRulesResults[0].fieldType=string; businessRulesResults[0].isValid=boolean; businessRulesResults[0].results[0].isValid=boolean; businessRulesResults[0].results[0].rules[0].isValid=boolean; businessRulesResults[0].results[0].value.derivedValue=string; businessRulesResults[0].results[0].value.value=string; businessRulesResults[0].rowIndex=integer; businessRulesResults[0].tableFieldId=string; documentId=string; extractorPayloads[0].id=string; extractorPayloads[0].payload=string; extractorPayloads[0].savedPayloadId=string; extractorPayloads[0].taxonomySchemaMapping=string; resultsDocument.bounds.pageCount=integer; resultsDocument.bounds.startPage=integer; resultsDocument.bounds.textLength=integer; resultsDocument.bounds.textStartIndex=integer; resultsDocument.dataVersion=integer; resultsDocument.documentCategory=string; resultsDocument.documentGroup=string; resultsDocument.documentTypeDataVersion=integer; resultsDocument.documentTypeId=string; resultsDocument.documentTypeName=string; resultsDocument.documentTypeSource=string; resultsDocument.fields[0].values[0].components[0].dataSource=string; resultsDocument.fields[0].values[0].components[0].dataVersion=integer; resultsDocument.fields[0].values[0].components[0].fieldId=string; resultsDocument.fields[0].values[0].components[0].fieldName=string; resultsDocument.fields[0].values[0].components[0].fieldType=string; resultsDocument.fields[0].values[0].components[0].isMissing=boolean; resultsDocument.fields[0].values[0].components[0].operatorConfirmed=boolean; resultsDocument.fields[0].values[0].components[0].validatorNotes=string; resultsDocument.fields[0].values[0].confidence=float; resultsDocument.fields[0].values[0].derivedFields[0].fieldId=string; resultsDocument.fields[0].values[0].derivedFields[0].value=string; resultsDocument.fields[0].values[0].ocrConfidence=float; resultsDocument.fields[0].values[0].operatorConfirmed=boolean; resultsDocument.fields[0].values[0].reference.textLength=integer; resultsDocument.fields[0].values[0].reference.textStartIndex=integer; resultsDocument.fields[0].values[0].reference.tokens[0].boxes=string,string,...; resultsDocument.fields[0].values[0].reference.tokens[0].page=integer; resultsDocument.fields[0].values[0].reference.tokens[0].pageHeight=float; resultsDocument.fields[0].values[0].reference.tokens[0].pageWidth=float; resultsDocument.fields[0].values[0].reference.tokens[0].textLength=integer; resultsDocument.fields[0].values[0].reference.tokens[0].textStartIndex=integer; resultsDocument.fields[0].values[0].textType=string; resultsDocument.fields[0].values[0].unformattedValue=string; resultsDocument.fields[0].values[0].value=string; resultsDocument.language=string; resultsDocument.tables[0].dataSource=string; resultsDocument.tables[0].dataVersion=integer; resultsDocument.tables[0].fieldId=string; resultsDocument.tables[0].fieldName=string; resultsDocument.tables[0].isMissing=boolean; resultsDocument.tables[0].operatorConfirmed=boolean; resultsDocument.tables[0].values[0].cells[0].columnIndex=integer; resultsDocument.tables[0].values[0].cells[0].dataSource=string; resultsDocument.tables[0].values[0].cells[0].dataVersion=integer; resultsDocument.tables[0].values[0].cells[0].isHeader=boolean; resultsDocument.tables[0].values[0].cells[0].isMissing=boolean; resultsDocument.tables[0].values[0].cells[0].operatorConfirmed=boolean; resultsDocument.tables[0].values[0].cells[0].rowIndex=integer; resultsDocument.tables[0].values[0].columnInfo[0].fieldId=string; resultsDocument.tables[0].values[0].columnInfo[0].fieldName=string; resultsDocument.tables[0].values[0].columnInfo[0].fieldType=string; resultsDocument.tables[0].values[0].confidence=float; resultsDocument.tables[0].values[0].numberOfRows=integer; resultsDocument.tables[0].values[0].ocrConfidence=float; resultsDocument.tables[0].values[0].operatorConfirmed=boolean; resultsVersion=integer
+
+   --fields-validation-confidence integer
+      The confidence percentage threshold between [0-100] used by Validation Station
+
+   --prompts object (multiple)
+
+      Example:
+         fieldType=string; id=string; multiValued=boolean; question=string
+
+   --storage-bucket-directory-path string
+      The name of the storage bucket in which the action is created.
+
+   --storage-bucket-name string
+      The name of the storage bucket in which the action is created.

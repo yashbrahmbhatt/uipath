@@ -1,0 +1,24 @@
+NAME:
+   uipath orchestrator folders-navigation - Hierarchical traversal through folders
+
+USAGE:
+   uipath orchestrator folders-navigation
+
+DESCRIPTION:
+   Allows users to manage and organize resources effectively, including robots, processes, queues, and assets.
+
+COMMANDS:
+   get-all-folders-for-current-user                Returns the folders the current user has access to.
+                                                   The response will be a list of folders; the hierarchy can be reconstructed
+                                                   using the ParentId properties. From the root to the folders the user has
+                                                   actually been assigned to, the folders will be marked as non-selectable
+                                                   and only the paths to the assigned-to folders will be included.
+                                                   From the assigned-to folders down to the leaves, the nodes will be marked as
+                                                   selectable and their children lists fully populated.
+   get-all-roles-for-user                          Returns a page of the user-folder assignments for the input user, including the roles for each folder.
+                                                   The response also includes the folders assigned to the directory groups of the user.
+                                                   The distinction between the folders assigned directly to the user and the ones assigned to one of his groups
+                                                   can be made via the User field of the response.
+   get-folder-navigation-context-for-current-user  Returns a subset (paginated) of direct children for a given folder, which are accessible to the current user.
+                                                   To ease a folder tree structure navigation design, the list of ancestors for the given folder is also returned.
+   get-folders-for-current-user                    Returns a filtered subset (paginated) of the folders the current user has access to.

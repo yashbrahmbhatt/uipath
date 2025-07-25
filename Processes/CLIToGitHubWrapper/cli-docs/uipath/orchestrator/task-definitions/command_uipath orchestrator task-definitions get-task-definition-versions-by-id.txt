@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator task-definitions get-task-definition-versions-by-id - Get all versions of Task Definition.
+
+USAGE:
+   uipath orchestrator task-definitions get-task-definition-versions-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+   Required permissions: ActionDesign.View.
+
+OPTIONS:
+   --id integer (required)
+      Id of the Task Definition
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

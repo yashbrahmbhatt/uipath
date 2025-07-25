@@ -1,0 +1,74 @@
+name: uipath-orchestrator-environments-post
+description: |
+  OAuth required scopes: OR.Robots or OR.Robots.Write.
+  Required permissions: Environments.Create.
+
+  Post new environment with specified options.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      robots:
+        description: |
+          The collection of robots associated with the current environment.
+          Multiple robots can be passed separated by newline.
+          Each robot should be formatted as a semicolon-separated key=value list.
+          Example:
+            CreationTime=string; CreatorUserId=integer; CredentialStoreId=integer; CredentialType=string; Description=string; Enabled=boolean; Environments[0].Description=string; Environments[0].Id=integer; Environments[0].Name=string; Environments[0].Type=string; ExternalName=string; HostingType=string; Id=integer; IsExternalLicensed=boolean; LastModificationTime=string; LastModifierUserId=string; LicenseKey=string; LimitConcurrentExecution=boolean; MachineId=integer; MachineName=string; Name=string; Password=string; ProvisionType=string; RobotEnvironments=string; Type=string; UserId=integer; Username=string
+        required: false
+        type: string
+      cli_path:
+        description: 'Path to the uipath CLI executable. Defaults to "uipath".'
+        required: false
+        type: string
+        default: uipath
+    secrets:
+      # No explicit credentials inputs defined in the help text; any required OAuth token or environment secrets should be handled externally.
+
+jobs:
+  post_environment:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Invoke uipath orchestrator environments post
+        shell: pwsh
+        run: |
+          # Initialize argument array for CLI command
+          $args = @()
+          # Use provided CLI path or fallback to default "uipath"
+          $cli = '${{ inputs.cli_path }}'
+
+          # Folder ID is required
+          $folderId = '${{ inputs.folder_id }}'
+          if (-not $folderId) {
+            throw "Input 'folder_id' is required but not provided."
+          }
+          $args += 'environments'
+          $args += 'post'
+          $args += '--folder-id'
+          $args += $folderId
+
+          # Add robots if provided
+          $robotsRaw = '${{ inputs.robots }}'
+          if ($robotsRaw -and $robotsRaw.Trim() -ne '') {
+            # The CLI expects --robots as multiple "object" parameters,
+            # but there's no exact format to pass multiple in one go in CLI.
+            # We will pass each robot entry as a separate --robots argument.
+            $robotsList = $robotsRaw -split "`n"
+            foreach ($robot in $robotsList) {
+              if ($robot.Trim() -ne '') {
+                $args += '--robots'
+                $args += $robot.Trim()
+              }
+            }
+          }
+          
+          # Write constructed command line for debugging
+          Write-Host "Executing command: $cli $($args -join ' ')"
+
+          # Execute the CLI command with constructed arguments
+          & $cli @args

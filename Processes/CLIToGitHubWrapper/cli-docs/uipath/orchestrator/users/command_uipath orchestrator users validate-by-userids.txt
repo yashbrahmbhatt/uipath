@@ -1,0 +1,29 @@
+NAME:
+   uipath orchestrator users validate-by-userids - Validates if the robots for the given users are busy
+
+USAGE:
+   uipath orchestrator users validate-by-userids [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Users or OR.Users.Read.
+
+   Required permissions: Users.View.
+
+OPTIONS:
+   --user-ids integer,integer,... (required)
+      The Id of the users to check
+
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --select string
+      Limits the properties returned in the result.

@@ -1,0 +1,29 @@
+NAME:
+   uipath orchestrator roles get-user-ids-for-role-by-key - Returns a collection of all the ids of the users associated to a role based on role Id.
+
+USAGE:
+   uipath orchestrator roles get-user-ids-for-role-by-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Users or OR.Users.Read.
+
+   Required permissions: Roles.View or Users.View.
+
+OPTIONS:
+   --key integer (required)
+      The Id of the role for which the robot ids are fetched.
+
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --select string
+      Limits the properties returned in the result.

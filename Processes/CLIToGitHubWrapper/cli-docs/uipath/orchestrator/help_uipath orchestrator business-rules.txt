@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator business-rules - Policies governing system processes
+
+USAGE:
+   uipath orchestrator business-rules
+
+DESCRIPTION:
+   Business rules are predefined instructions or conditions that determine how a process or task should be carried out.
+
+COMMANDS:
+   delete-by-id                         Delete business rule
+   get                                  Get Filtered Business Rules
+   get-business-rules-across-folders    Get the business rules from all the folders in which the current user has the BusinessRules.View permission, except the one specified.
+   get-by-id                            Get Business Rule by key
+   get-folders-for-business-rule-by-id  Get all accesible folders where the business rule is shared, and the total count of folders where it is shared (including unaccessible folders).
+   get-read-uri-by-name                 Get Read URI by Name
+   get-version-list-by-id               Get Versions of Business Rule
+   post                                 Create Business Rule
+   put-by-id                            Update Business Rule
+   share-to-folders                     Makes the business rule visible in the specified folders.

@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator machines - Managed hosts for robots
+
+USAGE:
+   uipath orchestrator machines
+
+DESCRIPTION:
+   Physical or virtual machine (computer) where to deploy a UiPath robot for executing automation processes.
+
+COMMANDS:
+   delete-bulk                          Deletes multiple machines based on their keys.
+   delete-by-id                         Deletes a machine based on its key.
+   get                                  Gets machines.
+   get-assigned-machines-by-folderid    Gets machines assigned to folder and robot
+   get-by-id                            Gets a single machine based on its id.
+   get-runtimes-for-folder-by-folderid  Gets runtimes for the specified folder
+   patch-by-id                          Partially updates a machine.
+   post                                 Creates a new machine.
+   put-by-id                            Edits a machine based on its key.

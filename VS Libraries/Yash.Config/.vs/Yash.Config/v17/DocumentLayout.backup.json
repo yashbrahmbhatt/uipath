@@ -1,0 +1,435 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\settings\\generateconfigclassessettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:settings\\generateconfigclassessettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\wizards\\generateconfigclasseswizard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:wizards\\generateconfigclasseswizard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\registermetadata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:registermetadata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\yash.config.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:yash.config.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\helpers\\confighelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:helpers\\confighelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\helpers\\excelhelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:helpers\\excelhelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\models\\typeparsers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:models\\typeparsers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\helpers\\filediagloghelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:helpers\\filediagloghelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\models\\configfile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:models\\configfile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\settings\\resources.resx||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:settings\\resources.resx||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\helpers\\taskhelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:helpers\\taskhelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\activities\\loadconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:activities\\loadconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\activities\\viewmodels\\loadconfigviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:activities\\viewmodels\\loadconfigviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\models\\mappingfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:models\\mappingfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\models\\config.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:models\\config.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\models\\configsettingitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:models\\configsettingitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\models\\configfileitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:models\\configfileitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\models\\configassetitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:models\\configassetitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\helpers\\inputboxhelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:helpers\\inputboxhelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\models\\configfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:models\\configfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\helpers\\loghelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:helpers\\loghelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\activities\\resources.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:activities\\resources.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|c:\\users\\eyash\\uipath\\wizard\\yash.config.wizard\\activities\\activitiesmetadata.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}|Yash.Config.csproj|solutionrelative:activities\\activitiesmetadata.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\eyash\\.nuget\\packages\\uipath.activities.api\\24.10.1\\build\\uipath.activities.api.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TypeParsers.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\TypeParsers.cs",
+              "RelativeDocumentMoniker": "Models\\TypeParsers.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\TypeParsers.cs",
+              "RelativeToolTip": "Models\\TypeParsers.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAAAFQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T17:42:41.946Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ExcelHelpers.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Helpers\\ExcelHelpers.cs",
+              "RelativeDocumentMoniker": "Helpers\\ExcelHelpers.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Helpers\\ExcelHelpers.cs",
+              "RelativeToolTip": "Helpers\\ExcelHelpers.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAAwEoAAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T17:39:25.653Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GenerateConfigClassesSettings.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Settings\\GenerateConfigClassesSettings.cs",
+              "RelativeDocumentMoniker": "Settings\\GenerateConfigClassesSettings.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Settings\\GenerateConfigClassesSettings.cs",
+              "RelativeToolTip": "Settings\\GenerateConfigClassesSettings.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAADgv0MAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T15:55:47.39Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ConfigHelpers.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Helpers\\ConfigHelpers.cs",
+              "RelativeDocumentMoniker": "Helpers\\ConfigHelpers.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Helpers\\ConfigHelpers.cs",
+              "RelativeToolTip": "Helpers\\ConfigHelpers.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAmwCIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T15:36:47.935Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ConfigFile.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\ConfigFile.cs",
+              "RelativeDocumentMoniker": "Models\\ConfigFile.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\ConfigFile.cs",
+              "RelativeToolTip": "Models\\ConfigFile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T12:01:58.107Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GenerateConfigClassesWizard.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Wizards\\GenerateConfigClassesWizard.cs",
+              "RelativeDocumentMoniker": "Wizards\\GenerateConfigClassesWizard.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Wizards\\GenerateConfigClassesWizard.cs*",
+              "RelativeToolTip": "Wizards\\GenerateConfigClassesWizard.cs*",
+              "ViewState": "AgIAACoAAAAAAAAAAAASwDoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T11:43:35.092Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "RegisterMetadata.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\RegisterMetadata.cs",
+              "RelativeDocumentMoniker": "RegisterMetadata.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\RegisterMetadata.cs",
+              "RelativeToolTip": "RegisterMetadata.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAzwCIAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T11:51:03.568Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Yash.Config.csproj",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Yash.Config.csproj",
+              "RelativeDocumentMoniker": "Yash.Config.csproj",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Yash.Config.csproj",
+              "RelativeToolTip": "Yash.Config.csproj",
+              "ViewState": "AgIAADkAAAAAAAAAAAAAAEoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-07-23T22:55:31.491Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Resources.resx",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Settings\\Resources.resx",
+              "RelativeDocumentMoniker": "Settings\\Resources.resx",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Settings\\Resources.resx",
+              "RelativeToolTip": "Settings\\Resources.resx",
+              "ViewState": "AgIAADkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-07-24T16:42:15.671Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "FileDiaglogHelpers.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Helpers\\FileDiaglogHelpers.cs",
+              "RelativeDocumentMoniker": "Helpers\\FileDiaglogHelpers.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Helpers\\FileDiaglogHelpers.cs",
+              "RelativeToolTip": "Helpers\\FileDiaglogHelpers.cs",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAAwEkAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T11:48:33.889Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "TaskHelpers.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Helpers\\TaskHelpers.cs",
+              "RelativeDocumentMoniker": "Helpers\\TaskHelpers.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Helpers\\TaskHelpers.cs",
+              "RelativeToolTip": "Helpers\\TaskHelpers.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T15:46:39.669Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "MappingFactory.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\MappingFactory.cs",
+              "RelativeDocumentMoniker": "Models\\MappingFactory.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\MappingFactory.cs",
+              "RelativeToolTip": "Models\\MappingFactory.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T15:36:13.14Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ConfigSettingItem.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\ConfigSettingItem.cs",
+              "RelativeDocumentMoniker": "Models\\ConfigSettingItem.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\ConfigSettingItem.cs",
+              "RelativeToolTip": "Models\\ConfigSettingItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T15:03:52.82Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ConfigFileItem.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\ConfigFileItem.cs",
+              "RelativeDocumentMoniker": "Models\\ConfigFileItem.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\ConfigFileItem.cs",
+              "RelativeToolTip": "Models\\ConfigFileItem.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAwC0AAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T15:03:29.166Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "ConfigAssetItem.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\ConfigAssetItem.cs",
+              "RelativeDocumentMoniker": "Models\\ConfigAssetItem.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\ConfigAssetItem.cs",
+              "RelativeToolTip": "Models\\ConfigAssetItem.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAAwB4AAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T15:03:07.89Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "LoadConfig.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Activities\\LoadConfig.cs",
+              "RelativeDocumentMoniker": "Activities\\LoadConfig.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Activities\\LoadConfig.cs",
+              "RelativeToolTip": "Activities\\LoadConfig.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAA3wEQAAAB0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-23T22:52:41.071Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "LoadConfigViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Activities\\ViewModels\\LoadConfigViewModel.cs",
+              "RelativeDocumentMoniker": "Activities\\ViewModels\\LoadConfigViewModel.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Activities\\ViewModels\\LoadConfigViewModel.cs",
+              "RelativeToolTip": "Activities\\ViewModels\\LoadConfigViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEgAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-23T22:51:53.512Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "InputBoxHelpers.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Helpers\\InputBoxHelpers.cs",
+              "RelativeDocumentMoniker": "Helpers\\InputBoxHelpers.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Helpers\\InputBoxHelpers.cs",
+              "RelativeToolTip": "Helpers\\InputBoxHelpers.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T12:07:39.924Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Config.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\Config.cs",
+              "RelativeDocumentMoniker": "Models\\Config.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\Config.cs",
+              "RelativeToolTip": "Models\\Config.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAxwBkAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-23T23:40:22.06Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ConfigFactory.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\ConfigFactory.cs",
+              "RelativeDocumentMoniker": "Models\\ConfigFactory.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Models\\ConfigFactory.cs",
+              "RelativeToolTip": "Models\\ConfigFactory.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAAABoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-23T23:44:05.97Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "LogHelpers.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Helpers\\LogHelpers.cs",
+              "RelativeDocumentMoniker": "Helpers\\LogHelpers.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Helpers\\LogHelpers.cs",
+              "RelativeToolTip": "Helpers\\LogHelpers.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-23T23:44:04.039Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Resources.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Activities\\Resources.Designer.cs",
+              "RelativeDocumentMoniker": "Activities\\Resources.Designer.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Activities\\Resources.Designer.cs",
+              "RelativeToolTip": "Activities\\Resources.Designer.cs",
+              "ViewState": "AgIAADsAAAAAAAAAAAAgwD8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-23T23:30:34.554Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ActivitiesMetadata.json",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Activities\\ActivitiesMetadata.json",
+              "RelativeDocumentMoniker": "Activities\\ActivitiesMetadata.json",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\Wizard\\Yash.Config.Wizard\\Activities\\ActivitiesMetadata.json",
+              "RelativeToolTip": "Activities\\ActivitiesMetadata.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-23T22:54:13.605Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "uipath.activities.api.targets",
+              "DocumentMoniker": "C:\\Users\\eyash\\.nuget\\packages\\uipath.activities.api\\24.10.1\\build\\uipath.activities.api.targets",
+              "RelativeDocumentMoniker": "..\\..\\..\\.nuget\\packages\\uipath.activities.api\\24.10.1\\build\\uipath.activities.api.targets",
+              "ToolTip": "C:\\Users\\eyash\\.nuget\\packages\\uipath.activities.api\\24.10.1\\build\\uipath.activities.api.targets [Read Only]",
+              "RelativeToolTip": "..\\..\\..\\.nuget\\packages\\uipath.activities.api\\24.10.1\\build\\uipath.activities.api.targets [Read Only]",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2025-07-21T21:24:49.225Z",
+              "EditorCaption": " [Read Only]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

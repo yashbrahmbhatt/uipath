@@ -1,0 +1,31 @@
+Based on the banking transaction process definition, here is a solution design using UiPath Automation Cloud platform with Robots and Triggers:
+
+Robots:
+1. Dispatcher Robot
+   - Type: Dispatcher
+   - Description: Logs into the banking website using provided credentials, navigates to each account, and downloads all transactions. Pushes the transactions as individual queue items into a transactions queue for classification processing.
+   - Purpose: Single source of truth dispatching units of work to the queue. Exception handling with alerts on failure.
+
+2. Transaction Classification Robot
+   - Type: SingleTransactionPerformer or MultiTransactionPerformer (prefer MultiTransactionPerformer for throughput)
+   - Description: Retrieves one transaction item from the transaction queue, classifies the transaction into the appropriate bucket, executes the SQL query to save the classified transaction into the database, then marks the transaction complete. Exception handling isolated to transaction processing, with retry and alerts.
+   - Purpose: Scalable robot to process multiple transactions in parallel, ensuring classification and db update.
+
+Triggers:
+1. Time Trigger
+   - Type: Time
+   - Description: Schedule daily or hourly run that triggers the Dispatcher Robot to download the latest transactions.
+   - Associated Process: Dispatcher
+
+2. Queue Trigger
+   - Type: Queue
+   - Description: Trigger that fires whenever new items are added to the transactions queue, triggering one or more Transaction Classification Robots to process asynchronously.
+   - Associated Process: Transaction Classification Robot (SingleTransactionPerformer or MultiTransactionPerformer)
+
+Summary:
+- Dispatcher Robot downloads transaction data and dispatches queue items once per schedule.
+- Transaction Classification Robot(s) process each transaction independently from the queue.
+- Scheduler triggers the dispatcher.
+- Queue trigger automatically starts classification robots on incoming queue items.
+
+This design leverages UiPath’s best practices such as separating dispatch and perform roles, using queues for reliable transaction processing, and scaling performance through multiple consumption robots.

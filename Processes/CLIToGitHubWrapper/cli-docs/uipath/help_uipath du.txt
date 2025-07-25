@@ -1,0 +1,15 @@
+NAME:
+   uipath du - Document Understanding
+
+USAGE:
+   uipath du
+
+DESCRIPTION:
+   Document Understanding uses a combination of robotic process automation (RPA) and AI to automatically process your documents.
+
+COMMANDS:
+   classification  Sorting documents into categories using automation
+   digitization    Extracting Document Object Model (DOM) and text
+   discovery       Discover projects and resources
+   extraction      Extracting and processing data from documents
+   validation      Ensuring accuracy of extracted data

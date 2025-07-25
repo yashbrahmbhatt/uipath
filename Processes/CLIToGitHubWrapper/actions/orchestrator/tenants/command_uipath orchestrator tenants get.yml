@@ -1,0 +1,87 @@
+name: uipath-orchestrator-tenants-get
+description: |
+  OAuth required scopes: OR.Administration or OR.Administration.Read.
+
+  Host only. Requires authentication.
+
+on:
+  workflow_call:
+    inputs:
+      count:
+        description: Indicates whether the total count of items within a collection are returned in the result.
+        required: false
+        default: 'false'
+        type: boolean
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+      filter:
+        description: Restricts the set of items returned. The maximum number of expressions is 100.
+        required: false
+        type: string
+      orderby:
+        description: Specifies the order in which items are returned. The maximum number of expressions is 5.
+        required: false
+        type: string
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+      skip:
+        description: Excludes the specified number of items of the queried collection from the result.
+        required: false
+        type: integer
+      skip_last_login_time:
+        description: Skips computation of last login time for an improved performance. Default is false.
+        required: false
+        default: 'false'
+        type: boolean
+      top:
+        description: Limits the number of items returned from a collection. The maximum value is 1000.
+        required: false
+        type: integer
+
+jobs:
+  run-uipath-orchestrator-tenants-get:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator tenants get command
+        shell: pwsh
+        run: |
+          $args = @("orchestrator", "tenants", "get")
+
+          if (${{ inputs.count }} -eq 'true') {
+            $args += "--count"
+          }
+          if (${{ inputs.expand }}) {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+          if (${{ inputs.filter }}) {
+            $args += "--filter"
+            $args += "${{ inputs.filter }}"
+          }
+          if (${{ inputs.orderby }}) {
+            $args += "--orderby"
+            $args += "${{ inputs.orderby }}"
+          }
+          if (${{ inputs.select }}) {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+          if (${{ inputs.skip }} -ne $null) {
+            $args += "--skip"
+            $args += "${{ inputs.skip }}"
+          }
+          if (${{ inputs.skip_last_login_time }} -eq 'true') {
+            $args += "--skip-last-login-time"
+          }
+          if (${{ inputs.top }} -ne $null) {
+            $args += "--top"
+            $args += "${{ inputs.top }}"
+          }
+
+          # Execute the CLI command with constructed arguments
+          Write-Host "Running: uipath $($args -join ' ')"
+          uipath $args

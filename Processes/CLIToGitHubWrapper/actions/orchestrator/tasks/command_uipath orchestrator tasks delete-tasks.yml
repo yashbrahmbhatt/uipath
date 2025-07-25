@@ -1,0 +1,116 @@
+name: uipath-orchestrator-tasks-delete-tasks
+description: |
+  NAME:
+     uipath orchestrator tasks delete-tasks - Deletes the tasks.
+
+  USAGE:
+     uipath orchestrator tasks delete-tasks [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Requires authentication.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --task-ids integer,integer,... (required)
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+  
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      task_ids:
+        description: 'Comma-separated list of Task IDs to delete (required)'
+        required: true
+        type: string
+      count:
+        description: 'Whether to return total count of items within a collection'
+        required: false
+        default: 'false'
+        type: boolean
+      expand:
+        description: 'Related entities to include inline (max depth 2)'
+        required: false
+        type: string
+      filter:
+        description: 'Filter expression to restrict items returned (max 100 expressions)'
+        required: false
+        type: string
+      orderby:
+        description: 'Order by expression (max 5 expressions)'
+        required: false
+        type: string
+      select:
+        description: 'Limits properties returned in the result'
+        required: false
+        type: string
+    secrets:
+      ORCHESTRATOR_CLI_TOKEN:
+        description: 'Authentication token required by UiPath Orchestrator CLI'
+
+jobs:
+  delete-tasks:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator tasks delete-tasks
+        shell: pwsh
+        env:
+          ORCHESTRATOR_CLI_TOKEN: ${{ secrets.ORCHESTRATOR_CLI_TOKEN }}
+        run: |
+          # Build the arguments array for the CLI command
+          $args = @('orchestrator', 'tasks', 'delete-tasks')
+
+          # Required parameters
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          $args += "--task-ids"
+          $args += "${{ inputs.task_ids }}"
+
+          # Optional boolean parameter: add only if true
+          if (${{ inputs.count }}) {
+            $args += "--count"
+            $args += "true"
+          }
+
+          # Optional string parameters: add if not empty or null
+          if (-not [string]::IsNullOrEmpty("${{ inputs.expand }}")) {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+          if (-not [string]::IsNullOrEmpty("${{ inputs.filter }}")) {
+            $args += "--filter"
+            $args += "${{ inputs.filter }}"
+          }
+          if (-not [string]::IsNullOrEmpty("${{ inputs.orderby }}")) {
+            $args += "--orderby"
+            $args += "${{ inputs.orderby }}"
+          }
+          if (-not [string]::IsNullOrEmpty("${{ inputs.select }}")) {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Execute the CLI command with constructed arguments
+          # Assumes 'uipath' CLI is accessible in the PATH and authentication via token env variable
+          uipath @args | Write-Host

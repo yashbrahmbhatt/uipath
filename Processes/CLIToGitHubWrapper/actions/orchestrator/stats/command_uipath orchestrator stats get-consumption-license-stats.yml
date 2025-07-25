@@ -1,0 +1,48 @@
+name: 'UiPath Orchestrator - Get Consumption License Stats'
+description: |
+  OAuth required scopes: OR.Monitoring or OR.Monitoring.Read.
+
+  Required permissions: License.View.
+
+  Gets the consumption licensing usage statistics.
+
+on:
+  workflow_call:
+    inputs:
+      days:
+        description: 'Number of reported license usage days'
+        required: false
+        type: integer
+        default: 0
+      tenant_id:
+        description: "The Tenant's Id - can be used when authenticated as Host"
+        required: false
+        type: integer
+        default: 0
+
+jobs:
+  get-consumption-license-stats:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # optionally, outputs could be defined if needed - task does not specify this
+    steps:
+      - name: Run get-consumption-license-stats command
+        shell: pwsh
+        run: |
+          # Initialize argument array
+          $args = @()
+
+          # Add --days argument if specified and greater than 0
+          if (${{ inputs.days }} -gt 0) {
+            $args += '--days'
+            $args += ${{ inputs.days }}
+          }
+
+          # Add --tenant-id argument if specified and greater than 0
+          if (${{ inputs.tenant_id }} -gt 0) {
+            $args += '--tenant-id'
+            $args += ${{ inputs.tenant_id }}
+          }
+
+          # Execute the CLI command with constructed arguments
+          uipath orchestrator stats get-consumption-license-stats @args

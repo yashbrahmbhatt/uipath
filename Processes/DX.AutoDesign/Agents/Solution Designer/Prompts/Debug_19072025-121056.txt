@@ -1,0 +1,91 @@
+{
+  "Processes": [
+    {
+      "Name": "TransactionDispatch",
+      "Type": "Dispatcher",
+      "Description": "Logs into banking website, downloads transactions for all accounts, and dispatches each transaction as a separate unit of work to the processing queue.",
+      "Steps": [
+        {
+          "Name": "InitializeSettings",
+          "Description": "Load credentials and connection info from Orchestrator assets.",
+          "Type": "DataManipulation",
+          "DownstreamSteps": {
+            "Next": "LoginBankWebsite"
+          },
+          "UpstreamSteps": []
+        },
+        {
+          "Name": "LoginBankWebsite",
+          "Description": "Perform web GUI interaction to login to banking website using stored credentials.",
+          "Type": "WebGUIInteraction",
+          "DownstreamSteps": {
+            "Next": "DownloadTransactions"
+          },
+          "UpstreamSteps": ["InitializeSettings"]
+        },
+        {
+          "Name": "DownloadTransactions",
+          "Description": "Download transactions for all available accounts and prepare transaction list.",
+          "Type": "WebGUIInteraction",
+          "DownstreamSteps": {
+            "Next": "DispatchTransactions"
+          },
+          "UpstreamSteps": ["LoginBankWebsite"]
+        },
+        {
+          "Name": "DispatchTransactions",
+          "Description": "Enqueue each downloaded transaction as a unit of work into the processing queue.",
+          "Type": "UiPathPlatformInteraction",
+          "DownstreamSteps": {},
+          "UpstreamSteps": ["DownloadTransactions"]
+        }
+      ]
+    },
+    {
+      "Name": "TransactionProcessing",
+      "Type": "SingleTransactionPerformer",
+      "Description": "Processes individual transaction items: classifies each transaction and saves classified data to the database.",
+      "Steps": [
+        {
+          "Name": "InitializeSettings",
+          "Description": "Retrieve database connection string and any classification parameters from Orchestrator assets.",
+          "Type": "DataManipulation",
+          "DownstreamSteps": {
+            "Next": "ClassifyTransaction"
+          },
+          "UpstreamSteps": []
+        },
+        {
+          "Name": "ClassifyTransaction",
+          "Description": "Apply classification logic to categorize the transaction into a designated bucket.",
+          "Type": "DataManipulation",
+          "DownstreamSteps": {
+            "Next": "SaveToDatabase"
+          },
+          "UpstreamSteps": ["InitializeSettings"]
+        },
+        {
+          "Name": "SaveToDatabase",
+          "Description": "Execute SQL query to save the classified transaction data into the database.",
+          "Type": "DatabaseInteraction",
+          "DownstreamSteps": {},
+          "UpstreamSteps": ["ClassifyTransaction"]
+        }
+      ]
+    }
+  ],
+  "Triggers": [
+    {
+      "Name": "StartTransactionDispatchSchedule",
+      "Type": "Time",
+      "Description": "Scheduled trigger that starts the TransactionDispatch process every night to retrieve latest transactions.",
+      "ProcessName": "TransactionDispatch"
+    },
+    {
+      "Name": "TransactionQueueTrigger",
+      "Type": "Queue",
+      "Description": "Queue trigger that starts the TransactionProcessing process whenever a new transaction item is added to the transactions processing queue.",
+      "ProcessName": "TransactionProcessing"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+NAME:
+   uipath orchestrator execution-media - Media from a process run
+
+USAGE:
+   uipath orchestrator execution-media
+
+DESCRIPTION:
+   Storing screenshots of RPA executions, so that developers, administrators, or process stakeholders could see what actions a robot took during execution.
+
+COMMANDS:
+   delete-media-by-job-id    Deletes the execution media for the given job key.
+   download-media-by-job-id  Downloads execution media by job id
+   get                       
+   get-by-id                 Get by id

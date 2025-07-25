@@ -1,0 +1,13 @@
+NAME:
+   uipath orchestrator maintenance - Maintenance mode
+
+USAGE:
+   uipath orchestrator maintenance
+
+DESCRIPTION:
+   Maintenance mode provides a simplified solution for stopping all Orchestrator activity.
+
+COMMANDS:
+   end    Ends a maintenance window
+   get    Gets the host admin logs.
+   start  Starts a maintenance window

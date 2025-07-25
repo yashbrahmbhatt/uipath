@@ -1,0 +1,22 @@
+NAME:
+   uipath orchestrator business-rules get-folders-for-business-rule-by-id - Get all accesible folders where the business rule is shared, and the total count of folders where it is shared (including unaccessible folders).
+
+USAGE:
+   uipath orchestrator business-rules get-folders-for-business-rule-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.BusinessRules or OR.BusinessRules.Read.
+
+   Requires authentication.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --id string (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

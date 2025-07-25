@@ -1,0 +1,111 @@
+name: 'uipath-orchestrator-users-validate-by-userids'
+
+description: |
+  NAME:
+     uipath orchestrator users validate-by-userids - Validates if the robots for the given users are busy
+
+  USAGE:
+     uipath orchestrator users validate-by-userids [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Read.
+
+     Required permissions: Users.View.
+
+  OPTIONS:
+     --user-ids integer,integer,... (required)
+        The Id of the users to check
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      user_ids:
+        description: 'The Id of the users to check (comma separated integers)'
+        required: true
+        type: string
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        default: 'false'
+        type: boolean
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        default: ''
+        type: string
+      filter:
+        description: 'Restricts the set of items returned. The maximum number of expressions is 100.'
+        required: false
+        default: ''
+        type: string
+      orderby:
+        description: 'Specifies the order in which items are returned. The maximum number of expressions is 5.'
+        required: false
+        default: ''
+        type: string
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  validate_by_userids:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator users validate-by-userids
+        shell: pwsh
+        run: |
+          # Initialize an array to hold command arguments
+          $args = @('orchestrator','users','validate-by-userids')
+
+          # Required parameter --user-ids
+          $args += '--user-ids'
+          $args += "${{ inputs.user_ids }}"
+
+          # Optional --count boolean parameter
+          if (${{ inputs.count }} -eq $true) {
+            $args += '--count'
+            $args += 'true'
+          } elseif (${{ inputs.count }} -eq $false) {
+            $args += '--count'
+            $args += 'false'
+          }
+
+          # Optional string parameters, add only if not empty
+          if (![string]::IsNullOrWhiteSpace("${{ inputs.expand }}")) {
+            $args += '--expand'
+            $args += "${{ inputs.expand }}"
+          }
+          if (![string]::IsNullOrWhiteSpace("${{ inputs.filter }}")) {
+            $args += '--filter'
+            $args += "${{ inputs.filter }}"
+          }
+          if (![string]::IsNullOrWhiteSpace("${{ inputs.orderby }}")) {
+            $args += '--orderby'
+            $args += "${{ inputs.orderby }}"
+          }
+          if (![string]::IsNullOrWhiteSpace("${{ inputs.select }}")) {
+            $args += '--select'
+            $args += "${{ inputs.select }}"
+          }
+
+          # Join the arguments safely and run the CLI command
+          $command = 'uipath ' + ($args | ForEach-Object { if ($_ -match '\s') { """$_""" } else { $_ } } | Out-String).Trim()
+          Write-Host "Running command: $command"
+          iex $command

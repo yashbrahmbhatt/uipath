@@ -1,0 +1,23 @@
+NAME:
+   uipath identity robot-account update-robot-account - Updates a robot account information.
+
+USAGE:
+   uipath identity robot-account update-robot-account [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: PM.RobotAccount or PM.RobotAccount.Write.
+
+OPTIONS:
+   --robot-account-id string (required)
+
+   --display-name string
+      The friendly name of the robot account.
+
+   --group-ids-to-add string,string,...
+      IDs of the groups this robot account should be added to.
+
+   --group-ids-to-remove string,string,...
+      IDs of the groups this robot account should be removed from.
+
+   --partition-global-id string
+      Robot account partition identifier

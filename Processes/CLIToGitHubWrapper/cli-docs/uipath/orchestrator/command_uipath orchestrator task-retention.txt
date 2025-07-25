@@ -1,0 +1,14 @@
+NAME:
+   uipath orchestrator task-retention - Rules for retaining task data
+
+USAGE:
+   uipath orchestrator task-retention
+
+DESCRIPTION:
+   Task retention is a set of rules that control how long task data is kept before being deleted.
+
+COMMANDS:
+   delete-by-id  
+   get           
+   get-by-id     
+   put-by-id

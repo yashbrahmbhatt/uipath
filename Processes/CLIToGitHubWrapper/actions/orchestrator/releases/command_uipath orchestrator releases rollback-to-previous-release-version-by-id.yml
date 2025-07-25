@@ -1,0 +1,99 @@
+name: Rollback to Previous Release Version by ID
+description: |-
+  NAME:
+     uipath orchestrator releases rollback-to-previous-release-version-by-id - Reverts the package versions for the given release to the last version it had before the current one.
+
+  USAGE:
+     uipath orchestrator releases rollback-to-previous-release-version-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Execution or OR.Execution.Write.
+
+     Required permissions: Processes.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --merge-package-tags boolean (default: false)
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      key:
+        description: 'Key identifier'
+        required: true
+        type: number
+      expand:
+        description: 'Related entities to be represented inline (max depth 2)'
+        required: false
+        type: string
+        default: ''
+      merge_package_tags:
+        description: 'Whether to merge package tags'
+        required: false
+        type: boolean
+        default: false
+      select:
+        description: 'Limits the properties returned in the result'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  rollback-to-previous-release-version-by-id:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Execute rollback-to-previous-release-version-by-id command
+        shell: pwsh
+        run: |
+          # Initialize an argument list for the CLI command
+          $args = @('orchestrator', 'releases', 'rollback-to-previous-release-version-by-id')
+
+          # Add required integer arguments with their respective flags
+          $args += '--folder-id'
+          $args += "$(${{ inputs.folder_id }})"
+
+          $args += '--key'
+          $args += "$(${{ inputs.key }})"
+
+          # Optionally add --expand if provided and non-empty
+          if (![string]::IsNullOrEmpty("${{ inputs.expand }}")) {
+            $args += '--expand'
+            $args += "${{ inputs.expand }}"
+          }
+
+          # Add --merge-package-tags flag only if true (boolean)
+          if (${{ inputs.merge_package_tags }}) {
+            $args += '--merge-package-tags'
+            $args += 'true'
+          }
+
+          # Optionally add --select if provided and non-empty
+          if (![string]::IsNullOrEmpty("${{ inputs.select }}")) {
+            $args += '--select'
+            $args += "${{ inputs.select }}"
+          }
+
+          # Build the full command string, quoting each argument properly
+          $escapedArgs = $args | ForEach-Object { '"{0}"' -f $_ }
+          $command = 'uipath ' + ($escapedArgs -join ' ')
+
+          Write-Host "Executing command: $command"
+
+          # Invoke the CLI command
+          Invoke-Expression $command

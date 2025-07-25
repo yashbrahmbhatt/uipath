@@ -1,0 +1,21 @@
+NAME:
+   uipath orchestrator test-automation get-assertion-screenshot - Get the screenshot for the specified test case assertion.
+
+USAGE:
+   uipath orchestrator test-automation get-assertion-screenshot [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Read.
+
+   Required permissions: TestSetExecutions.View.
+
+   Responses:
+   200 OK
+   404 If the test case assertion is not found or the screenshot storage location is not found
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --test-case-assertion-id integer
+      Id of the test case assertion

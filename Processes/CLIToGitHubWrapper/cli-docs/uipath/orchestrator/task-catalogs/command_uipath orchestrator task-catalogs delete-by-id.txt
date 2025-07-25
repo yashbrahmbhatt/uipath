@@ -1,0 +1,17 @@
+NAME:
+   uipath orchestrator task-catalogs delete-by-id - Deletes Task Catalog.
+
+USAGE:
+   uipath orchestrator task-catalogs delete-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+   Required permissions: TaskCatalogs.Delete.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      Id of the catalog to be deleted

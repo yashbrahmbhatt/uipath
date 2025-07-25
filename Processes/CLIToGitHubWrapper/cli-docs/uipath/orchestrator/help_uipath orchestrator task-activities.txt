@@ -1,0 +1,11 @@
+NAME:
+   uipath orchestrator task-activities - Actions comprising a task
+
+USAGE:
+   uipath orchestrator task-activities
+
+DESCRIPTION:
+   Task activities are the individual actions or steps that make up a task workflow.
+
+COMMANDS:
+   get-by-task-id  Gets Task Activities for a Task

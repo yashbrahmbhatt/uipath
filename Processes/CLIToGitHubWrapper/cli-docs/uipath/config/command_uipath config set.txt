@@ -1,0 +1,27 @@
+NAME:
+   uipath config set - Set config parameters
+
+USAGE:
+   uipath config set [command options]
+
+DESCRIPTION:
+   Set config parameters
+
+OPTIONS:
+   --key value  The key
+
+      Allowed values:
+      - serviceVersion
+      - organization
+      - tenant
+      - uri
+      - insecure
+      - debug
+      - auth.grantType
+      - auth.scopes
+      - auth.uri
+      - auth.properties.<key>
+      - header.<key>
+      - parameter.<key>
+   --value value    The value to set
+   --profile value  Profile to configure (default: "default") [%UIPATH_PROFILE%]

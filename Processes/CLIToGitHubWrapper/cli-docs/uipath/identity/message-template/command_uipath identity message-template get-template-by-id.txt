@@ -1,0 +1,8 @@
+NAME:
+   uipath identity message-template get-template-by-id - Get a message template by Id.
+
+USAGE:
+   uipath identity message-template get-template-by-id [command options] [arguments...]
+
+OPTIONS:
+   --template-id integer (required)

@@ -1,0 +1,71 @@
+name: uipath-orchestrator-task-catalogs-get-by-id
+description: |
+  NAME:
+     uipath orchestrator task-catalogs get-by-id - Gets a Task Catalog item by Id.
+
+  USAGE:
+     uipath orchestrator task-catalogs get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+     Required permissions: TaskCatalogs.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+        id of the object
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+  
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      key:
+        description: 'id of the object (required)'
+        required: true
+        type: number
+      expand:
+        description: 'Related entities to be represented inline (optional)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result (optional)'
+        required: false
+        type: string
+        default: ''
+jobs:
+  get-task-catalog-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator task-catalogs get-by-id command
+        shell: pwsh
+        run: |
+          # Build arguments array for the CLI command
+          $args = @('orchestrator', 'task-catalogs', 'get-by-id')
+          
+          # Required arguments
+          $args += @('--folder-id', "${{ inputs.folder_id }}")
+          $args += @('--key', "${{ inputs.key }}")
+          
+          # Optional arguments, add if not empty
+          if ('${{ inputs.expand }}' -ne '') {
+              $args += @('--expand', '${{ inputs.expand }}')
+          }
+          if ('${{ inputs.select }}' -ne '') {
+              $args += @('--select', '${{ inputs.select }}')
+          }
+
+          # Execute the CLI command
+          uipath @args

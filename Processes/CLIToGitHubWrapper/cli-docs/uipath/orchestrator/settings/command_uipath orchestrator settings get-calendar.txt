@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator settings get-calendar - Gets custom calendar, with excluded dates in UTC, for current tenant
+
+USAGE:
+   uipath orchestrator settings get-calendar [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+   Required permissions: Settings.View.
+   DEPRECATED: 
+   This API is deprecated. Please do not use it any longer. Use /odata/Calendars instead.
+   Please refer to https://docs.uipath.com/orchestrator/reference
+
+OPTIONS:
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

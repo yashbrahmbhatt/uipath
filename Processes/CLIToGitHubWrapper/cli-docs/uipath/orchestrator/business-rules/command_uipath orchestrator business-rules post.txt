@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator business-rules post - Create Business Rule
+
+USAGE:
+   uipath orchestrator business-rules post [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.BusinessRules or OR.BusinessRules.Write.
+
+   Required permissions: (BusinessRules.Create).
+
+OPTIONS:
+   --business-rule string (required)
+      The BusinessRuleDto object
+
+   --file binary (required)
+
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id

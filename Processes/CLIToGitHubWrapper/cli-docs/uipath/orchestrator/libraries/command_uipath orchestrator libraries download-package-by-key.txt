@@ -1,0 +1,15 @@
+NAME:
+   uipath orchestrator libraries download-package-by-key - Downloads the .nupkg file of a Package.
+
+USAGE:
+   uipath orchestrator libraries download-package-by-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+   Required permissions: Libraries.View.
+
+OPTIONS:
+   --key string (required)
+
+   --feed-id string

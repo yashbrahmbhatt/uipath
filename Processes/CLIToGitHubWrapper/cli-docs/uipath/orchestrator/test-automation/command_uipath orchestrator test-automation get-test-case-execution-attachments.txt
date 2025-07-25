@@ -1,0 +1,24 @@
+NAME:
+   uipath orchestrator test-automation get-test-case-execution-attachments - This will list all test case execution attachments filtered by identifier and tags
+
+USAGE:
+   uipath orchestrator test-automation get-test-case-execution-attachments [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Write.
+
+   Required permissions: TestSetExecutions.View.
+
+   Responses:
+   200 OK
+   404 If there is no test case execution for the specified identifier
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --job-key string
+
+   --tags string,string,...
+
+   --test-case-execution-id integer

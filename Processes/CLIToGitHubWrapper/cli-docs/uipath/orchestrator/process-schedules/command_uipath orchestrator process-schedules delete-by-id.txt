@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator process-schedules delete-by-id - Deletes a process schedule.
+
+USAGE:
+   uipath orchestrator process-schedules delete-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+   Required permissions: Schedules.Delete.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)

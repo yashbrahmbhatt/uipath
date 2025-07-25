@@ -1,0 +1,15 @@
+NAME:
+   uipath orchestrator libraries delete-by-id - Deletes a package.
+
+USAGE:
+   uipath orchestrator libraries delete-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Write.
+
+   Required permissions: Libraries.Delete.
+
+OPTIONS:
+   --key string (required)
+
+   --feed-id string

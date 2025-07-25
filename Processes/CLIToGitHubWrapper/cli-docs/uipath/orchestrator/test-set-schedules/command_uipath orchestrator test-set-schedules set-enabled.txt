@@ -1,0 +1,24 @@
+NAME:
+   uipath orchestrator test-set-schedules set-enabled - Enables / disables a list of test set execution schedules.
+
+USAGE:
+   uipath orchestrator test-set-schedules set-enabled [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSetSchedules or OR.TestSetSchedules.Write.
+
+   Required permissions: TestSetSchedules.Edit.
+
+OPTIONS:
+   --enabled boolean (required)
+
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --test-set-schedule-ids integer,integer,... (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

@@ -1,0 +1,129 @@
+NAME:
+   uipath orchestrator robots post - Creates a new robot.
+
+USAGE:
+   uipath orchestrator robots post [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+   Required permissions: (Robots.Create - Floating Robot) and (Robots.Create and Machines.View - Standard Robot).
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --hosting-type string (required)
+      The Robot hosting type (Standard / Floating).
+
+      Allowed values:
+      - Standard
+      - Floating
+
+   --name string (required)
+      A custom name for the robot.
+
+   --type string (required)
+      The Robot type.
+
+      Allowed values:
+      - NonProduction
+      - Attended
+      - Unattended
+      - Development
+      - Studio
+      - RpaDeveloper
+      - StudioX
+      - CitizenDeveloper
+      - Headless
+      - StudioPro
+      - RpaDeveloperPro
+      - TestAutomation
+      - AutomationCloud
+      - Serverless
+      - AutomationKit
+      - ServerlessTestAutomation
+      - AutomationCloudTestAutomation
+      - AttendedStudioWeb
+      - Hosting
+      - AssistantWeb
+      - ProcessOrchestration
+      - AgentService
+
+   --creation-time string
+
+   --creator-user-id integer
+
+   --credential-store-id integer
+      The Credential Store used to store the password.
+
+   --credential-type string
+      The robot credentials type (Default/ SmartCard)
+
+      Allowed values:
+      - Default
+      - SmartCard
+      - NCipher
+      - SafeNet
+      - NoCredential
+
+   --description string
+      Used to add additional information about a robot in order to better identify it.
+
+   --enabled boolean
+      Specificies the state of the Robot (enabled/disabled) - a disabled robot cannot connect to Orchestrator
+
+   --environments object (multiple)
+      The collection of environments the robot is part of.
+
+      Example:
+         Id=integer; Name=string; Robots[0].CreationTime=string; Robots[0].CreatorUserId=integer; Robots[0].CredentialStoreId=integer; Robots[0].CredentialType=string; Robots[0].Description=string; Robots[0].Enabled=boolean; Robots[0].Environments[0].Description=string; Robots[0].Environments[0].Type=string; Robots[0].ExternalName=string; Robots[0].HostingType=string; Robots[0].Id=integer; Robots[0].IsExternalLicensed=boolean; Robots[0].LastModificationTime=string; Robots[0].LastModifierUserId=integer; Robots[0].LicenseKey=string; Robots[0].LimitConcurrentExecution=boolean; Robots[0].MachineId=integer; Robots[0].MachineName=string; Robots[0].Name=string; Robots[0].Password=string; Robots[0].ProvisionType=string; Robots[0].RobotEnvironments=string; Robots[0].Type=string; Robots[0].UserId=integer; Robots[0].Username=string
+
+   --execution-settings object
+      A collection of key value pairs containing execution settings for this robot.
+
+   --external-name string
+      Contains the value of the key in the external store used to store the password.
+
+   --id integer
+
+   --is-external-licensed boolean
+      Flag to indicate if the robot uses an external license
+
+   --last-modification-time string
+
+   --last-modifier-user-id integer
+
+   --license-key string
+      The key is automatically generated from the server for the Robot machine.
+      <para />For the robot to work, the same key must exist on both the robot and Orchestrator.
+      <para />All robots on a machine must have the same license key in order to register correctly.
+
+   --limit-concurrent-execution boolean
+      Specifies if the robot can be used concurrently on multiple machines
+
+   --machine-id integer
+      The Id of the machine a Robot is hosted on
+
+   --machine-name string
+      The name of the machine a Robot is hosted on.
+
+   --password string
+      The Windows password associated with the machine username.
+
+   --provision-type string
+      The Robot provision type.
+
+      Allowed values:
+      - Manual
+      - Automatic
+
+   --robot-environments string
+      The comma separated textual representation of environment names the robot is part of.
+
+   --user-id integer
+      The associated user's Id.
+
+   --username string
+      The machine username. If the user is under a domain, you are required to also specify it in a DOMAIN\username format.
+      <para />Note: You must use short domain names, such as desktop\administrator and NOT desktop.local/administrator.

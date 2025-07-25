@@ -1,0 +1,12 @@
+NAME:
+   uipath orchestrator status - Current orchestrator status
+
+USAGE:
+   uipath orchestrator status
+
+DESCRIPTION:
+   Status represents the current state or progress of various components like jobs, robots, or queue items.
+
+COMMANDS:
+   get                       Returns whether the current endpoint should be serving traffic
+   verify-host-availibility

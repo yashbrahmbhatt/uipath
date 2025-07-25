@@ -1,0 +1,14 @@
+NAME:
+   uipath orchestrator queues - Storage for multiple work items
+
+USAGE:
+   uipath orchestrator queues
+
+DESCRIPTION:
+   Queues are used to store multiple items that need to be processed by robots.
+
+COMMANDS:
+   add-queue-item                Adds a new queue item.
+   bulk-add-queue-items          Bulk adds queue items
+   set-transaction-result-by-id  Sets the result of a transaction.
+   start-transaction             Starts a transaction.

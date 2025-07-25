@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator jobs - Specific instances of process execution
+
+USAGE:
+   uipath orchestrator jobs
+
+DESCRIPTION:
+   Job represent an execution of a process on the UiPath robots.
+
+COMMANDS:
+   export                       Requests a CSV export of filtered items.
+   get                          Gets Jobs.
+   get-by-id                    Gets a single job.
+   restart-job                  Restarts the specified job.
+   resume-job                   Resumes the specified job.
+   start-jobs                   Adds a new job and sets it in Pending state for each robot based on the input parameters and notifies the respective robots about the pending job.
+   stop-job-by-id               Cancels or terminates the specified job.
+   stop-jobs                    Cancels or terminates the specified jobs.
+   validate-dynamic-job         Validates the input which would start a job.
+   validate-existing-job-by-id  Validates an existing job.

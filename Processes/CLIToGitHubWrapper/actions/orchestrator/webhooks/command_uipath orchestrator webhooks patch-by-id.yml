@@ -1,0 +1,169 @@
+name: uipath-orchestrator-webhooks-patch-by-id
+description: |
+  NAME:
+     uipath orchestrator webhooks patch-by-id - Patches a webhook
+
+  USAGE:
+     uipath orchestrator webhooks patch-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Webhooks or OR.Webhooks.Write.
+
+     Required permissions: Webhooks.Edit.
+
+  OPTIONS:
+     --allow-insecure-ssl boolean (required)
+
+     --enabled boolean (required)
+
+     --key integer (required)
+
+     --name string (required)
+
+     --subscribe-to-all-events boolean (required)
+
+     --url string (required)
+
+     --description string
+
+     --events object (multiple)
+
+        Example:
+           EventType=string
+
+     --id integer
+
+     --secret string
+on:
+  workflow_call:
+    inputs:
+      allow_insecure_ssl:
+        description: 'Boolean to allow insecure SSL connections'
+        required: true
+        type: boolean
+      enabled:
+        description: 'Boolean to enable the webhook'
+        required: true
+        type: boolean
+      key:
+        description: 'Integer key for webhook'
+        required: true
+        type: number
+      name:
+        description: 'Name of the webhook'
+        required: true
+        type: string
+      subscribe_to_all_events:
+        description: 'Boolean to subscribe to all events'
+        required: true
+        type: boolean
+      url:
+        description: 'URL for the webhook'
+        required: true
+        type: string
+      description:
+        description: 'Optional description of the webhook'
+        required: false
+        type: string
+        default: ''
+      events:
+        description: 'List of event objects in the form EventType=string'
+        required: false
+        type: string
+        default: ''
+      id:
+        description: 'Optional webhook ID'
+        required: false
+        type: number
+      secret:
+        description: 'Optional secret for the webhook'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      UIPATH_ORCHESTRATOR_WEBHOOKS_PAT_BY_ID_TOKEN:
+        description: 'Authentication token or secret required by CLI if applicable'
+
+jobs:
+  patch_webhook:
+    runs-on:
+      - windows
+      - self-hosted
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator webhooks patch-by-id
+        shell: pwsh
+        run: |
+          # Build CLI arguments array to run the patch-by-id command
+          $args = @('orchestrator', 'webhooks', 'patch-by-id')
+
+          # Required boolean arguments
+          $args += '--allow-insecure-ssl'
+          $args += ${{ inputs.allow_insecure_ssl }}
+
+          $args += '--enabled'
+          $args += ${{ inputs.enabled }}
+
+          # Required integer key
+          $args += '--key'
+          $args += ${{ inputs.key }}
+
+          # Required name
+          $args += '--name'
+          $args += ('"' + ${{ inputs.name }} + '"')
+
+          # Required subscribe-to-all-events boolean
+          $args += '--subscribe-to-all-events'
+          $args += ${{ inputs.subscribe_to_all_events }}
+
+          # Required url
+          $args += '--url'
+          $args += ('"' + ${{ inputs.url }} + '"')
+
+          # Optional description
+          if (${{ inputs.description }} -ne '') {
+            $args += '--description'
+            $args += ('"' + ${{ inputs.description }} + '"')
+          }
+
+          # Optional multiple events, given as newline or comma separated EventType=string
+          if (${{ inputs.events }} -and ${{ inputs.events }}.Trim() -ne '') {
+            # Assume events input as a comma or newline separated string, split and add each --events argument
+            $eventsList = @()
+            if (${{ inputs.events }} -match ',') {
+              $eventsList = ${{ inputs.events }}.Split(',') | ForEach-Object { $_.Trim() }
+            } elseif (${{ inputs.events }} -match "`n") {
+              $eventsList = ${{ inputs.events }}.Split("`n") | ForEach-Object { $_.Trim() }
+            } else {
+              $eventsList = @(${{ inputs.events }}.Trim())
+            }
+            foreach ($event in $eventsList) {
+              if ($event -ne '') {
+                $args += '--events'
+                $args += ('"' + $event + '"')
+              }
+            }
+          }
+
+          # Optional id argument
+          if (${{ inputs.id }} -ne 0) {
+            $args += '--id'
+            $args += ${{ inputs.id }}
+          }
+
+          # Optional secret argument
+          if (${{ inputs.secret }} -ne '') {
+            $args += '--secret'
+            $args += ('"' + ${{ inputs.secret }} + '"')
+          }
+
+          # Log the command for debugging without secrets
+          $safeArgs = $args | ForEach-Object {
+            if ($_ -eq '--secret') { '--secret ***' }
+            elseif ($_ -like '*secret*') { '***' }
+            else { $_ }
+          }
+          Write-Host "Running CLI with arguments: $safeArgs"
+
+          # Run the CLI command
+          uipath $args -ErrorAction Stop

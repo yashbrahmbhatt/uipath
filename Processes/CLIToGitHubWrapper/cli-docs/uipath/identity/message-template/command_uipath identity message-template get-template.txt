@@ -1,0 +1,8 @@
+NAME:
+   uipath identity message-template get-template - Get a message template using the provided filter.
+
+USAGE:
+   uipath identity message-template get-template [command options] [arguments...]
+
+OPTIONS:
+   --name string

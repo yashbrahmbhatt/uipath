@@ -1,0 +1,22 @@
+NAME:
+   uipath orchestrator jobs restart-job - Restarts the specified job.
+
+USAGE:
+   uipath orchestrator jobs restart-job [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+   Required permissions: Jobs.Create.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --job-id integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

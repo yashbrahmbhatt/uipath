@@ -1,0 +1,75 @@
+NAME:
+   uipath orchestrator buckets post - Creates an Bucket
+
+USAGE:
+   uipath orchestrator buckets post [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Administration or OR.Administration.Write.
+
+   Required permissions: Buckets.Create.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --identifier string (required)
+      A stable unique identifier
+
+   --name string (required)
+      Display name of the Bucket
+
+   --credential-store-id integer
+      Credential store used to keep the provider access password.
+      Leave null for built-in Orchestrator host provider.
+
+   --description string
+      Description of the Bucket
+
+   --external-name string
+      The external name of the password in the credential store.
+      If null, it defaults to the bucket name.
+      Leave null for built-in Orchestrator host provider.
+
+   --folders-count integer
+      Number of folders where the bucket is shared.
+
+   --id integer
+
+   --options string
+      Bucket options
+
+      Allowed values:
+      - None
+      - ReadOnly
+      - AuditReadAccess
+      - AccessDataThroughOrchestrator
+
+   --password string
+      Provider specific password/secret.
+      It is inserted as a replacement of the $Password token in the StorageParameters.
+      Leave null for built-in Orchestrator host provider.
+
+   --storage-container string
+      Provider specific Container name (AWS, WASB).
+      Leave null for built-in Orchestrator host provider.
+
+   --storage-parameters string
+      Provider specific initialization parameters.
+      Use a $Password for where the password should be inserted.
+      Leave null for built-in Orchestrator host provider.
+
+   --storage-provider string
+      Provider Name.
+      Otherwise one of the supported providers:
+      - FileSystem
+      - Azure
+      - Amazon
+      - Minio
+      - S3Compatible
+      Leave null for built-in Orchestrator host provider.
+
+   --tags object (multiple)
+
+      Example:
+         DisplayName=string; DisplayValue=string; Name=string; Value=string

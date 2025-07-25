@@ -1,0 +1,25 @@
+NAME:
+   uipath orchestrator releases update-to-latest-package-version-by-id - Updates the package version for the given release to the latest available.
+
+USAGE:
+   uipath orchestrator releases update-to-latest-package-version-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Write.
+
+   Required permissions: Processes.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --merge-package-tags boolean (default: false)
+      Merge process tags with the new package version tags
+
+   --select string
+      Limits the properties returned in the result.

@@ -1,0 +1,58 @@
+NAME:
+   uipath orchestrator test-automation reexecute-test-cases - Re-execute the specified test case executions within the same test set execution.
+
+USAGE:
+   uipath orchestrator test-automation reexecute-test-cases [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Write.
+
+   Required permissions: TestSetExecutions.Create.
+
+   Responses:
+   200 OK
+   403 If the caller doesn't have permissions to execute test sets
+   404 If one or more test cases were not found
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --test-case-executions object (multiple) (required)
+
+      Example:
+         executionOrder=integer; testCaseExecutionId=integer
+
+   --enforce-execution-order boolean
+
+   --machine-id integer
+
+   --machine-session-id integer
+
+   --robot-id integer
+
+   --runtime-type string
+
+      Allowed values:
+      - NonProduction
+      - Attended
+      - Unattended
+      - Development
+      - Studio
+      - RpaDeveloper
+      - StudioX
+      - CitizenDeveloper
+      - Headless
+      - StudioPro
+      - RpaDeveloperPro
+      - TestAutomation
+      - AutomationCloud
+      - Serverless
+      - AutomationKit
+      - ServerlessTestAutomation
+      - AutomationCloudTestAutomation
+      - AttendedStudioWeb
+      - Hosting
+      - AssistantWeb
+      - ProcessOrchestration
+      - AgentService

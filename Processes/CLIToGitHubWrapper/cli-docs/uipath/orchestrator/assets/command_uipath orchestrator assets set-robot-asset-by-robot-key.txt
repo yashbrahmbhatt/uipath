@@ -1,0 +1,21 @@
+NAME:
+   uipath orchestrator assets set-robot-asset-by-robot-key - Set the asset value associated to the given robot key.
+
+USAGE:
+   uipath orchestrator assets set-robot-asset-by-robot-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Assets or OR.Assets.Write.
+
+   Required permissions: Assets.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --robot-asset object (required)
+
+      Example:
+         BoolValue=boolean; ConnectionData.bearerToken=string; ConnectionData.body=string; ConnectionData.url=string; CredentialPassword=string; CredentialStoreId=integer; CredentialUsername=string; ExternalName=string; Id=integer; IntValue=integer; KeyValueList[0].Key=string; KeyValueList[0].Value=string; Name=string; StringValue=string; ValueType=string
+
+   --robot-key string (required)

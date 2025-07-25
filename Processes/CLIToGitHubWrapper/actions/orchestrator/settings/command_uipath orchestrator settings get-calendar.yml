@@ -1,0 +1,66 @@
+name: uipath-orchestrator-settings-get-calendar
+description: |
+  NAME:
+     uipath orchestrator settings get-calendar - Gets custom calendar, with excluded dates in UTC, for current tenant
+
+  USAGE:
+     uipath orchestrator settings get-calendar [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+     Required permissions: Settings.View.
+     DEPRECATED: 
+     This API is deprecated. Please do not use it any longer. Use /odata/Calendars instead.
+     Please refer to https://docs.uipath.com/orchestrator/reference
+
+  OPTIONS:
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  run-get-calendar:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator settings get-calendar command
+        shell: pwsh
+        run: |
+          $argsList = @("orchestrator", "settings", "get-calendar")
+
+          # Append --expand if provided and not empty
+          if ('${{ inputs.expand }}'.Trim() -ne '') {
+            $argsList += "--expand"
+            $argsList += '${{ inputs.expand }}'
+          }
+
+          # Append --select if provided and not empty
+          if ('${{ inputs.select }}'.Trim() -ne '') {
+            $argsList += "--select"
+            $argsList += '${{ inputs.select }}'
+          }
+
+          # Construct command string
+          $command = "uipath " + ($argsList | ForEach-Object { "`"$_`"" } | Out-String).Trim()
+          Write-Host "Running command: $command"
+
+          # Invoke the CLI command
+          & uipath @argsList

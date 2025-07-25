@@ -1,0 +1,21 @@
+NAME:
+   uipath orchestrator test-automation cancel-test-set-execution - Cancels the specified test set execution.
+
+USAGE:
+   uipath orchestrator test-automation cancel-test-set-execution [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Write.
+
+   Required permissions: TestSetExecutions.Edit.
+
+   Responses:
+   202 Accepted
+   403 If the caller doesn't have permissions to cancel a test set execution
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --test-set-execution-id integer
+      Id for the test set execution to be canceled

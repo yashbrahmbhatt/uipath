@@ -1,0 +1,35 @@
+NAME:
+   uipath orchestrator settings - Operation configurations
+
+USAGE:
+   uipath orchestrator settings
+
+DESCRIPTION:
+   Settings define the configurations for various aspects of Orchestrator's operation.
+
+COMMANDS:
+   delete-bulk                                      Deletes values for the specified settings in the Tenant scope.
+   get                                              Gets the settings.
+   get-activity-settings                            Returns Orchestrator settings used by activities
+   get-authentication-settings                      Gets the authentication settings
+   get-by-id                                        Gets a settings value based on its key.
+   get-calendar                                     Gets custom calendar, with excluded dates in UTC, for current tenant
+   get-execution-settings-configuration-by-scope    Gets the execution settings configuration (display name, value type, etc.).
+                                                    If scope is 0 (Global), the default values will be the initial ones. If scope is 1 (Robot), then
+                                                    the default values will be the actual values set globally.
+                                                    e.g., Resolution width
+                                                    Assume it was set globally to 720.
+                                                    Then within the config returned by this function, the default value for this setting will be:
+                                                    - 0 for scope = 0 and
+                                                    - 720 for scope = 1.
+   get-languages                                    Gets supported languages
+   get-license                                      Retrieves the current license information.
+   get-secure-store-configuration-by-storetypename  Gets the configuration format for a Secure store
+   get-timezones                                    Gets timezones.
+   get-update-settings                              Gets the update settings
+   get-web-settings                                 Returns a collection of key value pairs representing settings used by Orchestrator web client.
+   put-by-id                                        Edits a setting.
+   set-calendar                                     Sets custom calendar, with excluded dates in UTC, for current tenant
+   update-bulk                                      Updates the current settings.
+   update-user-setting                              Edits a user setting.
+   verify-smtp-setting                              Verify whether the given SMTP settings are correct or not by sending an email to a recipient.

@@ -1,0 +1,13 @@
+NAME:
+   uipath orchestrator machines delete-by-id - Deletes a machine based on its key.
+
+USAGE:
+   uipath orchestrator machines delete-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Machines or OR.Machines.Write.
+
+   Required permissions: Machines.Delete.
+
+OPTIONS:
+   --key integer (required)

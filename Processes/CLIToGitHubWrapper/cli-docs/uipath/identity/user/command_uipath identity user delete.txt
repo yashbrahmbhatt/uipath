@@ -1,0 +1,9 @@
+NAME:
+   uipath identity user delete - Deletes the specified user.
+
+USAGE:
+   uipath identity user delete [command options] [arguments...]
+
+OPTIONS:
+   --user-id string (required)
+      The id of the user that will be deleted.

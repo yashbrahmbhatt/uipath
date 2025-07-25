@@ -1,0 +1,21 @@
+NAME:
+   uipath orchestrator test-automation get-test-case-execution-attachment - Get the attachment for the specified test case execution attachment.
+
+USAGE:
+   uipath orchestrator test-automation get-test-case-execution-attachment [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Read.
+
+   Required permissions: TestSetExecutions.View.
+
+   Responses:
+   200 OK
+   404 If the test case execution attachment is not found or the storage location is not found
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --test-case-execution-attachment-id integer
+      Id of the test case execution attachment

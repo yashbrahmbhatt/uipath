@@ -1,0 +1,23 @@
+NAME:
+   uipath orchestrator app-tasks complete-app-task - Complete the task by saving app task data and action taken
+
+USAGE:
+   uipath orchestrator app-tasks complete-app-task [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+   Required permissions: Tasks.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --task-id integer (required)
+      TaskId to retrieve form
+
+   --action string
+      Action taken on this task
+
+   --data object
+      Task data json

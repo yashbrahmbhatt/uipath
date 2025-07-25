@@ -1,0 +1,24 @@
+NAME:
+   uipath orchestrator releases update-to-specific-package-version-by-id - Updates the package version for the given release.
+
+USAGE:
+   uipath orchestrator releases update-to-specific-package-version-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Write.
+
+   Required permissions: Processes.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+
+   --package-version string (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

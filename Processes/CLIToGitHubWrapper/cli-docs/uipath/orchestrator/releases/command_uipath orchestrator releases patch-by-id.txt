@@ -1,0 +1,163 @@
+NAME:
+   uipath orchestrator releases patch-by-id - Partially updates a release.
+
+USAGE:
+   uipath orchestrator releases patch-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Write.
+
+   Required permissions: (Processes.Edit) and (RemoteControl.Create - Required when changing the live streaming configuration.).
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+
+   --name string (required)
+      A custom name of the release. The default name format is ProcessName_EnvironmentName.
+
+   --process-key string (required)
+      The unique identifier of the process associated with the release.
+
+   --process-version string (required)
+      The version of the process associated with the release.
+
+   --arguments object
+
+      Example:
+         Input=string; Output=string
+
+   --auto-update boolean
+
+   --automation-hub-idea-url string
+
+   --creation-time string
+
+   --creator-user-id integer
+
+   --current-version object
+      Stores data about a version of the various versions of the process associated with a certain release.
+      <para />If a certain version is associated on and off with a release a new ReleaseVersion object is created for each association.
+
+      Example:
+         CreationTime=string; Id=integer; ReleaseId=integer; ReleaseName=string; VersionNumber=string
+
+   --description string
+      Used to add additional information about a release in order to better identify it.
+
+   --entry-point object
+
+      Example:
+         DataVariation.Content=string; DataVariation.ContentType=string; DataVariation.Id=integer; Id=integer; InputArguments=string; OutputArguments=string; Path=string; UniqueId=string
+
+   --entry-point-id integer
+
+   --entry-point-path string
+
+   --environment object
+      A grouping of Robots.
+
+      Example:
+         Description=string; Id=integer; Name=string; Robots[0].CreationTime=string; Robots[0].CreatorUserId=integer; Robots[0].CredentialStoreId=integer; Robots[0].CredentialType=string; Robots[0].Description=string; Robots[0].Enabled=boolean; Robots[0].ExternalName=string; Robots[0].HostingType=string; Robots[0].Id=integer; Robots[0].IsExternalLicensed=boolean; Robots[0].LastModificationTime=string; Robots[0].LastModifierUserId=integer; Robots[0].LicenseKey=string; Robots[0].LimitConcurrentExecution=boolean; Robots[0].MachineId=integer; Robots[0].MachineName=string; Robots[0].Name=string; Robots[0].Password=string; Robots[0].ProvisionType=string; Robots[0].RobotEnvironments=string; Robots[0].Type=string; Robots[0].UserId=integer; Robots[0].Username=string; Type=string
+
+   --environment-id integer
+      The Id of the environment associated with the release.
+
+   --environment-name string
+      The name of the environment associated with the release.
+
+   --feed-id string
+
+   --hidden-for-attended-user boolean
+
+   --id integer
+
+   --input-arguments string
+      Input parameters in JSON format to be passed as default values to job execution.
+
+   --is-attended boolean
+
+   --is-compiled boolean
+
+   --is-latest-version boolean
+      States whether the version of process associated with the release is latest or not.
+
+   --is-process-deleted boolean
+      States whether the process associated with the release is deleted or not.
+
+   --job-priority string
+      The execution priority. If null, it defaults to Normal.
+
+      Allowed values:
+      - Low
+      - Normal
+      - High
+
+   --last-modification-time string
+
+   --last-modifier-user-id integer
+
+   --organization-unit-fully-qualified-name string
+      Fully qualified name of the folder this release is part of.
+
+   --organization-unit-id integer
+      Id of the folder this release is part of.
+
+   --process-settings object
+
+      Example:
+         AlwaysRunning=boolean; AutoStartProcess=boolean; AutopilotForRobots.Enabled=boolean; AutopilotForRobots.HealingEnabled=boolean; Duration=integer; ErrorRecordingEnabled=boolean; Frequency=integer; Quality=integer
+
+   --process-type string
+
+      Allowed values:
+      - Undefined
+      - Process
+      - ProcessOrchestration
+      - WebApp
+      - Agent
+      - TestAutomationProcess
+
+   --release-versions object (multiple)
+      The collection of release versions that current release had over time.
+
+   --remote-control-access string
+
+      Allowed values:
+      - None
+      - ReadOnly
+      - Full
+
+   --requires-user-interaction boolean
+
+   --robot-size string
+
+      Allowed values:
+      - Small
+      - Standard
+      - Medium
+      - Large
+
+   --specific-priority-value integer
+      Value for more granular control over execution priority.
+
+   --supports-multiple-entry-points boolean
+
+   --tags object (multiple)
+
+      Example:
+         DisplayName=string; DisplayValue=string; Name=string; Value=string
+
+   --target-framework string
+
+      Allowed values:
+      - Legacy
+      - Windows
+      - Portable
+
+   --video-recording-settings object
+
+      Example:
+         MaxDurationSeconds=integer; QueueItemVideoRecordingType=string; VideoRecordingType=string

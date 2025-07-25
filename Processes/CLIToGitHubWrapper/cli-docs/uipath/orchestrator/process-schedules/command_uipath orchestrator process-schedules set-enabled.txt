@@ -1,0 +1,26 @@
+NAME:
+   uipath orchestrator process-schedules set-enabled - Enables/disables a group of schedules.
+
+USAGE:
+   uipath orchestrator process-schedules set-enabled [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+   Required permissions: Schedules.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --enabled boolean
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --multistatus-enabled boolean
+
+   --schedule-ids integer,integer,...
+
+   --select string
+      Limits the properties returned in the result.

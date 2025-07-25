@@ -1,0 +1,158 @@
+name: uipath-orchestrator-task-activities-get-by-task-id
+description: |
+  NAME:
+     uipath orchestrator task-activities get-by-task-id - Gets Task Activities for a Task
+
+  USAGE:
+     uipath orchestrator task-activities get-by-task-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+     Required permissions: Tasks.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --task-id integer (required)
+        Id of task
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      task_id:
+        description: 'Id of task'
+        required: true
+        type: number
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restricts the set of items returned. The maximum number of expressions is 100.'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Specifies the order in which items are returned. The maximum number of expressions is 5.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Excludes the specified number of items of the queried collection from the result.'
+        required: false
+        type: number
+        default: 0
+      top:
+        description: 'Limits the number of items returned from a collection. The maximum value is 1000.'
+        required: false
+        type: number
+        default: 1000
+
+jobs:
+  run-task-activities-get-by-task-id:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # Outputs could be added here if needed, e.g.: command result or logs
+      # For now, no outputs defined.
+    steps:
+      - name: Run uipath orchestrator task-activities get-by-task-id
+        shell: pwsh
+        run: |
+          # Initialize argument array for the command
+          $args = @()
+          
+          # Required parameters
+          $args += 'orchestrator'
+          $args += 'task-activities'
+          $args += 'get-by-task-id'
+          $args += '--folder-id'
+          $args += "${{ inputs.folder_id }}"
+          $args += '--task-id'
+          $args += "${{ inputs.task_id }}"
+
+          # Optional parameters, add only if they have valid values
+          if (${{ inputs.count }}) {
+            $args += '--count'
+          }
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += '--expand'
+            $args += "'${{ inputs.expand }}'"
+          }
+          if ('${{ inputs.filter }}' -ne '') {
+            $args += '--filter'
+            $args += "'${{ inputs.filter }}'"
+          }
+          if ('${{ inputs.orderby }}' -ne '') {
+            $args += '--orderby'
+            $args += "'${{ inputs.orderby }}'"
+          }
+          if ('${{ inputs.select }}' -ne '') {
+            $args += '--select'
+            $args += "'${{ inputs.select }}'"
+          }
+          if (${{ inputs.skip }} -gt 0) {
+            $args += '--skip'
+            $args += "${{ inputs.skip }}"
+          }
+          if (${{ inputs.top }} -gt 0 -and ${{ inputs.top }} -le 1000) {
+            $args += '--top'
+            $args += "${{ inputs.top }}"
+          }
+          
+          # Join argument array into command string
+          $command = "uipath $($args -join ' ')"
+
+          Write-Host "Executing command: $command"
+
+          # Execute the command
+          $processInfo = Start-Process -FilePath "uipath" -ArgumentList $args[1..($args.Length - 1)] -NoNewWindow -PassThru -Wait -RedirectStandardOutput stdout.txt -RedirectStandardError stderr.txt
+
+          # Output command results for visibility
+          Write-Host "Standard output:"
+          Get-Content stdout.txt
+          Write-Host "Standard error (if any):"
+          Get-Content stderr.txt
+
+          # Fail the step if the command failed
+          if ($processInfo.ExitCode -ne 0) {
+            Write-Error "Command failed with exit code $($processInfo.ExitCode). See logs for details."
+            exit $processInfo.ExitCode
+          }

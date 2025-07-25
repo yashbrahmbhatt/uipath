@@ -1,0 +1,24 @@
+NAME:
+   uipath orchestrator directory-service search-for-users-and-groups - Search users and groups
+
+USAGE:
+   uipath orchestrator directory-service search-for-users-and-groups [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Users or OR.Users.Read.
+
+   Required permissions: (Users.View or Units.Edit or SubFolders.Edit).
+
+OPTIONS:
+   --domain string
+
+   --prefix string
+
+   --search-context string
+
+      Allowed values:
+      - All
+      - Users
+      - Groups
+      - Robots
+      - ExternalApplications

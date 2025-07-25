@@ -1,0 +1,12 @@
+NAME:
+   uipath identity user get-user - Get the user at the specified location
+
+USAGE:
+   uipath identity user get-user [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: PM.User or PM.User.Read.
+
+OPTIONS:
+   --user-id string (required)
+      The data used to create a new user.

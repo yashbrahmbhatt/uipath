@@ -1,0 +1,48 @@
+NAME:
+   uipath orchestrator buckets get-files-by-key - Gets the files in a directory.
+                                                  Optionally returns all files in all child directories (recursive).
+
+USAGE:
+   uipath orchestrator buckets get-files-by-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Administration or OR.Administration.Read.
+
+   Required permissions: Buckets.View and BlobFiles.View.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      The Bucket Id
+
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --directory string
+      The directory path
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --file-name-glob string
+      Files listing filter
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --recursive boolean (default: false)
+      Recurse subdirectories (flat view)
+
+   --select string
+      Limits the properties returned in the result.
+
+   --skip integer
+      Number of files to skip
+
+   --top integer
+      Number of files to return

@@ -1,0 +1,18 @@
+NAME:
+   uipath identity user - Manage local users
+
+USAGE:
+   uipath identity user
+
+DESCRIPTION:
+   Use these endpoints to manage local users.
+
+COMMANDS:
+   bulk-delete      Bulk deletes the specified list of users.
+   change-password  Changes the user's password.
+   create-user      Creates a new user. This API is idempotent, the existing user will be deleted if trying to be created again.
+   create-users     Creates users in bulk.
+   delete           Deletes the specified user.
+   get-user         Get the user at the specified location
+   get-users        
+   update           Updates the specified user.

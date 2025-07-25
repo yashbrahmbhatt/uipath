@@ -1,0 +1,25 @@
+NAME:
+   uipath orchestrator task-definitions update-task-definition-by-id - Updates Task Definition.
+
+USAGE:
+   uipath orchestrator task-definitions update-task-definition-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+   Required permissions: ActionDesign.Edit.
+
+OPTIONS:
+   --key integer (required)
+      Key of the object
+
+   --description string
+      Description of this task definition.
+
+   --name string
+      Name of the Task Definition.
+
+   --properties object
+
+      Example:
+         allowedActions=string,string,...; schema=string

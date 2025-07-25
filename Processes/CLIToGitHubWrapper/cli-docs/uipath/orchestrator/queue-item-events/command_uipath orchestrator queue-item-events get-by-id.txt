@@ -1,0 +1,22 @@
+NAME:
+   uipath orchestrator queue-item-events get-by-id - Gets a QueueItemEvent by Id.
+
+USAGE:
+   uipath orchestrator queue-item-events get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Queues or OR.Queues.Read.
+
+   Required permissions: Queues.View and Transactions.View.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

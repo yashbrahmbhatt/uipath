@@ -1,0 +1,67 @@
+NAME:
+   uipath orchestrator folders post - Creates a new folder.
+
+USAGE:
+   uipath orchestrator folders post [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Folders or OR.Folders.Write.
+
+   Required permissions: (Units.Create or SubFolders.Create - Creates root or subfolder or only subfolder if user has SubFolders.Create permission on parent).
+
+OPTIONS:
+   --display-name string (required)
+      Display name for the folder.
+
+   --description string
+      Description of folder
+
+   --feed-type string
+      Folder feed type
+
+      Allowed values:
+      - Undefined
+      - Processes
+      - Libraries
+      - PersonalWorkspace
+      - FolderHierarchy
+
+   --folder-type string
+      Folder type
+
+      Allowed values:
+      - Standard
+      - Personal
+      - Virtual
+      - Solution
+
+   --fully-qualified-name string
+      Name of folder prepended by the names of its ancestors.
+
+   --id integer
+
+   --is-personal boolean
+      True if Personal
+
+   --key string
+      Unique key for the folder
+
+   --parent-id integer
+      Id of parent folder in the folders hierarchy
+
+   --parent-key string
+      Unique key for the parent folder
+
+   --permission-model string
+      Folder permissions model
+
+      Allowed values:
+      - InheritFromTenant
+      - FineGrained
+
+   --provision-type string
+      Robot provisioning type
+
+      Allowed values:
+      - Manual
+      - Automatic

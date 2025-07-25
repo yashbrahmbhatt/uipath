@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator environments - Grouping Robots for deployments
+
+USAGE:
+   uipath orchestrator environments
+
+DESCRIPTION:
+   Environments represent a logical grouping of robots that have common characteristics or purposes.
+
+COMMANDS:
+   add-robot-by-id                       Associates a robot with the given environment.
+   delete-by-id                          Deletes an environment.
+   get                                   Gets Environments.
+   get-by-id                             Gets a single environment.
+   get-robot-ids-for-environment-by-key  Returns a collection of all the ids of the robots associated to an environment based on environment Id.
+   get-robots-for-environment-by-key     Returns a collection of all robots and, if no other sorting is provided, will place first those belonging to the environment. Allows odata query options.
+   post                                  Post new environment
+   put-by-id                             Updates an environment.
+   remove-robot-by-id                    Dissociates a robot from the given environment.
+   set-robots-by-id                      Associates a group of robots with and dissociates another group of robots from the given environment.

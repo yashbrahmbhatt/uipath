@@ -1,0 +1,17 @@
+NAME:
+   uipath orchestrator stats get-license-stats - Gets the licensing usage statistics
+
+USAGE:
+   uipath orchestrator stats get-license-stats [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Monitoring or OR.Monitoring.Read.
+
+   Required permissions: License.View.
+
+OPTIONS:
+   --days integer
+      Number of reported license usage days
+
+   --tenant-id integer
+      The Tenant's Id - can be used when authenticated as Host

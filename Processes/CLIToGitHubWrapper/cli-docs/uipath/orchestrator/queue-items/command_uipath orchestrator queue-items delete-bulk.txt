@@ -1,0 +1,25 @@
+NAME:
+   uipath orchestrator queue-items delete-bulk - Sets the given queue items' status to Deleted.
+
+USAGE:
+   uipath orchestrator queue-items delete-bulk [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+   Required permissions: Queues.View and Transactions.Delete.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --queue-items object (multiple)
+
+      Example:
+         Id=integer; RowVersion=string
+
+   --select string
+      Limits the properties returned in the result.

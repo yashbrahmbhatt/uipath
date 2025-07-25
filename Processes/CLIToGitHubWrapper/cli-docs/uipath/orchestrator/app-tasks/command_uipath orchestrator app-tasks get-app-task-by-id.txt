@@ -1,0 +1,17 @@
+NAME:
+   uipath orchestrator app-tasks get-app-task-by-id - Returns dto to render app task
+
+USAGE:
+   uipath orchestrator app-tasks get-app-task-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+   Required permissions: Tasks.View.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --task-id integer
+      Task id

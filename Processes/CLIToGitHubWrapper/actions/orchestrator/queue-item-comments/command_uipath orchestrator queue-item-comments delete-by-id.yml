@@ -1,0 +1,62 @@
+name: uipath-orchestrator-queue-item-comments-delete-by-id
+description: |
+  NAME:
+     uipath orchestrator queue-item-comments delete-by-id - Deletes a QueueItemComment.
+
+  USAGE:
+     uipath orchestrator queue-item-comments delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+     Required permissions: Queues.View and Transactions.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+        Key of the QueueItemComment to delete
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: Folder/OrganizationUnit Id (required)
+        required: true
+        type: string
+      key:
+        description: Key of the QueueItemComment to delete (required)
+        required: true
+        type: string
+
+jobs:
+  delete-queue-item-comment:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Delete QueueItemComment by ID
+        shell: pwsh
+        run: |
+          # Initialize arguments array
+          $args = @('orchestrator', 'queue-item-comments', 'delete-by-id')
+          
+          # Append required --folder-id argument
+          if (![string]::IsNullOrEmpty('${{ inputs.folder-id }}')) {
+              $args += '--folder-id'
+              $args += '${{ inputs.folder-id }}'
+          } else {
+              Write-Error "Input 'folder-id' is required."
+              exit 1
+          }
+          
+          # Append required --key argument
+          if (![string]::IsNullOrEmpty('${{ inputs.key }}')) {
+              $args += '--key'
+              $args += '${{ inputs.key }}'
+          } else {
+              Write-Error "Input 'key' is required."
+              exit 1
+          }
+
+          # Execute the CLI command
+          & uipath @args

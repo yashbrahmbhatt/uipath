@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator settings update-bulk - Updates the current settings.
+
+USAGE:
+   uipath orchestrator settings update-bulk [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+   Required permissions: Settings.Edit.
+
+OPTIONS:
+   --settings object (multiple)
+
+      Example:
+         Id=string; Name=string; Scope=string; Value=string

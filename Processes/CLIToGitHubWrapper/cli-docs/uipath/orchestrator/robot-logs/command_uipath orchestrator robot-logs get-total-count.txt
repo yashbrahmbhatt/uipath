@@ -1,0 +1,37 @@
+NAME:
+   uipath orchestrator robot-logs get-total-count - Gets the total count of robot logs.
+                                                    This might be different than the size of the count returned by GetRobotLogs which
+                                                    is limited by the max_result_window parameter for an Elasticsearch source.
+
+USAGE:
+   uipath orchestrator robot-logs get-total-count [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Monitoring or OR.Monitoring.Read.
+
+   Required permissions: Logs.View.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --select string
+      Limits the properties returned in the result.
+
+   --skip integer
+      Excludes the specified number of items of the queried collection from the result.
+
+   --top integer
+      Limits the number of items returned from a collection. The maximum value is 1000.

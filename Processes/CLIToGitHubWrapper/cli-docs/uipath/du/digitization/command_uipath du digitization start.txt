@@ -1,0 +1,25 @@
+NAME:
+   uipath du digitization start - Digitize document
+
+USAGE:
+   uipath du digitization start [command options] [arguments...]
+
+DESCRIPTION:
+   Digitize a document using the OCR settings of the associated Document Understanding project.
+
+   Required scopes: <b>Du.Digitization.Api</b></br>
+
+OPTIONS:
+   --api-version string (default: 1.0)
+      Version of the APIs.
+
+      Allowed values:
+      - 1.0
+
+   --project-id string (default: 00000000-0000-0000-0000-000000000000)
+      ID of the Project.
+
+   --file binary
+
+   --x-uipath-page-range string
+      Specifies the page range of the document to be digitized. Page range can be provided as a range of consecutive pages (e.g. 2-5), as one specific page (e.g. 2) or as a range of consecutive pages and individual pages (e.g. 2-5,6,7). It also allows the specification of the start (^) and the end ($) of the document (e.g. ^-3,5-$).

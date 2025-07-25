@@ -1,0 +1,16 @@
+NAME:
+   uipath du classification - Sorting documents into categories using automation
+
+USAGE:
+   uipath du classification
+
+DESCRIPTION:
+   Document Classification is a component that helps in identifying what types of files the robot is processing.
+
+COMMANDS:
+   classify         Classify document
+   classify-by-tag  Classify document
+   get              Retrieve classification result
+   get-by-tag       Retrieve classification result
+   start            Start classification
+   start-by-tag     Start classification by tag

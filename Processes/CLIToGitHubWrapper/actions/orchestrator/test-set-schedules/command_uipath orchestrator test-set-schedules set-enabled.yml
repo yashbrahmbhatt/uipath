@@ -1,0 +1,96 @@
+name: 'uipath orchestrator test-set-schedules set-enabled'
+
+description: |
+  NAME:
+     uipath orchestrator test-set-schedules set-enabled - Enables / disables a list of test set execution schedules.
+
+  USAGE:
+     uipath orchestrator test-set-schedules set-enabled [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSetSchedules or OR.TestSetSchedules.Write.
+
+     Required permissions: TestSetSchedules.Edit.
+
+  OPTIONS:
+     --enabled boolean (required)
+
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --test-set-schedule-ids integer,integer,... (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      enabled:
+        description: 'Boolean flag to enable or disable schedules (true or false).'
+        required: true
+        type: boolean
+      folder_id:
+        description: 'Folder/OrganizationUnit Id.'
+        required: true
+        type: number
+      test_set_schedule_ids:
+        description: 'Comma-separated list of Test Set Schedule IDs.'
+        required: true
+        type: string
+      expand:
+        description: 'Related entities to be represented inline (optional).'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Properties to be returned in the result (optional).'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  run-cli:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator test-set-schedules set-enabled
+        shell: pwsh
+        run: |
+          # Initialize argument list array
+          $args = @()
+          $args += "orchestrator"
+          $args += "test-set-schedules"
+          $args += "set-enabled"
+
+          # Required parameters
+          $args += "--enabled"
+          $args += ${{ inputs.enabled }}.ToString().ToLower()
+
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          $args += "--test-set-schedule-ids"
+          $args += "'${{ inputs.test_set_schedule_ids }}'"
+
+          # Optional parameters - add only if not empty
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += "--expand"
+            $args += "'${{ inputs.expand }}'"
+          }
+
+          if ('${{ inputs.select }}' -ne '') {
+            $args += "--select"
+            $args += "'${{ inputs.select }}'"
+          }
+
+          # Construct the full command string
+          $command = "uipath " + ($args -join " ")
+
+          # Output the command to be executed (for debugging)
+          Write-Host "Executing command: $command"
+
+          # Execute the command
+          Invoke-Expression $command

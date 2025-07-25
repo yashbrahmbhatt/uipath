@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator assets delete-by-id - Delete an asset
+
+USAGE:
+   uipath orchestrator assets delete-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Assets or OR.Assets.Write.
+
+   Required permissions: Assets.Delete.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)

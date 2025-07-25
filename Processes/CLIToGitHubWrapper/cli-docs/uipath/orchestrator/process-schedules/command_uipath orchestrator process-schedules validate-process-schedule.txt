@@ -1,0 +1,26 @@
+NAME:
+   uipath orchestrator process-schedules validate-process-schedule - Validates the input which would be used to create a process schedule.
+
+USAGE:
+   uipath orchestrator process-schedules validate-process-schedule [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+   Required permissions: Schedules.Create.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --process-schedule object (required)
+      Defines the schedule of a process that can be executed at regular intervals, on selected Robots, all of them or a specified number of Robots.
+
+      Example:
+         ActivateOnJobComplete=boolean; AlertPendingExpression=string; AlertRunningExpression=string; CalendarId=integer; CalendarKey=string; CalendarName=string; ConsecutiveJobFailuresThreshold=integer; Description=string; Enabled=boolean; EnvironmentId=string; EnvironmentName=string; ExecutorRobots[0].Description=string; ExecutorRobots[0].Id=integer; ExecutorRobots[0].MachineName=string; ExecutorRobots[0].Name=string; ExternalJobKey=string; ExternalJobKeyScheduler=string; Id=integer; InputArguments=string; IsConnected=boolean; ItemsActivationThreshold=integer; ItemsPerJobActivationTarget=integer; JobFailuresGracePeriodInHours=integer; JobPriority=string; Key=string; KillProcessExpression=string; MachineRobots[0].MachineId=integer; MachineRobots[0].MachineName=string; MachineRobots[0].RobotId=integer; MachineRobots[0].RobotUserName=string; MachineRobots[0].SessionId=integer; MachineRobots[0].SessionName=string; MaxJobsForActivation=integer; Name=string; PackageName=string; QueueDefinitionId=integer; QueueDefinitionName=string; ReleaseId=integer; ReleaseKey=string; ReleaseName=string; ResumeOnSameContext=boolean; RunAsMe=boolean; RuntimeType=string; SpecificPriorityValue=integer; StartProcessCron=string; StartProcessCronDetails=string; StartProcessCronSummary=string; StartProcessNextOccurrence=string; StartStrategy=integer; StopProcessDate=string; StopProcessExpression=string; StopStrategy=string; Tags[0].DisplayName=string; Tags[0].DisplayValue=string; Tags[0].Name=string; Tags[0].Value=string; TimeZoneIana=string; TimeZoneId=string; UseCalendar=boolean
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

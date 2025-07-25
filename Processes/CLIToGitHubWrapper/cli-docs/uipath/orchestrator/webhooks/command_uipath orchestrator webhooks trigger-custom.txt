@@ -1,0 +1,17 @@
+NAME:
+   uipath orchestrator webhooks trigger-custom - Triggers an event of type "custom"
+
+USAGE:
+   uipath orchestrator webhooks trigger-custom [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Webhooks or OR.Webhooks.Write.
+
+   Required permissions: Webhooks.View.
+
+OPTIONS:
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

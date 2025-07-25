@@ -1,0 +1,30 @@
+NAME:
+   uipath orchestrator environments put-by-id - Updates an environment.
+
+USAGE:
+   uipath orchestrator environments put-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+   Required permissions: Environments.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+
+   --name string (required)
+      A custom name for the environment.
+
+   --description string
+      Used to add additional information about an environment in order to better identify it.
+
+   --id integer
+
+   --robots object (multiple)
+      The collection of robots associated with the current environment.
+
+      Example:
+         CreationTime=string; CreatorUserId=integer; CredentialStoreId=integer; CredentialType=string; Description=string; Enabled=boolean; Environments[0].Type=string; ExternalName=string; HostingType=string; Id=integer; IsExternalLicensed=boolean; LastModificationTime=string; LastModifierUserId=integer; LicenseKey=string; LimitConcurrentExecution=boolean; MachineId=integer; MachineName=string; Name=string; Password=string; ProvisionType=string; RobotEnvironments=string; Type=string; UserId=integer; Username=string

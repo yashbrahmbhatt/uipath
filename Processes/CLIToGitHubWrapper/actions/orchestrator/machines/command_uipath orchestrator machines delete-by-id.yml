@@ -1,0 +1,59 @@
+name: uipath-orchestrator-machines-delete-by-id
+description: |
+  NAME:
+     uipath orchestrator machines delete-by-id - Deletes a machine based on its key.
+
+  USAGE:
+     uipath orchestrator machines delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Machines or OR.Machines.Write.
+
+     Required permissions: Machines.Delete.
+
+  OPTIONS:
+     --key integer (required)
+on: workflow_call
+inputs:
+  key:
+    description: 'The key (integer) of the machine to delete. (required)'
+    required: true
+    type: string
+runs-on:
+  - windows
+  - self-hosted
+permissions: {}
+jobs:
+  delete_machine_by_id:
+    runs-on:
+      - windows
+      - self-hosted
+    steps:
+      - name: Delete machine by ID
+        shell: pwsh
+        run: |
+          # Initialize arguments array
+          $args = @()
+
+          # Add the CLI base command and subcommands
+          $args += "orchestrator"
+          $args += "machines"
+          $args += "delete-by-id"
+
+          # Add required --key argument
+          $args += "--key"
+          $args += "${{ inputs.key }}"
+
+          # Join the arguments with spaces, ensuring proper quoting
+          $command = "uipath " + ($args | ForEach-Object { 
+            if ($_ -match '\s') { 
+              '"' + $_ + '"'
+            } else {
+              $_
+            }
+          } | Out-String).Trim()
+
+          Write-Host "Running command: $command"
+
+          # Execute the command
+          iex $command

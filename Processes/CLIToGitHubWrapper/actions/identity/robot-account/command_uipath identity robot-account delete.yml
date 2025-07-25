@@ -1,0 +1,46 @@
+name: uipath-identity-robot-account-delete
+description: |
+  uipath identity robot-account delete - Deletes a robot account
+
+  OAuth required scopes: PM.RobotAccount or PM.RobotAccount.Write.
+
+  Usage:
+     uipath identity robot-account delete [command options] [arguments...]
+
+  Options:
+     --partition-global-id string (required)
+     --robot-account-id string (required)
+  
+on:
+  workflow_call:
+    inputs:
+      partition_global_id:
+        description: 'The Partition Global ID (required)'
+        required: true
+        type: string
+      robot_account_id:
+        description: 'The Robot Account ID (required)'
+        required: true
+        type: string
+
+jobs:
+  delete_robot_account:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath identity robot-account delete command
+        shell: pwsh
+        run: |
+          # Initialize arguments array
+          $args = @('identity', 'robot-account', 'delete')
+
+          # Add required parameters
+          $args += '--partition-global-id'
+          $args += '"${{ inputs.partition_global_id }}"'
+
+          $args += '--robot-account-id'
+          $args += '"${{ inputs.robot_account_id }}"'
+
+          # Join all arguments and run the command
+          $command = "uipath $($args -join ' ')"
+          Write-Host "Executing: $command"
+          iex $command

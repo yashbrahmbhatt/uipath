@@ -1,0 +1,12 @@
+NAME:
+   uipath orchestrator queue-processing-records - Processing records of queue items
+
+USAGE:
+   uipath orchestrator queue-processing-records
+
+DESCRIPTION:
+   Information about processing queue items, including status updates and reasons for failure.
+
+COMMANDS:
+   retrieve-last-days-processing-records-by-daysno-and-queuedefinitionid  Returns the computed processing status for a given queue in the last specified days.
+   retrieve-queues-processing-status                                      Returns the processing status for all queues. Allows odata query options.

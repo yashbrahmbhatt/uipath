@@ -1,0 +1,73 @@
+name: Update UiPath Orchestrator User Setting
+description: |
+  NAME:
+     uipath orchestrator settings update-user-setting - Edits a user setting.
+
+  USAGE:
+     uipath orchestrator settings update-user-setting [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+     Requires authentication.
+
+  OPTIONS:
+     --setting object (required)
+        Used to store various predefined application configurations like time zone or account e-mail information.
+
+        Example:
+           Id=string; Name=string; Scope=string; Value=string
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+  
+on:
+  workflow_call:
+    inputs:
+      setting:
+        description: 'Used to store various predefined application configurations like time zone or account e-mail information. Example: Id=string; Name=string; Scope=string; Value=string'
+        required: true
+        type: string
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  update-user-setting:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator settings update-user-setting
+        shell: pwsh
+        run: |
+          # Initialize the argument list with base command
+          $args = @("orchestrator", "settings", "update-user-setting")
+
+          # Add required --setting parameter
+          $args += "--setting"
+          $args += "'${{ inputs.setting }}'"
+
+          # Add --expand if provided
+          if ('${{ inputs.expand }}'.Trim() -ne '') {
+            $args += "--expand"
+            $args += "'${{ inputs.expand }}'"
+          }
+
+          # Add --select if provided
+          if ('${{ inputs.select }}'.Trim() -ne '') {
+            $args += "--select"
+            $args += "'${{ inputs.select }}'"
+          }
+
+          # Execute the CLI command
+          & uipath @args

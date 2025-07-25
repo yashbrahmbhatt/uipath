@@ -1,0 +1,27 @@
+NAME:
+   uipath orchestrator stats get-jobs-stats - Gets the total number of jobs aggregated by Job State
+
+USAGE:
+   uipath orchestrator stats get-jobs-stats [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Monitoring or OR.Monitoring.Read.
+
+   Required permissions: Jobs.View.
+
+   Returns the total number of Successful, Faulted and Canceled jobs respectively.
+   Example of returned result:
+       [
+             {
+               "title": "Successful",
+               "count": 0
+             },
+             {
+               "title": "Faulted",
+               "count": 0
+             },
+             {
+               "title": "Canceled",
+               "count": 0
+             }
+       ]

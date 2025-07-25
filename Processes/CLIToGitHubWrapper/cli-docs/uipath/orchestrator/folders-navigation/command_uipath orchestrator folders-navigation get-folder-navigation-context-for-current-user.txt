@@ -1,0 +1,18 @@
+NAME:
+   uipath orchestrator folders-navigation get-folder-navigation-context-for-current-user - Returns a subset (paginated) of direct children for a given folder, which are accessible to the current user.
+                                                                                           To ease a folder tree structure navigation design, the list of ancestors for the given folder is also returned.
+
+USAGE:
+   uipath orchestrator folders-navigation get-folder-navigation-context-for-current-user [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth authentication is not supported.
+
+   Requires authentication.
+
+OPTIONS:
+   --folder-id integer
+
+   --skip integer
+
+   --take integer

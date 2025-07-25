@@ -1,0 +1,13 @@
+NAME:
+   uipath orchestrator package-feeds get-folder-feed - Returns the feed id for a user assigned folder having specific feed
+
+USAGE:
+   uipath orchestrator package-feeds get-folder-feed [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+   Requires authentication.
+
+OPTIONS:
+   --folder-id integer

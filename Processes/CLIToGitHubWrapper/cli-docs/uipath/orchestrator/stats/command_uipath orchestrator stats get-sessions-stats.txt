@@ -1,0 +1,31 @@
+NAME:
+   uipath orchestrator stats get-sessions-stats - Gets the total number of robots aggregated by Robot State
+
+USAGE:
+   uipath orchestrator stats get-sessions-stats [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Monitoring or OR.Monitoring.Read.
+
+   Required permissions: Robots.View.
+
+   Returns the total number of Available, Busy, Disconnected and Unresponsive robots respectively.
+   Example of returned result:
+       [
+             {
+               "title": "Available",
+               "count": 1
+             },
+             {
+               "title": "Busy",
+               "count": 0
+             },
+             {
+               "title": "Disconnected",
+               "count": 1
+             },
+             {
+               "title": "Unresponsive",
+               "count": 0
+             }
+       ]

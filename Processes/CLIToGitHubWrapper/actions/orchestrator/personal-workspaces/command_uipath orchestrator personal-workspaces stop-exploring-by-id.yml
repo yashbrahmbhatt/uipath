@@ -1,0 +1,34 @@
+name: 'uipath-orchestrator-personal-workspaces-stop-exploring-by-id'
+description: |
+  Unassigns the current User from exploring a Personal Workspace.
+
+  OAuth authentication is not supported.
+
+  Required permissions: Units.Edit and Users.View and Roles.View.
+
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The integer key identifying the personal workspace to stop exploring.'
+        required: true
+        type: number
+
+jobs:
+  stop_exploring:
+    runs-on: [windows, self-hosted]
+    outputs:
+      key: ${{ inputs.key }}
+    steps:
+      - name: Stop exploring personal workspace by id
+        shell: pwsh
+        run: |
+          # Initialize an array to collect the command arguments
+          $args = @("orchestrator", "personal-workspaces", "stop-exploring-by-id")
+
+          # Append the required --key argument with proper quoting
+          $args += "--key"
+          $args += "${{ inputs.key }}"
+
+          # Run the UiPath CLI command with the constructed arguments
+          uipath @args

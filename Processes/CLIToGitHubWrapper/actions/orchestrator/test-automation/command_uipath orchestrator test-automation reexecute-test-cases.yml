@@ -1,0 +1,160 @@
+name: 'UiPath Orchestrator Test Automation Reexecute Test Cases'
+description: |
+  Re-execute the specified test case executions within the same test set execution.
+
+  OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Write.
+
+  Required permissions: TestSetExecutions.Create.
+
+  Responses:
+  200 OK
+  403 If the caller doesn't have permissions to execute test sets
+  404 If one or more test cases were not found
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      test_case_executions:
+        description: |
+          Test case executions to re-execute. Each item must be an object string with keys:
+          executionOrder=integer; testCaseExecutionId=integer. Provide multiple in array form.
+        required: true
+        type: string
+      enforce_execution_order:
+        description: 'Enforce execution order (true/false). Defaults to false.'
+        required: false
+        default: 'false'
+        type: boolean
+      machine_id:
+        description: 'Machine Id (optional)'
+        required: false
+        type: number
+      machine_session_id:
+        description: 'Machine Session Id (optional)'
+        required: false
+        type: number
+      robot_id:
+        description: 'Robot Id (optional)'
+        required: false
+        type: number
+      runtime_type:
+        description: |
+          Runtime type (optional).
+          Allowed values:
+          NonProduction, Attended, Unattended, Development, Studio, RpaDeveloper, StudioX,
+          CitizenDeveloper, Headless, StudioPro, RpaDeveloperPro, TestAutomation,
+          AutomationCloud, Serverless, AutomationKit, ServerlessTestAutomation,
+          AutomationCloudTestAutomation, AttendedStudioWeb, Hosting, AssistantWeb,
+          ProcessOrchestration, AgentService
+        required: false
+        type: string
+        default: ''
+        options:
+          - NonProduction
+          - Attended
+          - Unattended
+          - Development
+          - Studio
+          - RpaDeveloper
+          - StudioX
+          - CitizenDeveloper
+          - Headless
+          - StudioPro
+          - RpaDeveloperPro
+          - TestAutomation
+          - AutomationCloud
+          - Serverless
+          - AutomationKit
+          - ServerlessTestAutomation
+          - AutomationCloudTestAutomation
+          - AttendedStudioWeb
+          - Hosting
+          - AssistantWeb
+          - ProcessOrchestration
+          - AgentService
+
+jobs:
+  reexecute-test-cases:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Build and run uipath orchestrator reexecute-test-cases command
+        shell: pwsh
+        run: |
+          # Initialize argument list with the base command
+          $args = @('orchestrator', 'test-automation', 'reexecute-test-cases')
+
+          # Required folder-id argument
+          $args += '--folder-id'
+          $args += "${{ inputs.folder_id }}"
+
+          # Required test-case-executions argument - pass multiple times if multiple entries
+          # Assumes input is a JSON array of strings like ["executionOrder=1;testCaseExecutionId=20", ...]
+          $jsonInput = '${{ inputs.test_case_executions }}'
+          $testCaseExecs = @()
+          try {
+              $testCaseExecs = ConvertFrom-Json $jsonInput
+          }
+          catch {
+              Write-Error "Failed to parse test_case_executions input as JSON array of strings."
+              exit 1
+          }
+
+          if (-not $testCaseExecs) {
+              Write-Error "test_case_executions input parsed as empty or invalid."
+              exit 1
+          }
+          foreach ($exec in $testCaseExecs) {
+              $args += '--test-case-executions'
+              $args += "$exec"
+          }
+
+          # Optional boolean enforce-execution-order (only add if true)
+          if (${{ inputs.enforce_execution_order }}) {
+              $args += '--enforce-execution-order'
+              $args += 'true'
+          }
+
+          # Optional integer machine-id
+          if ([string]::IsNullOrEmpty("${{ inputs.machine_id }}") -eq $false) {
+              $args += '--machine-id'
+              $args += "${{ inputs.machine_id }}"
+          }
+
+          # Optional integer machine-session-id
+          if ([string]::IsNullOrEmpty("${{ inputs.machine_session_id }}") -eq $false) {
+              $args += '--machine-session-id'
+              $args += "${{ inputs.machine_session_id }}"
+          }
+
+          # Optional integer robot-id
+          if ([string]::IsNullOrEmpty("${{ inputs.robot_id }}") -eq $false) {
+              $args += '--robot-id'
+              $args += "${{ inputs.robot_id }}"
+          }
+
+          # Optional runtime-type string
+          if (-not [string]::IsNullOrWhiteSpace("${{ inputs.runtime_type }}")) {
+              $args += '--runtime-type'
+              $args += "${{ inputs.runtime_type }}"
+          }
+
+          # Combine all arguments with proper quoting for CLI execution
+          $argString = $args | ForEach-Object { 
+              # Escape double quotes inside arguments
+              $escaped = $_ -replace '"', '`"'
+              # Quote arguments containing spaces or semicolons
+              if ($escaped -match '\s|;') { 
+                '"' + $escaped + '"'
+              } else {
+                $escaped
+              }
+          } | Out-String
+          $argString = $argString -replace "\r?\n", ' '
+          Write-Host "Executing: uipath $argString"
+
+          # Execute the uipath CLI with constructed arguments
+          uipath $args

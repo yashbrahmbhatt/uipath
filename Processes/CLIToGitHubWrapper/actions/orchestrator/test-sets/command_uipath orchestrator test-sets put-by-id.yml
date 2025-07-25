@@ -1,0 +1,173 @@
+name: uipath orchestrator test-sets put-by-id
+
+description: |
+  NAME:
+     uipath orchestrator test-sets put-by-id - Update an existing Test Set
+
+  USAGE:
+     uipath orchestrator test-sets put-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSets or OR.TestSets.Write.
+
+     Required permissions: TestSets.Edit.
+
+     Responses:
+     200 Returns the updated Test Set
+     403 If the caller doesn't have permissions to update Test Sets
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+        ID of the Test Set to be updated
+
+     --name string (required)
+
+     --packages object (multiple) (required)
+
+        Example:
+           CreationTime=string; CreatorUserId=integer; Id=integer; IncludePrerelease=boolean; LastModificationTime=string; LastModifierUserId=integer; PackageIdentifier=string; TestSet.CreationTime=string; TestSet.CreatorUserId=integer; TestSet.DeletionTime=string; TestSet.EnableCoverage=boolean; TestSet.EnvironmentId=integer; TestSet.Id=integer; TestSet.InputArguments[0].CreationTime=string; TestSet.InputArguments[0].CreatorUserId=integer; TestSet.InputArguments[0].Id=integer; TestSet.InputArguments[0].LastModificationTime=string; TestSet.InputArguments[0].LastModifierUserId=integer; TestSet.InputArguments[0].Name=string; TestSet.InputArguments[0].Type=string; TestSet.InputArguments[0].Value=string; TestSet.Key=string; TestSet.LastModificationTime=string; TestSet.OrganizationUnitId=integer; TestSet.RobotId=integer; TestSet.TestCaseCount=integer; TestSet.TestCases[0].CreationTime=string; TestSet.TestCases[0].CreatorUserId=integer; TestSet.TestCases[0].Definition.AppVersion=string; TestSet.TestCases[0].Definition.CreatedVersion=string; TestSet.TestCases[0].Definition.CreationTime=string; TestSet.TestCases[0].Definition.CreatorUserId=integer; TestSet.TestCases[0].Definition.FeedId=string; TestSet.TestCases[0].Definition.Id=integer; TestSet.TestCases[0].Definition.LastModificationTime=string; TestSet.TestCases[0].Definition.LastModifierUserId=integer; TestSet.TestCases[0].Definition.LatestPrereleaseVersion=string; TestSet.TestCases[0].Definition.LatestVersion=string; TestSet.TestCases[0].Definition.Name=string; TestSet.TestCases[0].Definition.PackageIdentifier=string; TestSet.TestCases[0].Definition.UniqueId=string; TestSet.TestCases[0].DefinitionId=integer; TestSet.TestCases[0].Enabled=boolean; TestSet.TestCases[0].Id=integer; TestSet.TestCases[0].LastModificationTime=string; TestSet.TestCases[0].LastModifierUserId=integer; TestSet.TestCases[0].ReleaseId=integer; TestSet.TestCases[0].TestSet.Environment.Id=integer; TestSet.TestCases[0].TestSet.Environment.Name=string; TestSet.TestCases[0].TestSetId=integer; TestSet.TestCases[0].VersionNumber=string; TestSetId=integer; VersionMask=string
+
+     --deleter-user-id integer
+
+     --description string
+
+     --is-deleted boolean
+
+     --last-modifier-user-id integer
+
+     --source-type string
+
+        Allowed values:
+        - User
+        - ExternalTool
+        - Transient
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      key:
+        description: 'ID of the Test Set to be updated (required)'
+        required: true
+        type: number
+      name:
+        description: 'Name of the Test Set (required)'
+        required: true
+        type: string
+      packages:
+        description: 'Packages object(s) serialized as strings (required). Multiple entries separated by newline.'
+        required: true
+        type: string
+      deleter_user_id:
+        description: 'Deleter user Id (optional)'
+        required: false
+        type: number
+        default: ''
+      description:
+        description: 'Description text (optional)'
+        required: false
+        type: string
+        default: ''
+      is_deleted:
+        description: 'Is deleted flag (optional)'
+        required: false
+        type: boolean
+        default: false
+      last_modifier_user_id:
+        description: 'Last modifier user Id (optional)'
+        required: false
+        type: number
+        default: ''
+      source_type:
+        description: 'Source type (optional). Allowed values: User, ExternalTool, Transient'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  run-cli:
+    runs-on: [windows, self-hosted]
+    name: Run uipath orchestrator test-sets put-by-id
+    steps:
+      - name: Build and run CLI command
+        shell: pwsh
+        run: |
+          # Initialize argument array
+          $args = @("orchestrator", "test-sets", "put-by-id")
+
+          # Required parameters
+          $args += "--folder-id"
+          $args += "$(${{ inputs.folder_id }})"
+
+          $args += "--key"
+          $args += "$(${{ inputs.key }})"
+
+          $args += "--name"
+          $args += ("\"{0}\"" -f ${{ inputs.name }})
+
+          # 'packages' is treated as multiple values separated by newlines; add each as separate argument
+          $packagesRaw = ${{ inputs.packages }}
+          if (-not $packagesRaw) {
+            Write-Host "ERROR: packages input is required."
+            exit 1
+          }
+          $packagesList = $packagesRaw -split "`n"
+          foreach ($pkg in $packagesList) {
+            $pkgTrimmed = $pkg.Trim()
+            if ($pkgTrimmed) {
+              $args += "--packages"
+              $args += ("\"{0}\"" -f $pkgTrimmed)
+            }
+          }
+
+          # Optional parameters: only add if set/provided
+
+          if (-not [string]::IsNullOrEmpty(${{ inputs.deleter_user_id }})) {
+            $args += "--deleter-user-id"
+            $args += "$(${{ inputs.deleter_user_id }})"
+          }
+
+          if (-not [string]::IsNullOrEmpty(${{ inputs.description }})) {
+            $args += "--description"
+            $args += ("\"{0}\"" -f ${{ inputs.description }})
+          }
+
+          # is-deleted boolean flag: add only if true
+          if (${{ inputs.is_deleted }}) {
+            $args += "--is-deleted"
+            $args += "true"
+          }
+
+          if (-not [string]::IsNullOrEmpty(${{ inputs.last_modifier_user_id }})) {
+            $args += "--last-modifier-user-id"
+            $args += "$(${{ inputs.last_modifier_user_id }})"
+          }
+
+          # source-type: validate allowed values if set, then add
+          $allowedSourceTypes = @("User","ExternalTool","Transient")
+          if (-not [string]::IsNullOrEmpty(${{ inputs.source_type }})) {
+            if ($allowedSourceTypes -contains ${{ inputs.source_type }}) {
+              $args += "--source-type"
+              $args += "$(${{ inputs.source_type }})"
+            }
+            else {
+              Write-Host "ERROR: Invalid source-type value '${{ inputs.source_type }}'. Allowed values are User, ExternalTool, Transient."
+              exit 1
+            }
+          }
+
+          Write-Host "Executing: uipath $($args -join ' ')"
+
+          # Execute the uipath CLI with constructed arguments
+          $processInfo = Start-Process -FilePath "uipath" -ArgumentList $args -NoNewWindow -Wait -PassThru
+          if ($processInfo.ExitCode -ne 0) {
+            Write-Error "uipath CLI returned exit code $($processInfo.ExitCode)"
+            exit $processInfo.ExitCode
+          }

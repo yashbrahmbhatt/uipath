@@ -1,0 +1,67 @@
+name: uipath-orchestrator-test-automation-cancel-test-case-execution
+description: |
+  NAME:
+     uipath orchestrator test-automation cancel-test-case-execution - Cancels the specified test case execution.
+
+  USAGE:
+     uipath orchestrator test-automation cancel-test-case-execution [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Write.
+
+     Required permissions: TestSetExecutions.Edit.
+
+     Responses:
+     202 Accepted
+     403 If the caller doesn't have permissions to cancel a test set execution
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --test-case-execution-id integer
+        Id for the test case execution to be canceled
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: Folder/OrganizationUnit Id (required)
+        required: true
+        type: number
+      test_case_execution_id:
+        description: Id for the test case execution to be canceled
+        required: false
+        type: number
+    secrets:
+      # Assuming OAuth token or other authentication secrets might be needed
+      UIPATH_ORCHESTRATOR_TOKEN:
+        description: 'Authentication token for UiPath Orchestrator'
+        required: false
+jobs:
+  cancel-test-case-execution:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Build and run uipath cancel-test-case-execution command
+        shell: pwsh
+        run: |
+          # Initialize argument array with base command and required folder id
+          $args = @(
+            'orchestrator',
+            'test-automation',
+            'cancel-test-case-execution',
+            '--folder-id', "$(${{ inputs.folder_id }})"
+          )
+
+          # Add optional test case execution id argument if provided
+          if (${{ inputs.test_case_execution_id }} -ne $null -and ${{ inputs.test_case_execution_id }} -ne '') {
+            $args += @('--test-case-execution-id', "$(${{ inputs.test_case_execution_id }})")
+          }
+
+          # If token secret provided, set env var or append auth as needed (adjust below as appropriate)
+          if ($env:UIPATH_ORCHESTRATOR_TOKEN) {
+            # Example: add authentication environment variable if required by CLI
+            $env:UIPATH_AUTH_TOKEN = $env:UIPATH_ORCHESTRATOR_TOKEN
+          }
+
+          # Execute the uipath CLI with constructed arguments
+          uipath @args

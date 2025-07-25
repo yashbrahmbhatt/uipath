@@ -1,0 +1,30 @@
+Based on the business process definition, the solution design leveraging UiPath's Automation Cloud platform would include the following Robots and Triggers:
+
+1. Robot: TransactionsDispatcher
+   - Name: TransactionsDispatcher
+   - Type: Dispatcher
+   - Description: Logs into the banking website with provided credentials, downloads transactions for all accounts, and dispatches each transaction as a unit of work into a queue for processing.
+
+2. Robot: TransactionClassifierPerformer
+   - Name: TransactionClassifierPerformer
+   - Type: SingleTransactionPerformer (or MultiTransactionPerformer if throughput requires)
+   - Description: Retrieves a single transaction from the queue, classifies it into a bucket, executes the appropriate SQL query to save the classified transaction to the database, and handles any exceptions as needed.
+
+3. Trigger: DailyScheduleTrigger
+   - Name: DailyScheduleTrigger
+   - Type: Time
+   - Description: Scheduled trigger to start the TransactionsDispatcher robot at a specific time daily (e.g., after banking transactions usually update).
+
+Optionally, if the number of transactions is high and parallel processing is desired, consider using MultiTransactionPerformer type for the classifier robot, and deploy multiple robots scaled out.
+
+Summary List:
+
+- Robots:
+   - TransactionsDispatcher (Dispatcher)
+   - TransactionClassifierPerformer (SingleTransactionPerformer or MultiTransactionPerformer)
+
+- Triggers:
+   - DailyScheduleTrigger (Time) — to start TransactionsDispatcher robot daily on schedule
+   - Queue trigger can be configured on the TransactionClassifierPerformer if using Queue trigger type for transaction items instead of polling.
+
+This design ensures separation of concerns: one robot downloads and dispatches work, and another robot processes each transaction independently and saves the data to database, exploiting UiPath's queue and Orchestrator capabilities.

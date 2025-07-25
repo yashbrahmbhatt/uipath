@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator processes get-arguments-by-key - Get process parameters
+
+USAGE:
+   uipath orchestrator processes get-arguments-by-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+   Required permissions: Packages.View.
+
+OPTIONS:
+   --key string (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

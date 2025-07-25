@@ -1,0 +1,66 @@
+name: uipath-orchestrator-queue-item-comments-get-by-id
+description: |
+  NAME:
+     uipath orchestrator queue-item-comments get-by-id - Gets a QueueItemComment by Id.
+
+  USAGE:
+     uipath orchestrator queue-item-comments get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Read.
+
+     Required permissions: Queues.View and Transactions.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      key:
+        description: 'Key of the QueueItemComment'
+        required: true
+        type: number
+      expand:
+        description: 'Related entities to represent inline (max depth 2)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Properties to limit in result'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+jobs:
+  call-get-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator queue-item-comments get-by-id
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'queue-item-comments', 'get-by-id')
+          # Required parameters
+          $args += @('--folder-id', "${{ inputs.folder_id }}")
+          $args += @('--key', "${{ inputs.key }}")
+          # Optional parameters
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += @('--expand', "${{ inputs.expand }}")
+          }
+          if ('${{ inputs.select }}' -ne '') {
+            $args += @('--select', "${{ inputs.select }}")
+          }
+          # Execute the command
+          uipath $args

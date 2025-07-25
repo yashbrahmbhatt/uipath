@@ -1,0 +1,17 @@
+NAME:
+   uipath orchestrator personal-workspaces get-personal-workspace - Gets Personal Workspace for current User
+
+USAGE:
+   uipath orchestrator personal-workspaces get-personal-workspace [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth authentication is not supported.
+
+   Requires authentication.
+
+OPTIONS:
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

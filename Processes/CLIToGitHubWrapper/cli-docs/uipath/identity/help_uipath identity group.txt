@@ -1,0 +1,16 @@
+NAME:
+   uipath identity group - Manage groups in your organization
+
+USAGE:
+   uipath identity group
+
+DESCRIPTION:
+   Use these endpoints to manage groups in your organization.
+
+COMMANDS:
+   bulk-delete   Deletes multiple local groups from a partition
+   create-group  Creates a new local group
+   delete        Deletes a local group
+   get-group     Get local or built-in group by partition and group Id
+   get-groups    Get all local and built-in groups from a partition
+   update-group  Updates a local group information.

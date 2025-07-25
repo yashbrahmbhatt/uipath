@@ -1,0 +1,23 @@
+NAME:
+   uipath du discovery classifier-by-id - Retrieve classifier details
+
+USAGE:
+   uipath du discovery classifier-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   Retrieve details about a specific classifier from a project.
+
+   Required scopes: <b>Du.Digitization.Api or Du.Classification.Api or Du.Extraction.Api or Du.Validation.Api</b></br>
+
+OPTIONS:
+   --api-version string (default: 1.0)
+      Version of the APIs.
+
+      Allowed values:
+      - 1.0
+
+   --classifier-id string (default: ml-classification)
+      ID of the Classifier.
+
+   --project-id string (default: 00000000-0000-0000-0000-000000000000)
+      ID of the Project.

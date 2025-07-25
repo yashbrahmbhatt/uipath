@@ -1,0 +1,57 @@
+name: uipath-orchestrator-get-all-folders-for-current-user
+description: |
+  uipath orchestrator folders-navigation get-all-folders-for-current-user - Returns the folders the current user has access to.
+  The response will be a list of folders; the hierarchy can be reconstructed using the ParentId properties. From the root to the folders the user has
+  actually been assigned to, the folders will be marked as non-selectable and only the paths to the assigned-to folders will be included.
+  From the assigned-to folders down to the leaves, the nodes will be marked as selectable and their children lists fully populated.
+
+  OAuth authentication is not supported.
+
+  Requires authentication.
+on:
+  workflow_call:
+    inputs:
+      base-url:
+        description: 'Base URL of the UiPath Orchestrator instance'
+        required: true
+        type: string
+      auth-token:
+        description: 'Bearer token for authentication'
+        required: true
+        type: string
+    secrets:
+      auth-token:
+        description: 'Secret token for authentication'
+
+jobs:
+  get-folders:
+    runs-on: [windows, self-hosted]
+    outputs:
+      response: ${{ steps.call-cli.outputs.response }}
+    steps:
+      - name: Call UiPath Orchestrator CLI to get folders for current user
+        id: call-cli
+        shell: pwsh
+        run: |
+          $args = @()
+
+          # Build the command arguments
+          # Base URL parameter is mandatory
+          $null = $args.Add("orchestrator")
+          $null = $args.Add("folders-navigation")
+          $null = $args.Add("get-all-folders-for-current-user")
+
+          # As there is no direct CLI arguments shown in the help, assume no args beyond command path
+          # The authentication will be done via environment variable or header (could be adjusted)
+
+          # Prepare environment variable for authentication header
+          $env:UIPATH_ORCH_AUTH_TOKEN = "${{ secrets.auth-token }}"
+
+          # Construct command string and execute
+          $command = "uipath $($args -join ' ')"
+          Write-Host "Executing command: $command"
+          $output = & uipath @args 2>&1
+          Write-Host $output
+
+          # Output response for later use if needed
+          Write-Output "::set-output name=response::$output"

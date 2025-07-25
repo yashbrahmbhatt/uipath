@@ -1,0 +1,33 @@
+NAME:
+   uipath orchestrator queue-item-comments post - Creates a QueueItemComment.
+
+USAGE:
+   uipath orchestrator queue-item-comments post [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+   Required permissions: Queues.View and Transactions.Edit.
+
+   Note: If the CreationTime is passed in in the UiPath.Orchestrator.Application.Dto.Queues.QueueItemCommentDto it will be overriden with server UTC time.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --text string (required)
+      The comment body.
+
+   --creation-time string
+      DEPRECATED. The date and time when the comment was created.
+
+   --id integer
+
+   --queue-item-id integer
+      The Id of a Queue Item that the current item is connected to.
+
+   --user-id integer
+      The id of the User that authored the comment.
+
+   --user-name string
+      The name of the User that authored the comment.

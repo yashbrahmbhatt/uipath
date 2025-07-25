@@ -1,0 +1,66 @@
+NAME:
+   uipath identity user create-user - Creates a new user. This API is idempotent, the existing user will be deleted if trying to be created again.
+
+USAGE:
+   uipath identity user create-user [command options] [arguments...]
+
+DESCRIPTION:
+   Creating user in a group requires partition administrator group membership.
+
+OPTIONS:
+   --bypass-basic-auth-restriction boolean
+      Flag indicating if this user will bypass the basic authentication restriction.
+
+   --display-name string
+      Display name of the user
+
+   --email string
+      The user's email address.
+
+   --group-ids string,string,...
+      IDs of the groups this user is a member of.
+
+   --id string
+      The user global id
+
+   --invitation-accepted boolean
+      Flag indicating whether the user has accepted invitation or not.
+
+   --legacy-id integer
+      User legacy id can be specified from an external source. If null, uses the default auto-increment behavior.
+      This is needed to stay in sync with the TMS user data while we are in dual-mode.
+
+   --name string
+      The name of the user.
+
+   --partition-global-id string
+      The tenant global id that the user belongs to.
+
+   --password string
+      The user's password.
+
+   --surname string
+      The name of the user.
+
+   --type string
+      Defines how a user was created and how it is supposed to be used.
+
+      Allowed values:
+      - user
+      - robot
+      - directoryUser
+      - directoryGroup
+      - robotAccount
+      - application
+
+   --user-logins object (multiple)
+      The user logins
+
+      Example:
+         loginProvider=string; providerDisplayName=string; providerKey=string
+
+   --user-name string
+      The user's name.
+
+   --validate-password boolean
+      Flag indicating if we need to validate the password.

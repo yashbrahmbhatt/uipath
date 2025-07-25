@@ -1,0 +1,143 @@
+name: uipath-orchestrator-robots-get-usernames
+description: |
+  OAuth required scopes: OR.Robots or OR.Robots.Read.
+
+  Required permissions: Robots.View.
+
+  Gets usernames.
+
+  Options:
+  --folder-id integer (required)
+     Folder/OrganizationUnit Id
+
+  --count boolean
+     Indicates whether the total count of items within a collection are returned in the result.
+
+  --expand string
+     Indicates the related entities to be represented inline. The maximum depth is 2.
+
+  --filter string
+     Restricts the set of items returned. The maximum number of expressions is 100.
+
+  --orderby string
+     Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+  --select string
+     Limits the properties returned in the result.
+
+  --skip integer
+     Excludes the specified number of items of the queried collection from the result.
+
+  --top integer
+     Limits the number of items returned from a collection. The maximum value is 1000.
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: integer
+      count:
+        description: 'Whether to return the total count of items (boolean)'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Related entities to be represented inline (max depth 2)'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restricts the set of items returned (max 100 expressions)'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Order in which items are returned (max 5 expressions)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Exclude this number of items from the result'
+        required: false
+        type: integer
+        default: 0
+      top:
+        description: 'Limits the number of items returned (max 1000)'
+        required: false
+        type: integer
+        default: 0
+jobs:
+  call-uipath-orchestrator-robots-get-usernames:
+    runs-on: [windows, self-hosted]
+    outputs:
+      output: ${{ steps.get-usernames.outputs.command-output }}
+    steps:
+      - name: Run uipath orchestrator robots get-usernames
+        id: get-usernames
+        shell: pwsh
+        run: |
+          # Initialize arguments array for command construction
+          $argsList = @('orchestrator', 'robots', 'get-usernames')
+
+          # Required argument --folder-id
+          $argsList += '--folder-id'
+          $argsList += "${{ inputs.folder_id }}"
+
+          # Optional boolean --count: Include only if true
+          if (${{ inputs.count }}) {
+            $argsList += '--count'
+          }
+
+          # Optional string --expand
+          if (![string]::IsNullOrWhiteSpace('${{ inputs.expand }}')) {
+            $argsList += '--expand'
+            $argsList += '${{ inputs.expand }}'
+          }
+
+          # Optional string --filter
+          if (![string]::IsNullOrWhiteSpace('${{ inputs.filter }}')) {
+            $argsList += '--filter'
+            $argsList += '${{ inputs.filter }}'
+          }
+
+          # Optional string --orderby
+          if (![string]::IsNullOrWhiteSpace('${{ inputs.orderby }}')) {
+            $argsList += '--orderby'
+            $argsList += '${{ inputs.orderby }}'
+          }
+
+          # Optional string --select
+          if (![string]::IsNullOrWhiteSpace('${{ inputs.select }}')) {
+            $argsList += '--select'
+            $argsList += '${{ inputs.select }}'
+          }
+
+          # Optional integer --skip (include only if > 0)
+          if (${{ inputs.skip }} -gt 0) {
+            $argsList += '--skip'
+            $argsList += "${{ inputs.skip }}"
+          }
+
+          # Optional integer --top (include only if > 0)
+          if (${{ inputs.top }} -gt 0) {
+            $argsList += '--top'
+            $argsList += "${{ inputs.top }}"
+          }
+
+          # Construct the full CLI command string
+          $command = 'uipath ' + ($argsList -join ' ')
+
+          Write-Host "Executing command: $command"
+
+          # Execute the command and capture output
+          $output = & uipath @argsList 2>&1
+
+          # Output the result for downstream steps or jobs
+          Write-Output $output
+          echo "::set-output name=command-output::$output"

@@ -1,0 +1,27 @@
+NAME:
+   uipath orchestrator test-case-executions get-by-id - Return a specific Test Case Execution identified by key
+
+USAGE:
+   uipath orchestrator test-case-executions get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Read.
+
+   Required permissions: TestSetExecutions.View.
+
+   Responses:
+   200 Return a specific Test Case Execution identified by key
+   403 If the caller doesn't have permissions to view Test Set Executions
+   404 If the test case execution is not found
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

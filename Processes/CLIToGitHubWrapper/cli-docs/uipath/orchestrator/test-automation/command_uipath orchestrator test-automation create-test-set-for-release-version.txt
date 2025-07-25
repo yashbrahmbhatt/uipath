@@ -1,0 +1,28 @@
+NAME:
+   uipath orchestrator test-automation create-test-set-for-release-version - This will create a test set with source type API.This endpoint it is supposed to be used by API integration.
+
+USAGE:
+   uipath orchestrator test-automation create-test-set-for-release-version [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSets or OR.TestSets.Write.
+
+   Required permissions: TestSets.Create.
+
+   Responses:
+   201 Created returns test set Id
+   403 If the caller doesn't have permissions to create a test set
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --release-id integer (required)
+
+   --version-number string (required)
+
+   --enable-coverage boolean
+
+   --mask-build-version boolean
+
+   --test-case-unique-ids string,string,...

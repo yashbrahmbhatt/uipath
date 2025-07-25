@@ -1,0 +1,13 @@
+NAME:
+   uipath orchestrator audit-logs - Recorded activity for audit purposes
+
+USAGE:
+   uipath orchestrator audit-logs
+
+DESCRIPTION:
+   Logs help with debugging issues, increasing security and performance, or reporting trends.
+
+COMMANDS:
+   export                               Requests a CSV export of filtered items.
+   get                                  Gets Audit logs.
+   get-audit-log-details-by-auditlogid  Returns audit log details by audit log id

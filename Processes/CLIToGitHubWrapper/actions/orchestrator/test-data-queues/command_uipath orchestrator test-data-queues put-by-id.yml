@@ -1,0 +1,154 @@
+name: uipath-orchestrator-test-data-queues-put-by-id
+description: |
+  NAME:
+     uipath orchestrator test-data-queues put-by-id - Update an existing test data queue
+
+  USAGE:
+     uipath orchestrator test-data-queues put-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+     Required permissions: TestDataQueues.Edit.
+
+     Responses:
+     200 Returns the updated test data queue
+     403 If the caller doesn't have permissions to update test data queues
+     409 If trying to change the queue name
+
+on:
+  workflow_call:
+    inputs:
+      content_json_schema:
+        description: Schema content to update the test data queue with
+        required: true
+        type: string
+      folder_id:
+        description: Folder/OrganizationUnit Id
+        required: true
+        type: integer
+      key:
+        description: Id of the test data queue to be updated
+        required: true
+        type: integer
+      name:
+        description: Name of the test data queue
+        required: true
+        type: string
+      consumed_items_count:
+        description: Consumed items count
+        required: false
+        type: integer
+      creation_time:
+        description: Creation time (string)
+        required: false
+        type: string
+      creator_user_id:
+        description: Creator user Id
+        required: false
+        type: integer
+      deleter_user_id:
+        description: Deleter user Id
+        required: false
+        type: integer
+      deletion_time:
+        description: Deletion time (string)
+        required: false
+        type: string
+      description:
+        description: Description text
+        required: false
+        type: string
+      id:
+        description: Id field
+        required: false
+        type: integer
+      is_deleted:
+        description: Is deleted flag
+        required: false
+        type: boolean
+      items_count:
+        description: Items count
+        required: false
+        type: integer
+      last_modification_time:
+        description: Last modification time (string)
+        required: false
+        type: string
+      last_modifier_user_id:
+        description: Last modifier user Id
+        required: false
+        type: integer
+
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator test-data-queues put-by-id command
+        shell: pwsh
+        run: |
+          # Initialize argument list for the CLI command
+          $args = @("orchestrator", "test-data-queues", "put-by-id")
+
+          # Required parameters (always included)
+          $args += "--content-json-schema"
+          $args += "$(${{ inputs.content_json_schema }})"
+
+          $args += "--folder-id"
+          $args += "$(${{ inputs.folder_id }})"
+
+          $args += "--key"
+          $args += "$(${{ inputs.key }})"
+
+          $args += "--name"
+          $args += "$(${{ inputs.name }})"
+
+          # Optional parameters (only add if defined and not empty)
+          if ($null -ne ${{ inputs.consumed_items_count }}) {
+            $args += "--consumed-items-count"
+            $args += "$(${{ inputs.consumed_items_count }})"
+          }
+          if ($null -ne ${{ inputs.creation_time }} -and ${{ inputs.creation_time }}.Trim() -ne "") {
+            $args += "--creation-time"
+            $args += "$(${{ inputs.creation_time }})"
+          }
+          if ($null -ne ${{ inputs.creator_user_id }}) {
+            $args += "--creator-user-id"
+            $args += "$(${{ inputs.creator_user_id }})"
+          }
+          if ($null -ne ${{ inputs.deleter_user_id }}) {
+            $args += "--deleter-user-id"
+            $args += "$(${{ inputs.deleter_user_id }})"
+          }
+          if ($null -ne ${{ inputs.deletion_time }} -and ${{ inputs.deletion_time }}.Trim() -ne "") {
+            $args += "--deletion-time"
+            $args += "$(${{ inputs.deletion_time }})"
+          }
+          if ($null -ne ${{ inputs.description }} -and ${{ inputs.description }}.Trim() -ne "") {
+            $args += "--description"
+            $args += "$(${{ inputs.description }})"
+          }
+          if ($null -ne ${{ inputs.id }}) {
+            $args += "--id"
+            $args += "$(${{ inputs.id }})"
+          }
+          if ($null -ne ${{ inputs.is_deleted }}) {
+            $args += "--is-deleted"
+            $args += "$(${{ inputs.is_deleted }})"
+          }
+          if ($null -ne ${{ inputs.items_count }}) {
+            $args += "--items-count"
+            $args += "$(${{ inputs.items_count }})"
+          }
+          if ($null -ne ${{ inputs.last_modification_time }} -and ${{ inputs.last_modification_time }}.Trim() -ne "") {
+            $args += "--last-modification-time"
+            $args += "$(${{ inputs.last_modification_time }})"
+          }
+          if ($null -ne ${{ inputs.last_modifier_user_id }}) {
+            $args += "--last-modifier-user-id"
+            $args += "$(${{ inputs.last_modifier_user_id }})"
+          }
+
+          # Execute the CLI command with all constructed arguments
+          Write-Host "Running: uipath $args"
+          uipath @args

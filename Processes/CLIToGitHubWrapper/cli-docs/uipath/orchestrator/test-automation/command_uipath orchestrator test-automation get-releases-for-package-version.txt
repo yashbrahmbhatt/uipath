@@ -1,0 +1,30 @@
+NAME:
+   uipath orchestrator test-automation get-releases-for-package-version - This will list all the processes filtered by package identifier and version cross-folder when no current folder is sent by header.
+
+USAGE:
+   uipath orchestrator test-automation get-releases-for-package-version [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+   Required permissions: Processes.View.
+
+   Responses:
+   200 OK
+   404 If there is no release for the specified package identifier
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --at-least-one-permissions string,string,...
+      If in a cross-folder scenario, these represent the additional permissions
+                  required in the folders the data is retrieved from; at least one permission in this set must be met
+
+   --mandatory-permissions string,string,...
+      If in a cross-folder scenario, these represent the additional permissions
+                  required in the folders the data is retrieved from; all permissions in this set must be met
+
+   --package-identifier string
+
+   --version string

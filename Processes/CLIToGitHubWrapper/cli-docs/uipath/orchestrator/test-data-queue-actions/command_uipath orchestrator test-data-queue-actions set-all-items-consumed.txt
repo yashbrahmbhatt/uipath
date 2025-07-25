@@ -1,0 +1,22 @@
+NAME:
+   uipath orchestrator test-data-queue-actions set-all-items-consumed - Set the IsConsumed flag for all items from a test data queue
+
+USAGE:
+   uipath orchestrator test-data-queue-actions set-all-items-consumed [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+   Required permissions: TestDataQueueItems.Edit.
+
+   Responses:
+   202 All items from the test data queue were scheduled for setting the IsConsumed flag
+   403 If the caller doesn't have permissions to edit test data queue items
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --is-consumed boolean (required)
+
+   --queue-name string (required)

@@ -1,0 +1,11 @@
+NAME:
+   uipath orchestrator package-feeds - Packages management
+
+USAGE:
+   uipath orchestrator package-feeds
+
+DESCRIPTION:
+   Package feeds represent the sources where the automation packages or processes developed in UiPath Studio are stored so they can be distributed and run on robots.
+
+COMMANDS:
+   get-folder-feed  Returns the feed id for a user assigned folder having specific feed

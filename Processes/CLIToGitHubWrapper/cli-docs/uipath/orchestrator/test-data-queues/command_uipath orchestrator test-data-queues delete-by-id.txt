@@ -1,0 +1,21 @@
+NAME:
+   uipath orchestrator test-data-queues delete-by-id - Delete an existing test data queue
+
+USAGE:
+   uipath orchestrator test-data-queues delete-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+   Required permissions: TestDataQueues.Delete.
+
+   Responses:
+   204 The test data queue was deleted
+   403 If the caller doesn't have permissions to delete test data queues
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      Id of the test data queue to be deleted

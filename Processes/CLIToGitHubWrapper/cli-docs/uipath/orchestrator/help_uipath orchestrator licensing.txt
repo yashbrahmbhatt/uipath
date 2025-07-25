@@ -1,0 +1,12 @@
+NAME:
+   uipath orchestrator licensing - License units
+
+USAGE:
+   uipath orchestrator licensing
+
+DESCRIPTION:
+   APIs to acquire and release license units.
+
+COMMANDS:
+   acquire  Acquire license units
+   release  Release acquired license units

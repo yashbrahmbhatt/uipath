@@ -1,0 +1,15 @@
+NAME:
+   uipath orchestrator personal-workspaces convert-to-folder-by-id - Converts a Personal Workspace to a standard Folder.
+
+USAGE:
+   uipath orchestrator personal-workspaces convert-to-folder-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth authentication is not supported.
+
+   Required permissions: Units.Edit.
+
+OPTIONS:
+   --folder-name string (required)
+
+   --key integer (required)

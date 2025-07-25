@@ -1,0 +1,24 @@
+NAME:
+   uipath identity token create - Creates a new token
+
+USAGE:
+   uipath identity token create [command options] [arguments...]
+
+OPTIONS:
+   --client-id string (required)
+      The client id
+
+   --client-secret string (required)
+      The client secret
+
+   --grant-type string (required)
+      The grant type
+
+   --password string
+      The user name
+
+   --scope string
+      The scopes
+
+   --username string
+      The user name

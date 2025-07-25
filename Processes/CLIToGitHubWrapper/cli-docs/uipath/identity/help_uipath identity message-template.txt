@@ -1,0 +1,13 @@
+NAME:
+   uipath identity message-template - Create message Templates
+
+USAGE:
+   uipath identity message-template
+
+DESCRIPTION:
+   Manage your message templates.
+
+COMMANDS:
+   get-template        Get a message template using the provided filter.
+   get-template-by-id  Get a message template by Id.
+   update-template     Update existing message template.

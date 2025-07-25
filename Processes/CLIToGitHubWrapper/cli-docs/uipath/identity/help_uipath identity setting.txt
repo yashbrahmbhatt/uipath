@@ -1,0 +1,12 @@
+NAME:
+   uipath identity setting - Update application settings
+
+USAGE:
+   uipath identity setting
+
+DESCRIPTION:
+   Manage your application settings.
+
+COMMANDS:
+   get-settings-bulk  Get an application settings for a list of keys in a tenant
+   update-settings    Updates or create new settings if they don't exist on a specific tenant.

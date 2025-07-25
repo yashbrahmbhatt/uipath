@@ -1,0 +1,68 @@
+name: UiPath Orchestrator Logs Post
+
+description: |
+  OAuth required scopes: OR.Monitoring or OR.Monitoring.Write.
+
+  Required permissions: (Logs.Create).
+
+  Inserts a log entry with a specified message in JSON format.
+
+  Example of jMessage parameter:
+  
+      {
+          "message": "TTT execution started",
+          "level": "Information",
+          "timeStamp": "2017-01-18T14:46:07.4152893+02:00",
+          "windowsIdentity": "DESKTOP-1L50L0P\\WindowsUser",
+          "agentSessionId": "00000000-0000-0000-0000-000000000000",
+          "processName": "TTT",
+          "fileName": "Main",
+          "jobId": "8066c309-cef8-4b47-9163-b273fc14cc43"
+      }
+      
+  DEPRECATED: 
+  Use SubmitLogs instead.
+  Please refer to https://docs.uipath.com/orchestrator/reference
+
+on:
+  workflow_call:
+    inputs:
+      jMessage:
+        description: 'The log message in JSON format (string). Required.'
+        required: true
+        type: string
+      # Optional: you may add additional CLI arguments here if they exist, none specified in help.
+    secrets:
+      UIPATH_ORCHESTRATOR_TOKEN:
+        description: 'OAuth token with required permissions (OR.Monitoring or OR.Monitoring.Write scope, Logs.Create permission).'
+        required: true
+
+jobs:
+  post-log:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Post log entry to UiPath Orchestrator
+        shell: pwsh
+        run: |
+          # Construct argument array for the CLI command
+          $args = @("orchestrator", "logs", "post")
+
+          # Append the mandatory -jMessage argument with properly escaped quotes
+          $escapedJson = ${{ inputs.jMessage }} -replace '"', '\"'
+          # Instead of replacing quotes by \" which is fragile in PowerShell, use single quotes around argument.
+          # Better approach: pass the JSON as a single argument with outer double quotes and internal properly escaped quotes.
+          # PowerShell escaping for JSON strings can be complex, so we use `--%` or simpler string interpolation:
+
+          # Using single quotes and double quotes inside safely:
+          $jsonArg = ${{ inputs.jMessage }}
+
+          # Add the JSON argument wrapped in quotes
+          $args += '--jMessage'
+          $args += $jsonArg
+
+          # Run the CLI command using the constructed arguments
+          # Environment variable is set for authentication token
+          $env:UIPATH_ORCHESTRATOR_TOKEN = '${{ secrets.UIPATH_ORCHESTRATOR_TOKEN }}'
+
+          # Invoke the CLI tool 'uipath' with the arguments
+          uipath @args

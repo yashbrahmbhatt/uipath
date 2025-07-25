@@ -1,0 +1,81 @@
+name: uipath-orchestrator-task-catalogs-share-to-folders
+description: |
+  NAME:
+     uipath orchestrator task-catalogs share-to-folders - Makes the task catalogs visible in the specified folders.
+
+  USAGE:
+     uipath orchestrator task-catalogs share-to-folders [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Requires authentication.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --task-catalog-ids integer,integer,...
+
+     --to-add-folder-ids integer,integer,...
+
+     --to-remove-folder-ids integer,integer,...
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      task-catalog-ids:
+        description: 'Comma-separated list of task catalog IDs to share'
+        required: false
+        type: string
+        default: ''
+      to-add-folder-ids:
+        description: 'Comma-separated list of folder IDs to add sharing to'
+        required: false
+        type: string
+        default: ''
+      to-remove-folder-ids:
+        description: 'Comma-separated list of folder IDs to remove sharing from'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  share_task_catalogs_to_folders:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Share Task Catalogs to Folders
+        shell: pwsh
+        run: |
+          $args = @('orchestrator','task-catalogs','share-to-folders')
+
+          # Required argument --folder-id
+          $args += '--folder-id'
+          $args += "${{ inputs.folder-id }}"
+
+          # Optionally add --task-catalog-ids if provided and not empty
+          if (${{ inputs.task-catalog-ids }} -ne '') {
+            $args += '--task-catalog-ids'
+            $args += "${{ inputs.task-catalog-ids }}"
+          }
+
+          # Optionally add --to-add-folder-ids if provided and not empty
+          if (${{ inputs.to-add-folder-ids }} -ne '') {
+            $args += '--to-add-folder-ids'
+            $args += "${{ inputs.to-add-folder-ids }}"
+          }
+
+          # Optionally add --to-remove-folder-ids if provided and not empty
+          if (${{ inputs.to-remove-folder-ids }} -ne '') {
+            $args += '--to-remove-folder-ids'
+            $args += "${{ inputs.to-remove-folder-ids }}"
+          }
+
+          # Execute the uipath CLI command with constructed arguments
+          Write-Host "Running uipath $($args -join ' ')"
+          uipath $args

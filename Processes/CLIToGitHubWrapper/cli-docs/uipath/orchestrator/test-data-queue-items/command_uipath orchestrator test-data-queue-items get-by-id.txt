@@ -1,0 +1,27 @@
+NAME:
+   uipath orchestrator test-data-queue-items get-by-id - Return a specific test data queue item identified by key
+
+USAGE:
+   uipath orchestrator test-data-queue-items get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Read.
+
+   Required permissions: TestDataQueueItems.View.
+
+   Responses:
+   200 Returns a specific test data queue item identified by key
+   403 If the caller doesn't have permissions to view test data queue items
+   404 If the test data queue item is not found
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

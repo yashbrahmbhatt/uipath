@@ -1,0 +1,33 @@
+NAME:
+   uipath studio package pack - Packs a project into a single package
+
+USAGE:
+   uipath studio package pack [command options] [arguments...]
+
+OPTIONS:
+   --destination string (default: .)
+      The output folder
+
+   --source string (default: .)
+      Path to a project.json file or a folder containing project.json file
+
+   --auto-version boolean
+      Auto-generate package version
+
+   --output-type string
+      Force the output to a specific type.
+
+      Allowed values:
+      - Process
+      - Library
+      - Tests
+      - Objects
+
+   --package-version string
+      The package version
+
+   --release-notes string
+      Add release notes
+
+   --split-output boolean
+      Enables the output split to runtime and design libraries

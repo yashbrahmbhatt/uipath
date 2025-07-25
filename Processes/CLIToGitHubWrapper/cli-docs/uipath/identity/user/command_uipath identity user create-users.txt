@@ -1,0 +1,21 @@
+NAME:
+   uipath identity user create-users - Creates users in bulk.
+
+USAGE:
+   uipath identity user create-users [command options] [arguments...]
+
+DESCRIPTION:
+   Creating users in a group requires partition administrator group membership.
+
+OPTIONS:
+   --group-ids string,string,...
+      IDs of the groups this user is a member of.
+
+   --partition-global-id string
+      The tenant global id that the user belongs to.
+
+   --users object (multiple)
+      Users information.
+
+      Example:
+         bypassBasicAuthRestriction=boolean; displayName=string; email=string; id=string; invitationAccepted=boolean; legacyId=integer; name=string; surname=string; type=string; userName=string

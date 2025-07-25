@@ -1,0 +1,127 @@
+name: uipath-orchestrator-robot-logs-get-total-count
+description: |
+  Gets the total count of robot logs.
+  This might be different than the size of the count returned by GetRobotLogs which is limited by the max_result_window parameter for an Elasticsearch source.
+
+  OAuth required scopes: OR.Monitoring or OR.Monitoring.Read.
+  Required permissions: Logs.View.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: Folder/OrganizationUnit Id (required)
+        required: true
+        type: string
+      count:
+        description: Indicates whether the total count of items within a collection are returned in the result.
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: Restricts the set of items returned. The maximum number of expressions is 100.
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: Specifies the order in which items are returned. The maximum number of expressions is 5.
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: Excludes the specified number of items of the queried collection from the result.
+        required: false
+        type: integer
+        default: 0
+      top:
+        description: Limits the number of items returned from a collection. The maximum value is 1000.
+        required: false
+        type: integer
+        default: 0
+
+jobs:
+  get-total-count:
+    runs-on: [windows, self-hosted]
+    outputs:
+      result: ${{ steps.invoke.outputs.stdout }}
+    steps:
+      - name: Build and run uipath orchestrator robot-logs get-total-count command
+        id: invoke
+        shell: pwsh
+        run: |
+          $args = @("orchestrator", "robot-logs", "get-total-count")
+          # Add required folder-id argument
+          $args += "--folder-id"
+          $args += "$env:FOLDER_ID"
+
+          # Add optional boolean count only if true
+          if ($env:COUNT -eq "true") {
+            $args += "--count"
+            $args += "true"
+          }
+
+          # Add optional expand if provided
+          if (![string]::IsNullOrEmpty($env:EXPAND)) {
+            $args += "--expand"
+            $args += "$env:EXPAND"
+          }
+
+          # Add optional filter if provided
+          if (![string]::IsNullOrEmpty($env:FILTER)) {
+            $args += "--filter"
+            $args += "$env:FILTER"
+          }
+
+          # Add optional orderby if provided
+          if (![string]::IsNullOrEmpty($env:ORDERBY)) {
+            $args += "--orderby"
+            $args += "$env:ORDERBY"
+          }
+
+          # Add optional select if provided
+          if (![string]::IsNullOrEmpty($env:SELECT)) {
+            $args += "--select"
+            $args += "$env:SELECT"
+          }
+
+          # Add optional skip if > 0
+          if ([int]$env:SKIP -gt 0) {
+            $args += "--skip"
+            $args += "$env:SKIP"
+          }
+
+          # Add optional top if > 0
+          if ([int]$env:TOP -gt 0) {
+            $args += "--top"
+            $args += "$env:TOP"
+          }
+
+          Write-Host "Running command: uipath $($args -join ' ')"
+          $process = Start-Process -FilePath "uipath" -ArgumentList $args -NoNewWindow -Wait -PassThru -RedirectStandardOutput "stdout.txt" -RedirectStandardError "stderr.txt"
+          $stdout = Get-Content -Raw "stdout.txt"
+          $stderr = Get-Content -Raw "stderr.txt"
+          if ($process.ExitCode -ne 0) {
+            Write-Error "Command failed with exit code $($process.ExitCode): $stderr"
+            exit $process.ExitCode
+          }
+          Write-Output $stdout
+          echo "::set-output name=stdout::$stdout"
+        env:
+          FOLDER_ID: ${{ inputs.folder_id }}
+          COUNT: ${{ inputs.count }}
+          EXPAND: ${{ inputs.expand }}
+          FILTER: ${{ inputs.filter }}
+          ORDERBY: ${{ inputs.orderby }}
+          SELECT: ${{ inputs.select }}
+          SKIP: ${{ inputs.skip }}
+          TOP: ${{ inputs.top }}

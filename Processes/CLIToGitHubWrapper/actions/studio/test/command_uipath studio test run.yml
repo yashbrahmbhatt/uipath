@@ -1,0 +1,120 @@
+name: 'UiPath Studio Test Run'
+
+description: |
+  uipath studio test run - Tests a given package
+
+  USAGE:
+     uipath studio test run [command options] [arguments...]
+
+  OPTIONS:
+     --source string,string,... (default: .)
+        Path to one or more project.json files or folders containing project.json files
+
+     --attach-robot-logs boolean
+        Attaches Robot Logs for each testcases along with Test Report.
+
+     --folder string (default: Shared)
+        The Orchestrator Folder
+
+     --results-output string (default: uipath)
+        Output type for the test results report (default: uipath)
+
+        Allowed values:
+        - uipath
+        - junit
+
+     --timeout integer (default: 3600)
+        Time to wait in seconds for tests to finish
+
+on:
+  workflow_call:
+    inputs:
+      source:
+        description: 'Path(s) to one or more project.json files or folders containing project.json files (comma-separated).'
+        required: false
+        default: '.'
+        type: string
+
+      attach_robot_logs:
+        description: 'If true, attaches Robot Logs for each testcase along with the Test Report.'
+        required: false
+        default: 'false'
+        type: boolean
+
+      folder:
+        description: 'The Orchestrator Folder to use.'
+        required: false
+        default: 'Shared'
+        type: string
+
+      results_output:
+        description: 'Output type for the test results report.'
+        required: false
+        default: 'uipath'
+        type: string
+
+      timeout:
+        description: 'Time to wait in seconds for tests to finish.'
+        required: false
+        default: 3600
+        type: number
+
+jobs:
+  uipath_studio_test_run:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath studio test run command
+        shell: pwsh
+        run: |
+          # Start building the argument list for the CLI command
+          $args = @('studio', 'test', 'run')
+
+          # Add --source argument, handling comma-separated multiple paths
+          if ('${{ inputs.source }}'.Trim() -ne '') {
+            # Quote the whole argument string to handle possible commas or spaces
+            $args += "--source"
+            $args += "${{ inputs.source }}"
+          }
+
+          # Add --attach-robot-logs flag if true
+          if (${{ inputs.attach_robot_logs }} -eq $true -or ${{ inputs.attach_robot_logs }} -eq 'true') {
+            $args += "--attach-robot-logs"
+          }
+
+          # Add --folder argument if specified
+          if ('${{ inputs.folder }}'.Trim() -ne '') {
+            $args += "--folder"
+            $args += "${{ inputs.folder }}"
+          }
+
+          # Add --results-output argument validating allowed values
+          $allowedResultsOutputs = @('uipath', 'junit')
+          if ($allowedResultsOutputs -contains '${{ inputs.results_output }}') {
+            $args += "--results-output"
+            $args += "${{ inputs.results_output }}"
+          } else {
+            Write-Error "Invalid results_output value '${{ inputs.results_output }}'. Allowed values are: uipath, junit."
+            exit 1
+          }
+
+          # Add --timeout argument, ensure it's an integer
+          if ([int]::TryParse("${{ inputs.timeout }}", [ref]$null)) {
+            $args += "--timeout"
+            $args += "${{ inputs.timeout }}"
+          } else {
+            Write-Error "Invalid timeout value '${{ inputs.timeout }}'. It must be an integer."
+            exit 1
+          }
+
+          # Compose and run the full command
+          $command = "uipath " + ($args | ForEach-Object { 
+            # Quote each argument if it contains spaces or special characters
+            if ($_ -match '\s|,') { 
+              '"' + $_ + '"' 
+            } else { 
+              $_ 
+            } 
+          }) -join ' '
+
+          Write-Host "Running command: $command"
+          iex $command

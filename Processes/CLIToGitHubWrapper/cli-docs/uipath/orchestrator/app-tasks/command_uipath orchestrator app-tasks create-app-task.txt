@@ -1,0 +1,76 @@
+NAME:
+   uipath orchestrator app-tasks create-app-task - Creates a new App Task.
+
+USAGE:
+   uipath orchestrator app-tasks create-app-task [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+   Required permissions: Tasks.Create.
+
+OPTIONS:
+   --app-id string (required)
+      Id representing AppId for AppTask
+
+   --app-version integer (required)
+      Version of App for AppTask
+
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --title string (required)
+      Gets or sets title of this task.
+
+   --actionable-message-meta-data object
+      Type definition for Actionable Message Schema.
+
+      Example:
+         actionSet.actions[0].id=string; actionSet.actions[0].isPrimary=boolean; actionSet.actions[0].name=string; actionSet.actions[0].title=string; actionSet.actions[0].type=string; actionSet.id=string; actionSet.type=string; fieldSet.fields[0].horizontalAlignment=string; fieldSet.fields[0].id=string; fieldSet.fields[0].isHeader=boolean; fieldSet.fields[0].isRequired=boolean; fieldSet.fields[0].name=string; fieldSet.fields[0].placeHolderText=string; fieldSet.fields[0].sequence=integer; fieldSet.fields[0].title=string; fieldSet.fields[0].type=string; fieldSet.fields[0].value=string; fieldSet.id=string; fieldSet.type=string
+
+   --data object
+      Task data
+
+   --external-tag string
+      Reference or name of external system
+
+   --is-actionable-message-enabled boolean
+      Is Acionable Message enabled
+
+   --parent-operation-id string
+      Operation id which created the task.
+
+   --priority string
+      Gets or sets priority of this task.
+
+      Allowed values:
+      - Low
+      - Medium
+      - High
+      - Critical
+
+   --tags object (multiple)
+      List of tags associated to the task.
+
+      Example:
+         DisplayName=string; DisplayValue=string; Name=string; Value=string
+
+   --task-catalog-name string
+      Gets or sets the task catalog/category of the task
+
+   --task-definition-id integer
+      Id for associated task definition
+
+   --task-definition-version integer
+      Version of Task Definition to get associated properties
+
+   --type string
+      Gets or sets type of this task, allowed type is 'ExternalTask'.
+
+      Allowed values:
+      - FormTask
+      - ExternalTask
+      - DocumentValidationTask
+      - DocumentClassificationTask
+      - DataLabelingTask
+      - AppTask

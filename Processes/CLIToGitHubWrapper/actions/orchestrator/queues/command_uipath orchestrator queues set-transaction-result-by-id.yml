@@ -1,0 +1,67 @@
+name: uipath orchestrator queues set-transaction-result-by-id
+description: |
+  NAME:
+     uipath orchestrator queues set-transaction-result-by-id - Sets the result of a transaction.
+
+  USAGE:
+     uipath orchestrator queues set-transaction-result-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+     Required permissions: Queues.View and Transactions.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --transaction-result object (required)
+        Stores data sent when processing an item ended.
+
+        Example:
+           DeferDate=string; DueDate=string; IsSuccessful=boolean; OperationId=string; ProcessingException.AssociatedImageFilePath=string; ProcessingException.CreationTime=string; ProcessingException.Details=string; ProcessingException.Reason=string; ProcessingException.Type=string; Progress=string
+     
+on: workflow_call
+inputs:
+  folder_id:
+    description: 'Folder/OrganizationUnit Id (required)'
+    required: true
+    type: number
+  key:
+    description: 'Key (required)'
+    required: true
+    type: number
+  transaction_result:
+    description: |
+      Transaction result object string (required).
+      Example properties:
+      DeferDate=string; DueDate=string; IsSuccessful=boolean; OperationId=string;
+      ProcessingException.AssociatedImageFilePath=string; ProcessingException.CreationTime=string;
+      ProcessingException.Details=string; ProcessingException.Reason=string; ProcessingException.Type=string; Progress=string
+    required: true
+    type: string
+runs-on:
+  - windows
+  - self-hosted
+jobs:
+  set-transaction-result:
+    name: Set Transaction Result by Id
+    runs-on:
+      - windows
+      - self-hosted
+    steps:
+      - name: Run uipath orchestrator queues set-transaction-result-by-id
+        shell: pwsh
+        run: |
+          # Initialize argument list for constructing the CLI command
+          $args = @("orchestrator", "queues", "set-transaction-result-by-id")
+
+          # Append required parameters with appropriate quoting
+          $args += @("--folder-id", ${{ inputs.folder_id }})
+          $args += @("--key", ${{ inputs.key }})
+          $args += @("--transaction-result", "'${{ inputs.transaction_result }}'")
+
+          # Execute the CLI tool with the built argument list
+          uipath @args

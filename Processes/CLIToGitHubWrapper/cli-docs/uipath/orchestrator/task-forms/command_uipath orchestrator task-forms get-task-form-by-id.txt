@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator task-forms get-task-form-by-id - Returns form dto to render task form
+
+USAGE:
+   uipath orchestrator task-forms get-task-form-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+   Required permissions: Tasks.View.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --expand-on-form-layout boolean (default: false)
+
+   --task-id integer
+      Task id

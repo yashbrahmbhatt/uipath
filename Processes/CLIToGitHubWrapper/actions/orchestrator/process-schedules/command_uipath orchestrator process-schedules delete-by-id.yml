@@ -1,0 +1,52 @@
+name: Delete UiPath Orchestrator Process Schedule by ID
+description: |
+  NAME:
+     uipath orchestrator process-schedules delete-by-id - Deletes a process schedule.
+
+  USAGE:
+     uipath orchestrator process-schedules delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+     Required permissions: Schedules.Delete.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: Folder/OrganizationUnit Id (required)
+        required: true
+        type: integer
+      key:
+        description: The key/id of the process schedule to delete (required)
+        required: true
+        type: integer
+    secrets: {}
+
+jobs:
+  delete_process_schedule:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator process-schedules delete-by-id
+        shell: pwsh
+        run: |
+          # Build the argument list for the CLI command
+          $args = @("orchestrator", "process-schedules", "delete-by-id")
+
+          # Add required folder-id argument with proper quoting
+          $args += "--folder-id"
+          $args += "$(${{ inputs.folder_id }})"
+
+          # Add required key argument with proper quoting
+          $args += "--key"
+          $args += "$(${{ inputs.key }})"
+
+          # Execute the CLI command with assembled arguments
+          uipath @args

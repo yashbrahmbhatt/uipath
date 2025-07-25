@@ -1,0 +1,18 @@
+NAME:
+   uipath orchestrator robots toggle-enabled-status - Toggles the status of the robots (enabled/disabled)
+
+USAGE:
+   uipath orchestrator robots toggle-enabled-status [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+   Required permissions: Robots.Edit.
+
+OPTIONS:
+   --enabled boolean (required)
+
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --robot-ids integer,integer,... (required)

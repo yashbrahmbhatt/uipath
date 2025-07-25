@@ -1,0 +1,13 @@
+NAME:
+   uipath orchestrator settings delete-bulk - Deletes values for the specified settings in the Tenant scope.
+
+USAGE:
+   uipath orchestrator settings delete-bulk [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+   Required permissions: Settings.Delete.
+
+OPTIONS:
+   --setting-names string,string,...

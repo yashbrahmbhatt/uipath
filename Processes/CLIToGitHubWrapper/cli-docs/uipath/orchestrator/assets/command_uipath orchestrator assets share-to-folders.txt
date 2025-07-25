@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator assets share-to-folders - Adds the assets to the folders specified in 'ToAddFolderIds'. Removes the assets from the folders specified in 'ToRemoveFolderIds'.
+
+USAGE:
+   uipath orchestrator assets share-to-folders [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Assets or OR.Assets.Write.
+
+   Requires authentication.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --asset-ids integer,integer,...
+
+   --to-add-folder-ids integer,integer,...
+
+   --to-remove-folder-ids integer,integer,...

@@ -1,0 +1,49 @@
+name: 'uipath orchestrator alerts raise-process-alert'
+
+description: |
+  NAME:
+     uipath orchestrator alerts raise-process-alert - Creates a Process Alert
+
+  USAGE:
+     uipath orchestrator alerts raise-process-alert [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Monitoring or OR.Monitoring.Write.
+
+     Required permissions: Alerts.Create.
+     DEPRECATED: 
+     Please refer to https://docs.uipath.com/orchestrator/reference
+
+  OPTIONS:
+     --process-alert object (required)
+
+        Example:
+           Id=string; Message=string; ProcessName=string; RobotName=string; Severity=string
+
+on:
+  workflow_call:
+    inputs:
+      process_alert:
+        description: 'Process alert object data; example: Id=string; Message=string; ProcessName=string; RobotName=string; Severity=string'
+        required: true
+        type: string
+
+jobs:
+  raise-process-alert:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator alerts raise-process-alert
+        shell: pwsh
+        run: |
+          # Build the uipath CLI command arguments
+          $args = @()
+          $args += 'orchestrator'
+          $args += 'alerts'
+          $args += 'raise-process-alert'
+
+          # Add required --process-alert option, making sure to quote to handle spaces or special chars
+          $args += '--process-alert'
+          $args += "`"$($env:INPUT_PROCESS_ALERT)`""
+
+          # Execute the command
+          uipath @args

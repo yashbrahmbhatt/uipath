@@ -1,0 +1,43 @@
+NAME:
+   uipath orchestrator test-sets put-by-id - Update an existing Test Set
+
+USAGE:
+   uipath orchestrator test-sets put-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSets or OR.TestSets.Write.
+
+   Required permissions: TestSets.Edit.
+
+   Responses:
+   200 Returns the updated Test Set
+   403 If the caller doesn't have permissions to update Test Sets
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      ID of the Test Set to be updated
+
+   --name string (required)
+
+   --packages object (multiple) (required)
+
+      Example:
+         CreationTime=string; CreatorUserId=integer; Id=integer; IncludePrerelease=boolean; LastModificationTime=string; LastModifierUserId=integer; PackageIdentifier=string; TestSet.CreationTime=string; TestSet.CreatorUserId=integer; TestSet.DeletionTime=string; TestSet.EnableCoverage=boolean; TestSet.EnvironmentId=integer; TestSet.Id=integer; TestSet.InputArguments[0].CreationTime=string; TestSet.InputArguments[0].CreatorUserId=integer; TestSet.InputArguments[0].Id=integer; TestSet.InputArguments[0].LastModificationTime=string; TestSet.InputArguments[0].LastModifierUserId=integer; TestSet.InputArguments[0].Name=string; TestSet.InputArguments[0].Type=string; TestSet.InputArguments[0].Value=string; TestSet.Key=string; TestSet.LastModificationTime=string; TestSet.OrganizationUnitId=integer; TestSet.RobotId=integer; TestSet.TestCaseCount=integer; TestSet.TestCases[0].CreationTime=string; TestSet.TestCases[0].CreatorUserId=integer; TestSet.TestCases[0].Definition.AppVersion=string; TestSet.TestCases[0].Definition.CreatedVersion=string; TestSet.TestCases[0].Definition.CreationTime=string; TestSet.TestCases[0].Definition.CreatorUserId=integer; TestSet.TestCases[0].Definition.FeedId=string; TestSet.TestCases[0].Definition.Id=integer; TestSet.TestCases[0].Definition.LastModificationTime=string; TestSet.TestCases[0].Definition.LastModifierUserId=integer; TestSet.TestCases[0].Definition.LatestPrereleaseVersion=string; TestSet.TestCases[0].Definition.LatestVersion=string; TestSet.TestCases[0].Definition.Name=string; TestSet.TestCases[0].Definition.PackageIdentifier=string; TestSet.TestCases[0].Definition.UniqueId=string; TestSet.TestCases[0].DefinitionId=integer; TestSet.TestCases[0].Enabled=boolean; TestSet.TestCases[0].Id=integer; TestSet.TestCases[0].LastModificationTime=string; TestSet.TestCases[0].LastModifierUserId=integer; TestSet.TestCases[0].ReleaseId=integer; TestSet.TestCases[0].TestSet.Environment.Id=integer; TestSet.TestCases[0].TestSet.Environment.Name=string; TestSet.TestCases[0].TestSetId=integer; TestSet.TestCases[0].VersionNumber=string; TestSetId=integer; VersionMask=string
+
+   --deleter-user-id integer
+
+   --description string
+
+   --is-deleted boolean
+
+   --last-modifier-user-id integer
+
+   --source-type string
+
+      Allowed values:
+      - User
+      - ExternalTool
+      - Transient

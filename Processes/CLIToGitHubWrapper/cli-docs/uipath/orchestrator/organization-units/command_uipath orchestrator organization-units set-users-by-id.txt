@@ -1,0 +1,21 @@
+NAME:
+   uipath orchestrator organization-units set-users-by-id - Associates a group of users with and dissociates another group of users from the given unit.
+
+USAGE:
+   uipath orchestrator organization-units set-users-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Folders or OR.Folders.Write.
+
+   Required permissions: Users.Edit.
+   DEPRECATED: 
+   Kept for backwards compatibility. Use AssignUsers from FoldersController  instead
+   Please refer to https://docs.uipath.com/orchestrator/reference
+
+OPTIONS:
+   --added-user-ids integer,integer,... (required)
+
+   --key integer (required)
+      The unit id.
+
+   --removed-user-ids integer,integer,... (required)

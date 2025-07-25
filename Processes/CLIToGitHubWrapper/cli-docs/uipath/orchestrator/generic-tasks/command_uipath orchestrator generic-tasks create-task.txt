@@ -1,0 +1,55 @@
+NAME:
+   uipath orchestrator generic-tasks create-task - Creates a new Generic Task.
+
+USAGE:
+   uipath orchestrator generic-tasks create-task [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+   Required permissions: Tasks.Create.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --title string (required)
+      Gets or sets title of this task.
+
+   --data object
+      Task data
+
+   --external-tag string
+      Reference or name of external system
+
+   --parent-operation-id string
+      Operation id which created the task.
+
+   --priority string
+      Gets or sets priority of this task.
+
+      Allowed values:
+      - Low
+      - Medium
+      - High
+      - Critical
+
+   --tags object (multiple)
+      List of tags associated to the task.
+
+      Example:
+         DisplayName=string; DisplayValue=string; Name=string; Value=string
+
+   --task-catalog-name string
+      Gets or sets the task catalog/category of the task
+
+   --type string
+      Gets or sets type of this task, allowed type is 'ExternalTask'.
+
+      Allowed values:
+      - FormTask
+      - ExternalTask
+      - DocumentValidationTask
+      - DocumentClassificationTask
+      - DataLabelingTask
+      - AppTask

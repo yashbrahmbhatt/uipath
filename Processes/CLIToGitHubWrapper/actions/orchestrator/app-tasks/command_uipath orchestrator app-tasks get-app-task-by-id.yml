@@ -1,0 +1,55 @@
+name: UiPath Orchestrator App-Tasks Get-App-Task-By-Id
+description: |-
+  NAME:
+     uipath orchestrator app-tasks get-app-task-by-id - Returns dto to render app task
+
+  USAGE:
+     uipath orchestrator app-tasks get-app-task-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+     Required permissions: Tasks.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --task-id integer
+        Task id
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: integer
+      task-id:
+        description: 'Task id (optional)'
+        required: false
+        type: integer
+    secrets: {}
+
+jobs:
+  run-get-app-task-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator app-tasks get-app-task-by-id
+        shell: pwsh
+        run: |
+          # Initialize argument list
+          $args = @()
+
+          # Append required folder-id argument
+          $args += "--folder-id"
+          $args += "$(${{ inputs.folder-id }})"
+
+          # Append optional task-id argument if provided
+          if ("${{ inputs.task-id }}" -ne "") {
+            $args += "--task-id"
+            $args += "$(${{ inputs.task-id }})"
+          }
+
+          # Execute command with constructed arguments
+          uipath orchestrator app-tasks get-app-task-by-id @args

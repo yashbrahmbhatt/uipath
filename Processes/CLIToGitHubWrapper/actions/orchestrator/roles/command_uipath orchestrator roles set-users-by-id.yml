@@ -1,0 +1,61 @@
+name: UiPath Orchestrator - Roles Set Users By Id
+description: |
+  NAME:
+     uipath orchestrator roles set-users-by-id - Associates a group of users with and dissociates another group of users from the given role.
+
+  USAGE:
+     uipath orchestrator roles set-users-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Write.
+
+     Required permissions: Roles.Edit and Users.View.
+
+  OPTIONS:
+     --added-user-ids integer,integer,... (required)
+
+     --key integer (required)
+        The role id.
+
+     --removed-user-ids integer,integer,... (required)
+
+on:
+  workflow_call:
+    inputs:
+      added_user_ids:
+        description: 'Comma-separated list of user IDs to add (required)'
+        required: true
+        type: string
+      key:
+        description: 'Role ID (required)'
+        required: true
+        type: string
+      removed_user_ids:
+        description: 'Comma-separated list of user IDs to remove (required)'
+        required: true
+        type: string
+
+jobs:
+  set-users-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator roles set-users-by-id
+        shell: pwsh
+        run: |
+          # Build the argument list for the CLI command
+          $args = @("orchestrator", "roles", "set-users-by-id")
+
+          # Add required --added-user-ids parameter
+          $args += "--added-user-ids"
+          $args += "${{ inputs.added_user_ids }}"
+
+          # Add required --key parameter (role id)
+          $args += "--key"
+          $args += "${{ inputs.key }}"
+
+          # Add required --removed-user-ids parameter
+          $args += "--removed-user-ids"
+          $args += "${{ inputs.removed_user_ids }}"
+
+          # Execute the CLI command with constructed arguments
+          uipath $args

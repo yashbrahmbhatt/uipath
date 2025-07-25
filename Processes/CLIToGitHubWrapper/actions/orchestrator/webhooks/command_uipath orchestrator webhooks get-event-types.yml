@@ -1,0 +1,95 @@
+name: uipath-orchestrator-webhooks-get-event-types
+description: |
+  NAME:
+     uipath orchestrator webhooks get-event-types - Gets the list of event types a webhook can subscribe to
+
+  USAGE:
+     uipath orchestrator webhooks get-event-types [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Webhooks or OR.Webhooks.Read.
+
+     Required permissions: Webhooks.View.
+
+  OPTIONS:
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      count:
+        description: Indicates whether the total count of items within a collection are returned in the result.
+        required: false
+        default: 'false'
+        type: boolean
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+      filter:
+        description: Restricts the set of items returned. The maximum number of expressions is 100.
+        required: false
+        type: string
+      orderby:
+        description: Specifies the order in which items are returned. The maximum number of expressions is 5.
+        required: false
+        type: string
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+
+jobs:
+  call-uipath-orchestrator-webhooks-get-event-types:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Invoke uipath orchestrator webhooks get-event-types CLI
+        shell: pwsh
+        run: |
+          $argsList = @('orchestrator', 'webhooks', 'get-event-types')
+
+          if (${{ inputs.count }} -eq $true) {
+            $argsList += '--count'
+            $argsList += 'true'
+          } else {
+            $argsList += '--count'
+            $argsList += 'false'
+          }
+
+          if (${{ inputs.expand }}) {
+            $argsList += '--expand'
+            $argsList += "${{ inputs.expand }}"
+          }
+
+          if (${{ inputs.filter }}) {
+            $argsList += '--filter'
+            $argsList += "${{ inputs.filter }}"
+          }
+
+          if (${{ inputs.orderby }}) {
+            $argsList += '--orderby'
+            $argsList += "${{ inputs.orderby }}"
+          }
+
+          if (${{ inputs.select }}) {
+            $argsList += '--select'
+            $argsList += "${{ inputs.select }}"
+          }
+
+          # Join args to a single string with proper quoting and run the command
+          $command = "uipath " + ($argsList | ForEach-Object { if ($_ -match '\s') { ('"' + $_ + '"') } else { $_ } }) -join ' '
+          Write-Host "Running command: $command"
+          iex $command

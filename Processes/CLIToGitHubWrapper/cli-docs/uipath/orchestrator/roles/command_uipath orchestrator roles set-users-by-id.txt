@@ -1,0 +1,18 @@
+NAME:
+   uipath orchestrator roles set-users-by-id - Associates a group of users with and dissociates another group of users from the given role.
+
+USAGE:
+   uipath orchestrator roles set-users-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Users or OR.Users.Write.
+
+   Required permissions: Roles.Edit and Users.View.
+
+OPTIONS:
+   --added-user-ids integer,integer,... (required)
+
+   --key integer (required)
+      The role id.
+
+   --removed-user-ids integer,integer,... (required)

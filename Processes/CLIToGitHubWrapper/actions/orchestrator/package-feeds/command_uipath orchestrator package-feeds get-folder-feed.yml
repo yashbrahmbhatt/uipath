@@ -1,0 +1,45 @@
+name: uipath-orchestrator-package-feeds-get-folder-feed
+description: |
+  NAME:
+     uipath orchestrator package-feeds get-folder-feed - Returns the feed id for a user assigned folder having specific feed
+
+  USAGE:
+     uipath orchestrator package-feeds get-folder-feed [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --folder-id integer
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'The ID of the folder to get the feed for'
+        required: false
+        type: integer
+      # Add any authentication inputs if required here, e.g. tokens, but not specified
+    secrets: {}
+
+jobs:
+  get-folder-feed:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # Optionally you could have outputs for parsed feed id etc. Not specified here.
+    steps:
+      - name: Run uipath orchestrator package-feeds get-folder-feed
+        shell: pwsh
+        run: |
+          $argsList = @()
+          if (${{ inputs.folder_id }}) {
+              $argsList += "--folder-id"
+              $argsList += "${{ inputs.folder_id }}"
+          }
+          # Construct and invoke the CLI command with arguments
+          $command = "uipath orchestrator package-feeds get-folder-feed"
+          $fullCommand = $command + " " + ($argsList -join " ")
+          Write-Host "Executing command: $fullCommand"
+          & uipath orchestrator package-feeds get-folder-feed @argsList

@@ -1,0 +1,58 @@
+name: uipath-identity-robot-account-bulk-delete
+description: |
+  NAME:
+     uipath identity robot-account bulk-delete - Deletes multiple robot accounts from a partition
+
+  USAGE:
+     uipath identity robot-account bulk-delete [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: PM.RobotAccount or PM.RobotAccount.Write.
+
+  OPTIONS:
+     --partition-global-id string (required)
+
+     --robot-account-ids string,string,...
+        IDs of the robot accounts to be removed
+on:
+  workflow_call:
+    inputs:
+      partition-global-id:
+        description: 'The partition global ID'
+        required: true
+        type: string
+      robot-account-ids:
+        description: 'Comma-separated IDs of the robot accounts to be removed'
+        required: false
+        type: string
+    secrets:
+      OAUTH_TOKEN:
+        description: 'OAuth token with the required scopes PM.RobotAccount or PM.RobotAccount.Write'
+        required: true
+jobs:
+  bulk-delete:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath identity robot-account bulk-delete
+        shell: pwsh
+        env:
+          OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
+        run: |
+          $args = @("identity", "robot-account", "bulk-delete")
+
+          # Required parameter --partition-global-id
+          $args += "--partition-global-id"
+          $args += "${{ inputs.partition-global-id }}"
+
+          # Optional parameter --robot-account-ids
+          if ("${{ inputs.robot-account-ids }}" -ne "") {
+              $args += "--robot-account-ids"
+              $args += "${{ inputs.robot-account-ids }}"
+          }
+
+          # Construct command string (escaping if needed)
+          $command = "uipath " + ($args | ForEach-Object { '"{0}"' -f $_ }) -join " "
+          Write-Host "Running command: $command"
+
+          # Run the command
+          & uipath @args

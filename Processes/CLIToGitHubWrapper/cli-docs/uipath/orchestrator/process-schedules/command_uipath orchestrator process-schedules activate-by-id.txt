@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator process-schedules activate-by-id - Activates a process schedule associated with a queue
+
+USAGE:
+   uipath orchestrator process-schedules activate-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+   Required permissions: Schedules.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)

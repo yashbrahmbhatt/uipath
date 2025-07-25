@@ -1,0 +1,116 @@
+name: 'uipath orchestrator test-automation get-releases-for-package-version'
+
+description: |
+  NAME:
+     uipath orchestrator test-automation get-releases-for-package-version - This will list all the processes filtered by package identifier and version cross-folder when no current folder is sent by header.
+
+  USAGE:
+     uipath orchestrator test-automation get-releases-for-package-version [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+     Required permissions: Processes.View.
+
+     Responses:
+     200 OK
+     404 If there is no release for the specified package identifier
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --at-least-one-permissions string,string,...
+        If in a cross-folder scenario, these represent the additional permissions
+                    required in the folders the data is retrieved from; at least one permission in this set must be met
+
+     --mandatory-permissions string,string,...
+        If in a cross-folder scenario, these represent the additional permissions
+                    required in the folders the data is retrieved from; all permissions in this set must be met
+
+     --package-identifier string
+
+     --version string
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      at-least-one-permissions:
+        description: 'Comma-separated permissions; at least one must be met (cross-folder scenario)'
+        required: false
+        type: string
+        default: ''
+      mandatory-permissions:
+        description: 'Comma-separated permissions; all must be met (cross-folder scenario)'
+        required: false
+        type: string
+        default: ''
+      package-identifier:
+        description: 'Package identifier string'
+        required: false
+        type: string
+        default: ''
+      version:
+        description: 'Package version string'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      # Assuming OAuth token or other secrets might be needed, but none explicitly defined in help text.
+      # User should supply any token environment variable as per their setup.
+      # Example:
+      # ORCHESTRATOR_TOKEN:
+      #   description: 'OAuth token to authenticate with UiPath Orchestrator'
+      #   required: false
+
+jobs:
+  get-releases:
+    runs-on: [windows, self-hosted]
+    outputs:
+      command-run: ${{ steps.run-command.outputs.command }}
+    steps:
+      - name: Run uipath orchestrator test-automation get-releases-for-package-version
+        id: run-command
+        shell: pwsh
+        run: |
+          # Prepare the CLI command arguments using an array
+          $args = @('orchestrator', 'test-automation', 'get-releases-for-package-version')
+
+          # Add required folder-id argument
+          $args += '--folder-id'
+          $args += '${{ inputs.folder-id }}'
+
+          # Add optional parameters only if provided and not empty
+          if ('${{ inputs.at-least-one-permissions }}' -ne '') {
+            $args += '--at-least-one-permissions'
+            $args += '${{ inputs.at-least-one-permissions }}'
+          }
+          if ('${{ inputs.mandatory-permissions }}' -ne '') {
+            $args += '--mandatory-permissions'
+            $args += '${{ inputs.mandatory-permissions }}'
+          }
+          if ('${{ inputs.package-identifier }}' -ne '') {
+            $args += '--package-identifier'
+            $args += '${{ inputs.package-identifier }}'
+          }
+          if ('${{ inputs.version }}' -ne '') {
+            $args += '--version'
+            $args += '${{ inputs.version }}'
+          }
+
+          # Convert array to command string with proper quoting
+          $command = $args | ForEach-Object {
+            if ($_ -match '\s') { '"{0}"' -f $_ } else { $_ }
+          } | Out-String
+          $command = $command -replace '\r?\n', ' '
+          Write-Host "Executing command: uipath $command"
+
+          # Execute the command
+          uipath $args
+
+          # Set the command string as output for reference/logging if desired
+          echo "command=$command" >> $env:GITHUB_OUTPUT

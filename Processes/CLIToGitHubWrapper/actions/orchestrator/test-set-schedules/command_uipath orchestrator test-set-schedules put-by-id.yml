@@ -1,0 +1,181 @@
+name: 'uipath orchestrator test-set-schedules put-by-id'
+
+description: |
+  OAuth required scopes: OR.TestSetSchedules or OR.TestSetSchedules.Write.
+
+  Required permissions: TestSetSchedules.Edit.
+
+  Responses:
+  201 Returns the updated test set execution schedule
+  403 If the caller doesn't have permissions to update test set execution schedules
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: Folder/OrganizationUnit Id
+        required: true
+        type: integer
+      key:
+        description: ID of the test set execution schedule to be updated
+        required: true
+        type: integer
+      name:
+        description: Name of the test set schedule
+        required: true
+        type: string
+      test_set_id:
+        description: Test set Id
+        required: true
+        type: integer
+      time_zone_id:
+        description: Time zone Id
+        required: true
+        type: string
+      calendar_id:
+        description: Calendar Id
+        required: false
+        type: integer
+      calendar_name:
+        description: Calendar Name
+        required: false
+        type: string
+      cron_details:
+        description: Cron details
+        required: false
+        type: string
+      cron_expression:
+        description: Cron expression
+        required: false
+        type: string
+      cron_summary:
+        description: Cron summary
+        required: false
+        type: string
+      description:
+        description: Description of the schedule
+        required: false
+        type: string
+      disable_date:
+        description: Disable date (string)
+        required: false
+        type: string
+      enabled:
+        description: Whether the schedule is enabled
+        required: false
+        type: boolean
+        default: true
+      external_job_key:
+        description: External job key
+        required: false
+        type: string
+      external_job_key_scheduler:
+        description: External job key scheduler
+        required: false
+        type: string
+      id:
+        description: Id (integer)
+        required: false
+        type: integer
+      next_occurrence:
+        description: Next occurrence (string)
+        required: false
+        type: string
+      test_set_name:
+        description: Test set name
+        required: false
+        type: string
+      time_zone_iana:
+        description: Time zone IANA
+        required: false
+        type: string
+
+jobs:
+  put-test-set-schedule:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator test-set-schedules put-by-id command
+        shell: pwsh
+        run: |
+          # Construct argument list for the CLI command
+          $args = @('orchestrator', 'test-set-schedules', 'put-by-id')
+          
+          # Required parameters
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+          
+          $args += "--key"
+          $args += "${{ inputs.key }}"
+          
+          $args += "--name"
+          $args += "${{ inputs.name }}"
+          
+          $args += "--test-set-id"
+          $args += "${{ inputs.test_set_id }}"
+          
+          $args += "--time-zone-id"
+          $args += "${{ inputs.time_zone_id }}"
+          
+          # Optional parameters: add only if defined and not null or empty
+          if (${{ inputs.calendar_id }} -ne $null) {
+            $args += "--calendar-id"
+            $args += "${{ inputs.calendar_id }}"
+          }
+          if (${{ inputs.calendar_name }} -and ${{ inputs.calendar_name }}.Trim() -ne '') {
+            $args += "--calendar-name"
+            $args += "${{ inputs.calendar_name }}"
+          }
+          if (${{ inputs.cron_details }} -and ${{ inputs.cron_details }}.Trim() -ne '') {
+            $args += "--cron-details"
+            $args += "${{ inputs.cron_details }}"
+          }
+          if (${{ inputs.cron_expression }} -and ${{ inputs.cron_expression }}.Trim() -ne '') {
+            $args += "--cron-expression"
+            $args += "${{ inputs.cron_expression }}"
+          }
+          if (${{ inputs.cron_summary }} -and ${{ inputs.cron_summary }}.Trim() -ne '') {
+            $args += "--cron-summary"
+            $args += "${{ inputs.cron_summary }}"
+          }
+          if (${{ inputs.description }} -and ${{ inputs.description }}.Trim() -ne '') {
+            $args += "--description"
+            $args += "${{ inputs.description }}"
+          }
+          if (${{ inputs.disable_date }} -and ${{ inputs.disable_date }}.Trim() -ne '') {
+            $args += "--disable-date"
+            $args += "${{ inputs.disable_date }}"
+          }
+          # Enabled is a boolean, add flag with the boolean value
+          if (${{ inputs.enabled }} -ne $null) {
+            $args += "--enabled"
+            $args += ${{ inputs.enabled }}.ToString().ToLower()
+          }
+          if (${{ inputs.external_job_key }} -and ${{ inputs.external_job_key }}.Trim() -ne '') {
+            $args += "--external-job-key"
+            $args += "${{ inputs.external_job_key }}"
+          }
+          if (${{ inputs.external_job_key_scheduler }} -and ${{ inputs.external_job_key_scheduler }}.Trim() -ne '') {
+            $args += "--external-job-key-scheduler"
+            $args += "${{ inputs.external_job_key_scheduler }}"
+          }
+          if (${{ inputs.id }} -ne $null) {
+            $args += "--id"
+            $args += "${{ inputs.id }}"
+          }
+          if (${{ inputs.next_occurrence }} -and ${{ inputs.next_occurrence }}.Trim() -ne '') {
+            $args += "--next-occurrence"
+            $args += "${{ inputs.next_occurrence }}"
+          }
+          if (${{ inputs.test_set_name }} -and ${{ inputs.test_set_name }}.Trim() -ne '') {
+            $args += "--test-set-name"
+            $args += "${{ inputs.test_set_name }}"
+          }
+          if (${{ inputs.time_zone_iana }} -and ${{ inputs.time_zone_iana }}.Trim() -ne '') {
+            $args += "--time-zone-iana"
+            $args += "${{ inputs.time_zone_iana }}"
+          }
+
+          # Execute the command with all collected arguments
+          # Use --% to stop PowerShell interpreting special characters, if available
+          Write-Host "Running: uipath $args"
+          uipath @args

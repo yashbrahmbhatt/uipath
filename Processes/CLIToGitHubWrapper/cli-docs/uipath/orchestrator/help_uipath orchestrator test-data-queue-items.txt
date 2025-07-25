@@ -1,0 +1,12 @@
+NAME:
+   uipath orchestrator test-data-queue-items - Units of test data
+
+USAGE:
+   uipath orchestrator test-data-queue-items
+
+DESCRIPTION:
+   Test data queue items are individual units of test data stored in a test data queue.
+
+COMMANDS:
+   get        Return a list of test data queue items
+   get-by-id  Return a specific test data queue item identified by key

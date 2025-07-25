@@ -1,0 +1,15 @@
+NAME:
+   uipath du digitization digitize - Digitize the given file
+
+USAGE:
+   uipath du digitization digitize [command options] [arguments...]
+
+OPTIONS:
+   --file binary (required)
+      The file to digitize
+
+   --content-type string
+      The content type
+
+   --project-id string
+      The project id

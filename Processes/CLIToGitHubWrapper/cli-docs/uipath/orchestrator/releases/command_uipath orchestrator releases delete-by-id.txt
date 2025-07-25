@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator releases delete-by-id - Deletes a release.
+
+USAGE:
+   uipath orchestrator releases delete-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Write.
+
+   Required permissions: Processes.Delete.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)

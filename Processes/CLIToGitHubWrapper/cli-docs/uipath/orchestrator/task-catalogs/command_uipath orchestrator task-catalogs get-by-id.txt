@@ -1,0 +1,23 @@
+NAME:
+   uipath orchestrator task-catalogs get-by-id - Gets a Task Catalog item by Id.
+
+USAGE:
+   uipath orchestrator task-catalogs get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+   Required permissions: TaskCatalogs.View.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      id of the object
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

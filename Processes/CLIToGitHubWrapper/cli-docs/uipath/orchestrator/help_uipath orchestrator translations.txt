@@ -1,0 +1,11 @@
+NAME:
+   uipath orchestrator translations - Translation resources
+
+USAGE:
+   uipath orchestrator translations
+
+DESCRIPTION:
+   Translations resources to provide multilingual UI.
+
+COMMANDS:
+   get-translations  Returns a json with translation resources

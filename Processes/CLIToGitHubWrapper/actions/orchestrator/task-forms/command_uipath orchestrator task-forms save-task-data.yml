@@ -1,0 +1,63 @@
+name: uipath-orchestrator-task-forms-save-task-data
+description: |
+  NAME:
+     uipath orchestrator task-forms save-task-data - Save task data
+
+  USAGE:
+     uipath orchestrator task-forms save-task-data [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Required permissions: Tasks.Edit.
+
+  OPTIONS:
+     --data object (required)
+        Task data json
+
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --task-id integer (required)
+        TaskId to retrieve form
+on: workflow_call
+inputs:
+  data:
+    description: 'Task data JSON (required)'
+    required: true
+    type: string
+  folder_id:
+    description: 'Folder/OrganizationUnit Id (required)'
+    required: true
+    type: integer
+  task_id:
+    description: 'TaskId to retrieve form (required)'
+    required: true
+    type: integer
+runs-on:
+  - windows
+  - self-hosted
+jobs:
+  save-task-data:
+    runs-on:
+      - windows
+      - self-hosted
+    steps:
+      - name: Save task data CLI command
+        shell: pwsh
+        run: |
+          # Build argument list for the CLI command
+          $args = @(
+            "orchestrator"
+            "task-forms"
+            "save-task-data"
+            "--data"
+            "$(${{ inputs.data }})"
+            "--folder-id"
+            "${{ inputs.folder_id }}"
+            "--task-id"
+            "${{ inputs.task_id }}"
+          )
+
+          # Execute the uipath CLI with constructed arguments
+          uipath @args

@@ -1,0 +1,23 @@
+NAME:
+   uipath orchestrator tasks get-by-id - Gets a Task with the given primary key.
+
+USAGE:
+   uipath orchestrator tasks get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+   Requires authentication.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      The primary key of the Task to be retrieved.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

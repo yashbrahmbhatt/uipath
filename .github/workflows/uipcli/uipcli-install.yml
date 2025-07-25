@@ -1,0 +1,77 @@
+name: Install uipcli
+
+on:
+  workflow_call:
+    inputs:
+      uipcli-version:
+        required: true
+        type: string
+      install-root:
+        required: true
+        type: string
+      cli-folder-name:
+        required: true
+        type: string
+      nuget-path:
+        required: true
+        type: string
+
+    outputs:
+      cli-path:
+        description: "The folder path containing uipcli.exe"
+        value: ${{ jobs.install.outputs.cli-path }}
+
+jobs:
+  install:
+    runs-on: [windows]
+
+    outputs:
+      cli-path: ${{ steps.set-output.outputs.cli-dir }}
+
+    steps:
+      - name: Ensure install directory exists
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "${{ inputs.install-root }}")) {
+            New-Item -ItemType Directory -Path "${{ inputs.install-root }}" -Force | Out-Null
+          }
+
+      - name: Check if uipcli is already installed
+        id: check_uipcli
+        shell: pwsh
+        run: |
+          $cliPath = Join-Path "${{ inputs.install-root }}\${{ inputs.cli-folder-name }}" "UiPath.CLI.Windows\tools\uipcli.exe"
+          if (Test-Path $cliPath) {
+            "found=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          } else {
+            "found=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          }
+
+      - name: Download nuget.exe if not present
+        if: steps.check_uipcli.outputs.found == 'false'
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "${{ inputs.nuget-path }}")) {
+            Invoke-WebRequest "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "${{ inputs.nuget-path }}"
+          }
+
+      - name: Install UiPath CLI via NuGet
+        if: steps.check_uipcli.outputs.found == 'false'
+        shell: pwsh
+        run: |
+          & "${{ inputs.nuget-path }}" install UiPath.CLI.Windows `
+            -Version "${{ inputs.uipcli-version }}" `
+            -OutputDirectory "${{ inputs.install-root }}\${{ inputs.cli-folder-name }}" `
+            -ExcludeVersion
+
+      - name: Add uipcli to PATH and expose path output
+        id: set-output
+        shell: pwsh
+        run: |
+          $cliDir = Join-Path "${{ inputs.install-root }}\${{ inputs.cli-folder-name }}" "UiPath.CLI.Windows\tools"
+          echo $cliDir | Out-File -Append -Encoding ascii $env:GITHUB_PATH
+          echo "cli-dir=$cliDir" | Out-File -Append -Encoding utf8 $env:GITHUB_OUTPUT
+
+      - name: Confirm uipcli version
+        run: uipcli version
+        shell: pwsh

@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator queue-definitions share-to-folders - Makes the queue visible in the specified folders.
+
+USAGE:
+   uipath orchestrator queue-definitions share-to-folders [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+   Requires authentication.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --queue-ids integer,integer,...
+
+   --to-add-folder-ids integer,integer,...
+
+   --to-remove-folder-ids integer,integer,...

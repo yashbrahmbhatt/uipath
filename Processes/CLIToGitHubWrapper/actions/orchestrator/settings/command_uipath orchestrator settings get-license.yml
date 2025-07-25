@@ -1,0 +1,72 @@
+name: uipath-orchestrator-settings-get-license
+description: |
+  NAME:
+     uipath orchestrator settings get-license - Retrieves the current license information.
+
+  USAGE:
+     uipath orchestrator settings get-license [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      # Assuming authentication token or credentials are needed to authenticate
+      auth_token:
+        description: 'Authorization token to authenticate to UiPath Orchestrator.'
+        required: true
+        type: string
+        default: ''
+    secrets:
+      AUTH_TOKEN:
+        required: true
+
+jobs:
+  get_license:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Execute UiPath Orchestrator Settings Get-License Command
+        shell: pwsh
+        env:
+          AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+        run: |
+          # Initialize argument list
+          $args = @("orchestrator", "settings", "get-license")
+
+          # Add --expand option if provided
+          if ('${{ inputs.expand }}'.Trim() -ne '') {
+            $args += @("--expand", '${{ inputs.expand }}')
+          }
+
+          # Add --select option if provided
+          if ('${{ inputs.select }}'.Trim() -ne '') {
+            $args += @("--select", '${{ inputs.select }}')
+          }
+
+          # Authenticate with the token in environment variable (this depends on the CLI implementation)
+          # Example: export token or use CLI auth method if needed (here just assume token is passed as env var)
+          # You may need to add auth command here if CLI requires separate authentication step
+
+          # Execute the command
+          Write-Host "Running command: uipath $($args -join ' ')"
+          uipath @args

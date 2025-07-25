@@ -1,0 +1,86 @@
+name: Update to Latest Package Version By Id
+
+description: |
+  NAME:
+     uipath orchestrator releases update-to-latest-package-version-by-id - Updates the package version for the given release to the latest available.
+
+  USAGE:
+     uipath orchestrator releases update-to-latest-package-version-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Execution or OR.Execution.Write.
+
+     Required permissions: Processes.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --merge-package-tags boolean (default: false)
+        Merge process tags with the new package version tags
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: Folder/OrganizationUnit Id
+        required: true
+        type: number
+      key:
+        description: The release key (integer)
+        required: true
+        type: number
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      merge-package-tags:
+        description: Merge process tags with the new package version tags
+        required: false
+        type: boolean
+        default: false
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  update-latest-package-version-by-id:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # This action has no output by specification, but could be extended
+    steps:
+      - name: Run uipath orchestrator releases update-to-latest-package-version-by-id
+        shell: pwsh
+        run: |
+          $args = @('orchestrator','releases','update-to-latest-package-version-by-id')
+
+          # Required parameters
+          $args += '--folder-id'; $args += ${{ inputs['folder-id'] }}
+          $args += '--key'; $args += ${{ inputs.key }}
+
+          # Optional parameters
+          if ('${{ inputs.expand }}'.Length -gt 0) {
+            $args += '--expand'; $args += '${{ inputs.expand }}'
+          }
+          # Append --merge-package-tags only if true, otherwise skip it to use default false
+          if (${{ inputs['merge-package-tags'] }}) {
+            $args += '--merge-package-tags'; $args += 'true'
+          }
+          if ('${{ inputs.select }}'.Length -gt 0) {
+            $args += '--select'; $args += '${{ inputs.select }}'
+          }
+
+          # Execute the CLI command with constructed arguments
+          Write-Host "Running: uipath $($args -join ' ')"
+          uipath $args

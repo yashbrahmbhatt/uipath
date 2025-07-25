@@ -1,0 +1,26 @@
+NAME:
+   uipath orchestrator task-notes create-task-note - Adds a task note.
+
+USAGE:
+   uipath orchestrator task-notes create-task-note [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+   Required permissions: Tasks.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --text string (required)
+      Gets or sets note text.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.
+
+   --task-id integer
+      Gets or sets Id of the Task

@@ -1,0 +1,105 @@
+name: uipath-orchestrator-settings-put-by-id
+description: |
+  NAME:
+     uipath orchestrator settings put-by-id - Edits a setting.
+
+  USAGE:
+     uipath orchestrator settings put-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+     Required permissions: Settings.Edit.
+
+  OPTIONS:
+     --key string (required)
+
+     --name string (required)
+        The name of a specific setting (e.g. Abp.Net.Mail.DefaultFromAddress).
+
+     --id string
+
+     --scope string
+        The scope of a specific setting.
+
+        Allowed values:
+        - Application
+        - Tenant
+        - User
+        - All
+
+     --value string
+        The value assigned to a specific setting (e.g. admin@mydomain.com).
+  
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The key identifying the setting (required).'
+        required: true
+        type: string
+      name:
+        description: 'The name of a specific setting (required).'
+        required: true
+        type: string
+      id:
+        description: 'The ID of the setting.'
+        required: false
+        type: string
+      scope:
+        description: 'The scope of the setting. Allowed values: Application, Tenant, User, All.'
+        required: false
+        type: string
+        default: ''
+      value:
+        description: 'The value assigned to the setting.'
+        required: false
+        type: string
+        default: ''
+jobs:
+  put-setting:
+    runs-on: [windows, self-hosted]
+    outputs:
+      command-run: ${{ steps.run-cli.outputs.command-run }}
+    steps:
+      - name: Run uipath orchestrator settings put-by-id
+        id: run-cli
+        shell: pwsh
+        run: |
+          # Initialize argument array for the command
+          $args = @('orchestrator', 'settings', 'put-by-id')
+
+          # Add required arguments with proper quoting
+          $args += '--key'; $args += "${{ inputs.key }}"
+          $args += '--name'; $args += "${{ inputs.name }}"
+
+          # Add optional --id argument if provided
+          if ('${{ inputs.id }}' -ne '') {
+            $args += '--id'; $args += "${{ inputs.id }}"
+          }
+
+          # Add optional --scope argument if provided and valid
+          $validScopes = @('Application', 'Tenant', 'User', 'All')
+          if ('${{ inputs.scope }}' -ne '') {
+            if ($validScopes -contains '${{ inputs.scope }}') {
+              $args += '--scope'; $args += "${{ inputs.scope }}"
+            } else {
+              Write-Error "Invalid value for --scope: '${{ inputs.scope }}'. Allowed values are Application, Tenant, User, All."
+              exit 1
+            }
+          }
+
+          # Add optional --value argument if provided
+          if ('${{ inputs.value }}' -ne '') {
+            $args += '--value'; $args += "${{ inputs.value }}"
+          }
+
+          # Compose and display full command for debugging
+          $commandLine = "uipath " + ($args -join ' ')
+          Write-Host "Running command: $commandLine"
+
+          # Run the command
+          & uipath @args
+          
+          # Set output with executed command line for reference
+          echo "::set-output name=command-run::$commandLine"

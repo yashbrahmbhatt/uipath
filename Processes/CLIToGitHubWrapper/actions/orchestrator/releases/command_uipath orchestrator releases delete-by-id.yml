@@ -1,0 +1,53 @@
+name: uipath-orchestrator-releases-delete-by-id
+description: |
+  NAME:
+     uipath orchestrator releases delete-by-id - Deletes a release.
+
+  USAGE:
+     uipath orchestrator releases delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Execution or OR.Execution.Write.
+
+     Required permissions: Processes.Delete.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+  
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      key:
+        description: 'Release Key'
+        required: true
+        type: number
+
+jobs:
+  delete_release_by_id:
+    runs-on: [windows, self-hosted]
+    permissions:
+      contents: read
+    steps:
+      - name: Delete release by ID
+        shell: pwsh
+        run: |
+          $args = @()
+          # Mandatory folder ID argument
+          $args += '--folder-id'
+          $args += ${{ inputs.folder_id }}
+
+          # Mandatory key argument
+          $args += '--key'
+          $args += ${{ inputs.key }}
+
+          # Construct and run the command
+          $command = "uipath orchestrator releases delete-by-id " + ($args -join ' ')
+          Write-Host "Executing: $command"
+          iex $command

@@ -1,0 +1,64 @@
+name: uipath-orchestrator-tenants-get-by-id
+description: |
+  NAME:
+     uipath orchestrator tenants get-by-id - Gets a single tenant based on its id.
+
+  USAGE:
+     uipath orchestrator tenants get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Administration or OR.Administration.Read.
+
+     Host only. Requires authentication.
+
+  OPTIONS:
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The tenant id (required).'
+        required: true
+        type: string
+      expand:
+        description: 'Indicates the related entities to be represented inline. Max depth is 2. (optional)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result. (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+jobs:
+  run:
+    runs-on:
+      - windows
+      - self-hosted
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator tenants get-by-id command
+        shell: pwsh
+        run: |
+          # Initialize the argument array with the base command and required parameter
+          $args = @("uipath", "orchestrator", "tenants", "get-by-id", "--key", ${{ inputs.key }})
+
+          # Add --expand option if provided and not empty
+          if ('${{ inputs.expand }}'.Trim() -ne '') {
+              $args += @("--expand", '${{ inputs.expand }}')
+          }
+
+          # Add --select option if provided and not empty
+          if ('${{ inputs.select }}'.Trim() -ne '') {
+              $args += @("--select", '${{ inputs.select }}')
+          }
+
+          # Execute the constructed command
+          & $args 

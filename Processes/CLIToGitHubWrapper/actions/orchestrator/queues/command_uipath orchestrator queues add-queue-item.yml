@@ -1,0 +1,84 @@
+name: Add Queue Item
+description: |
+  NAME:
+     uipath orchestrator queues add-queue-item - Adds a new queue item.
+
+  USAGE:
+     uipath orchestrator queues add-queue-item [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+     Required permissions: Queues.View and Transactions.Create.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --item-data object (required)
+        Defines the work item content.
+
+        Example:
+           DeferDate=string; DueDate=string; Name=string; ParentOperationId=string; Priority=string; Progress=string; Reference=string; RiskSlaDate=string; Source=string
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: integer
+      item-data:
+        description: 'Defines the work item content (object with key=value pairs separated by semicolon)'
+        required: true
+        type: string
+      expand:
+        description: 'Related entities to be represented inline'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result'
+        required: false
+        type: string
+        default: ''
+jobs:
+  add-queue-item:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator queues add-queue-item
+        shell: pwsh
+        run: |
+          # Initialize argument array for the CLI command
+          $args = @('orchestrator', 'queues', 'add-queue-item')
+
+          # Add required folder-id argument
+          $args += "--folder-id"
+          $args += ${{ inputs.folder-id }}
+
+          # Add required item-data argument (quote to keep the object string intact)
+          $args += "--item-data"
+          $args += "'${{ inputs['item-data'] }}'"
+
+          # Add optional expand argument if provided
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += "--expand"
+            $args += "'${{ inputs.expand }}'"
+          }
+
+          # Add optional select argument if provided
+          if ('${{ inputs.select }}' -ne '') {
+            $args += "--select"
+            $args += "'${{ inputs.select }}'"
+          }
+
+          # Execute the CLI command with constructed arguments
+          Write-Host "Invoking: uipath $($args -join ' ')"
+          uipath @args

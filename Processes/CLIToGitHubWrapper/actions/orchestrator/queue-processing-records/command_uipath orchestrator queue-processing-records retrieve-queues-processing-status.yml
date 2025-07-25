@@ -1,0 +1,140 @@
+name: uipath-orchestrator-retrieve-queues-processing-status
+description: |
+  NAME:
+     uipath orchestrator queue-processing-records retrieve-queues-processing-status - Returns the processing status for all queues. Allows odata query options.
+
+  USAGE:
+     uipath orchestrator queue-processing-records retrieve-queues-processing-status [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Read.
+
+     Required permissions: Queues.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      count:
+        description: 'Return total count of items within a collection'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Related entities to be represented inline (max depth 2)'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restrict the set of items returned (max 100 expressions)'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Order in which items are returned (max 5 expressions)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Number of items to skip in the result'
+        required: false
+        type: number
+        default: 0
+      top:
+        description: 'Limit the number of items returned (max 1000)'
+        required: false
+        type: number
+        default: 0
+
+jobs:
+  retrieve-queues-processing-status:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Invoke uipath orchestrator queue-processing-records retrieve-queues-processing-status
+        shell: pwsh
+        run: |
+          # Build array of arguments for the CLI command
+          $args = @(
+            'orchestrator', 'queue-processing-records', 'retrieve-queues-processing-status'
+          )
+          # Add required folder id argument
+          $args += '--folder-id'
+          $args += "${{ inputs.folder_id }}"
+
+          # Add optional boolean count argument if true
+          if (${{ inputs.count }}) {
+            $args += '--count'
+            $args += 'true'
+          }
+
+          # Add optional string arguments only if not empty
+          if (![string]::IsNullOrEmpty(${{ toJson(inputs.expand) }} -replace '"', '')) {
+            $args += '--expand'
+            $args += "${{ inputs.expand }}"
+          }
+
+          if (![string]::IsNullOrEmpty(${{ toJson(inputs.filter) }} -replace '"', '')) {
+            $args += '--filter'
+            $args += "${{ inputs.filter }}"
+          }
+
+          if (![string]::IsNullOrEmpty(${{ toJson(inputs.orderby) }} -replace '"', '')) {
+            $args += '--orderby'
+            $args += "${{ inputs.orderby }}"
+          }
+
+          if (![string]::IsNullOrEmpty(${{ toJson(inputs.select) }} -replace '"', '')) {
+            $args += '--select'
+            $args += "${{ inputs.select }}"
+          }
+
+          # Add optional numeric arguments only if greater than zero
+          if (${{ inputs.skip }} -gt 0) {
+            $args += '--skip'
+            $args += "${{ inputs.skip }}"
+          }
+
+          if (${{ inputs.top }} -gt 0) {
+            $args += '--top'
+            $args += "${{ inputs.top }}"
+          }
+
+          # Construct and echo the full command for debug
+          Write-Host "Executing: uipath $($args -join ' ')"
+
+          # Run the uipath CLI command with constructed arguments
+          uipath $args

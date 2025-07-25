@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator folders assign-domain-user - Assigns a directory user or group to a set of folders with an optional set of roles per folder.
+
+USAGE:
+   uipath orchestrator folders assign-domain-user [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Folders or OR.Folders.Write.
+
+   Required permissions: (Units.Edit or SubFolders.Edit - Assigns domain user to any folder or only if user has SubFolders.Edit permission on all folders provided).
+
+OPTIONS:
+   --assignment object (required)
+
+      Example:
+         DirectoryIdentifier=string; Domain=string; RolesPerFolder[0].FolderId=integer; RolesPerFolder[0].RoleIds=integer,integer,...; UserName=string; UserType=string

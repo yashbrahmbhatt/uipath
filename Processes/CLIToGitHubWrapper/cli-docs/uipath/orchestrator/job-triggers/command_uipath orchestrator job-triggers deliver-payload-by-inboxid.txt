@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator job-triggers deliver-payload-by-inboxid - Deliver payload for trigger inboxId.
+
+USAGE:
+   uipath orchestrator job-triggers deliver-payload-by-inboxid [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+   Required permissions: Jobs.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --inbox-id string (required)

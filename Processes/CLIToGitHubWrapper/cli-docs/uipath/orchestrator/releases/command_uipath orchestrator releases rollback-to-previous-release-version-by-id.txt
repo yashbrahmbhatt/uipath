@@ -1,0 +1,24 @@
+NAME:
+   uipath orchestrator releases rollback-to-previous-release-version-by-id - Reverts the package versions for the given release to the last version it had before the current one.
+
+USAGE:
+   uipath orchestrator releases rollback-to-previous-release-version-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Write.
+
+   Required permissions: Processes.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --merge-package-tags boolean (default: false)
+
+   --select string
+      Limits the properties returned in the result.

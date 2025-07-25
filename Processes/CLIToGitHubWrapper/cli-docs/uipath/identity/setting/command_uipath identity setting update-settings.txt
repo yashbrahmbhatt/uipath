@@ -1,0 +1,21 @@
+NAME:
+   uipath identity setting update-settings - Updates or create new settings if they don't exist on a specific tenant.
+
+USAGE:
+   uipath identity setting update-settings [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: PM.Setting or PM.Setting.Write.
+
+OPTIONS:
+   --settings object (multiple) (required)
+      The list of settings to be created/updated.
+
+      Example:
+         key=string; value=string
+
+   --partition-global-id string
+      The partition global Id of the setting
+
+   --user-id string
+      The user global Id of the setting.

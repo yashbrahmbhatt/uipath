@@ -1,0 +1,81 @@
+NAME:
+   uipath orchestrator queue-definitions post - Creates a new queue.
+
+USAGE:
+   uipath orchestrator queue-definitions post [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+   Required permissions: Queues.Create.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --name string (required)
+      A custom name for the queue.
+
+   --accept-automatically-retry boolean
+      States whether a robot should retry to process an item if, after processing, it failed with application exception.
+
+   --analytics-data-json-schema string
+      JSON schema enforced onto the analytics data field.
+
+   --creation-time string
+      The date and time when the queue was created.
+
+   --description string
+      Used to add additional information about a queue in order to better identify it.
+
+   --encrypted boolean
+      States whether the Queue Item's data will be encrypted in the database.
+
+   --enforce-unique-reference boolean
+      States whether Item Reference field should be unique per Queue. Deleted and retried items are not checked against this rule.
+
+   --folders-count integer
+      Number of folders where the queue is shared.
+
+   --id integer
+
+   --is-process-in-current-folder boolean
+      Flag to determine if the release is in the current folder
+
+   --key string
+      A unique identifier associated to each queue.
+
+   --max-number-of-retries integer
+      An integer value representing the number of times an item of this queue can be retried if its processing fails with application exception and auto retry is on.
+
+   --organization-unit-fully-qualified-name string
+      DEPRECATED. 
+
+   --organization-unit-id integer
+      DEPRECATED. 
+
+   --output-data-json-schema string
+      JSON schema enforced onto the output data field.
+
+   --process-schedule-id integer
+      The Id of the process schedule associated with the queue.
+
+   --release-id integer
+      The ProcessId Queue is associated with.
+
+   --retry-abandoned-items boolean
+      States whether a robot should retry to process an abandoned item
+
+   --risk-sla-in-minutes integer
+      Queue Item processing Risk SLA on the QueueDefinition level.
+
+   --sla-in-minutes integer
+      Queue item processing SLA on the QueueDefinition level.
+
+   --specific-data-json-schema string
+      JSON schema enforced onto the specific data field.
+
+   --tags object (multiple)
+
+      Example:
+         DisplayName=string; DisplayValue=string; Name=string; Value=string

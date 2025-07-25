@@ -1,0 +1,13 @@
+NAME:
+   uipath orchestrator maintenance end - Ends a maintenance window
+
+USAGE:
+   uipath orchestrator maintenance end [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Administration or OR.Administration.Write.
+
+   Host only. Requires authentication.
+
+OPTIONS:
+   --tenant-id integer

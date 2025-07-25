@@ -1,0 +1,29 @@
+NAME:
+   uipath - Command-Line Interface for UiPath Services
+
+USAGE:
+   uipath <service> <operation> --<argument> <value>
+
+COMMANDS:
+   du            Document Understanding
+   identity      Identity Server
+   orchestrator  UiPath Orchestrator
+   studio        UiPath Studio
+   autocomplete  Autocompletion
+   config        Interactive Configuration
+
+GLOBAL OPTIONS:
+   --debug                  Enable debug output (default: false) [%UIPATH_DEBUG%]
+   --profile value          Config profile to use (default: "default") [%UIPATH_PROFILE%]
+   --uri value              Server Base-URI [%UIPATH_URI%]
+   --organization value     Organization name [%UIPATH_ORGANIZATION%]
+   --tenant value           Tenant name [%UIPATH_TENANT%]
+   --insecure               Disable HTTPS certificate check (default: false) [%UIPATH_INSECURE%]
+   --output value           Set output format: json (default), text [%UIPATH_OUTPUT%]
+   --query value            Perform JMESPath query on output
+   --wait value             Waits for the provided condition (JMESPath expression)
+   --wait-timeout value     Time to wait in seconds for condition (default: 30)
+   --file value             Provide input from file (use - for stdin)
+   --identity-uri value     Identity Server URI [%UIPATH_IDENTITY_URI%]
+   --service-version value  Specific service version [%UIPATH_SERVICE_VERSION%]
+   --help, -h               show help

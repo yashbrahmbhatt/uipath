@@ -1,0 +1,18 @@
+NAME:
+   uipath orchestrator buckets upload - Uploads the provided file to the bucket
+
+USAGE:
+   uipath orchestrator buckets upload [command options] [arguments...]
+
+OPTIONS:
+   --file binary (required)
+      The file to upload
+
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      The Bucket Id
+
+   --path string (required)
+      The BlobFile full path

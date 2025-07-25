@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator environments post - Post new environment
+
+USAGE:
+   uipath orchestrator environments post [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+   Required permissions: Environments.Create.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --robots object (multiple)
+      The collection of robots associated with the current environment.
+
+      Example:
+         CreationTime=string; CreatorUserId=integer; CredentialStoreId=integer; CredentialType=string; Description=string; Enabled=boolean; Environments[0].Description=string; Environments[0].Id=integer; Environments[0].Name=string; Environments[0].Type=string; ExternalName=string; HostingType=string; Id=integer; IsExternalLicensed=boolean; LastModificationTime=string; LastModifierUserId=integer; LicenseKey=string; LimitConcurrentExecution=boolean; MachineId=integer; MachineName=string; Name=string; Password=string; ProvisionType=string; RobotEnvironments=string; Type=string; UserId=integer; Username=string

@@ -1,0 +1,52 @@
+name: uipath-orchestrator-roles-delete-by-id
+description: |-
+  NAME:
+     uipath orchestrator roles delete-by-id - Deletes a role.
+
+  USAGE:
+     uipath orchestrator roles delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Write.
+
+     Required permissions: Roles.Delete.
+
+  OPTIONS:
+     --key integer (required)
+  
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The ID of the role to delete (required)'
+        required: true
+        type: integer
+
+jobs:
+  delete_role_by_id:
+    runs-on: [windows, self-hosted]
+    outputs:
+      result: ${{ steps.delete.outputs.result }}
+    steps:
+      - name: Delete role by ID
+        id: delete
+        shell: pwsh
+        run: |
+          # Initialize arguments array with base command and subcommands
+          $args = @('uipath', 'orchestrator', 'roles', 'delete-by-id')
+
+          # Append required --key argument, converting to string and quoting
+          $args += '--key'
+          $args += "$(${{ inputs.key }})"
+
+          # Join arguments into a single command string with proper spacing
+          $command = $args -join ' '
+
+          # Output the command to be run for logging/debugging purposes
+          Write-Host "Running command: $command"
+
+          # Execute the assembled command
+          Invoke-Expression $command
+
+          # Capture the exit code as the result output
+          echo "::set-output name=result::$LASTEXITCODE"

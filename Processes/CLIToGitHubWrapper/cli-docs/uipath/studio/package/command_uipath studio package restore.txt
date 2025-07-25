@@ -1,0 +1,12 @@
+NAME:
+   uipath studio package restore - Restores the packages of the project
+
+USAGE:
+   uipath studio package restore [command options] [arguments...]
+
+OPTIONS:
+   --destination string (default: ./packages)
+      The output folder
+
+   --source string (default: .)
+      Path to a project.json file or a folder containing project.json file

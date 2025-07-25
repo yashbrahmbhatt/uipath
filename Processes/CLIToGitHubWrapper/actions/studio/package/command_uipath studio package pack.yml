@@ -1,0 +1,133 @@
+name: UiPath Studio Package Pack
+description: |
+  uipath studio package pack - Packs a project into a single package
+
+  USAGE:
+     uipath studio package pack [command options] [arguments...]
+
+  OPTIONS:
+     --destination string (default: .)
+        The output folder
+
+     --source string (default: .)
+        Path to a project.json file or a folder containing project.json file
+
+     --auto-version boolean
+        Auto-generate package version
+
+     --output-type string
+        Force the output to a specific type.
+
+        Allowed values:
+        - Process
+        - Library
+        - Tests
+        - Objects
+
+     --package-version string
+        The package version
+
+     --release-notes string
+        Add release notes
+
+     --split-output boolean
+        Enables the output split to runtime and design libraries
+
+on:
+  workflow_call:
+    inputs:
+      destination:
+        description: The output folder
+        required: false
+        default: '.'
+        type: string
+      source:
+        description: Path to a project.json file or a folder containing project.json file
+        required: false
+        default: '.'
+        type: string
+      auto_version:
+        description: Auto-generate package version
+        required: false
+        default: false
+        type: boolean
+      output_type:
+        description: Force the output to a specific type (Process, Library, Tests, Objects)
+        required: false
+        default: ''
+        type: string
+      package_version:
+        description: The package version
+        required: false
+        default: ''
+        type: string
+      release_notes:
+        description: Add release notes
+        required: false
+        default: ''
+        type: string
+      split_output:
+        description: Enables the output split to runtime and design libraries
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  pack:
+    runs-on:
+      - windows
+      - self-hosted
+    steps:
+      - name: Pack UiPath project
+        shell: pwsh
+        run: |
+          # Initialize arguments array with base command
+          $argsList = @('studio', 'package', 'pack')
+
+          # Append --destination if specified
+          if ('${{ inputs.destination }}' -and '${{ inputs.destination }}' -ne '.') {
+            $argsList += '--destination'
+            $argsList += '${{ inputs.destination }}'
+          }
+
+          # Append --source if specified
+          if ('${{ inputs.source }}' -and '${{ inputs.source }}' -ne '.') {
+            $argsList += '--source'
+            $argsList += '${{ inputs.source }}'
+          }
+
+          # Append --auto-version if set to true
+          if (${{ inputs.auto_version }}) {
+            $argsList += '--auto-version'
+          }
+
+          # Append --output-type if provided and valid
+          $validOutputTypes = @('Process', 'Library', 'Tests', 'Objects')
+          if ('${{ inputs.output_type }}' -and $validOutputTypes -contains '${{ inputs.output_type }}') {
+            $argsList += '--output-type'
+            $argsList += '${{ inputs.output_type }}'
+          }
+
+          # Append --package-version if provided
+          if ('${{ inputs.package_version }}') {
+            $argsList += '--package-version'
+            $argsList += '${{ inputs.package_version }}'
+          }
+
+          # Append --release-notes if provided
+          if ('${{ inputs.release_notes }}') {
+            $argsList += '--release-notes'
+            $argsList += '${{ inputs.release_notes }}'
+          }
+
+          # Append --split-output if set to true
+          if (${{ inputs.split_output }}) {
+            $argsList += '--split-output'
+          }
+
+          # Construct the full command string escaping arguments
+          $escapedArgs = $argsList | ForEach-Object { '"' + ($_ -replace '"','\"') + '"' }
+          $command = 'uipath ' + $escapedArgs -join ' '
+
+          Write-Host "Executing command: $command"
+          iex $command

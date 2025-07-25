@@ -1,0 +1,22 @@
+NAME:
+   uipath orchestrator execution-media get-by-id - Get by id
+
+USAGE:
+   uipath orchestrator execution-media get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Monitoring or OR.Monitoring.Read.
+
+   Required permissions: ExecutionMedia.View.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

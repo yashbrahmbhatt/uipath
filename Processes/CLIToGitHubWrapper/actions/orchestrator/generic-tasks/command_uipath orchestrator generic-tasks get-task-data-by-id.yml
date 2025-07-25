@@ -1,0 +1,55 @@
+name: uipath-orchestrator-generic-tasks-get-task-data-by-id
+description: |
+  NAME:
+     uipath orchestrator generic-tasks get-task-data-by-id - Returns task data dto
+
+  USAGE:
+     uipath orchestrator generic-tasks get-task-data-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+     Required permissions: Tasks.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --task-id integer
+        Task id
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      task-id:
+        description: 'Task id (optional)'
+        required: false
+        type: number
+    secrets: {}
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator generic-tasks get-task-data-by-id
+        shell: pwsh
+        run: |
+          # Initialize argument array for the CLI command
+          $args = @("orchestrator", "generic-tasks", "get-task-data-by-id")
+
+          # Add the required folder-id argument
+          $args += "--folder-id"
+          $args += "$(${{ inputs.folder-id }})"
+
+          # Conditionally add the optional task-id argument if provided
+          if (${{ inputs.'task-id' }} -ne $null -and ${{ inputs.'task-id' }} -ne '') {
+              $args += "--task-id"
+              $args += "$(${{ inputs.'task-id' }})"
+          }
+
+          # Execute the uipath CLI with constructed arguments
+          # Note: Assumes 'uipath' is in PATH
+          uipath $args

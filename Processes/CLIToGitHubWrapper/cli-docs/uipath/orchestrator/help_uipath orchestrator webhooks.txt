@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator webhooks - Notifications of changes
+
+USAGE:
+   uipath orchestrator webhooks
+
+DESCRIPTION:
+   Webhooks enable real-time notifications about changes or updates in Orchestrator to other applications.
+
+COMMANDS:
+   delete-by-id     Delete a webhook subscription
+   get              List webhooks
+   get-by-id        Gets a single webhook
+   get-event-types  Gets the list of event types a webhook can subscribe to
+   patch-by-id      Patches a webhook
+   ping-by-id       Sends a Ping request to webhook endpoint.
+                    Used for testing connectivity and availability of target URL
+   post             Create a new webhook subscription
+   put-by-id        Update an existing webhook subscription
+   trigger-custom   Triggers an event of type "custom"

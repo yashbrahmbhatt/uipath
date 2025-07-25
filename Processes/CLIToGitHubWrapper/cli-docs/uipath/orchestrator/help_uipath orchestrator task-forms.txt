@@ -1,0 +1,18 @@
+NAME:
+   uipath orchestrator task-forms - UI for human-robot collaboration tasks
+
+USAGE:
+   uipath orchestrator task-forms
+
+DESCRIPTION:
+   Task forms are custom UI interfaces created for human-robot collaboration tasks.
+
+COMMANDS:
+   bulk-complete-tasks     Bulk Complete the task by merging form data and action taken
+   bulk-update-tasks       Bulk Update Task data by merging data.
+   complete-task           Complete the task by saving form data and action taken
+   create-form-task        Creates a new Form Task.
+   get-task-data-by-id     Returns task data dto
+   get-task-form-by-id     Returns form dto to render task form
+   save-and-reassign-task  Save changes done by the current user and Reassign Task to another user
+   save-task-data          Save task data

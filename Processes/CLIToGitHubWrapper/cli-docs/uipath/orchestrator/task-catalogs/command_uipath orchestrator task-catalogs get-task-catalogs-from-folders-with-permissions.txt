@@ -1,0 +1,44 @@
+NAME:
+   uipath orchestrator task-catalogs get-task-catalogs-from-folders-with-permissions - Gets Task Catalogs across folders having given permission with the given OData queries .
+
+USAGE:
+   uipath orchestrator task-catalogs get-task-catalogs-from-folders-with-permissions [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+   Requires authentication.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --count boolean
+      Indicates whether the total count of items within a collection are returned in the result.
+
+   --distinct-by-select boolean
+      Return distinct attributes from task catalog for select query. Select param must have exactly 1 value if this is enabled
+
+   --exclude-folder-id integer
+      The task catalogs beloging to this folder will be excluded.
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --filter string
+      Restricts the set of items returned. The maximum number of expressions is 100.
+
+   --mandatory-permissions string,string,...
+      These represent the additional permissions over TaskCatalog.Read required in the folders the data is retrieved from; all permissions in this set must be met
+
+   --orderby string
+      Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+   --select string
+      Limits the properties returned in the result.
+
+   --skip integer
+      Excludes the specified number of items of the queried collection from the result.
+
+   --top integer
+      Limits the number of items returned from a collection. The maximum value is 1000.

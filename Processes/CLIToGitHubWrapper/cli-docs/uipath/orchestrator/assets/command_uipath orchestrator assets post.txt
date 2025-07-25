@@ -1,0 +1,107 @@
+NAME:
+   uipath orchestrator assets post - Creates an asset
+
+USAGE:
+   uipath orchestrator assets post [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Assets or OR.Assets.Write.
+
+   Required permissions: Assets.Create.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --name string (required)
+      A custom name for the asset.
+
+   --value-scope string (required)
+      Defines the scope of the asset.
+
+      Allowed values:
+      - Global
+      - PerRobot
+
+   --bool-value boolean
+      The value of the asset when the value type is Bool. False when the value type is not Bool.
+
+   --can-be-deleted boolean
+      States if an assets can be deleted. The default value of this property is true.
+
+   --creation-time string
+
+   --creator-user-id integer
+
+   --credential-password string
+      The password when the value type is Credential. Empty when the value type is not Credential.
+
+   --credential-store-id integer
+      The Credential Store used to store the credentials.
+
+   --credential-username string
+      The user name when the value type is Credential. Empty when the value type is not Credential.
+
+   --description string
+      The description of the asset.
+
+   --external-name string
+      Contains the value of the key in the external store used to store the credentials.
+
+   --folders-count integer
+      Number of folders where the asset is shared.
+
+   --has-default-value boolean
+      The asset has a default value set. This value will be null when set from legacy components that don't support
+      the PerRobot assets with default value feature.
+
+   --id integer
+
+   --int-value integer
+      The value of the asset when the value type is Integer. 0 when the value type is not Integer.
+
+   --key string
+      An unique identifier
+
+   --key-value-list object (multiple)
+      A collection of key value pairs when the type is KeyValueList. Empty when the value type is not KeyValueList.
+
+   --last-modification-time string
+
+   --last-modifier-user-id integer
+
+   --robot-values object (multiple)
+      The collection of asset values per robot. Empty if the asset type is Global or PerUser.
+
+      Example:
+         BoolValue=boolean; CredentialPassword=string; CredentialStoreId=integer; CredentialUsername=string; ExternalName=string; Id=integer; IntValue=integer; KeyTrail=string; RobotId=integer; RobotName=string; StringValue=string; Value=string; ValueType=string
+
+   --string-value string
+      The value of the asset when the value type is Text. Empty when the value type is not Text.
+
+   --tags object (multiple)
+
+      Example:
+         DisplayName=string; DisplayValue=string; Name=string; Value=string
+
+   --user-values object (multiple)
+      The collection of asset values per user. Empty if the asset type is Global or PerRobot.
+
+      Example:
+         BoolValue=boolean; CredentialPassword=string; CredentialStoreId=integer; CredentialUsername=string; ExternalName=string; Id=integer; IntValue=integer; KeyValueList[0].Key=string; KeyValueList[0].Value=string; MachineId=integer; MachineName=string; StringValue=string; UserId=integer; UserName=string; Value=string; ValueType=string
+
+   --value string
+      The textual representation of the asset value, irrespective of value type.
+
+   --value-type string
+      Defines the type of value stored by the asset.
+
+      Allowed values:
+      - DBConnectionString
+      - HttpConnectionString
+      - Text
+      - Bool
+      - Integer
+      - Credential
+      - WindowsCredential
+      - KeyValueList

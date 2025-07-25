@@ -1,0 +1,17 @@
+NAME:
+   uipath orchestrator test-data-queue-actions - Operations for managing test data
+
+USAGE:
+   uipath orchestrator test-data-queue-actions
+
+DESCRIPTION:
+   Test data queue actions provide operations for managing data in test data queues.
+
+COMMANDS:
+   add-item                Add a new test data queue item
+   bulk-add-items          Bulk adds an array of data queue items
+   delete-all-items        Delete all items from a test data queue
+   delete-items            Delete specific test data queue items
+   get-next-item           Get the next unconsumed test data queue item
+   set-all-items-consumed  Set the IsConsumed flag for all items from a test data queue
+   set-items-consumed      Set the IsConsumed flag for specific test data queue items

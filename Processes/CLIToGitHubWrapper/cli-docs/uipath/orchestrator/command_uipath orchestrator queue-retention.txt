@@ -1,0 +1,14 @@
+NAME:
+   uipath orchestrator queue-retention - Rules for storing queue data
+
+USAGE:
+   uipath orchestrator queue-retention
+
+DESCRIPTION:
+   Queue retention defines how long the processed queue item data is stored before it is deleted.
+
+COMMANDS:
+   delete-by-id  
+   get           
+   get-by-id     
+   put-by-id

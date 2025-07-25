@@ -1,0 +1,64 @@
+# .github/workflows/detect-changes.yml
+
+name: Detect Changed Areas
+
+on:
+  workflow_call:
+    outputs:
+      matrix:
+        description: "Changed project paths as matrix"
+        value: ${{ jobs.detect.outputs.matrix }}
+      vs_changed:
+        description: "VS Libraries changed"
+        value: ${{ jobs.detect.outputs.vs_changed }}
+      uipath_lib_changed:
+        description: "UiPath Libraries changed"
+        value: ${{ jobs.detect.outputs.uipath_lib_changed }}
+      uipath_proc_changed:
+        description: "UiPath Processes changed"
+        value: ${{ jobs.detect.outputs.uipath_proc_changed }}
+
+jobs:
+  detect:
+    runs-on: [self-hosted, windows]
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      vs_changed: ${{ steps.set-matrix.outputs.vs_changed }}
+      uipath_lib_changed: ${{ steps.set-matrix.outputs.uipath_lib_changed }}
+      uipath_proc_changed: ${{ steps.set-matrix.outputs.uipath_proc_changed }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: set-matrix
+        run: |
+          changed=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          echo "Changed files:"
+          echo "$changed"
+
+          declare -a paths=()
+          vs=false
+          uipath_lib=false
+          uipath_proc=false
+
+          if echo "$changed" | grep -q "^vs-libraries/"; then
+            paths+=("vs-libraries")
+            vs=true
+          fi
+
+          if echo "$changed" | grep -q "^uipath-libraries/"; then
+            paths+=("uipath-libraries")
+            uipath_lib=true
+          fi
+
+          if echo "$changed" | grep -q "^uipath-processes/"; then
+            paths+=("uipath-processes")
+            uipath_proc=true
+          fi
+
+          matrix=$(printf '%s\n' "${paths[@]}" | jq -R . | jq -s '{include: map({path: .})}')
+
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          echo "vs_changed=$vs" >> $GITHUB_OUTPUT
+          echo "uipath_lib_changed=$uipath_lib" >> $GITHUB_OUTPUT
+          echo "uipath_proc_changed=$uipath_proc" >> $GITHUB_OUTPUT

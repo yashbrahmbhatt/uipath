@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator task-definitions - Settings of a task
+
+USAGE:
+   uipath orchestrator task-definitions
+
+DESCRIPTION:
+   Task definitions describe the properties and settings of a task.
+
+COMMANDS:
+   create-task-definition              Creates a new Task Definition.
+   delete-by-id                        Deletes Task Defintion/Version.
+   get                                 Gets Task Definition objects with the given OData queries.
+   get-by-id                           Gets a Task Definition item by Id.
+   get-task-definition-versions-by-id  Get all versions of Task Definition.
+   update-task-definition-by-id        Updates Task Definition.

@@ -1,0 +1,79 @@
+name: uipath-orchestrator-processes-get-arguments-by-key
+description: |-
+  NAME:
+     uipath orchestrator processes get-arguments-by-key - Get process parameters
+
+  USAGE:
+     uipath orchestrator processes get-arguments-by-key [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+     Required permissions: Packages.View.
+
+  OPTIONS:
+     --key string (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+  
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The key identifying the process parameters (required)'
+        required: true
+        type: string
+      expand:
+        description: 'Related entities to represent inline (optional)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      UIPATH_TOKEN:
+        description: 'OAuth token for authentication'
+        required: true
+
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator processes get-arguments-by-key
+        shell: pwsh
+        env:
+          UIPATH_TOKEN: ${{ secrets.UIPATH_TOKEN }}
+        run: |
+          $args = @("orchestrator", "processes", "get-arguments-by-key")
+
+          # Add required key argument
+          $args += "--key"
+          $args += "'${{ inputs.key }}'"
+
+          # Add optional expand argument if provided
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += "--expand"
+            $args += "'${{ inputs.expand }}'"
+          }
+
+          # Add optional select argument if provided
+          if ('${{ inputs.select }}' -ne '') {
+            $args += "--select"
+            $args += "'${{ inputs.select }}'"
+          }
+
+          # Add token header for authentication if needed; this assumes the CLI supports env var based auth or some mechanism.
+          # If a CLI argument is needed for token, adjust accordingly.
+
+          # Execute the command
+          $command = "uipath " + ($args -join ' ')
+          Write-Host "Running command: $command"
+
+          iex $command

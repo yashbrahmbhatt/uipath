@@ -1,0 +1,48 @@
+NAME:
+   uipath orchestrator generic-tasks save-and-reassign-task - Save changes done by the current user and Reassign Task to another user
+
+USAGE:
+   uipath orchestrator generic-tasks save-and-reassign-task [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+   Required permissions: Tasks.Edit.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --assignee-names-or-emails string,string,...
+      Gets or sets the collection of assignee names or emails for this task assignment.
+
+   --assignee-user-ids integer,integer,...
+      Gets or sets the collection of assignee UserIds for this task assignment.
+
+   --assignment-criteria string
+      Gets or sets the assignment criteria for this task assignment.
+      Can be "SingleUser", Hierarchy", "Workload", "AllUsers", etc.
+
+      Allowed values:
+      - SingleUser
+      - Workload
+      - AllUsers
+      - Hierarchy
+
+   --data object
+      Gets or sets the Task data
+
+   --note-text string
+      Gets or sets the Task Note
+
+   --save-data boolean
+      Gets or Sets whether the data has to be saved
+
+   --task-id integer
+      Gets or sets the taskId for this task assignment.
+
+   --user-id integer
+      Gets or sets the userId for this task assignment.
+
+   --user-name-or-email string
+      Gets or sets the UserName or Email for this task assignment. If UserId is provided, this property is ignored.

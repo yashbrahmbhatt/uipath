@@ -1,0 +1,89 @@
+name: UiPath Orchestrator Queues Start Transaction
+description: |
+  NAME:
+     uipath orchestrator queues start-transaction - Starts a transaction.
+
+  USAGE:
+     uipath orchestrator queues start-transaction [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+     Required permissions: Queues.View and Transactions.View and Transactions.Create and Transactions.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --transaction-data object (required)
+        Stores data sent when processing of an existing or a new item starts.
+
+        Example:
+           DeferDate=string; DueDate=string; Name=string; ParentOperationId=string; Reference=string; ReferenceFilterOption=string; RobotIdentifier=string
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+  
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: Folder/OrganizationUnit Id (required)
+        required: true
+        type: string
+      transaction_data:
+        description: |
+          Stores data sent when processing of an existing or a new item starts (required).
+          Example:
+            DeferDate=string; DueDate=string; Name=string; ParentOperationId=string; Reference=string; ReferenceFilterOption=string; RobotIdentifier=string
+        required: true
+        type: string
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+    
+jobs:
+  start_transaction:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run UiPath Orchestrator start-transaction command
+        shell: pwsh
+        run: |
+          # Build argument list for the CLI command
+          $args = @('orchestrator','queues','start-transaction')
+          
+          # Required arguments
+          if ([string]::IsNullOrWhiteSpace('${{ inputs.folder_id }}')) {
+            Write-Error 'folder_id is required.'
+            exit 1
+          }
+          $args += @('--folder-id', "${{ inputs.folder_id }}")
+
+          if ([string]::IsNullOrWhiteSpace('${{ inputs.transaction_data }}')) {
+            Write-Error 'transaction_data is required.'
+            exit 1
+          }
+          $args += @('--transaction-data', "${{ inputs.transaction_data }}")
+
+          # Optional arguments
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += @('--expand', "${{ inputs.expand }}")
+          }
+          if ('${{ inputs.select }}' -ne '') {
+            $args += @('--select', "${{ inputs.select }}")
+          }
+
+          # Execute the command
+          uipath $args

@@ -1,0 +1,17 @@
+NAME:
+   uipath orchestrator users get-current-permissions - Returns a user permission collection containing data about the current user and all the permissions it has.
+
+USAGE:
+   uipath orchestrator users get-current-permissions [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Users or OR.Users.Read.
+
+   Requires authentication.
+
+OPTIONS:
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

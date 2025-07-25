@@ -1,0 +1,18 @@
+﻿I'm going to give you a process defition for a business process. You are to come up with a solution design that leverages UiPath's Automation Cloud platform in order to achieve the automation needs of the business process.
+
+Answer only in the form of a json with the following keys: Processes, Triggers. Each of these keys should contain a json representation of the classes below. DO NOT include any markdown formatting as the output will be directly used as a JSON and is expected to parse directly as such.
+
+Pay specifically close attention to the definition and segregation of responsibility or units of work. Every unit of work should have its own queue and/or process.
+
+In your description, include any assets, settings, or otherwise external dependencies that might be consumed or populated by the robot.
+
+Notes:
+- Only use the DataManipulation step type if the required logic can be predefined. If the logic requires any subjective criteria or assessment, it is preferred to be a human-in-the-loop process/step instead.
+
+Relevant Definitions:
+
+{Process.cs}
+
+{Trigger.cs}
+
+{Step.cs}

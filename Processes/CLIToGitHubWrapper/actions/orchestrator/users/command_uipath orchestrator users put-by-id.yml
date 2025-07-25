@@ -1,0 +1,285 @@
+name: 'uipath orchestrator users put-by-id'
+description: |
+  NAME:
+     uipath orchestrator users put-by-id - Edits a user.
+
+  USAGE:
+     uipath orchestrator users put-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Write.
+
+     Required permissions: Users.Edit or Robots.Create or Robots.Edit or Robots.Delete.
+
+  OPTIONS:
+     --key integer (required)
+
+     --account-id string
+
+     --authentication-source string
+        The source which authenticated this user.
+
+     --creation-time string
+        The date and time when the user was created.
+
+     --creator-user-id integer
+
+     --directory-identifier string
+        The directory identifier from which the user is imported
+
+     --domain string
+        The domain from which the user is imported
+
+     --email-address string
+        The e-mail address associated with the user.
+
+     --explicit-may-have-personal-workspace boolean
+        Specifies whether this user is explicitly allowed to have a Personal Workspace
+
+     --explicit-may-have-robot-session boolean
+        Specifies whether this user is explicitly allowed to have an Attended Robot attached (default: true)
+
+     --explicit-may-have-user-session boolean
+        Specifies whether this user is explicitly allowed to have a User session (default: true)
+
+     --explicit-restrict-to-personal-workspace boolean
+        Explicitly restricted to personal workspace view
+
+     --full-name string
+        The full name of the person constructed with the format Name Surname.
+
+     --has-only-inherited-privileges boolean
+
+     --id integer
+
+     --is-active boolean
+        DEPRECATED. States if the user is active or not. An inactive user cannot login to Orchestrator.
+
+     --is-email-confirmed boolean
+        DEPRECATED. States if the email address is valid or not.
+
+     --is-external-licensed boolean
+
+     --last-login-time string
+        The date and time when the user last logged in, or null if the user never logged in.
+
+     --last-modification-time string
+
+     --last-modifier-user-id integer
+
+     --license-type string
+        The user's license type.
+
+        Allowed values:
+        - NonProduction
+        - Attended
+        - Unattended
+        - Development
+        - Studio
+        - RpaDeveloper
+        - StudioX
+        - CitizenDeveloper
+        - Headless
+        - StudioPro
+        - RpaDeveloperPro
+        - TestAutomation
+        - AutomationCloud
+        - Serverless
+        - AutomationKit
+        - ServerlessTestAutomation
+        - AutomationCloudTestAutomation
+        - AttendedStudioWeb
+        - Hosting
+        - AssistantWeb
+        - ProcessOrchestration
+        - AgentService
+
+     --login-providers string,string,...
+        The collection of entities that can authenticate the user.
+
+     --may-have-personal-workspace boolean
+        Specifies whether this user is allowed to have a Personal Workspace
+
+     --may-have-robot-session boolean
+        Specifies whether this user is allowed to have an Attended Robot attached (default: true)
+
+     --may-have-unattended-session boolean
+        Specifies whether this user is allowed to have an Unattended Robot attached (default: false)
+
+     --may-have-user-session boolean
+        Specifies whether this user is allowed to have a User session (default: true)
+
+     --name string
+        The name of the person for which the user is created.
+
+     --notification-subscription object
+
+        Example:
+           AutopilotForRobotsDetectedIssues=boolean; CloudRobots=boolean; Export=boolean; Insights=boolean; Jobs=boolean; QueueItems=boolean; Queues=boolean; RateLimitsDaily=boolean; RateLimitsRealTime=boolean; Robots=boolean; Schedules=boolean; Serverless=boolean; Tasks=boolean; Webhooks=boolean
+
+     --organization-units object (multiple)
+        The collection of organization units associated with the user.
+
+        Example:
+           DisplayName=string; Id=integer
+
+     --password string
+        DEPRECATED. The password used during application login.
+
+     --provision-type string
+        The user type.
+
+        Allowed values:
+        - Manual
+        - Automatic
+
+     --restrict-to-personal-workspace boolean
+        Restrict to personal workspace view
+
+     --robot-provision object
+
+        Example:
+           RobotId=integer; RobotType=string; UserName=string
+
+     --roles-list string,string,...
+        The collection of role names associated with the user.
+
+     --surname string
+        The surname of the person for which the user is created.
+
+     --tenancy-name string
+        The name of the tenant owning the user.
+
+     --tenant-display-name string
+        The display name of the tenant owning the user.
+
+     --tenant-id integer
+        The id of the tenant owning the user.
+
+     --tenant-key string
+        The key of the tenant owning the user.
+
+     --type string
+        The user type.
+
+        Allowed values:
+        - User
+        - Robot
+        - DirectoryUser
+        - DirectoryGroup
+        - DirectoryRobot
+        - DirectoryExternalApplication
+
+     --unattended-robot object
+
+        Example:
+           CredentialExternalName=string; CredentialStoreId=integer; CredentialType=string; LimitConcurrentExecution=boolean; MachineMappingsCount=integer; Password=string; RobotId=integer; UserName=string
+
+     --update-policy object
+        The policy applied for update robots' versions
+
+        Example:
+           SpecificVersion=string; Type=string
+
+     --user-name string
+        The name used to login to Orchestrator.
+
+     --user-roles object (multiple)
+        The collection of roles associated with the user.
+
+        Example:
+           Id=integer; RoleId=integer; RoleName=string; RoleType=string; UserId=integer; UserName=string
+on:
+  workflow_call:
+    inputs:
+      key:
+        required: true
+        type: number
+        description: 'Key (integer) (required)'
+      account-id:
+        required: false
+        type: string
+        description: 'Account Id (string)'
+      authentication-source:
+        required: false
+        type: string
+        description: 'The source which authenticated this user'
+      creation-time:
+        required: false
+        type: string
+        description: 'The date and time when the user was created'
+      creator-user-id:
+        required: false
+        type: number
+        description: 'Creator user ID (integer)'
+      directory-identifier:
+        required: false
+        type: string
+        description: 'Directory identifier from which the user is imported'
+      domain:
+        required: false
+        type: string
+        description: 'The domain from which the user is imported'
+      email-address:
+        required: false
+        type: string
+        description: 'The e-mail address associated with the user'
+      explicit-may-have-personal-workspace:
+        required: false
+        type: boolean
+        description: 'Specifies whether this user is explicitly allowed to have a Personal Workspace'
+      explicit-may-have-robot-session:
+        required: false
+        type: boolean
+        description: 'Specifies whether this user is explicitly allowed to have an Attended Robot attached'
+      explicit-may-have-user-session:
+        required: false
+        type: boolean
+        description: 'Specifies whether this user is explicitly allowed to have a User session'
+      explicit-restrict-to-personal-workspace:
+        required: false
+        type: boolean
+        description: 'Explicitly restricted to personal workspace view'
+      full-name:
+        required: false
+        type: string
+        description: 'The full name of the person constructed with the format Name Surname'
+      has-only-inherited-privileges:
+        required: false
+        type: boolean
+        description: 'Has only inherited privileges'
+      id:
+        required: false
+        type: number
+        description: 'ID (integer)'
+      is-active:
+        required: false
+        type: boolean
+        description: 'DEPRECATED - States if the user is active or not'
+      is-email-confirmed:
+        required: false
+        type: boolean
+        description: 'DEPRECATED - States if the email address is valid or not'
+      is-external-licensed:
+        required: false
+        type: boolean
+        description: 'Is externally licensed'
+      last-login-time:
+        required: false
+        type: string
+        description: 'The date and time when the user last logged in or null'
+      last-modification-time:
+        required: false
+        type: string
+        description: 'Last modification time'
+      last-modifier-user-id:
+        required: false
+        type: number
+        description: 'Last modifier user ID'
+      license-type:
+        required: false
+        type: string
+        description: |
+          User's license type. Allowed: NonProduction, Attended, Unattended, Development, Studio, RpaDeveloper, StudioX, CitizenDeveloper,
+          Headless, StudioPro, RpaDeveloperPro, TestAutomation, AutomationCloud, Serverless, AutomationKit,
+          ServerlessTestAutomation, AutomationCloudTestAutomation, AttendedStudioWeb,

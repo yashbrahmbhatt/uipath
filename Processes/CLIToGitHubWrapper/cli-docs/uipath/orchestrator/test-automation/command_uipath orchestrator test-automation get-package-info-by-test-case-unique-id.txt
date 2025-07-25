@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator test-automation get-package-info-by-test-case-unique-id - Get the package identifier and the latest version for the specified test case.
+
+USAGE:
+   uipath orchestrator test-automation get-package-info-by-test-case-unique-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+   Requires authentication.
+
+   Responses:
+   200 OK
+   403 If the caller doesn't have permissions to retrieve packages
+   404 If there is no test case with the specified UniqueId
+
+OPTIONS:
+   --package-identifier string
+
+   --test-case-unique-id string

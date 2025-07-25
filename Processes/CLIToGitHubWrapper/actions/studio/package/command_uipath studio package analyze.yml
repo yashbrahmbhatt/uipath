@@ -1,0 +1,73 @@
+name: 'uipath studio package analyze'
+
+description: |
+  Runs static code analysis on the project to detect common errors
+
+on:
+  workflow_call:
+    inputs:
+      source:
+        description: 'Path to a project.json file or a folder containing project.json file'
+        required: false
+        default: '.'
+        type: string
+      governance_file:
+        description: 'Pass governance policies containing the Workflow Analyzer rules'
+        required: false
+        default: 'uipath.policy.default.json'
+        type: string
+      stop_on_rule_violation:
+        description: 'Fail when any rule is violated'
+        required: false
+        default: true
+        type: boolean
+      treat_warnings_as_errors:
+        description: 'Treat warnings as errors'
+        required: false
+        type: boolean
+
+jobs:
+  analyze:
+    runs-on: [windows, self-hosted]
+    outputs:
+    steps:
+      - name: Run uipath studio package analyze
+        shell: pwsh
+        run: |
+          $args = @('studio', 'package', 'analyze')
+
+          # Add --source if provided and non-empty
+          if ('${{ inputs.source }}') -and ('${{ inputs.source }}' -ne '') {
+            $args += '--source'
+            $args += '${{ inputs.source }}'
+          } else {
+            $args += '--source'
+            $args += '.'
+          }
+
+          # Add --governance-file if provided and non-empty
+          if ('${{ inputs.governance_file }}' -and ('${{ inputs.governance_file }}' -ne '')) {
+            $args += '--governance-file'
+            $args += '${{ inputs.governance_file }}'
+          } else {
+            $args += '--governance-file'
+            $args += 'uipath.policy.default.json'
+          }
+
+          # Add --stop-on-rule-violation (boolean with default true)
+          if ('${{ inputs.stop_on_rule_violation }}' -eq 'true') {
+            $args += '--stop-on-rule-violation'
+            $args += 'true'
+          } else {
+            $args += '--stop-on-rule-violation'
+            $args += 'false'
+          }
+
+          # Add --treat-warnings-as-errors only if true (no default)
+          if ('${{ inputs.treat_warnings_as_errors }}' -eq 'true') {
+            $args += '--treat-warnings-as-errors'
+            $args += 'true'
+          }
+
+          Write-Host "Running: uipath $args"
+          & uipath $args

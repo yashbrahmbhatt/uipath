@@ -1,0 +1,14 @@
+NAME:
+   uipath identity group bulk-delete - Deletes multiple local groups from a partition
+
+USAGE:
+   uipath identity group bulk-delete [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: PM.Group or PM.Group.Write.
+
+OPTIONS:
+   --partition-global-id string (required)
+
+   --group-ids string,string,...
+      IDs of the groups to be removed

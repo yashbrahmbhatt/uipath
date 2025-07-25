@@ -1,0 +1,26 @@
+NAME:
+   uipath orchestrator assets get-robot-asset-by-name-for-robot-key - Returns the named asset associated to the given robot key.
+
+USAGE:
+   uipath orchestrator assets get-robot-asset-by-name-for-robot-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Assets or OR.Assets.Write.
+
+   Required permissions: Assets.View.
+
+OPTIONS:
+   --asset-name string (required)
+
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --robot-key string (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.
+
+   --supports-credentials-proxy-disconnected boolean

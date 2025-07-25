@@ -1,0 +1,67 @@
+name: UiPath Orchestrator Users Get-By-Id
+description: |
+  NAME:
+     uipath orchestrator users get-by-id - Gets a user based on its id.
+
+  USAGE:
+     uipath orchestrator users get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The user ID to get (required).'
+        required: true
+        type: number
+      expand:
+        description: 'Related entities to be represented inline (optional). Maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result (optional).'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+jobs:
+  run-get-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Build and run uipath orchestrator users get-by-id command
+        shell: pwsh
+        run: |
+          # Initialize an array to build the CLI command
+          $args = @("orchestrator", "users", "get-by-id")
+
+          # Required parameter --key
+          $args += "--key"
+          $args += ${{ inputs.key }}
+
+          # Optional --expand parameter: add if not empty
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += "--expand"
+            $args += '${{ inputs.expand }}'
+          }
+
+          # Optional --select parameter: add if not empty
+          if ('${{ inputs.select }}' -ne '') {
+            $args += "--select"
+            $args += '${{ inputs.select }}'
+          }
+
+          # Invoke the uipath CLI with constructed arguments
+          uipath $args

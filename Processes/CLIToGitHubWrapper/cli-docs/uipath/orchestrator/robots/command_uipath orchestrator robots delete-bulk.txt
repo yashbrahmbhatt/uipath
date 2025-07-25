@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator robots delete-bulk - Deletes multiple robots based on their keys.
+
+USAGE:
+   uipath orchestrator robots delete-bulk [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+   Required permissions: Robots.Delete.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --robot-ids integer,integer,... (required)

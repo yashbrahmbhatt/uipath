@@ -1,0 +1,76 @@
+name: 'Set Robots By Id - UiPath Orchestrator Environments'
+
+description: |
+  NAME:
+     uipath orchestrator environments set-robots-by-id - Associates a group of robots with and dissociates another group of robots from the given environment.
+
+  USAGE:
+     uipath orchestrator environments set-robots-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+     Required permissions: Environments.Edit.
+
+  OPTIONS:
+     --added-robot-ids integer,integer,... (required)
+
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+        The environment id.
+
+     --removed-robot-ids integer,integer,... (required)
+
+on:
+  workflow_call:
+    inputs:
+      added_robot_ids:
+        description: 'Comma-separated list of robot IDs to add (required)'
+        required: true
+        type: string
+      folder_id:
+        description: 'Folder/OrganizationUnit ID (required)'
+        required: true
+        type: string
+      key:
+        description: 'Environment ID (required)'
+        required: true
+        type: string
+      removed_robot_ids:
+        description: 'Comma-separated list of robot IDs to remove (required)'
+        required: true
+        type: string
+
+jobs:
+  call-uipath-set-robots-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator environments set-robots-by-id
+        shell: pwsh
+        run: |
+          # Initialize the args array for the CLI command
+          $args = @(
+            'orchestrator', 'environments', 'set-robots-by-id'
+          )
+
+          # Add required parameters with proper quoting
+          $args += "--added-robot-ids"
+          $args += "${{ inputs.added_robot_ids }}"
+
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          $args += "--key"
+          $args += "${{ inputs.key }}"
+
+          $args += "--removed-robot-ids"
+          $args += "${{ inputs.removed_robot_ids }}"
+
+          # Execute the uipath CLI tool with constructed arguments
+          # Join arguments with spaces, quoting each argument that may contain spaces or commas
+          $quotedArgs = $args | ForEach-Object { if ($_ -match '[\s,]') { '"{0}"' -f $_ } else { $_ } }
+          $command = "uipath " + ($quotedArgs -join ' ')
+          Write-Host "Running command: $command"
+          iex $command

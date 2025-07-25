@@ -1,0 +1,27 @@
+NAME:
+   uipath orchestrator buckets - Storage for specific workflow data
+
+USAGE:
+   uipath orchestrator buckets
+
+DESCRIPTION:
+   Buckets provide a per-folder storage solution for RPA developers to leverage in creating automation projects.
+
+COMMANDS:
+   delete-by-id                  Delete a bucket
+   delete-file-by-key            Deletes a file.
+   download                      Downloads the file with the given path from the bucket
+   get                           Gets Buckets.
+   get-buckets-across-folders    Get the buckets from all the folders in which the current user has the Buckets.View permission, except the one specified.
+   get-by-id                     Gets a single Bucket.
+   get-directories-by-key        Gets the child directories in a directory.
+   get-file-by-key               Gets a file metadata.
+   get-files-by-key              Gets the files in a directory.
+                                 Optionally returns all files in all child directories (recursive).
+   get-folders-for-bucket-by-id  Get all accessible folders where the bucket is shared, and the total count of folders where it is shared (including unaccessible folders).
+   get-read-uri-by-key           Gets a direct download URL for BlobFile.
+   get-write-uri-by-key          Gets a direct upload URL for BlobFile.
+   post                          Creates an Bucket
+   put-by-id                     Updates a bucket.
+   share-to-folders              Adds the buckets to the folders specified in 'ToAddFolderIds'. Removes the buckets from the folders specified in 'ToRemoveFolderIds'.
+   upload                        Uploads the provided file to the bucket

@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator robots delete-by-id - Deletes a robot based on its key.
+
+USAGE:
+   uipath orchestrator robots delete-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+   Required permissions: Robots.Delete.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)

@@ -1,0 +1,18 @@
+NAME:
+   uipath studio package analyze - Runs static code analysis on the project to detect common errors
+
+USAGE:
+   uipath studio package analyze [command options] [arguments...]
+
+OPTIONS:
+   --source string (default: .)
+      Path to a project.json file or a folder containing project.json file
+
+   --governance-file string (default: uipath.policy.default.json)
+      Pass governance policies containing the Workflow Analyzer rules
+
+   --stop-on-rule-violation boolean (default: true)
+      Fail when any rule is violated
+
+   --treat-warnings-as-errors boolean
+      Treat warnings as errors

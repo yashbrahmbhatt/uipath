@@ -1,0 +1,177 @@
+name: "UiPath Orchestrator Create Task Catalog"
+description: |
+  NAME:
+     uipath orchestrator task-catalogs create-task-catalog - Creates a new Task Catalog.
+
+  USAGE:
+     uipath orchestrator task-catalogs create-task-catalog [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Required permissions: TaskCatalogs.Create.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --name string (required)
+        Name of the Task Catalog.
+
+     --description string
+        Description of this task catalog.
+
+     --encrypted boolean
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --retention-action string
+        Action to take at retention limit
+
+        Allowed values:
+        - Delete
+        - Archive
+        - None
+
+     --retention-bucket-id integer
+        Retention bucket Id
+
+     --retention-period integer
+        Retention period
+
+     --select string
+        Limits the properties returned in the result.
+
+     --tags object (multiple)
+
+        Example:
+           DisplayName=string; DisplayValue=string; Name=string; Value=string
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      name:
+        description: 'Name of the Task Catalog (required)'
+        required: true
+        type: string
+      description:
+        description: 'Description of this task catalog (optional)'
+        required: false
+        type: string
+        default: ''
+      encrypted:
+        description: 'Whether task catalog is encrypted (optional)'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Related entities to be represented inline, max depth 2 (optional)'
+        required: false
+        type: string
+        default: ''
+      retention-action:
+        description: 'Action to take at retention limit: Delete, Archive, None (optional)'
+        required: false
+        type: string
+        default: ''
+      retention-bucket-id:
+        description: 'Retention bucket Id (optional)'
+        required: false
+        type: number
+        default: 0
+      retention-period:
+        description: 'Retention period (optional)'
+        required: false
+        type: number
+        default: 0
+      select:
+        description: 'Limits the properties returned in the result (optional)'
+        required: false
+        type: string
+        default: ''
+      tags:
+        description: 'Tags; multiple entries allowed; format: DisplayName=string; DisplayValue=string; Name=string; Value=string (optional)'
+        required: false
+        type: string
+        default: ''
+jobs:
+  create-task-catalog:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator task-catalogs create-task-catalog command
+        shell: pwsh
+        env:
+          # Put any required secrets here if needed, e.g., AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+        run: |
+          $args = @("orchestrator", "task-catalogs", "create-task-catalog")
+
+          # Required parameters
+          $args += "--folder-id"
+          $args += ${{ inputs['folder-id'] }}
+
+          $args += "--name"
+          $args += "${{ inputs.name }}"
+
+          # Optional parameters: add only if provided or true
+
+          if ([string]::IsNullOrEmpty("${{ inputs.description }}") -eq $false) {
+            $args += "--description"
+            $args += "${{ inputs.description }}"
+          }
+
+          if (${{ inputs.encrypted }}) {
+            $args += "--encrypted"
+            $args += "true"
+          }
+
+          if ([string]::IsNullOrEmpty("${{ inputs.expand }}") -eq $false) {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+
+          if ([string]::IsNullOrEmpty("${{ inputs['retention-action'] }}") -eq $false) {
+            $validActions = @("Delete", "Archive", "None")
+            if ($validActions -contains "${{ inputs['retention-action'] }}") {
+              $args += "--retention-action"
+              $args += "${{ inputs['retention-action'] }}"
+            }
+            else {
+              Write-Error "Invalid retention-action value: ${{ inputs['retention-action'] }}. Allowed values are Delete, Archive, None."
+              exit 1
+            }
+          }
+
+          if (${{ inputs['retention-bucket-id'] }} -ne 0) {
+            $args += "--retention-bucket-id"
+            $args += ${{ inputs['retention-bucket-id'] }}
+          }
+
+          if (${{ inputs['retention-period'] }} -ne 0) {
+            $args += "--retention-period"
+            $args += ${{ inputs['retention-period'] }}
+          }
+
+          if ([string]::IsNullOrEmpty("${{ inputs.select }}") -eq $false) {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          if ([string]::IsNullOrEmpty("${{ inputs.tags }}") -eq $false) {
+            # The tags input is a string containing multiple --tags object entries separated by newlines or semicolons
+            # We will split on newlines or semicolons and add each as a separate --tags argument
+            $tagsRaw = "${{ inputs.tags }}".Trim()
+            $separators = @("`n", ";")
+            $tagsList = $tagsRaw -split '[;\n]' | Where-Object { $_.Trim() -ne "" }
+            foreach ($tag in $tagsList) {
+              $args += "--tags"
+              $args += $tag.Trim()
+            }
+          }
+
+          # Construct and invoke command
+          Write-Host "Executing: uipath $($args -join ' ')"
+          uipath @args

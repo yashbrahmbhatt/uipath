@@ -1,0 +1,12 @@
+NAME:
+   uipath studio package publish - Publishes the package to orchestrator
+
+USAGE:
+   uipath studio package publish [command options] [arguments...]
+
+OPTIONS:
+   --source string (default: .)
+      Path to package
+
+   --folder string (default: Shared)
+      The Orchestrator Folder

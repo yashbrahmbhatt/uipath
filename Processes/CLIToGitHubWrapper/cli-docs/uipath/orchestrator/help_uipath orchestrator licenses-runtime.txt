@@ -1,0 +1,12 @@
+NAME:
+   uipath orchestrator licenses-runtime - Licenses for robot runtime capacity
+
+USAGE:
+   uipath orchestrator licenses-runtime
+
+DESCRIPTION:
+   A runtime license refers to a licensing model where the license is granted to an unattended robot per run.
+
+COMMANDS:
+   get-licenses-runtime-by-robottype  Gets runtime licenses.
+   toggle-enabled-by-key              Toggles machine licensing on/off.

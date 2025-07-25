@@ -1,0 +1,13 @@
+NAME:
+   uipath orchestrator personal-workspaces stop-exploring-by-id - Unassigns the current User from exploring a Personal Workspace.
+
+USAGE:
+   uipath orchestrator personal-workspaces stop-exploring-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth authentication is not supported.
+
+   Required permissions: Units.Edit and Users.View and Roles.View.
+
+OPTIONS:
+   --key integer (required)

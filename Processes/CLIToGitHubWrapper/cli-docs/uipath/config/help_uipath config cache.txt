@@ -1,0 +1,11 @@
+NAME:
+   uipath config cache - Caching-related commands
+
+USAGE:
+   uipath config cache
+
+DESCRIPTION:
+   Caching-related commands
+
+COMMANDS:
+   clear  Clears the cache

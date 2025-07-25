@@ -1,0 +1,14 @@
+NAME:
+   uipath orchestrator alerts - Notifications for system events
+
+USAGE:
+   uipath orchestrator alerts
+
+DESCRIPTION:
+   Notifications related to robots, queue items, triggers, and more.
+
+COMMANDS:
+   get                  Gets alerts.
+   get-unread-count     Returns the total number of alerts, per tenant, that haven't been read by the current user.
+   mark-as-read         Marks alerts as read and returns the remaining number of unread notifications.
+   raise-process-alert  Creates a Process Alert

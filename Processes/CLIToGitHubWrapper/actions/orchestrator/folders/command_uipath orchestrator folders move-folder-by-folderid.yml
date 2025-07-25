@@ -1,0 +1,54 @@
+name: uipath-orchestrator-move-folder-by-folderid
+description: |
+  NAME:
+     uipath orchestrator folders move-folder-by-folderid - Move a folder.
+
+  USAGE:
+     uipath orchestrator folders move-folder-by-folderid [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Folders or OR.Folders.Write.
+
+     Required permissions: (Units.Delete or SubFolders.Delete - Move any folder or to folder only if user has SubFolders.Delete permission on it) and (Units.Create or SubFolders.Create - Move to any target folder or to folder if user has SubFolders.Create permission on target) and (Units.Edit or SubFolders.Edit - Move to any target folder or to folder if user has SubFolders.Edit permission on target).
+
+  OPTIONS:
+     --folder-id integer (required)
+        Id of the folder to be moved
+
+     --target-parent-id integer
+        Id of the target parent
+  
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Id of the folder to be moved'
+        required: true
+        type: number
+      target-parent-id:
+        description: 'Id of the target parent folder'
+        required: false
+        type: number
+
+jobs:
+  move-folder:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Move UiPath Orchestrator Folder by folderId
+        shell: pwsh
+        run: |
+          # Initialize argument array with required command and folder-id parameter
+          $args = @('orchestrator', 'folders', 'move-folder-by-folderid')
+          $args += '--folder-id'
+          $args += "$(${{ inputs.folder-id }})"
+          
+          # Add optional target-parent-id parameter if provided
+          if (${{ inputs.target-parent-id }} -ne $null -and ${{ inputs.target-parent-id }} -ne '') {
+            $args += '--target-parent-id'
+            $args += "$(${{ inputs.target-parent-id }})"
+          }
+
+          # Run the CLI command with constructed arguments
+          Write-Host "Executing: uipath $($args -join ' ')"
+          uipath $args

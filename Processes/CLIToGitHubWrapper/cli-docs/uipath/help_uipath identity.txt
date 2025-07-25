@@ -1,0 +1,18 @@
+NAME:
+   uipath identity - Identity Server
+
+USAGE:
+   uipath identity
+
+DESCRIPTION:
+   Service that offers centralized authentication and access control across UiPath products.
+
+COMMANDS:
+   audit-query         Inspect audit events
+   group               Manage groups in your organization
+   message-template    Create message Templates
+   robot-account       Manage robot accounts
+   setting             Update application settings
+   token               Access tokens
+   user                Manage local users
+   user-login-attempt  Inspect user login attempts

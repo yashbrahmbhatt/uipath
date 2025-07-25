@@ -1,0 +1,32 @@
+NAME:
+   uipath orchestrator test-automation start-test-set-execution - Start a test set execution.
+
+USAGE:
+   uipath orchestrator test-automation start-test-set-execution [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Write.
+
+   Required permissions: TestSetExecutions.Create.
+
+   Responses:
+   200 OK returns test set execution Id
+   403 If the caller doesn't have permissions to execute a test set
+   404 If the test set was not found
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --test-set-id integer
+
+   --test-set-key string
+
+   --trigger-type string (default: Manual)
+      Specifies how was the execution triggered
+
+      Allowed values:
+      - Manual
+      - Scheduled
+      - ExternalTool
+      - TestManager

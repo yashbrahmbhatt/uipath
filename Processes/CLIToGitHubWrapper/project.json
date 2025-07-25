@@ -1,0 +1,66 @@
+{
+  "name": "CLIToGitHubWrapper",
+  "projectId": "2323ed4c-9cbc-4990-a48c-96b7d4f7a22a",
+  "description": "Creates a set of github actions wrappers for a cli tool using gen ai.",
+  "main": "ExploreCLI.cs",
+  "dependencies": {
+    "SharpToken": "[2.0.3]",
+    "UiPath.IntegrationService.Activities": "[1.15.0]",
+    "UiPath.System.Activities": "[25.4.4]"
+  },
+  "webServices": [],
+  "entitiesStores": [],
+  "schemaVersion": "4.0",
+  "studioVersion": "25.0.167.0",
+  "projectVersion": "25.7.0",
+  "runtimeOptions": {
+    "autoDispose": false,
+    "netFrameworkLazyLoading": false,
+    "isPausable": true,
+    "isAttended": false,
+    "requiresUserInteraction": true,
+    "supportsPersistence": true,
+    "workflowSerialization": "NewtonsoftJson",
+    "excludedLoggedData": [
+      "Private:*",
+      "*password*"
+    ],
+    "executionType": "Workflow",
+    "readyForPiP": false,
+    "startsInPiP": false,
+    "mustRestoreAllDependencies": true,
+    "pipType": "ChildSession"
+  },
+  "designOptions": {
+    "projectProfile": "Developement",
+    "outputType": "Process",
+    "libraryOptions": {
+      "includeOriginalXaml": false,
+      "privateWorkflows": []
+    },
+    "processOptions": {
+      "ignoredFiles": []
+    },
+    "fileInfoCollection": [],
+    "saveToCloud": false
+  },
+  "expressionLanguage": "CSharp",
+  "entryPoints": [
+    {
+      "filePath": "RunShellCommand.cs",
+      "uniqueId": "fbe6bff3-7773-4032-a119-df57cbb07909",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "ExploreCLI.cs",
+      "uniqueId": "10847cd2-07b1-4586-af66-8e76741f4804",
+      "input": [],
+      "output": []
+    }
+  ],
+  "isTemplate": false,
+  "templateProjectData": {},
+  "publishData": {},
+  "targetFramework": "Windows"
+}

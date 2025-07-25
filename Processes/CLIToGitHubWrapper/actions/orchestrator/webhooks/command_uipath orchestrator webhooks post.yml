@@ -1,0 +1,181 @@
+name: uipath-orchestrator-webhooks-post
+description: |
+  NAME:
+     uipath orchestrator webhooks post - Create a new webhook subscription
+
+  USAGE:
+     uipath orchestrator webhooks post [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Webhooks or OR.Webhooks.Write.
+
+     Required permissions: Webhooks.Create.
+
+  OPTIONS:
+     --allow-insecure-ssl boolean (required)
+
+     --enabled boolean (required)
+
+     --name string (required)
+
+     --subscribe-to-all-events boolean (required)
+
+     --url string (required)
+
+     --description string
+
+     --events object (multiple)
+
+        Example:
+           EventType=string
+
+     --id integer
+
+     --key string
+
+     --secret string
+on:
+  workflow_call:
+    inputs:
+      allow_insecure_ssl:
+        description: 'Allow insecure SSL (true or false). Required.'
+        required: true
+        type: boolean
+      enabled:
+        description: 'Enable the webhook subscription (true or false). Required.'
+        required: true
+        type: boolean
+      name:
+        description: 'Name of the webhook subscription. Required.'
+        required: true
+        type: string
+      subscribe_to_all_events:
+        description: 'Subscribe to all events (true or false). Required.'
+        required: true
+        type: boolean
+      url:
+        description: 'URL of the webhook subscription. Required.'
+        required: true
+        type: string
+      description:
+        description: 'Description of the webhook subscription.'
+        required: false
+        type: string
+        default: ''
+      events:
+        description: |
+          List of events to subscribe to. Each event should be provided as a string of the form "EventType=string".
+          Multiple events can be passed as a multiline string or JSON array.
+        required: false
+        type: string
+        default: ''
+      id:
+        description: 'Optional webhook subscription ID (integer).'
+        required: false
+        type: number
+      key:
+        description: 'Optional key string.'
+        required: false
+        type: string
+        default: ''
+      secret:
+        description: 'Optional secret string.'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      CLI_TOKEN:
+        description: 'Secret token for authentication if needed.'
+
+jobs:
+  run-uipath-orchestrator-webhooks-post:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator webhooks post
+        shell: pwsh
+        run: |
+          # Initialize argument array
+          $args = @()
+
+          # Required boolean flags
+          $args += '--allow-insecure-ssl'
+          $args += ${{ inputs.allow_insecure_ssl }}
+
+          $args += '--enabled'
+          $args += ${{ inputs.enabled }}
+
+          # Required string arguments
+          $args += '--name'
+          $args += '${{ inputs.name }}'
+
+          $args += '--subscribe-to-all-events'
+          $args += ${{ inputs.subscribe_to_all_events }}
+
+          $args += '--url'
+          $args += '${{ inputs.url }}'
+
+          # Optional description
+          if ('${{ inputs.description }}'.Trim() -ne '') {
+            $args += '--description'
+            $args += '${{ inputs.description }}'
+          }
+
+          # Optional events (multiple)
+          if ('${{ inputs.events }}'.Trim() -ne '') {
+            # Split events by newline or comma
+            $eventItems = @()
+            if ('${{ inputs.events }}'.Contains("`n")) {
+              $eventItems = '${{ inputs.events }}'.Split("`n", [System.StringSplitOptions]::RemoveEmptyEntries)
+            } elseif ('${{ inputs.events }}'.Contains(",")) {
+              $eventItems = '${{ inputs.events }}'.Split(",", [System.StringSplitOptions]::RemoveEmptyEntries)
+            } else {
+              $eventItems = @('${{ inputs.events }}')
+            }
+            foreach ($event in $eventItems) {
+              $trimmed = $event.Trim()
+              if ($trimmed -ne '') {
+                $args += '--events'
+                $args += $trimmed
+              }
+            }
+          }
+
+          # Optional id
+          if (${{ inputs.id }} -ne $null) {
+            $args += '--id'
+            $args += ${{ inputs.id }}
+          }
+
+          # Optional key
+          if ('${{ inputs.key }}'.Trim() -ne '') {
+            $args += '--key'
+            $args += '${{ inputs.key }}'
+          }
+
+          # Optional secret
+          if ('${{ inputs.secret }}'.Trim() -ne '') {
+            $args += '--secret'
+            $args += '${{ inputs.secret }}'
+          }
+
+          # Add token if available as secret environment variable (assuming CLI token usage)
+          if ($env:CLI_TOKEN) {
+            $args += '--token'
+            $args += $env:CLI_TOKEN
+          }
+
+          # Compose the command string safely by joining args with spaces and quoting arguments containing spaces
+          function Quote-Arg($arg) {
+            if ($arg -match '\s') {
+              return '"' + $arg.Replace('"','\"') + '"'
+            }
+            return $arg
+          }
+
+          $cmdArgs = $args | ForEach-Object { Quote-Arg $_ } | Out-String
+          $cmdArgs = $cmdArgs -replace '\r?\n',' '
+          $command = "uipath orchestrator webhooks post $cmdArgs"
+
+          Write-Host "Executing command: $command"
+
+          Invoke-Expression $command

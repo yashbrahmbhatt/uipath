@@ -1,0 +1,20 @@
+NAME:
+   uipath orchestrator queue-definitions - Descriptions for types of queues
+
+USAGE:
+   uipath orchestrator queue-definitions
+
+DESCRIPTION:
+   Queue definitions are used to define and configure the queues that are used in robotic Process Automation (RPA) workflows.
+
+COMMANDS:
+   delete-by-id                                         Deletes a queue based on its key.
+   export-by-id                                         Requests a CSV export of filtered items.
+   get                                                  Gets the list of queue definitions.
+   get-by-id                                            Gets a single queue definition based on its Id.
+   get-folders-for-queue-by-id                          Get all accesible folders where the queue is shared, and the total count of folders where it is shared (including unaccessible folders).
+   get-json-schema-definition-by-id-and-jsonschematype  Gets a given queue item JSON schema as a .json file, based on queue definition id.
+   get-queues-across-folders                            Get the queues from all the folders in which the current user has the Queues.View permission, except the ones in the excluded folder.
+   post                                                 Creates a new queue.
+   put-by-id                                            Edits a queue.
+   share-to-folders                                     Makes the queue visible in the specified folders.

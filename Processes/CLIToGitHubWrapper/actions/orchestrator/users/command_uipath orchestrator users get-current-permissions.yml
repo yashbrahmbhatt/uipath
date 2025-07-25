@@ -1,0 +1,70 @@
+name: uipath-orchestrator-users-get-current-permissions
+description: |
+  NAME:
+     uipath orchestrator users get-current-permissions - Returns a user permission collection containing data about the current user and all the permissions it has.
+
+  USAGE:
+     uipath orchestrator users get-current-permissions [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        default: ''
+        type: string
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        default: ''
+        type: string
+    secrets:
+      UITOKEN:
+        description: 'OAuth token for authentication (required).'
+
+jobs:
+  call-get-current-permissions:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator users get-current-permissions
+        shell: pwsh
+        run: |
+          # Initialize argument array with base command
+          $args = @("uipath", "orchestrator", "users", "get-current-permissions")
+          
+          # Add --expand option if provided
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += @("--expand", "'${{ inputs.expand }}'")
+          }
+
+          # Add --select option if provided
+          if ('${{ inputs.select }}' -ne '') {
+            $args += @("--select", "'${{ inputs.select }}'")
+          }
+
+          # Add authentication using OAuth token from secrets
+          # Assuming the CLI reads token from an environment variable or similar mechanism
+          # Set environment variable for token before running the command
+          $env:UI_TOKEN = '${{ secrets.UITOKEN }}'
+
+          # Execute the command with the built arguments
+          Write-Host "Running command: $($args -join ' ')"
+          & $args
+
+        env:
+          # Pass the secret token as an environment variable the CLI can use for OAuth authentication
+          UI_TOKEN: ${{ secrets.UITOKEN }}

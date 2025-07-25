@@ -1,0 +1,76 @@
+NAME:
+   uipath orchestrator - UiPath Orchestrator
+
+USAGE:
+   uipath orchestrator
+
+DESCRIPTION:
+   Orchestrator gives you the power you need to provision, deploy, trigger, monitor, measure, and track the work of attended and unattended robots.
+
+COMMANDS:
+   alerts                    Notifications for system events
+   app-tasks                 Tasks executed within Orchestrator apps
+   assets                    Shared, reusable workflow values
+   audit-logs                Recorded activity for audit purposes
+   buckets                   Storage for specific workflow data
+   business-rules            Policies governing system processes
+   calendars                 Scheduling automation tasks
+   credential-stores         Secure storage for access credentials
+   directory-service         Managing active directory
+   environments              Grouping Robots for deployments
+   execution-media           Media from a process run
+   exports                   Data exported from Orchestrator
+   folders                   Organizational structure for resources
+   folders-navigation        Hierarchical traversal through folders
+   generic-tasks             Basic, undefined task types
+   job-triggers              Initiators of jobs
+   jobs                      Specific instances of process execution
+   libraries                 Repositories for reusable components
+   licenses-named-user       User-specific licenses
+   licenses-runtime          Licenses for robot runtime capacity
+   licensing                 License units
+   logs                      Recorded activities and events
+   machines                  Managed hosts for robots
+   maintenance               Maintenance mode
+   organization-units        Divisions for resource management
+   package-feeds             Packages management
+   permissions               Access rights
+   personal-workspaces       Individual work areas
+   process-schedules         Planned schedules for process execution
+   processes                 Workflows for execution
+   queue-definitions         Descriptions for types of queues
+   queue-item-comments       Notes for queue items
+   queue-item-events         Events related to queue items
+   queue-items               Items to be processed by robots
+   queue-processing-records  Processing records of queue items
+   queue-retention           Rules for storing queue data
+   queues                    Storage for multiple work items
+   release-retention         Rules for retaining release information
+   releases                  Packages prepared for robot execution
+   robot-logs                Records of robot events
+   robots                    Entities executing automation processes
+   roles                     User permissions management system
+   sessions                  Instance of robot execution
+   settings                  Operation configurations
+   stats                     Performance metrics
+   status                    Current orchestrator status
+   task-activities           Actions comprising a task
+   task-catalogs             Collections of business task definitions
+   task-definitions          Settings of a task
+   task-forms                UI for human-robot collaboration tasks
+   task-notes                Additional details for tasks
+   task-retention            Rules for retaining task data
+   tasks                     Actions to be completed
+   tenants                   Tenants to model your organization structure
+   test-automation           Management and execution of tests
+   test-case-definitions     Specifications for running test cases
+   test-case-executions      Instances of tests running
+   test-data-queue-actions   Operations for managing test data
+   test-data-queue-items     Units of test data
+   test-data-queues          Storage for test data
+   test-set-executions       Instances of test sets running
+   test-set-schedules        Rules for automatic test runs
+   test-sets                 Groups of test cases
+   translations              Translation resources
+   users                     Manage users
+   webhooks                  Notifications of changes

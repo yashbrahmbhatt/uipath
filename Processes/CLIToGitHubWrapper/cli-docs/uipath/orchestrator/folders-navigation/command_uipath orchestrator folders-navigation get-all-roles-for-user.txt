@@ -1,0 +1,32 @@
+NAME:
+   uipath orchestrator folders-navigation get-all-roles-for-user - Returns a page of the user-folder assignments for the input user, including the roles for each folder.
+                                                                   The response also includes the folders assigned to the directory groups of the user.
+                                                                   The distinction between the folders assigned directly to the user and the ones assigned to one of his groups
+                                                                   can be made via the User field of the response.
+
+USAGE:
+   uipath orchestrator folders-navigation get-all-roles-for-user [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth authentication is not supported.
+
+   Required permissions: (Units.View - Gets roles from all folders) and (SubFolders.View - Gets roles only from folders where caller has SubFolders.View permission).
+
+OPTIONS:
+   --search-text string
+
+   --skip integer
+
+   --take integer
+
+   --type string
+
+      Allowed values:
+      - User
+      - Group
+      - Machine
+      - Robot
+      - ExternalApplication
+
+   --username string
+      User name

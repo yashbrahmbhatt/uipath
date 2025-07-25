@@ -1,0 +1,14 @@
+NAME:
+   uipath identity robot-account bulk-delete - Deletes multiple robot accounts from a partition
+
+USAGE:
+   uipath identity robot-account bulk-delete [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: PM.RobotAccount or PM.RobotAccount.Write.
+
+OPTIONS:
+   --partition-global-id string (required)
+
+   --robot-account-ids string,string,...
+      IDs of the robot accounts to be removed

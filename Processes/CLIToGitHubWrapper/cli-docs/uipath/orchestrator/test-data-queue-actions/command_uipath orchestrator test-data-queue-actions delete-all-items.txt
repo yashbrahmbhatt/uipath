@@ -1,0 +1,21 @@
+NAME:
+   uipath orchestrator test-data-queue-actions delete-all-items - Delete all items from a test data queue
+
+USAGE:
+   uipath orchestrator test-data-queue-actions delete-all-items [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+   Required permissions: TestDataQueueItems.Delete.
+
+   Responses:
+   202 All items from the test data queue were scheduled for deletion
+   403 If the caller doesn't have permissions to delete test data queue items
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --queue-name string
+      The name of the test data queue

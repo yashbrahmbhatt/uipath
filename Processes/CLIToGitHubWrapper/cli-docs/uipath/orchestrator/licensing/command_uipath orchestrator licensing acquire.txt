@@ -1,0 +1,17 @@
+NAME:
+   uipath orchestrator licensing acquire - Acquire license units
+
+USAGE:
+   uipath orchestrator licensing acquire [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Administration or OR.Administration.Write.
+
+   Requires authentication.
+
+OPTIONS:
+   --count integer
+
+   --reference string
+
+   --type string

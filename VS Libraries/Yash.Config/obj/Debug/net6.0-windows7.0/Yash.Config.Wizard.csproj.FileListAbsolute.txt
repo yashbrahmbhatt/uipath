@@ -1,0 +1,15 @@
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\obj\Debug\net6.0-windows7.0\Yash.Config.Wizard.csproj.AssemblyReference.cache
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\obj\Debug\net6.0-windows7.0\Yash.Config.Wizard.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\obj\Debug\net6.0-windows7.0\Yash.Config.Wizard.AssemblyInfoInputs.cache
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\obj\Debug\net6.0-windows7.0\Yash.Config.Wizard.AssemblyInfo.cs
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\obj\Debug\net6.0-windows7.0\Yash.Config.Wizard.csproj.CoreCompileInputs.cache
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\obj\Debug\net6.0-windows7.0\Yash.Config.Wizard.sourcelink.json
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\bin\Debug\net6.0-windows7.0\Yash.Config.Wizard.deps.json
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\bin\Debug\net6.0-windows7.0\Yash.Config.Wizard.dll
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\bin\Debug\net6.0-windows7.0\Yash.Config.Wizard.pdb
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\obj\Debug\net6.0-windows7.0\Yash.Config.Wizard.dll
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\obj\Debug\net6.0-windows7.0\refint\Yash.Config.Wizard.dll
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\obj\Debug\net6.0-windows7.0\Yash.Config.Wizard.pdb
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\obj\Debug\net6.0-windows7.0\ref\Yash.Config.Wizard.dll
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\obj\Debug\net6.0-windows7.0\Yash.Config.Wizard.Activities.Resources.resources
+C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\obj\Debug\net6.0-windows7.0\Yash.Config.Wizard.csproj.GenerateResource.cache

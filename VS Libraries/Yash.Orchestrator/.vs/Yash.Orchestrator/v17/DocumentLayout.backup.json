@@ -1,0 +1,228 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|c:\\users\\eyash\\uipath\\vs libraries\\yash.orchestrator\\service.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|solutionrelative:service.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|c:\\users\\eyash\\uipath\\vs libraries\\yash.orchestrator\\gettoken\\gettokenresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|solutionrelative:gettoken\\gettokenresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|c:\\users\\eyash\\uipath\\vs libraries\\yash.orchestrator\\getfolders\\getfoldersresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|solutionrelative:getfolders\\getfoldersresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|c:\\users\\eyash\\uipath\\vs libraries\\yash.orchestrator\\getfolders\\folder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|solutionrelative:getfolders\\folder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|c:\\users\\eyash\\uipath\\vs libraries\\yash.orchestrator\\getbuckets\\getbucketsresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|solutionrelative:getbuckets\\getbucketsresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|c:\\users\\eyash\\uipath\\vs libraries\\yash.orchestrator\\getbucketfiles\\getbucketfilesresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|solutionrelative:getbucketfiles\\getbucketfilesresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|c:\\users\\eyash\\uipath\\vs libraries\\yash.orchestrator\\getbucketfiles\\bucketfile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|solutionrelative:getbucketfiles\\bucketfile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|c:\\users\\eyash\\uipath\\vs libraries\\yash.orchestrator\\getbucketfilereaduri\\getbucketfilereaduriresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|solutionrelative:getbucketfilereaduri\\getbucketfilereaduriresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|c:\\users\\eyash\\uipath\\vs libraries\\yash.orchestrator\\getbuckets\\bucket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|solutionrelative:getbuckets\\bucket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|c:\\users\\eyash\\uipath\\vs libraries\\yash.orchestrator\\getassets\\getassetsresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|solutionrelative:getassets\\getassetsresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|c:\\users\\eyash\\uipath\\vs libraries\\yash.orchestrator\\getassets\\asset.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|solutionrelative:getassets\\asset.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|c:\\users\\eyash\\uipath\\vs libraries\\yash.orchestrator\\yash.orchestrator.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{138F004B-459D-41C3-90A4-18CB8E98836A}|Yash.Orchestrator.csproj|solutionrelative:yash.orchestrator.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 9,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "BucketFile.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetBucketFiles\\BucketFile.cs",
+              "RelativeDocumentMoniker": "GetBucketFiles\\BucketFile.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetBucketFiles\\BucketFile.cs",
+              "RelativeToolTip": "GetBucketFiles\\BucketFile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-25T16:55:56.898Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "GetBucketFilesResponse.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetBucketFiles\\GetBucketFilesResponse.cs",
+              "RelativeDocumentMoniker": "GetBucketFiles\\GetBucketFilesResponse.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetBucketFiles\\GetBucketFilesResponse.cs",
+              "RelativeToolTip": "GetBucketFiles\\GetBucketFilesResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-25T16:55:34.884Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "GetBucketsResponse.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetBuckets\\GetBucketsResponse.cs",
+              "RelativeDocumentMoniker": "GetBuckets\\GetBucketsResponse.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetBuckets\\GetBucketsResponse.cs",
+              "RelativeToolTip": "GetBuckets\\GetBucketsResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-25T16:54:20.07Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Bucket.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetBuckets\\Bucket.cs",
+              "RelativeDocumentMoniker": "GetBuckets\\Bucket.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetBuckets\\Bucket.cs",
+              "RelativeToolTip": "GetBuckets\\Bucket.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-25T16:54:18.959Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "GetBucketFileReadUriResponse.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetBucketFileReadUri\\GetBucketFileReadUriResponse.cs",
+              "RelativeDocumentMoniker": "GetBucketFileReadUri\\GetBucketFileReadUriResponse.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetBucketFileReadUri\\GetBucketFileReadUriResponse.cs",
+              "RelativeToolTip": "GetBucketFileReadUri\\GetBucketFileReadUriResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-25T16:54:39.606Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Folder.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetFolders\\Folder.cs",
+              "RelativeDocumentMoniker": "GetFolders\\Folder.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetFolders\\Folder.cs",
+              "RelativeToolTip": "GetFolders\\Folder.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-25T16:54:51.849Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GetFoldersResponse.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetFolders\\GetFoldersResponse.cs",
+              "RelativeDocumentMoniker": "GetFolders\\GetFoldersResponse.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetFolders\\GetFoldersResponse.cs",
+              "RelativeToolTip": "GetFolders\\GetFoldersResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-25T16:54:55.184Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GetTokenResponse.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetToken\\GetTokenResponse.cs",
+              "RelativeDocumentMoniker": "GetToken\\GetTokenResponse.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetToken\\GetTokenResponse.cs",
+              "RelativeToolTip": "GetToken\\GetTokenResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-25T16:55:01.116Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Service.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\Service.cs",
+              "RelativeDocumentMoniker": "Service.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\Service.cs",
+              "RelativeToolTip": "Service.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-25T16:53:48.789Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "GetAssetsResponse.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetAssets\\GetAssetsResponse.cs",
+              "RelativeDocumentMoniker": "GetAssets\\GetAssetsResponse.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetAssets\\GetAssetsResponse.cs",
+              "RelativeToolTip": "GetAssets\\GetAssetsResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-25T16:53:42.763Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Asset.cs",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetAssets\\Asset.cs",
+              "RelativeDocumentMoniker": "GetAssets\\Asset.cs",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\GetAssets\\Asset.cs",
+              "RelativeToolTip": "GetAssets\\Asset.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-25T16:53:24.29Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Yash.Orchestrator",
+              "DocumentMoniker": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\Yash.Orchestrator.csproj",
+              "RelativeDocumentMoniker": "Yash.Orchestrator.csproj",
+              "ToolTip": "C:\\Users\\eyash\\UiPath\\VS Libraries\\Yash.Orchestrator\\Yash.Orchestrator.csproj",
+              "RelativeToolTip": "Yash.Orchestrator.csproj",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAAFAAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-07-25T16:52:40.011Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

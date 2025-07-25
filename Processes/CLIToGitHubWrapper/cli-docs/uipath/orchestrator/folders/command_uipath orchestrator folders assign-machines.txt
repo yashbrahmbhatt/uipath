@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator folders assign-machines - Assigns one or more machines to a set of folders.
+
+USAGE:
+   uipath orchestrator folders assign-machines [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Folders or OR.Folders.Write.
+
+   Required permissions: (Units.Edit or SubFolders.Edit - Assigns machines to any folder or only if user has SubFolders.Edit permission on all folders provided).
+
+OPTIONS:
+   --assignments object (required)
+
+      Example:
+         FolderIds=integer,integer,...; MachineIds=integer,integer,...

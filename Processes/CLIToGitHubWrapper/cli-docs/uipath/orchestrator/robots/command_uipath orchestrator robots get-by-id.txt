@@ -1,0 +1,22 @@
+NAME:
+   uipath orchestrator robots get-by-id - Gets a single robot based on its key.
+
+USAGE:
+   uipath orchestrator robots get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Robots or OR.Robots.Read.
+
+   Required permissions: Robots.View.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

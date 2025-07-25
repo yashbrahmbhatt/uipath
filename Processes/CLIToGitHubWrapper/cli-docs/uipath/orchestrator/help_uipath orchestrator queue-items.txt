@@ -1,0 +1,23 @@
+NAME:
+   uipath orchestrator queue-items - Items to be processed by robots
+
+USAGE:
+   uipath orchestrator queue-items
+
+DESCRIPTION:
+   Queue items are free form data to be processed by robots in automation workflows.
+
+COMMANDS:
+   delete-bulk                        Sets the given queue items' status to Deleted.
+   delete-by-id                       Deletes a queue item by Id.
+   get                                Gets a collection of queue items.
+   get-by-id                          Gets a queue item by Id.
+   get-item-last-retry-by-id          Returns the last retry of a queue item.
+   get-item-last-retry-by-key         Returns the last retry of a queue item by uniqueKey.
+   get-item-processing-history-by-id  Returns data about the processing history of the given queue item. Allows odata query options.
+   get-reviewers                      Returns a collection of users having the permission for Queue Items review. Allows odata query options.
+   put-by-id                          Updates the QueueItem properties with the new values provided.
+   set-item-review-status             Updates the review status of the specified queue items to an indicated state.
+   set-item-reviewer                  Sets the reviewer for multiple queue items
+   set-transaction-progress-by-id     Updates the progress field of a queue item with the status 'In Progress'.
+   unset-item-reviewer                Unsets the reviewer for multiple queue items

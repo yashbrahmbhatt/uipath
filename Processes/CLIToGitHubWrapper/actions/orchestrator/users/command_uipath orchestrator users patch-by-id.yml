@@ -1,0 +1,282 @@
+name: 'uipath orchestrator users patch-by-id'
+description: |
+  OAuth required scopes: OR.Users or OR.Users.Write.
+  Requires authentication.
+
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'User key (required).'
+        required: true
+        type: number
+      account-id:
+        description: 'Account ID.'
+        required: false
+        type: string
+      authentication-source:
+        description: 'The source which authenticated this user.'
+        required: false
+        type: string
+      creation-time:
+        description: 'The date and time when the user was created.'
+        required: false
+        type: string
+      creator-user-id:
+        description: 'Creator user ID.'
+        required: false
+        type: number
+      directory-identifier:
+        description: 'Directory identifier from which the user is imported.'
+        required: false
+        type: string
+      domain:
+        description: 'Domain from which the user is imported.'
+        required: false
+        type: string
+      email-address:
+        description: 'E-mail address associated with the user.'
+        required: false
+        type: string
+      explicit-may-have-personal-workspace:
+        description: 'Specifies whether this user is explicitly allowed to have a Personal Workspace.'
+        required: false
+        type: boolean
+      explicit-may-have-robot-session:
+        description: 'Specifies whether this user is explicitly allowed to have an Attended Robot attached.'
+        required: false
+        type: boolean
+        default: true
+      explicit-may-have-user-session:
+        description: 'Specifies whether this user is explicitly allowed to have a User session.'
+        required: false
+        type: boolean
+        default: true
+      explicit-restrict-to-personal-workspace:
+        description: 'Explicitly restricted to personal workspace view.'
+        required: false
+        type: boolean
+      full-name:
+        description: 'Full name of the person constructed with the format Name Surname.'
+        required: false
+        type: string
+      has-only-inherited-privileges:
+        description: 'Indicates if user has only inherited privileges.'
+        required: false
+        type: boolean
+      id:
+        description: 'ID.'
+        required: false
+        type: number
+      is-active:
+        description: 'DEPRECATED. States if the user is active or not.'
+        required: false
+        type: boolean
+      is-email-confirmed:
+        description: 'DEPRECATED. States if the email address is valid or not.'
+        required: false
+        type: boolean
+      is-external-licensed:
+        description: 'Indicates if user is externally licensed.'
+        required: false
+        type: boolean
+      last-login-time:
+        description: 'The date and time when the user last logged in, or null if never logged in.'
+        required: false
+        type: string
+      last-modification-time:
+        description: 'Last modification time.'
+        required: false
+        type: string
+      last-modifier-user-id:
+        description: 'Last modifier user ID.'
+        required: false
+        type: number
+      license-type:
+        description: |-
+          The user's license type.
+
+          Allowed values:
+          - NonProduction
+          - Attended
+          - Unattended
+          - Development
+          - Studio
+          - RpaDeveloper
+          - StudioX
+          - CitizenDeveloper
+          - Headless
+          - StudioPro
+          - RpaDeveloperPro
+          - TestAutomation
+          - AutomationCloud
+          - Serverless
+          - AutomationKit
+          - ServerlessTestAutomation
+          - AutomationCloudTestAutomation
+          - AttendedStudioWeb
+          - Hosting
+          - AssistantWeb
+          - ProcessOrchestration
+          - AgentService
+        required: false
+        type: string
+      login-providers:
+        description: 'Comma separated list of entities that can authenticate the user.'
+        required: false
+        type: string
+      may-have-personal-workspace:
+        description: 'Specifies if this user is allowed to have a Personal Workspace.'
+        required: false
+        type: boolean
+      may-have-robot-session:
+        description: 'Specifies if this user is allowed to have an Attended Robot attached.'
+        required: false
+        type: boolean
+        default: true
+      may-have-unattended-session:
+        description: 'Specifies if this user is allowed to have an Unattended Robot attached.'
+        required: false
+        type: boolean
+        default: false
+      may-have-user-session:
+        description: 'Specifies if this user is allowed to have a User session.'
+        required: false
+        type: boolean
+        default: true
+      name:
+        description: 'The name of the person for which the user is created.'
+        required: false
+        type: string
+      notification-subscription:
+        description: 'JSON string representing notification subscription object.'
+        required: false
+        type: string
+      organization-units:
+        description: 'JSON string representing list of organization units.'
+        required: false
+        type: string
+      password:
+        description: 'DEPRECATED. The password used during application login.'
+        required: false
+        type: string
+        secret: true
+      provision-type:
+        description: |-
+          The user type.
+
+          Allowed values:
+          - Manual
+          - Automatic
+        required: false
+        type: string
+      restrict-to-personal-workspace:
+        description: 'Restrict to personal workspace view.'
+        required: false
+        type: boolean
+      robot-provision:
+        description: 'JSON string representing robot provision object.'
+        required: false
+        type: string
+      roles-list:
+        description: 'Comma separated list of role names associated with the user.'
+        required: false
+        type: string
+      surname:
+        description: 'The surname of the person for which the user is created.'
+        required: false
+        type: string
+      tenancy-name:
+        description: 'The name of the tenant owning the user.'
+        required: false
+        type: string
+      tenant-display-name:
+        description: 'The display name of the tenant owning the user.'
+        required: false
+        type: string
+      tenant-id:
+        description: 'The id of the tenant owning the user.'
+        required: false
+        type: number
+      tenant-key:
+        description: 'The key of the tenant owning the user.'
+        required: false
+        type: string
+        secret: true
+      type:
+        description: |-
+          The user type.
+
+          Allowed values:
+          - User
+          - Robot
+          - DirectoryUser
+          - DirectoryGroup
+          - DirectoryRobot
+          - DirectoryExternalApplication
+        required: false
+        type: string
+      unattended-robot:
+        description: 'JSON string representing unattended robot object.'
+        required: false
+        type: string
+      update-policy:
+        description: 'JSON string representing update policy object.'
+        required: false
+        type: string
+      user-name:
+        description: 'The name used to login to Orchestrator.'
+        required: false
+        type: string
+      user-roles:
+        description: 'JSON string representing list of user roles.'
+        required: false
+        type: string
+    secrets:
+      UIPATH_AUTH_TOKEN:
+        description: 'Authentication token for UiPath Orchestrator.'
+
+jobs:
+  patch-user:
+    runs-on: [windows, self-hosted]
+    outputs:
+      result: ${{ steps.patch.outputs.result }}
+    steps:
+      - name: 'Construct and run uipath orchestrator users patch-by-id command'
+        id: patch
+        shell: pwsh
+        env:
+          UIPATH_AUTH_TOKEN: ${{ secrets.UIPATH_AUTH_TOKEN }}
+        run: |
+          # Build argument list for command
+          $args = @('orchestrator', 'users', 'patch-by-id')
+
+          # Append required argument --key
+          $args += '--key'
+          $args += "${{ inputs.key }}"
+
+          # Helper function to add parameter if defined and not empty/null
+          function AddParamIfSet($name, $value) {
+            if ($null -ne $value -and $value -ne '') {
+              $args += $name
+              $args += $value
+            }
+          }
+
+          # Helper for boolean parameters; convert to string lowercase
+          function AddBoolParamIfSet($name, $boolValue) {
+            if ($null -ne $boolValue) {
+              $args += $name
+              $args += [string]::ToLower($boolValue.ToString())
+            }
+          }
+
+          # Add optional string parameters
+          AddParamIfSet '--account-id' "${{ inputs['account-id'] }}"
+          AddParamIfSet '--authentication-source' "${{ inputs['authentication-source'] }}"
+          AddParamIfSet '--creation-time' "${{ inputs['creation-time'] }}"
+          if (${{ inputs['creator-user-id'] }} -ne $null) {
+            $args += '--creator-user-id'
+            $args += ${{ inputs['creator-user-id'] }}
+          }
+          AddParamIfSet '--

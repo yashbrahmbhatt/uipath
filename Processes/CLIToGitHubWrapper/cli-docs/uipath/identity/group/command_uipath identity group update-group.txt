@@ -1,0 +1,23 @@
+NAME:
+   uipath identity group update-group - Updates a local group information.
+
+USAGE:
+   uipath identity group update-group [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: PM.Group or PM.Group.Write.
+
+OPTIONS:
+   --group-id string (required)
+
+   --directory-user-ids-to-add string,string,...
+      IDs of the users to be added as members of the group.
+
+   --directory-user-ids-to-remove string,string,...
+      IDs of the users to be removed from the group.
+
+   --name string
+      Group Name
+
+   --partition-global-id string
+      Group partition identifier

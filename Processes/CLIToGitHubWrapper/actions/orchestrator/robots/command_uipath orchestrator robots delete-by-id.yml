@@ -1,0 +1,52 @@
+name: 'UiPath Orchestrator Robots Delete By Id'
+
+description: |
+  NAME:
+     uipath orchestrator robots delete-by-id - Deletes a robot based on its key.
+
+  USAGE:
+     uipath orchestrator robots delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+     Required permissions: Robots.Delete.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      key:
+        description: 'Robot key (required)'
+        required: true
+        type: number
+    secrets: {}
+
+jobs:
+  delete_robot_by_id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator robots delete-by-id command
+        shell: pwsh
+        run: |
+          # Build the argument list for the CLI command
+          $args = @("orchestrator", "robots", "delete-by-id")
+
+          # Append required options
+          $args += "--folder-id"
+          $args += "$(${{ inputs.folder_id }})"
+
+          $args += "--key"
+          $args += "$(${{ inputs.key }})"
+
+          # Execute the command
+          uipath @args

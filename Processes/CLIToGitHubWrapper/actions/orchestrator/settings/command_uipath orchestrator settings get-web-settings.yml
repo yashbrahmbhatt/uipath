@@ -1,0 +1,85 @@
+name: UiPath Orchestrator Get Web Settings
+description: |
+  NAME:
+     uipath orchestrator settings get-web-settings - Returns a collection of key value pairs representing settings used by Orchestrator web client.
+
+  USAGE:
+     uipath orchestrator settings get-web-settings [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      auth_token:
+        description: 'OAuth token with OR.Settings or OR.Settings.Read scope'
+        required: true
+        type: string
+    secrets:
+      UIPATH_AUTH_TOKEN:
+        required: false
+
+jobs:
+  run-get-web-settings:
+    runs-on: [windows, self-hosted]
+    outputs:
+      cmd_output: ${{ steps.get-web-settings.outputs.cmd_output }}
+    steps:
+      - name: Construct and run uipath orchestrator settings get-web-settings
+        id: get-web-settings
+        shell: pwsh
+        env:
+          UIPATH_AUTH_TOKEN: ${{ inputs.auth_token }}
+        run: |
+          # Build argument array to safely handle optional parameters
+          $args = @('orchestrator', 'settings', 'get-web-settings')
+
+          # Append --expand if provided
+          if (${{ inputs.expand }} -and ${{ inputs.expand }}.Trim() -ne '') {
+            $args += '--expand'
+            $args += "${{ inputs.expand }}"
+          }
+
+          # Append --select if provided
+          if (${{ inputs.select }} -and ${{ inputs.select }}.Trim() -ne '') {
+            $args += '--select'
+            $args += "${{ inputs.select }}"
+          }
+
+          # Add authentication header environment variable
+          $env:UIPATH_AUTH_TOKEN = $env:UIPATH_AUTH_TOKEN
+
+          # Join args with space and quote non-empty args containing spaces
+          $quotedArgs = $args | ForEach-Object {
+            if ($_ -match '\s') { '"{0}"' -f $_ } else { $_ }
+          }
+          $command = "uipath $($quotedArgs -join ' ')"
+
+          Write-Host "Running command: $command"
+
+          # Execute the command and capture output
+          $output = & uipath $args 2>&1
+
+          # Set output to be accessible by other steps
+          Write-Output "::set-output name=cmd_output::$output"
+          Write-Host $output

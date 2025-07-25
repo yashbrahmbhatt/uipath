@@ -1,0 +1,19 @@
+NAME:
+   uipath orchestrator users get-by-id - Gets a user based on its id.
+
+USAGE:
+   uipath orchestrator users get-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Users or OR.Users.Read.
+
+   Requires authentication.
+
+OPTIONS:
+   --key integer (required)
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --select string
+      Limits the properties returned in the result.

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Yash.Config</id>
+    <version>1.0.205-dev.56614</version>
+    <authors>Yash Brahmbhatt</authors>
+    <description>Package Description</description>
+    <tags>Yash Config Wizard</tags>
+    <repository type="git" commit="b3a53b4b7dc0ab4b720fe80ea69018a11467ce5c" />
+    <dependencies>
+      <group targetFramework="net6.0-windows7.0">
+        <dependency id="ClosedXML" version="0.105.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.CodeAnalysis.CSharp" version="4.5.0-2.22527.10" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="4.5.0-2.22527.10" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.CodeAnalysis.Common" version="4.5.0-2.22527.10" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+        <dependency id="RestSharp" version="112.1.0" exclude="Build,Analyzers" />
+        <dependency id="System.Diagnostics.TraceSource" version="4.3.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework="net6.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WindowsForms" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+  <files>
+    <file src="C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\bin\Debug\net6.0-windows7.0\Yash.Config.dll" target="lib\net6.0-windows7.0\Yash.Config.dll" />
+  </files>
+</package>

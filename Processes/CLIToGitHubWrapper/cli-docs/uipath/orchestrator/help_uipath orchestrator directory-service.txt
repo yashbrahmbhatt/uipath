@@ -1,0 +1,14 @@
+NAME:
+   uipath orchestrator directory-service - Managing active directory
+
+USAGE:
+   uipath orchestrator directory-service
+
+DESCRIPTION:
+   Integration of Orchestrator with an organization's directory service to manage users and group membership.
+
+COMMANDS:
+   get-directory-permissions    Gets directory permissions
+   get-domain-user-id           Gets an orchestrator user Id by searching for the domain user information.
+   get-domains                  Gets domains
+   search-for-users-and-groups  Search users and groups

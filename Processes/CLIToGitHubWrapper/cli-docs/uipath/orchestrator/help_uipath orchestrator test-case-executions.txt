@@ -1,0 +1,12 @@
+NAME:
+   uipath orchestrator test-case-executions - Instances of tests running
+
+USAGE:
+   uipath orchestrator test-case-executions
+
+DESCRIPTION:
+   Test case executions are instances of a test case running on a robot.
+
+COMMANDS:
+   get        Returns a list of Test Case Executions
+   get-by-id  Return a specific Test Case Execution identified by key

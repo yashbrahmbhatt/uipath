@@ -1,0 +1,138 @@
+name: uipath-orchestrator-task-catalogs-get-task-catalogs-from-folders-with-permissions
+description: |
+  Gets Task Catalogs across folders having given permission with the given OData queries.
+
+  OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+  Requires authentication.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: Folder/OrganizationUnit Id
+        required: true
+        type: number
+      count:
+        description: Indicates whether the total count of items within a collection are returned in the result.
+        required: false
+        type: boolean
+        default: false
+      distinct_by_select:
+        description: Return distinct attributes from task catalog for select query. Select param must have exactly 1 value if this is enabled.
+        required: false
+        type: boolean
+        default: false
+      exclude_folder_id:
+        description: The task catalogs belonging to this folder will be excluded.
+        required: false
+        type: number
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+      filter:
+        description: Restricts the set of items returned. The maximum number of expressions is 100.
+        required: false
+        type: string
+      mandatory_permissions:
+        description: These represent the additional permissions over TaskCatalog.Read required in the folders the data is retrieved from; all permissions in this set must be met. Comma separated string.
+        required: false
+        type: string
+      orderby:
+        description: Specifies the order in which items are returned. The maximum number of expressions is 5.
+        required: false
+        type: string
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+      skip:
+        description: Excludes the specified number of items of the queried collection from the result.
+        required: false
+        type: number
+      top:
+        description: Limits the number of items returned from a collection. The maximum value is 1000.
+        required: false
+        type: number
+        default: 1000
+      auth_token:
+        description: Bearer token for authentication
+        required: true
+        type: string
+        # For security, define this as a secret below
+
+jobs:
+  get-task-catalogs:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator CLI command
+        shell: pwsh
+        env:
+          AUTH_TOKEN: ${{ inputs.auth_token }}
+        run: |
+          # Build the command arguments array
+          $args = @("orchestrator", "task-catalogs", "get-task-catalogs-from-folders-with-permissions")
+
+          # folder-id is required
+          $args += "--folder-id"
+          $args += [string]${{ inputs.folder_id }}
+
+          # Optional parameters - add if given and convert boolean to string 'true'/'false' in lowercase where applicable
+          if (${{ inputs.count }}) {
+            $args += "--count"
+            $args += "true"
+          }
+
+          if (${{ inputs.distinct_by_select }}) {
+            $args += "--distinct-by-select"
+            $args += "true"
+          }
+
+          if (${{ inputs.exclude_folder_id }}) {
+            $args += "--exclude-folder-id"
+            $args += [string]${{ inputs.exclude_folder_id }}
+          }
+
+          if (${{ inputs.expand }}) {
+            $args += "--expand"
+            $args += """${{ inputs.expand }}"""
+          }
+
+          if (${{ inputs.filter }}) {
+            $args += "--filter"
+            $args += """${{ inputs.filter }}"""
+          }
+
+          if (${{ inputs.mandatory_permissions }}) {
+            $args += "--mandatory-permissions"
+            $args += """${{ inputs.mandatory_permissions }}"""
+          }
+
+          if (${{ inputs.orderby }}) {
+            $args += "--orderby"
+            $args += """${{ inputs.orderby }}"""
+          }
+
+          if (${{ inputs.select }}) {
+            $args += "--select"
+            $args += """${{ inputs.select }}"""
+          }
+
+          if (${{ inputs.skip }}) {
+            $args += "--skip"
+            $args += [string]${{ inputs.skip }}
+          }
+
+          if (${{ inputs.top }}) {
+            $args += "--top"
+            $args += [string]${{ inputs.top }}
+          }
+
+          # Set Authorization header or environment variable if CLI requires
+          # Assuming the CLI picks up Bearer token from an environment variable or similar
+          # If needed, prepend the CLI command with exporting auth env var or pass it explicitly.
+
+          # Execute the CLI command with the constructed arguments
+          Write-Host "Executing: uipath $($args -join ' ')"
+          uipath @args

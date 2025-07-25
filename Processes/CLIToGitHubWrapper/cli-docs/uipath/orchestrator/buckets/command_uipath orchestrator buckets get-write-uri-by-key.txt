@@ -1,0 +1,32 @@
+NAME:
+   uipath orchestrator buckets get-write-uri-by-key - Gets a direct upload URL for BlobFile.
+
+USAGE:
+   uipath orchestrator buckets get-write-uri-by-key [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Administration or OR.Administration.Read.
+
+   Required permissions: Buckets.View and BlobFiles.Create.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
+      The Bucket Id
+
+   --content-type string
+      ContentType for S3 access policy
+
+   --expand string
+      Indicates the related entities to be represented inline. The maximum depth is 2.
+
+   --expiry-in-minutes integer (default: 0)
+      URL Expiration time
+
+   --path string
+      The BlobFile full path
+
+   --select string
+      Limits the properties returned in the result.

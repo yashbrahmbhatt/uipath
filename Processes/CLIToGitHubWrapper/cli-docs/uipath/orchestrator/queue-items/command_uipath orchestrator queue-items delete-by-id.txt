@@ -1,0 +1,16 @@
+NAME:
+   uipath orchestrator queue-items delete-by-id - Deletes a queue item by Id.
+
+USAGE:
+   uipath orchestrator queue-items delete-by-id [command options] [arguments...]
+
+DESCRIPTION:
+   OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+   Required permissions: Queues.View and Transactions.Delete.
+
+OPTIONS:
+   --folder-id integer (required)
+      Folder/OrganizationUnit Id
+
+   --key integer (required)
