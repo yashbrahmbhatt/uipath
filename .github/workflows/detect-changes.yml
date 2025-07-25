@@ -31,28 +31,41 @@ jobs:
 
       - name: Detect Changed Projects
         id: set-matrix
+        shell: pwsh
         run: |
-          echo "Detecting changes..."
-          changed=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-          echo "Changed files:"
-          echo "$changed"
+          Write-Host "Detecting changes..."
+          $changedFiles = git diff --name-only $env:GITHUB_EVENT_BEFORE $env:GITHUB_SHA
+          Write-Host "Changed files:"
+          $changedFiles
 
-          # Load mono.json and initialize output array
-          projects=$(cat mono.json | jq -c '.projects[]')
-          matched='[]'
+          $monoJson = Get-Content "mono.json" | ConvertFrom-Json
+          $matched = @()
 
-          while read -r proj; do
-            path=$(echo "$proj" | jq -r '.path')
-            build=$(echo "$proj" | jq -r '.build')
-
-            if [[ "$build" != "true" ]]; then
+          foreach ($project in $monoJson.projects) {
+            if (-not $project.build) {
               continue
-            fi
+            }
 
-            if echo "$changed" | grep -q "^$path/"; then
-              matched=$(echo "$matched" | jq --argjson proj "$proj" '. + [$proj]')
-            fi
-          done <<< "$projects"
+            $projectPath = $project.path.Replace('/', '\')  # normalize path for Windows
+            if ($changedFiles -match "^$projectPath[\\/]*") {
+              $matched += [PSCustomObject]@{
+                id           = $project.id
+                path         = $project.path
+                type         = $project.type
+                deploySteps  = $project.deploySteps
+              }
+            }
+          }
 
-          matrix=$(echo "$matched" | jq '{include: map({id: .id, path: .path, type: .type, deploySteps: .deploySteps})}')
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          if ($matched.Count -eq 0) {
+            Write-Host "No relevant changes detected."
+            $matrix = '{"include":[]}'
+          }
+          else {
+            $json = $matched | ConvertTo-Json -Depth 5
+            $matrix = "{`"include`":" + $json + "}"
+          }
+
+          Write-Host "Detected matrix: $matrix"
+          "matrix=$matrix" >> $env:GITHUB_OUTPUT
+
