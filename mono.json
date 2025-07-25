@@ -1,34 +1,52 @@
 {
   "projects": [
     {
-      "id": "LibA",
-      "path": "uipath-libraries/LibA",
+      "id": "Yash.RBC.Activities",
+      "path": "uipath-libraries/Yash.RBC.Activities",
       "type": "uipath-library",
       "build": true,
       "deploy": true,
-      "deploySteps": ["nuget"]
+      "deploySteps": ["orchestrator", "nuget"]
     },
     {
-      "id": "LibB",
-      "path": "uipath-libraries/LibB",
-      "type": "uipath-library",
+      "id": "CLIToGitHubWrapper",
+      "path": "uipath-processes/CLIToGitHubWrapper",
+      "type": "uipath-process",
       "build": false,
-      "deploy": false
+      "deploy": false,
+      "deploySteps": ["orchestrator"]
     },
     {
-      "id": "MyProcess",
-      "path": "uipath-processes/MyProcess",
+      "id": "Diagnostic",
+      "path": "uipath-processes/Diagnostic",
       "type": "uipath-process",
       "build": true,
       "deploy": true,
       "deploySteps": ["orchestrator"]
     },
     {
-      "id": "DotNetUtil",
-      "path": "vs-libraries/DotNetUtil",
+      "id": "Finance.IngestTransactions",
+      "path": "uipath-processes/Finance.IngestTransactions",
+      "type": "uipath-process",
+      "build": true,
+      "deploy": true,
+      "deploySteps": ["orchestrator"]
+    },
+    {
+      "id": "Yash.Config",
+      "path": "vs-libraries/Yash.Config",
       "type": "vs",
       "build": true,
-      "deploy": false
+      "deploy": true,
+      "deploySteps": ["nuget"]
+    },
+    {
+      "id": "Yash.Orchestrator",
+      "path": "vs-libraries/Yash.Orchestrator",
+      "type": "vs",
+      "build": true,
+      "deploy": true,
+      "deploySteps": ["nuget"]
     }
   ]
 }

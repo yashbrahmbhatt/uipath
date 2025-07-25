@@ -1,3 +1,0 @@
-﻿Here is the business process definition:
-
-{PDD}
