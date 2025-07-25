@@ -1,0 +1,81 @@
+name: UiPath Orchestrator Test Case Executions Get By Id
+description: |
+  NAME:
+     uipath orchestrator test-case-executions get-by-id - Return a specific Test Case Execution identified by key
+
+  USAGE:
+     uipath orchestrator test-case-executions get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Read.
+
+     Required permissions: TestSetExecutions.View.
+
+     Responses:
+     200 Return a specific Test Case Execution identified by key
+     403 If the caller doesn't have permissions to view Test Set Executions
+     404 If the test case execution is not found
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      key:
+        description: 'Key identifier of the Test Case Execution (required)'
+        required: true
+        type: number
+      expand:
+        description: 'Indicates related entities to be represented inline (optional, max depth 2)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+jobs:
+  get-test-case-execution:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath Orchestrator CLI to get Test Case Execution by ID
+        shell: pwsh
+        run: |
+          # Initialize argument list for CLI command
+          $args = @('orchestrator','test-case-executions','get-by-id')
+
+          # Add required parameters
+          $args += "--folder-id"
+          $args += "${{ inputs.folder-id }}"
+
+          $args += "--key"
+          $args += "${{ inputs.key }}"
+
+          # Conditionally add optional parameters if provided and not empty
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += "--expand"
+            $args += "'${{ inputs.expand }}'"
+          }
+
+          if ('${{ inputs.select }}' -ne '') {
+            $args += "--select"
+            $args += "'${{ inputs.select }}'"
+          }
+
+          # Execute the CLI command
+          uipath @args

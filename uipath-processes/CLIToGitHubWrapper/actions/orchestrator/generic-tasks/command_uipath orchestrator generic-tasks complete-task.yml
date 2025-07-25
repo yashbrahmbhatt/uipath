@@ -1,0 +1,80 @@
+name: uipath-orchestrator-generic-tasks-complete-task
+description: |
+  NAME:
+     uipath orchestrator generic-tasks complete-task - Complete the task by saving task data and action taken
+
+  USAGE:
+     uipath orchestrator generic-tasks complete-task [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Required permissions: Tasks.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --task-id integer (required)
+        TaskId to retrieve form
+
+     --action string
+        Action taken on this task
+
+     --data object
+        Task data json
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      task_id:
+        description: 'TaskId to retrieve form (required)'
+        required: true
+        type: string
+      action:
+        description: 'Action taken on this task (optional)'
+        required: false
+        type: string
+        default: ''
+      data:
+        description: 'Task data json (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  complete-task:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator generic-tasks complete-task
+        shell: pwsh
+        run: |
+          # Initialize argument array for the cli command
+          $args = @("orchestrator", "generic-tasks", "complete-task")
+
+          # Add required parameters
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          $args += "--task-id"
+          $args += "${{ inputs.task_id }}"
+
+          # Add optional --action if provided (not empty)
+          if ('${{ inputs.action }}'.Trim() -ne '') {
+            $args += "--action"
+            $args += '${{ inputs.action }}'
+          }
+
+          # Add optional --data if provided (not empty)
+          if ('${{ inputs.data }}'.Trim() -ne '') {
+            $args += "--data"
+            $args += '${{ inputs.data }}'
+          }
+
+          # Run the uipath cli command with constructed arguments
+          & uipath $args

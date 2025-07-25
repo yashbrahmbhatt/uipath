@@ -1,0 +1,97 @@
+name: UiPath Orchestrator Sessions Get-Usernames
+description: |
+  OAuth required scopes: OR.Robots or OR.Robots.Read.
+  Required permissions: Robots.View or Users.View.
+
+  Gets usernames.
+
+on:
+  workflow_call:
+    inputs:
+      count:
+        description: Indicates whether the total count of items within a collection are returned in the result.
+        required: false
+        default: 'false'
+        type: boolean
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+      filter:
+        description: Restricts the set of items returned. The maximum number of expressions is 100.
+        required: false
+        type: string
+      orderby:
+        description: Specifies the order in which items are returned. The maximum number of expressions is 5.
+        required: false
+        type: string
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+      skip:
+        description: Excludes the specified number of items of the queried collection from the result.
+        required: false
+        default: 0
+        type: integer
+      top:
+        description: Limits the number of items returned from a collection. The maximum value is 1000.
+        required: false
+        default: 1000
+        type: integer
+
+jobs:
+  get_usernames:
+    runs-on: [windows, self-hosted]
+    outputs:
+      output: ${{ steps.run_cli.outputs.result }}
+    steps:
+      - name: Run UiPath Orchestrator Sessions Get-Usernames Command
+        id: run_cli
+        shell: pwsh
+        run: |
+          # Initialize arguments array with the command base
+          $args = @('uipath', 'orchestrator', 'sessions', 'get-usernames')
+          
+          # Add boolean switch parameter --count if true
+          if (${{ inputs.count }}) {
+            $args += '--count'
+            $args += 'true'
+          }
+          # Add optional string parameters if provided
+          if (${{ inputs.expand }}) {
+            $args += '--expand'
+            $args += '${{ inputs.expand }}'
+          }
+          if (${{ inputs.filter }}) {
+            $args += '--filter'
+            $args += '${{ inputs.filter }}'
+          }
+          if (${{ inputs.orderby }}) {
+            $args += '--orderby'
+            $args += '${{ inputs.orderby }}'
+          }
+          if (${{ inputs.select }}) {
+            $args += '--select'
+            $args += '${{ inputs.select }}'
+          }
+          # Add optional integer parameters, include only if > 0 for 'skip' and > 0 for 'top' (top max 1000)
+          if (${{ inputs.skip }} -gt 0) {
+            $args += '--skip'
+            $args += ${{ inputs.skip }}
+          }
+          if (${{ inputs.top }} -gt 0) {
+            $topValue = if (${{ inputs.top }} -le 1000) { ${{ inputs.top }} } else { 1000 }
+            $args += '--top'
+            $args += $topValue
+          }
+          
+          # Write debug info
+          Write-Host "Running command: $($args -join ' ')"
+
+          # Execute the CLI command and capture output
+          $result = & $args 2>&1
+          
+          # Output the result
+          Write-Output $result
+          echo "::set-output name=result::$result"

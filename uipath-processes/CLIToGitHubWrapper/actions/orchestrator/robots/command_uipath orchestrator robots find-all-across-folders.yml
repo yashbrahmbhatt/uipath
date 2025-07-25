@@ -1,0 +1,130 @@
+name: uipath-orchestrator-robots-find-all-across-folders
+description: |
+  NAME:
+     uipath orchestrator robots find-all-across-folders - Get robots across all accessible folders.
+
+  USAGE:
+     uipath orchestrator robots find-all-across-folders [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Robots or OR.Robots.Read.
+
+     Required permissions: Robots.View or Users.View or Machines.Create or Machines.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+    
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        default: false
+        type: boolean
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+      filter:
+        description: 'Restricts the set of items returned. The maximum number of expressions is 100.'
+        required: false
+        type: string
+      orderby:
+        description: 'Specifies the order in which items are returned. The maximum number of expressions is 5.'
+        required: false
+        type: string
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+      skip:
+        description: 'Excludes the specified number of items of the queried collection from the result.'
+        required: false
+        type: number
+      top:
+        description: 'Limits the number of items returned from a collection. The maximum value is 1000.'
+        required: false
+        type: number
+    secrets: {}
+
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator robots find-all-across-folders
+        shell: pwsh
+        run: |
+          # Initialize an array for arguments
+          $args = @('orchestrator', 'robots', 'find-all-across-folders')
+
+          # Required parameter --folder-id (integer)
+          $args += '--folder-id'
+          $args += "${{ inputs.folder_id }}"
+
+          # Optional boolean parameter --count
+          if (${{ inputs.count }}) {
+            $args += '--count'
+            $args += 'true'
+          }
+
+          # Optional string parameters - add if not empty or null
+          if (-not [string]::IsNullOrEmpty('${{ inputs.expand }}')) {
+            $args += '--expand'
+            $args += "${{ inputs.expand }}"
+          }
+
+          if (-not [string]::IsNullOrEmpty('${{ inputs.filter }}')) {
+            $args += '--filter'
+            $args += "${{ inputs.filter }}"
+          }
+
+          if (-not [string]::IsNullOrEmpty('${{ inputs.orderby }}')) {
+            $args += '--orderby'
+            $args += "${{ inputs.orderby }}"
+          }
+
+          if (-not [string]::IsNullOrEmpty('${{ inputs.select }}')) {
+            $args += '--select'
+            $args += "${{ inputs.select }}"
+          }
+
+          # Optional integer parameters - add if defined (not null/empty)
+          if (${{ inputs.skip }}) {
+            $args += '--skip'
+            $args += "${{ inputs.skip }}"
+          }
+
+          if (${{ inputs.top }}) {
+            $args += '--top'
+            $args += "${{ inputs.top }}"
+          }
+
+          # Execute the uipath command with constructed arguments
+          uipath @args

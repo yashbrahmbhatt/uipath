@@ -1,0 +1,146 @@
+name: uipath-orchestrator-test-set-executions-get
+
+description: |
+  uipath orchestrator test-set-executions get - Returns a list of Test Set Executions cross-folder when no current folder is sent by header.
+  It will return Test Set Executions from folder where current user has TestSetExecutionsView.
+  If there is none, will return forbidden.
+
+  OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Read.
+
+  Required permissions: TestSetExecutions.View.
+
+  Responses:
+  200 Returns a list of Test Set Executions filtered with queryOptions
+  403 If the caller doesn't have permissions to view Test Set Executions
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: Folder/OrganizationUnit Id
+        required: true
+        type: number
+      at_least_one_permissions:
+        description: >
+          If in a cross-folder scenario, these represent the additional permissions
+          required in the folders the data is retrieved from; at least one permission in this set must be met
+        required: false
+        type: string
+        default: ''
+      count:
+        description: Indicates whether the total count of items within a collection are returned in the result.
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: Restricts the set of items returned. The maximum number of expressions is 100.
+        required: false
+        type: string
+        default: ''
+      mandatory_permissions:
+        description: >
+          If in a cross-folder scenario, these represent the additional permissions
+          required in the folders the data is retrieved from; all permissions in this set must be met
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: Specifies the order in which items are returned. The maximum number of expressions is 5.
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: Excludes the specified number of items of the queried collection from the result.
+        required: false
+        type: number
+        default: 0
+      top:
+        description: Limits the number of items returned from a collection. The maximum value is 1000.
+        required: false
+        type: number
+        default: 0
+    secrets:
+      UIPATH_API_KEY:
+        description: API key or token for authentication to UiPath Orchestrator.
+
+jobs:
+  run-cli:
+    runs-on:
+      - windows
+      - self-hosted
+
+    steps:
+      - name: Run uipath orchestrator test-set-executions get
+        shell: pwsh
+        env:
+          UIPATH_API_KEY: ${{ secrets.UIPATH_API_KEY }}
+        run: |
+          # Initialize argument list
+          $args = @()
+
+          # Required folder-id argument
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          # Optional arguments added only if specified
+          if ('${{ inputs.at_least_one_permissions }}'.Trim() -ne '') {
+            $args += "--at-least-one-permissions"
+            $args += "'${{ inputs.at_least_one_permissions }}'"
+          }
+
+          if ("${{ inputs.count }}" -eq "true") {
+            $args += "--count"
+          }
+
+          if ('${{ inputs.expand }}'.Trim() -ne '') {
+            $args += "--expand"
+            $args += "'${{ inputs.expand }}'"
+          }
+
+          if ('${{ inputs.filter }}'.Trim() -ne '') {
+            $args += "--filter"
+            $args += "'${{ inputs.filter }}'"
+          }
+
+          if ('${{ inputs.mandatory_permissions }}'.Trim() -ne '') {
+            $args += "--mandatory-permissions"
+            $args += "'${{ inputs.mandatory_permissions }}'"
+          }
+
+          if ('${{ inputs.orderby }}'.Trim() -ne '') {
+            $args += "--orderby"
+            $args += "'${{ inputs.orderby }}'"
+          }
+
+          if ('${{ inputs.select }}'.Trim() -ne '') {
+            $args += "--select"
+            $args += "'${{ inputs.select }}'"
+          }
+
+          if (${{ inputs.skip }} -gt 0) {
+            $args += "--skip"
+            $args += "${{ inputs.skip }}"
+          }
+
+          if (${{ inputs.top }} -gt 0) {
+            $args += "--top"
+            $args += "${{ inputs.top }}"
+          }
+
+          # Compose the full command with token environment variable usage
+          # Authentication is assumed via environment variable or context
+          $command = "uipath orchestrator test-set-executions get $($args -join ' ')"
+
+          Write-Host "Executing command: $command"
+          # Run the command with the provided arguments
+          iex $command

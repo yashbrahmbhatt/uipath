@@ -1,0 +1,45 @@
+name: uipath-orchestrator-job-triggers-get-payload-by-inboxid
+description: |
+  NAME:
+     uipath orchestrator job-triggers get-payload-by-inboxid - Get payload for trigger inboxId.
+
+  USAGE:
+     uipath orchestrator job-triggers get-payload-by-inboxid [command options] [arguments...]
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --inbox-id string (required)
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: "Folder/OrganizationUnit Id (required)"
+        required: true
+        type: number
+      inbox_id:
+        description: "Inbox Id (required)"
+        required: true
+        type: string
+
+jobs:
+  get_payload_by_inboxid:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator job-triggers get-payload-by-inboxid
+        shell: pwsh
+        run: |
+          # Initialize argument list for the CLI command
+          $args = @("orchestrator","job-triggers","get-payload-by-inboxid")
+
+          # Add required folder-id argument
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          # Add required inbox-id argument
+          $args += "--inbox-id"
+          $args += "\"${{ inputs.inbox_id }}\""
+
+          # Execute the CLI command with constructed arguments
+          uipath @args

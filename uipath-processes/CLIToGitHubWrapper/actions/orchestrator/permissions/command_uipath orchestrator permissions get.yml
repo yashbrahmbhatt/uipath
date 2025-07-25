@@ -1,0 +1,128 @@
+name: UiPath Orchestrator Permissions Get
+description: |-
+  uipath orchestrator permissions get - Gets permissions.
+
+  USAGE:
+     uipath orchestrator permissions get [command options] [arguments...]
+
+  OPTIONS:
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+     
+on:
+  workflow_call:
+    inputs:
+      count:
+        description: Indicates whether the total count of items within a collection are returned in the result.
+        required: false
+        default: false
+        type: boolean
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+      filter:
+        description: Restricts the set of items returned. The maximum number of expressions is 100.
+        required: false
+        type: string
+      orderby:
+        description: Specifies the order in which items are returned. The maximum number of expressions is 5.
+        required: false
+        type: string
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+      skip:
+        description: Excludes the specified number of items of the queried collection from the result.
+        required: false
+        type: string
+      top:
+        description: Limits the number of items returned from a collection. The maximum value is 1000.
+        required: false
+        type: string
+
+jobs:
+  permissions_get:
+    runs-on: [windows, self-hosted]
+    outputs:
+      command: ${{ steps.run-command.outputs.command }}
+    steps:
+      - name: Run uipath orchestrator permissions get
+        id: run-command
+        shell: pwsh
+        run: |
+          # Initialize arguments array with the base command
+          $args = @("uipath", "orchestrator", "permissions", "get")
+          
+          # Add --count if true
+          if (${{ inputs.count }}) {
+            $args += "--count"
+            $args += "true"
+          }
+          else {
+            # Optional but only add if true, so skip false to avoid noise
+          }
+          
+          # Add --expand if provided and not empty
+          if ('${{ inputs.expand }}'.Length -gt 0) {
+            $args += "--expand"
+            $args += '${{ inputs.expand }}'
+          }
+
+          # Add --filter if provided and not empty
+          if ('${{ inputs.filter }}'.Length -gt 0) {
+            $args += "--filter"
+            $args += '${{ inputs.filter }}'
+          }
+
+          # Add --orderby if provided and not empty
+          if ('${{ inputs.orderby }}'.Length -gt 0) {
+            $args += "--orderby"
+            $args += '${{ inputs.orderby }}'
+          }
+
+          # Add --select if provided and not empty
+          if ('${{ inputs.select }}'.Length -gt 0) {
+            $args += "--select"
+            $args += '${{ inputs.select }}'
+          }
+
+          # Add --skip if provided and not empty
+          if ('${{ inputs.skip }}'.Length -gt 0) {
+            $args += "--skip"
+            $args += '${{ inputs.skip }}'
+          }
+
+          # Add --top if provided and not empty
+          if ('${{ inputs.top }}'.Length -gt 0) {
+            $args += "--top"
+            $args += '${{ inputs.top }}'
+          }
+
+          # Output the constructed command for debugging
+          Write-Output ("Running command: " + ($args -join ' '))
+
+          # Execute the command
+          & $args
+
+          # Set output for command string
+          Write-Output "::set-output name=command::" + ($args -join ' ')

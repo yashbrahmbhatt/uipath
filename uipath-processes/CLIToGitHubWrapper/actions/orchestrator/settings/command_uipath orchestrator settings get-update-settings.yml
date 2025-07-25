@@ -1,0 +1,64 @@
+name: uipath-orchestrator-settings-get-update-settings
+description: |
+  NAME:
+     uipath orchestrator settings get-update-settings - Gets the update settings
+
+  USAGE:
+     uipath orchestrator settings get-update-settings [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+  OPTIONS:
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      expand:
+        description: 'Related entities to be represented inline (max depth 2).'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  get-update-settings:
+    runs-on:
+      - windows
+      - self-hosted
+    outputs:
+      output: ${{ steps.run.outputs.result }}
+    steps:
+      - name: Build and run uipath orchestrator settings get-update-settings command
+        id: run
+        shell: pwsh
+        run: |
+          # Initialize argument array
+          $args = @('orchestrator', 'settings', 'get-update-settings')
+
+          # Add --expand argument if provided
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += '--expand'
+            $args += '${{ inputs.expand }}'
+          }
+
+          # Add --select argument if provided
+          if ('${{ inputs.select }}' -ne '') {
+            $args += '--select'
+            $args += '${{ inputs.select }}'
+          }
+
+          # Execute the uipath CLI command
+          $output = & uipath @args
+
+          # Output the result to GitHub Actions output
+          echo "::set-output name=result::$output"

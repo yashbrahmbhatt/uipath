@@ -1,0 +1,101 @@
+name: 'uipath orchestrator process-schedules set-enabled'
+
+description: |
+  NAME:
+     uipath orchestrator process-schedules set-enabled - Enables/disables a group of schedules.
+
+  USAGE:
+     uipath orchestrator process-schedules set-enabled [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+     Required permissions: Schedules.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --enabled boolean
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --multistatus-enabled boolean
+
+     --schedule-ids integer,integer,...
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      enabled:
+        description: 'Boolean to enable or disable schedules (optional)'
+        required: false
+        type: boolean
+        default: ''
+      expand:
+        description: 'Related entities to be represented inline (optional)'
+        required: false
+        type: string
+        default: ''
+      multistatus_enabled:
+        description: 'Boolean to enable multistatus (optional)'
+        required: false
+        type: boolean
+        default: ''
+      schedule_ids:
+        description: 'Comma separated list of schedule IDs (optional)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Properties to limit in the result (optional)'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  set-enabled:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator process-schedules set-enabled
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'process-schedules', 'set-enabled')
+
+          # Add required folder-id argument
+          $args += '--folder-id'
+          $args += "${{ inputs.folder_id }}"
+
+          # Add optional flags conditionally
+          if (${{ inputs.enabled }} -ne '') {
+            $args += '--enabled'
+            $args += "${{ inputs.enabled }}"
+          }
+          if (${{ inputs.expand }} -ne '') {
+            $args += '--expand'
+            $args += """${{ inputs.expand }}"""
+          }
+          if (${{ inputs.multistatus_enabled }} -ne '') {
+            $args += '--multistatus-enabled'
+            $args += "${{ inputs.multistatus_enabled }}"
+          }
+          if (${{ inputs.schedule_ids }} -ne '') {
+            $args += '--schedule-ids'
+            $args += """${{ inputs.schedule_ids }}"""
+          }
+          if (${{ inputs.select }} -ne '') {
+            $args += '--select'
+            $args += """${{ inputs.select }}"""
+          }
+
+          # Execute the uipath CLI command
+          Write-Host "Executing: uipath $($args -join ' ')" 
+          uipath @args

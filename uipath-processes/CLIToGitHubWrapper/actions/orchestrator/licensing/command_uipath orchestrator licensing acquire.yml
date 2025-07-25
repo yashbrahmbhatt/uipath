@@ -1,0 +1,59 @@
+name: uipath-orchestrator-licensing-acquire
+description: |
+  NAME:
+     uipath orchestrator licensing acquire - Acquire license units
+
+  USAGE:
+     uipath orchestrator licensing acquire [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Administration or OR.Administration.Write.
+
+     Requires authentication.
+
+  OPTIONS:
+     --count integer
+
+     --reference string
+
+     --type string
+on:
+  workflow_call:
+    inputs:
+      count:
+        description: 'Number of license units to acquire'
+        required: false
+        default: ''
+        type: string
+      reference:
+        description: 'Reference string'
+        required: false
+        default: ''
+        type: string
+      type:
+        description: 'License type'
+        required: false
+        default: ''
+        type: string
+    secrets: {}
+jobs:
+  run:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator licensing acquire
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'licensing', 'acquire')
+          if ($env:INPUT_COUNT -ne '') {
+            $args += '--count'
+            $args += $env:INPUT_COUNT
+          }
+          if ($env:INPUT_REFERENCE -ne '') {
+            $args += '--reference'
+            $args += $env:INPUT_REFERENCE
+          }
+          if ($env:INPUT_TYPE -ne '') {
+            $args += '--type'
+            $args += $env:INPUT_TYPE
+          }
+          & uipath $args

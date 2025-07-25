@@ -1,0 +1,42 @@
+name: 'UiPath Orchestrator Robots Delete Bulk'
+description: |
+  uipath orchestrator robots delete-bulk - Deletes multiple robots based on their keys.
+
+  OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+  Required permissions: Robots.Delete.
+
+  This workflow deletes multiple robots based on their IDs within a specified folder.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      robot_ids:
+        description: 'Comma-separated list of Robot IDs to delete (required)'
+        required: true
+        type: string
+
+jobs:
+  delete_bulk_robots:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator robots delete-bulk
+        shell: pwsh
+        run: |
+          # Initialize the arguments array
+          $args = @()
+
+          # Add required folder-id argument
+          $args += '--folder-id'
+          $args += "$(${{ inputs.folder_id }})"
+
+          # Add required robot-ids argument
+          $args += '--robot-ids'
+          $args += "$(${{ inputs.robot_ids }})"
+
+          # Execute the CLI command with the constructed arguments
+          uipath orchestrator robots delete-bulk @args

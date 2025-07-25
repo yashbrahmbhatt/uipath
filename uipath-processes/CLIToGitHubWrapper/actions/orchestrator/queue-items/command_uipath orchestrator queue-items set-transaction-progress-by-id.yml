@@ -1,0 +1,62 @@
+name: uipath-orchestrator-queue-items-set-transaction-progress-by-id
+description: |
+  NAME:
+     uipath orchestrator queue-items set-transaction-progress-by-id - Updates the progress field of a queue item with the status 'In Progress'.
+
+  USAGE:
+     uipath orchestrator queue-items set-transaction-progress-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+     Required permissions: Queues.View and Transactions.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --progress string
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: integer
+      key:
+        description: 'Key (required)'
+        required: true
+        type: integer
+      progress:
+        description: 'Progress string (optional)'
+        required: false
+        type: string
+    secrets: {}
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator queue-items set-transaction-progress-by-id command
+        shell: pwsh
+        run: |
+          # Initialize arguments array
+          $args = @()
+
+          # Add required folder-id argument
+          $args += '--folder-id'
+          $args += ${{ inputs.folder_id }}
+
+          # Add required key argument
+          $args += '--key'
+          $args += ${{ inputs.key }}
+
+          # Add optional progress argument if specified and not empty
+          if (${{ inputs.progress }} -and ${{ inputs.progress }}.Trim() -ne '') {
+            $args += '--progress'
+            $args += ${{ inputs.progress }}
+          }
+
+          # Run the command with constructed arguments
+          uipath orchestrator queue-items set-transaction-progress-by-id @args

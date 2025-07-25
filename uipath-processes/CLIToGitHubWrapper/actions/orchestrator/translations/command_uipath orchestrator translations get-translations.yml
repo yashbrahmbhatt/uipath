@@ -1,0 +1,39 @@
+name: UiPath Orchestrator Get Translations
+
+description: |
+  uipath orchestrator translations get-translations - Returns a json with translation resources
+
+on:
+  workflow_call:
+    inputs:
+      lang:
+        description: 'Language code for the translations output'
+        required: false
+        default: ''
+
+jobs:
+  get-translations:
+    runs-on: [windows, self-hosted]
+    outputs:
+      translations_json: ${{ steps.get_translations.outputs.translations_json }}
+    steps:
+      - name: Get translations from UiPath Orchestrator
+        id: get_translations
+        shell: pwsh
+        run: |
+          # Initialize argument array with base command
+          $args = @('orchestrator', 'translations', 'get-translations')
+
+          # If lang input was provided and is not empty, append it to arguments
+          if ('${{ inputs.lang }}'.Length -gt 0) {
+            $args += @('--lang', '${{ inputs.lang }}')
+          }
+
+          # Execute the UiPath CLI command and capture output
+          $output = & uipath @args
+
+          # Set output for workflow usage
+          Write-Output "translations_json=$output" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      # Optionally, you might want to use the output downstream in the workflow, 
+      # this example only captures it for downstream jobs or steps references.

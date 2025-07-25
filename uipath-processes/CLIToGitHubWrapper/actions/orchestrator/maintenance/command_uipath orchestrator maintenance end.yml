@@ -1,0 +1,40 @@
+name: uipath-orchestrator-maintenance-end
+description: |
+  NAME:
+     uipath orchestrator maintenance end - Ends a maintenance window
+
+  USAGE:
+     uipath orchestrator maintenance end [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Administration or OR.Administration.Write.
+
+     Host only. Requires authentication.
+
+  OPTIONS:
+     --tenant-id integer
+
+on:
+  workflow_call:
+    inputs:
+      tenant_id:
+        description: 'Tenant ID for the maintenance end command'
+        required: false
+        type: number
+    secrets: {}
+
+jobs:
+  run-maintenance-end:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator maintenance end
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'maintenance', 'end')
+          if (${{ inputs.tenant_id }}) {
+            $args += '--tenant-id'
+            $args += ${{ inputs.tenant_id }}
+          }
+          # Execute the uipath CLI with constructed arguments
+          uipath $args

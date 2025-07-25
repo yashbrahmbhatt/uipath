@@ -1,0 +1,90 @@
+name: uipath-orchestrator-tasks-get-by-id
+description: |
+  NAME:
+     uipath orchestrator tasks get-by-id - Gets a Task with the given primary key.
+
+  USAGE:
+     uipath orchestrator tasks get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+        The primary key of the Task to be retrieved.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: integer
+      key:
+        description: 'The primary key of the Task to be retrieved.'
+        required: true
+        type: integer
+      expand:
+        description: 'Related entities to be represented inline. Max depth 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      # You may want to add authentication inputs if needed by CLI, e.g. token or config.
+
+jobs:
+  run-task-get-by-id:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # example if output capture is needed
+      # output: ${{ steps.run.outputs.result }}
+    steps:
+      - name: Run UiPath Orchestrator tasks get-by-id
+        shell: pwsh
+        id: run
+        env:
+          # If any secrets are needed for authentication, add here
+          # TOKEN: ${{ secrets.TOKEN }}
+        run: |
+          $args = @('orchestrator', 'tasks', 'get-by-id')
+
+          # Add required parameters
+          $args += '--folder-id'
+          $args += '${{ inputs.folder_id }}'
+
+          $args += '--key'
+          $args += '${{ inputs.key }}'
+
+          # Add optional parameters if provided
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += '--expand'
+            $args += '${{ inputs.expand }}'
+          }
+
+          if ('${{ inputs.select }}' -ne '') {
+            $args += '--select'
+            $args += '${{ inputs.select }}'
+          }
+
+          # Run the CLI command
+          Write-Host "Executing: uipath $($args -join ' ')"
+          uipath @args
+
+          # Optionally output the command output for downstream jobs
+          # $output = uipath @args | Out-String
+          # Write-Output "::set-output name=result::$output"

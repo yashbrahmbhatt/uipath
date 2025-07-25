@@ -1,0 +1,47 @@
+name: uipath-orchestrator-users-change-user-culture-by-id
+description: |
+  NAME:
+     uipath orchestrator users change-user-culture-by-id - Changes the culture for the specified user
+
+  USAGE:
+     uipath orchestrator users change-user-culture-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Write.
+
+     Required permissions: Users.Edit.
+
+  OPTIONS:
+     --culture string (required)
+
+     --key integer (required)
+on:
+  workflow_call:
+    inputs:
+      culture:
+        description: 'The culture to set for the specified user.'
+        required: true
+        type: string
+      key:
+        description: 'The user identifier key (integer).'
+        required: true
+        type: number
+    secrets: {}
+jobs:
+  run-command:
+    name: Change User Culture by ID
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator users change-user-culture-by-id command
+        shell: pwsh
+        run: |
+          # Build argument array
+          $args = @()
+          # Append required --culture argument
+          $args += '--culture'
+          $args += "${{ inputs.culture }}"
+          # Append required --key argument
+          $args += '--key'
+          $args += "${{ inputs.key }}"
+          # Execute the CLI command with constructed arguments
+          uipath orchestrator users change-user-culture-by-id @args

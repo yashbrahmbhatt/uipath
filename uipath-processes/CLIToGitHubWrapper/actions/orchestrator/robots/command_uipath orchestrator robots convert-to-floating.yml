@@ -1,0 +1,49 @@
+name: Convert UiPath Orchestrator Robot to Floating
+
+description: |
+  NAME:
+     uipath orchestrator robots convert-to-floating - Convert a Standard Attended Robot to a Floating Robot.
+
+  USAGE:
+     uipath orchestrator robots convert-to-floating [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+     Required permissions: Robots.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --robot-id integer (required)
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (integer)'
+        required: true
+        type: string
+      robot_id:
+        description: 'Robot Id (integer)'
+        required: true
+        type: string
+
+jobs:
+  convert_to_floating:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Convert Robot to Floating using UiPath CLI
+        shell: pwsh
+        run: |
+          # Initialize argument list
+          $args = @('orchestrator', 'robots', 'convert-to-floating')
+          # Add required --folder-id argument
+          $args += '--folder-id'
+          $args += ${{ inputs.folder_id }}
+          # Add required --robot-id argument
+          $args += '--robot-id'
+          $args += ${{ inputs.robot_id }}
+          # Execute the CLI with the constructed arguments
+          uipath @args

@@ -1,0 +1,136 @@
+name: uipath_orchestrator_queue_items_get_reviewers
+description: |
+  NAME:
+     uipath orchestrator queue-items get-reviewers - Returns a collection of users having the permission for Queue Items review. Allows odata query options.
+
+  USAGE:
+     uipath orchestrator queue-items get-reviewers [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Read.
+
+     Required permissions: Queues.View and Transactions.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+      filter:
+        description: 'Restricts the set of items returned. The maximum number of expressions is 100.'
+        required: false
+        type: string
+      orderby:
+        description: 'Specifies the order in which items are returned. The maximum number of expressions is 5.'
+        required: false
+        type: string
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+      skip:
+        description: 'Excludes the specified number of items of the queried collection from the result.'
+        required: false
+        type: number
+      top:
+        description: 'Limits the number of items returned from a collection. The maximum value is 1000.'
+        required: false
+        type: number
+        default: 1000
+
+jobs:
+  call-uipath-orchestrator-get-reviewers:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # output can be extended if needed by capturing output from the command
+    steps:
+      - name: Build and run uipath orchestrator queue-items get-reviewers command
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'queue-items', 'get-reviewers')
+          
+          # Required parameter
+          $args += '--folder-id'
+          $args += "${{ inputs.folder_id }}"
+
+          # Optional boolean 'count' - only add flag if true
+          if (${{ inputs.count }}) {
+            $args += '--count'
+            $args += 'true'
+          }
+
+          # Optional string parameters - add if not empty or null
+          if ($null -ne ${{ inputs.expand }} -and ${{ inputs.expand }}.Trim() -ne '') {
+            $args += '--expand'
+            $args += ${{ inputs.expand }}
+          }
+          if ($null -ne ${{ inputs.filter }} -and ${{ inputs.filter }}.Trim() -ne '') {
+            $args += '--filter'
+            $args += ${{ inputs.filter }}
+          }
+          if ($null -ne ${{ inputs.orderby }} -and ${{ inputs.orderby }}.Trim() -ne '') {
+            $args += '--orderby'
+            $args += ${{ inputs.orderby }}
+          }
+          if ($null -ne ${{ inputs.select }} -and ${{ inputs.select }}.Trim() -ne '') {
+            $args += '--select'
+            $args += ${{ inputs.select }}
+          }
+
+          # Optional numeric parameters - add if defined (non-null)
+          if (${{ inputs.skip }}) {
+            $args += '--skip'
+            $args += "${{ inputs.skip }}"
+          }
+          if (${{ inputs.top }}) {
+            $args += '--top'
+            $args += "${{ inputs.top }}"
+          }
+
+          # Run the command, joining args with space, properly quoted for PowerShell
+          $command = 'uipath ' + ($args | ForEach-Object { 
+            if ($_ -match '\s') { 
+              "'$_'" 
+            } else { 
+              $_ 
+            }
+          } -join ' ')
+          
+          Write-Host "Running: $command"
+          Invoke-Expression $command

@@ -1,0 +1,112 @@
+name: uipath-orchestrator-jobs-export
+description: |
+  REQUESTS A CSV EXPORT OF FILTERED ITEMS.
+
+  OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+  Required permissions: Jobs.View.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: Folder/OrganizationUnit Id
+        required: true
+        type: integer
+      count:
+        description: Indicates whether the total count of items within a collection are returned in the result.
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: Restricts the set of items returned. The maximum number of expressions is 100.
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: Specifies the order in which items are returned. The maximum number of expressions is 5.
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: Excludes the specified number of items of the queried collection from the result.
+        required: false
+        type: integer
+        default: 0
+      top:
+        description: Limits the number of items returned from a collection. The maximum value is 1000.
+        required: false
+        type: integer
+        default: 1000
+    secrets: {}
+
+jobs:
+  export_jobs_csv:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator jobs export
+        shell: pwsh
+        run: |
+          # Initialize arguments array
+          $args = @('orchestrator', 'jobs', 'export')
+
+          # Mandatory folder-id argument
+          $args += "--folder-id"
+          $args += ${{ inputs.folder_id }}
+
+          # Append --count if true
+          if (${{ inputs.count }}) {
+            $args += "--count"
+            $args += "true"
+          }
+
+          # Append --expand if specified and not empty
+          if (![string]::IsNullOrWhiteSpace("${{ inputs.expand }}")) {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+
+          # Append --filter if specified and not empty
+          if (![string]::IsNullOrWhiteSpace("${{ inputs.filter }}")) {
+            $args += "--filter"
+            $args += "${{ inputs.filter }}"
+          }
+
+          # Append --orderby if specified and not empty
+          if (![string]::IsNullOrWhiteSpace("${{ inputs.orderby }}")) {
+            $args += "--orderby"
+            $args += "${{ inputs.orderby }}"
+          }
+
+          # Append --select if specified and not empty
+          if (![string]::IsNullOrWhiteSpace("${{ inputs.select }}")) {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Append --skip if greater than 0
+          if (${{ inputs.skip }} -gt 0) {
+            $args += "--skip"
+            $args += ${{ inputs.skip }}
+          }
+
+          # Append --top if less than 1000 (default) or specified differently
+          if (${{ inputs.top }} -lt 1000) {
+            $args += "--top"
+            $args += ${{ inputs.top }}
+          }
+
+          # Join arguments with space and run the CLI command
+          $command = "uipath " + ($args -join ' ')
+          Write-Host "Executing command: $command"
+          iex $command

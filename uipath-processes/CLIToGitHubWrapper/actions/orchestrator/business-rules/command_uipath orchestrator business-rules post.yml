@@ -1,0 +1,42 @@
+name: 'uipath-orchestrator-business-rules-post'
+description: |
+  OAuth required scopes: OR.BusinessRules or OR.BusinessRules.Write.
+
+  Required permissions: (BusinessRules.Create).
+
+  Create Business Rule via `uipath orchestrator business-rules post` command.
+
+on:
+  workflow_call:
+    inputs:
+      business_rule:
+        description: 'The BusinessRuleDto object'
+        required: true
+        type: string
+      file:
+        description: 'The file path for the binary file to upload'
+        required: true
+        type: string
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+
+jobs:
+  post-business-rule:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Post Business Rule
+        shell: pwsh
+        run: |
+          $args = @()
+          # Append required parameters with proper quoting
+          $args += '--business-rule'
+          $args += "${{ inputs.business_rule }}"
+          $args += '--file'
+          $args += "${{ inputs.file }}"
+          $args += '--folder-id'
+          $args += "${{ inputs.folder_id }}"
+
+          # Execute the CLI command with constructed arguments
+          uipath orchestrator business-rules post @args

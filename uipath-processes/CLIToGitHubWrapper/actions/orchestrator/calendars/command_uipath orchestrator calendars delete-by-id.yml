@@ -1,0 +1,46 @@
+name: UiPath Orchestrator Calendars Delete by Id
+description: |
+  NAME:
+     uipath orchestrator calendars delete-by-id - Deletes a calendar.
+
+  USAGE:
+     uipath orchestrator calendars delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+     Required permissions: (Settings.Delete).
+
+  OPTIONS:
+     --key integer (required)
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The ID of the calendar to delete'
+        required: true
+        type: number
+    secrets: {}
+jobs:
+  delete_calendar_by_id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator calendars delete-by-id command
+        shell: pwsh
+        run: |
+          # Initialize argument list for command construction
+          $args = @()
+
+          # Append the base command parts
+          $args += 'orchestrator calendars delete-by-id'
+
+          # Append the required --key option with proper quoting
+          $args += '--key'
+          $args += (${{ inputs.key }}.ToString())
+
+          # Join arguments into a single command string
+          $cmd = "uipath " + ($args -join ' ')
+
+          # Execute the constructed command
+          Write-Host "Executing command: $cmd"
+          iex $cmd

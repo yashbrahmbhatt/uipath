@@ -1,0 +1,94 @@
+name: 'uipath-identity-group-update-group'
+description: |
+  NAME:
+     uipath identity group update-group - Updates a local group information.
+
+  USAGE:
+     uipath identity group update-group [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: PM.Group or PM.Group.Write.
+
+  OPTIONS:
+     --group-id string (required)
+
+     --directory-user-ids-to-add string,string,...
+        IDs of the users to be added as members of the group.
+
+     --directory-user-ids-to-remove string,string,...
+        IDs of the users to be removed from the group.
+
+     --name string
+        Group Name
+
+     --partition-global-id string
+        Group partition identifier
+
+on:
+  workflow_call:
+    inputs:
+      group_id:
+        description: 'Group ID (required)'
+        required: true
+        type: string
+      directory_user_ids_to_add:
+        description: 'Comma-separated IDs of users to add to the group'
+        required: false
+        type: string
+        default: ''
+      directory_user_ids_to_remove:
+        description: 'Comma-separated IDs of users to remove from the group'
+        required: false
+        type: string
+        default: ''
+      name:
+        description: 'Group Name'
+        required: false
+        type: string
+        default: ''
+      partition_global_id:
+        description: 'Group partition identifier'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  update-group:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath identity group update-group
+        shell: pwsh
+        run: |
+          $args = @()
+          # Required group-id arg
+          $args += '--group-id'
+          $args += "${{ inputs.group_id }}"
+
+          # Optional directory-user-ids-to-add
+          if ('${{ inputs.directory_user_ids_to_add }}' -ne '') {
+            $args += '--directory-user-ids-to-add'
+            $args += "${{ inputs.directory_user_ids_to_add }}"
+          }
+
+          # Optional directory-user-ids-to-remove
+          if ('${{ inputs.directory_user_ids_to_remove }}' -ne '') {
+            $args += '--directory-user-ids-to-remove'
+            $args += "${{ inputs.directory_user_ids_to_remove }}"
+          }
+
+          # Optional name
+          if ('${{ inputs.name }}' -ne '') {
+            $args += '--name'
+            $args += "${{ inputs.name }}"
+          }
+
+          # Optional partition-global-id
+          if ('${{ inputs.partition_global_id }}' -ne '') {
+            $args += '--partition-global-id'
+            $args += "${{ inputs.partition_global_id }}"
+          }
+
+          # Invoke the CLI command with constructed args
+          Write-Host "Executing: uipath identity group update-group $args"
+          uipath identity group update-group @args

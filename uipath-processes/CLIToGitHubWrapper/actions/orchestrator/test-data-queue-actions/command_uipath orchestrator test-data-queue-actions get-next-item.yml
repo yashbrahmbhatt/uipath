@@ -1,0 +1,78 @@
+name: uipath-orchestrator-test-data-queue-actions-get-next-item
+description: |
+  OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+  Required permissions: TestDataQueueItems.View.
+
+  Responses:
+  200 Returns the next unconsumed test data queue item
+  204 If there are no unconsumed test data queue items in the queue
+  403 If the caller doesn't have permissions to view test data queue items
+  404 If the test data queue does not exist
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (integer)'
+        required: true
+        type: number
+      queue_name:
+        description: 'Queue name (string)'
+        required: true
+        type: string
+      set_consumed:
+        description: 'Set consumed flag (boolean)'
+        required: true
+        type: boolean
+
+jobs:
+  get-next-item:
+    runs-on:
+      - windows
+      - self-hosted
+    outputs:
+      command: ${{ steps.run-command.outputs.command }}
+    steps:
+      - name: Run uipath orchestrator test-data-queue-actions get-next-item
+        id: run-command
+        shell: pwsh
+        run: |
+          # Prepare arguments array for the CLI command
+          $args = @()
+
+          # Add required --folder-id argument
+          $folderId = '${{ inputs.folder_id }}'
+          $args += '--folder-id'
+          $args += "$folderId"
+
+          # Add required --queue-name argument, ensure proper quoting
+          $queueName = '${{ inputs.queue_name }}'
+          $args += '--queue-name'
+          $args += "$queueName"
+
+          # Add required --set-consumed argument, convert to string representation
+          $setConsumedBool = '${{ inputs.set_consumed }}'
+          # In GitHub Actions, boolean inputs become lower-case true/false as strings
+          if ($setConsumedBool -eq 'true') {
+            $setConsumed = 'true'
+          }
+          else {
+            $setConsumed = 'false'
+          }
+          $args += '--set-consumed'
+          $args += "$setConsumed"
+
+          # Construct the final CLI command string
+          $cmd = @('uipath', 'orchestrator', 'test-data-queue-actions', 'get-next-item') + $args
+          $commandLine = $cmd -join ' '
+
+          # For debug, output the command line
+          Write-Host "Running command: $commandLine"
+
+          # Invoke the command
+          # It's assumed that 'uipath' CLI is in PATH
+          & uipath orchestrator test-data-queue-actions get-next-item @args
+
+          # Save the command used for outputs or logging
+          Write-Output "::set-output name=command::$commandLine"

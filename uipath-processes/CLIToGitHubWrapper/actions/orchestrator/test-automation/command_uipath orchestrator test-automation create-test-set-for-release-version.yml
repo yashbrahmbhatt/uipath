@@ -1,0 +1,91 @@
+name: uipath orchestrator test-automation create-test-set-for-release-version
+description: |
+  NAME:
+     uipath orchestrator test-automation create-test-set-for-release-version - This will create a test set with source type API.This endpoint it is supposed to be used by API integration.
+
+  USAGE:
+     uipath orchestrator test-automation create-test-set-for-release-version [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSets or OR.TestSets.Write.
+
+     Required permissions: TestSets.Create.
+
+     Responses:
+     201 Created returns test set Id
+     403 If the caller doesn't have permissions to create a test set
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --release-id integer (required)
+
+     --version-number string (required)
+
+     --enable-coverage boolean
+
+     --mask-build-version boolean
+
+     --test-case-unique-ids string,string,...
+     
+on: workflow_call
+inputs:
+  folder_id:
+    description: 'Folder/OrganizationUnit Id'
+    required: true
+    type: string
+  release_id:
+    description: 'Release Id'
+    required: true
+    type: string
+  version_number:
+    description: 'Version number'
+    required: true
+    type: string
+  enable_coverage:
+    description: 'Enable coverage (true/false)'
+    required: false
+    default: 'false'
+    type: boolean
+  mask_build_version:
+    description: 'Mask build version (true/false)'
+    required: false
+    default: 'false'
+    type: boolean
+  test_case_unique_ids:
+    description: 'Comma-separated list of test case unique IDs'
+    required: false
+    type: string
+jobs:
+  create-test-set:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath Create Test Set for Release Version
+        shell: pwsh
+        run: |
+          # Initialize argument list
+          $args = @(
+            'orchestrator',
+            'test-automation',
+            'create-test-set-for-release-version',
+            "--folder-id", ${{ inputs.folder_id }},
+            "--release-id", ${{ inputs.release_id }},
+            "--version-number", "`"${{ inputs.version_number }}`""
+          )
+          # Conditionally add --enable-coverage if true
+          if (${{ inputs.enable_coverage }} -eq $true) {
+            $args += "--enable-coverage"
+          }
+          # Conditionally add --mask-build-version if true
+          if (${{ inputs.mask_build_version }} -eq $true) {
+            $args += "--mask-build-version"
+          }
+          # Conditionally add --test-case-unique-ids if provided
+          if (${{ inputs.test_case_unique_ids }} -and ${{ inputs.test_case_unique_ids }}.Trim().Length -gt 0) {
+            $args += "--test-case-unique-ids"
+            $args += "`"${{ inputs.test_case_unique_ids }}`""
+          }
+          # Invoke the CLI command
+          Write-Host "Running: uipath $($args -join ' ')"
+          uipath @args

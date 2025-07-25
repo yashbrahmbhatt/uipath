@@ -1,0 +1,64 @@
+name: UiPath Orchestrator Get Current User
+
+description: |
+  NAME:
+     uipath orchestrator users get-current-user - Returns details about the user currently logged into Orchestrator.
+
+  USAGE:
+     uipath orchestrator users get-current-user [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Read.
+
+  OPTIONS:
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        default: ''
+
+jobs:
+  get_current_user:
+    runs-on:
+      - windows
+      - self-hosted
+    outputs:
+      result: ${{ steps.run_command.outputs.result }}
+    steps:
+      - name: Run UiPath Orchestrator get-current-user command
+        id: run_command
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'users', 'get-current-user')
+
+          # Add --expand option if provided and not empty
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += @('--expand', '${{ inputs.expand }}')
+          }
+
+          # Add --select option if provided and not empty
+          if ('${{ inputs.select }}' -ne '') {
+            $args += @('--select', '${{ inputs.select }}')
+          }
+
+          # Join arguments to build the command string
+          $cmd = "uipath " + ($args | ForEach-Object { '`"' + $_ + '`"' }) -join ' '
+
+          Write-Host "Running command: $cmd"
+
+          $output = Invoke-Expression $cmd
+
+          # Set the command output to a step output for downstream jobs
+          Write-Output "::set-output name=result::$output"

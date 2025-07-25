@@ -1,0 +1,63 @@
+name: 'uipath-orchestrator-settings-set-calendar'
+description: |
+  NAME:
+     uipath orchestrator settings set-calendar - Sets custom calendar, with excluded dates in UTC, for current tenant
+
+  USAGE:
+     uipath orchestrator settings set-calendar [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+     Required permissions: Settings.Edit.
+     DEPRECATED: 
+     This API is deprecated. Please do not use it any longer. Use /odata/Calendars instead.
+     Please refer to https://docs.uipath.com/orchestrator/reference
+
+  OPTIONS:
+     --excluded-dates string,string,...
+
+     --time-zone-id string
+
+on:
+  workflow_call:
+    inputs:
+      excluded-dates:
+        description: 'Comma-separated list of excluded dates in UTC (optional)'
+        required: false
+        type: string
+        default: ''
+      time-zone-id:
+        description: 'Time zone ID string (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  set-calendar:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: 'Run uipath orchestrator settings set-calendar command'
+        shell: pwsh
+        run: |
+          # Initialize argument list
+          $argsList = @()
+
+          # Add --excluded-dates argument if provided
+          if ('${{ inputs.excluded-dates }}' -ne '') {
+            $escapedExcludedDates = '${{ inputs.excluded-dates }}'.Replace('"', '\"')
+            $argsList += "--excluded-dates `"$escapedExcludedDates`""
+          }
+
+          # Add --time-zone-id argument if provided
+          if ('${{ inputs.time-zone-id }}' -ne '') {
+            $escapedTimeZoneId = '${{ inputs.time-zone-id }}'.Replace('"', '\"')
+            $argsList += "--time-zone-id `"$escapedTimeZoneId`""
+          }
+
+          # Construct final command line
+          $command = "uipath orchestrator settings set-calendar " + ($argsList -join ' ')
+
+          Write-Host "Executing command: $command"
+          Invoke-Expression $command

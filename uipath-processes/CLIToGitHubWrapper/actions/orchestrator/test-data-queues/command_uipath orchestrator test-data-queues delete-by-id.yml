@@ -1,0 +1,82 @@
+name: uipath-orchestrator-test-data-queues-delete-by-id
+description: |
+  NAME:
+     uipath orchestrator test-data-queues delete-by-id - Delete an existing test data queue
+
+  USAGE:
+     uipath orchestrator test-data-queues delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+     Required permissions: TestDataQueues.Delete.
+
+     Responses:
+     204 The test data queue was deleted
+     403 If the caller doesn't have permissions to delete test data queues
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      key:
+        description: 'Id of the test data queue to be deleted (required)'
+        required: true
+        type: number
+      cli-path:
+        description: 'Path to the uipath CLI executable'
+        required: false
+        type: string
+        default: 'uipath'
+
+    # No secrets needed as per help text
+
+jobs:
+  delete_test_data_queue:
+    runs-on: [windows, self-hosted]
+    outputs:
+      exit-code: ${{ steps.run_cli.outputs.exit-code }}
+    steps:
+      - name: Run uipath orchestrator test-data-queues delete-by-id
+        id: run_cli
+        shell: pwsh
+        run: |
+          # Initialize argument array
+          $args = @()
+
+          # Add base command and subcommands
+          $args += "orchestrator"
+          $args += "test-data-queues"
+          $args += "delete-by-id"
+
+          # Add required --folder-id argument
+          $args += "--folder-id"
+          $args += "${{ inputs['folder-id'] }}"
+
+          # Add required --key argument
+          $args += "--key"
+          $args += "${{ inputs.key }}"
+
+          # Determine CLI executable path or default 'uipath'
+          $cliPath = "${{ inputs['cli-path'] }}".Trim()
+          if ([string]::IsNullOrEmpty($cliPath)) {
+              $cliPath = "uipath"
+          }
+
+          # Compose command string with quoted arguments for safety
+          $commandLine = $cliPath + " " + ($args | ForEach-Object { '"' + ($_ -replace '"', '""') + '"' }) -join ' '
+
+          Write-Host "Executing command: $commandLine"
+
+          # Run the command
+          $process = Start-Process -FilePath $cliPath -ArgumentList $args -NoNewWindow -Wait -PassThru
+
+          # Set output with exit code
+          Write-Output "::set-output name=exit-code::$($process.ExitCode)"
+
+          if ($process.ExitCode -ne 0) {
+            throw "Command exited with code $($process.ExitCode)"
+          }

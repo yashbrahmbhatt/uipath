@@ -1,0 +1,94 @@
+name: get-secure-store-configuration-by-storetypename
+description: |
+  OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+  Required permissions: Settings.View.
+
+  Gets the configuration format for a Secure store
+
+on:
+  workflow_call:
+    inputs:
+      store_type_name:
+        description: name of the secure store type
+        required: true
+        type: string
+      count:
+        description: Indicates whether the total count of items within a collection are returned in the result.
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: Restricts the set of items returned. The maximum number of expressions is 100.
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: Specifies the order in which items are returned. The maximum number of expressions is 5.
+        required: false
+        type: string
+        default: ''
+      proxy_id:
+        description: id of the hosted credential store
+        required: false
+        type: integer
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  get-secure-store-configuration:
+    runs-on: [windows, self-hosted]
+
+    steps:
+      - name: Run uipath orchestrator settings get-secure-store-configuration-by-storetypename
+        shell: pwsh
+        run: |
+          # Build arguments array for the CLI command
+          $args = @("orchestrator", "settings", "get-secure-store-configuration-by-storetypename")
+
+          # Required argument: --store-type-name
+          $args += "--store-type-name"
+          $args += "${{ inputs.store_type_name }}"
+
+          # Optional boolean flag --count
+          if (${{ inputs.count }} -eq $true) {
+            $args += "--count"
+            $args += "true"
+          }
+
+          # Optional string arguments with checks for non-empty
+          if ("${{ inputs.expand }}" -ne "") {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+
+          if ("${{ inputs.filter }}" -ne "") {
+            $args += "--filter"
+            $args += "${{ inputs.filter }}"
+          }
+
+          if ("${{ inputs.orderby }}" -ne "") {
+            $args += "--orderby"
+            $args += "${{ inputs.orderby }}"
+          }
+
+          if (${{ inputs.proxy_id }} -ne $null) {
+            $args += "--proxy-id"
+            $args += "${{ inputs.proxy_id }}"
+          }
+
+          if ("${{ inputs.select }}" -ne "") {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Invoke the CLI command with constructed arguments
+          uipath @args

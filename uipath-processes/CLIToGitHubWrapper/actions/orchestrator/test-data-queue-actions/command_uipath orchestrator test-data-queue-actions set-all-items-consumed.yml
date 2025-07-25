@@ -1,0 +1,77 @@
+name: UiPath Orchestrator Test Data Queue Actions - Set All Items Consumed
+description: |
+  NAME:
+     uipath orchestrator test-data-queue-actions set-all-items-consumed - Set the IsConsumed flag for all items from a test data queue
+
+  USAGE:
+     uipath orchestrator test-data-queue-actions set-all-items-consumed [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+     Required permissions: TestDataQueueItems.Edit.
+
+     Responses:
+     202 All items from the test data queue were scheduled for setting the IsConsumed flag
+     403 If the caller doesn't have permissions to edit test data queue items
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --is-consumed boolean (required)
+
+     --queue-name string (required)
+  
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      is-consumed:
+        description: 'Boolean flag to set IsConsumed (required)'
+        required: true
+        type: boolean
+      queue-name:
+        description: 'Name of the test data queue (required)'
+        required: true
+        type: string
+    secrets:
+      # No secrets explicitly required according to help text
+      # OAuth token or credentials could be set here if needed by the environment or CLI
+      # Example:
+      # ORCHESTRATOR_AUTH_TOKEN:
+      #   description: 'OAuth token for authentication'
+      #   required: false
+
+jobs:
+  set-items-consumed:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath CLI to set all items consumed in test data queue
+        shell: pwsh
+        run: |
+          # Initialize argument array
+          $args = @()
+
+          # Required: folder-id argument
+          $args += '--folder-id'
+          $args += "${{ inputs.folder-id }}"
+
+          # Required: is-consumed argument (boolean)
+          $args += '--is-consumed'
+          $args += "${{ inputs['is-consumed'] }}"
+
+          # Required: queue-name argument (string)
+          $args += '--queue-name'
+          $args += "'${{ inputs['queue-name'] }}'"
+
+          # Compose the full command line
+          $cmd = "uipath orchestrator test-data-queue-actions set-all-items-consumed " + ($args -join ' ')
+
+          Write-Host "Running command: $cmd"
+
+          # Run the command
+          Invoke-Expression $cmd

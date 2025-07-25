@@ -1,0 +1,94 @@
+name: uipath-orchestrator-task-notes-create-task-note
+description: |
+  NAME:
+     uipath orchestrator task-notes create-task-note - Adds a task note.
+
+  USAGE:
+     uipath orchestrator task-notes create-task-note [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Required permissions: Tasks.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --text string (required)
+        Gets or sets note text.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --task-id integer
+        Gets or sets Id of the Task
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        required: true
+        type: number
+        description: 'Folder/OrganizationUnit Id (required)'
+      text:
+        required: true
+        type: string
+        description: 'Note text (required)'
+      expand:
+        required: false
+        type: string
+        description: 'Indicates related entities to be represented inline (optional)'
+        default: ''
+      select:
+        required: false
+        type: string
+        description: 'Limits properties returned in the result (optional)'
+        default: ''
+      task_id:
+        required: false
+        type: number
+        description: 'Id of the Task (optional)'
+        default: 0
+
+jobs:
+  build:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator task-notes create-task-note
+        shell: pwsh
+        run: |
+          # Construct the argument array for uipath CLI
+          $args = @(
+            'orchestrator', 'task-notes', 'create-task-note'
+          )
+
+          # Add required parameters
+          $args += '--folder-id'
+          $args += "$(${{ inputs.folder_id }})"
+
+          $args += '--text'
+          $args += "$(${{ inputs.text }})"
+
+          # Add optional parameters if provided and non-empty / non-zero
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += '--expand'
+            $args += "${{ inputs.expand }}"
+          }
+
+          if ('${{ inputs.select }}' -ne '') {
+            $args += '--select'
+            $args += "${{ inputs.select }}"
+          }
+
+          if (${{ inputs.task_id }} -ne 0) {
+            $args += '--task-id'
+            $args += "$(${{ inputs.task_id }})"
+          }
+
+          # Execute the CLI command with constructed args
+          Write-Host "Running command: uipath $($args -join ' ')"
+          uipath @args

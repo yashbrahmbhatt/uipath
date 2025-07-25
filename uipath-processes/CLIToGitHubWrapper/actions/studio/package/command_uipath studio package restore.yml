@@ -1,0 +1,49 @@
+name: uipath-studio-package-restore
+description: |
+  Restores the packages of the project.
+
+  USAGE:
+     uipath studio package restore [command options] [arguments...]
+
+  OPTIONS:
+     --destination string (default: ./packages)
+        The output folder
+
+     --source string (default: .)
+        Path to a project.json file or a folder containing project.json file
+
+on:
+  workflow_call:
+    inputs:
+      destination:
+        description: 'The output folder where packages will be restored.'
+        required: false
+        default: './packages'
+      source:
+        description: 'Path to a project.json file or a folder containing the project.json file.'
+        required: false
+        default: '.'
+
+jobs:
+  restore-packages:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Restore UiPath Studio packages
+        shell: pwsh
+        run: |
+          $args = @('studio', 'package', 'restore')
+
+          if ("${{ inputs.destination }}" -ne "") {
+              $args += "--destination"
+              $args += "${{ inputs.destination }}"
+          }
+
+          if ("${{ inputs.source }}" -ne "") {
+              $args += "--source"
+              $args += "${{ inputs.source }}"
+          }
+
+          # Join the arguments into a single string with proper quoting for each argument
+          $command = "uipath " + ($args | ForEach-Object { if ($_ -match '\s') { '"' + $_ + '"' } else { $_ } }) -join ' '
+          Write-Host "Running command: $command"
+          iex $command

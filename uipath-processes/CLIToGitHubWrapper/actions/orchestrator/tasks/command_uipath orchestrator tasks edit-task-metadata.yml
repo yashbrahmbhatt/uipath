@@ -1,0 +1,136 @@
+name: Edit Task Metadata
+
+description: |
+  NAME:
+     uipath orchestrator tasks edit-task-metadata - Edits the metadata of a task
+
+  USAGE:
+     uipath orchestrator tasks edit-task-metadata [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Requires authentication.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --task-id integer (required)
+        Id of Task which have to be edited
+
+     --note-text string
+        Comment to be added while doing the edit operation
+
+     --priority string
+        Priority of task
+
+        Allowed values:
+        - Low
+        - Medium
+        - High
+        - Critical
+
+     --task-catalog-id integer
+        Action Catalog to be associated with the task
+
+     --title string
+        Title of task
+
+     --unset-task-catalog boolean
+        Unset/Unassociate action catalogs with the task
+        Set to true for unassociating catalog
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: integer
+      task_id:
+        description: 'Id of Task which have to be edited'
+        required: true
+        type: integer
+      note_text:
+        description: 'Comment to be added while doing the edit operation'
+        required: false
+        type: string
+        default: ''
+      priority:
+        description: |
+          Priority of task.
+          Allowed values: Low, Medium, High, Critical
+        required: false
+        type: string
+        default: ''
+      task_catalog_id:
+        description: 'Action Catalog to be associated with the task'
+        required: false
+        type: integer
+        default: ''
+      title:
+        description: 'Title of task'
+        required: false
+        type: string
+        default: ''
+      unset_task_catalog:
+        description: 'Unset/Unassociate action catalogs with the task (set true to unassociate)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  edit-task-metadata:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath Edit Task Metadata CLI
+        shell: pwsh
+        env:
+          # Add any environment variables if needed here
+        run: |
+          # Initialize argument array
+          $args = @("orchestrator", "tasks", "edit-task-metadata")
+
+          # Required inputs
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          $args += "--task-id"
+          $args += "${{ inputs.task_id }}"
+
+          # Optional inputs - add only if not empty or default
+
+          if (${{ inputs.note_text }} -ne '') {
+            $args += "--note-text"
+            $args += "${{ inputs.note_text }}"
+          }
+
+          if (${{ inputs.priority }} -ne '') {
+            # Validate allowed values for priority
+            $validPriorities = @('Low','Medium','High','Critical')
+            if ($validPriorities -notcontains ${{ inputs.priority }}) {
+              Write-Error "Invalid priority value '${{ inputs.priority }}'. Allowed values: $($validPriorities -join ', ')"
+              exit 1
+            }
+            $args += "--priority"
+            $args += "${{ inputs.priority }}"
+          }
+
+          if (${{ inputs.task_catalog_id }} -ne '') {
+            $args += "--task-catalog-id"
+            $args += "${{ inputs.task_catalog_id }}"
+          }
+
+          if (${{ inputs.title }} -ne '') {
+            $args += "--title"
+            $args += "${{ inputs.title }}"
+          }
+
+          if (${{ inputs.unset_task_catalog }}) {
+            $args += "--unset-task-catalog"
+          }
+
+          # Run the CLI command with constructed arguments
+          Write-Output "Running: uipath $($args -join ' ')"
+          uipath @args

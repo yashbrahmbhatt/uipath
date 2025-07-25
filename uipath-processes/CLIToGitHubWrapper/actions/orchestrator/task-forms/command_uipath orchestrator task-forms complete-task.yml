@@ -1,0 +1,84 @@
+name: uipath-orchestrator-complete-task
+description: |
+  NAME:
+     uipath orchestrator task-forms complete-task - Complete the task by saving form data and action taken
+
+  USAGE:
+     uipath orchestrator task-forms complete-task [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Required permissions: Tasks.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --task-id integer (required)
+        TaskId to retrieve form
+
+     --action string
+        Action taken on this task
+
+     --data object
+        Task data json
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (integer)'
+        required: true
+        type: string
+      task_id:
+        description: 'TaskId to retrieve form (integer)'
+        required: true
+        type: string
+      action:
+        description: 'Action taken on this task (string)'
+        required: false
+        type: string
+        default: ''
+      data:
+        description: 'Task data json (string)'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      UIPATH_ORCH_AUTH:
+        description: 'Authentication token or credentials required for OAuth'
+
+jobs:
+  complete-task:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Complete task in UiPath Orchestrator
+        shell: pwsh
+        env:
+          UIPATH_ORCH_AUTH: ${{ secrets.UIPATH_ORCH_AUTH }}
+        run: |
+          # Construct the argument array for the CLI command
+          $args = @(
+            "orchestrator"
+            "task-forms"
+            "complete-task"
+            "--folder-id"
+            "${{ inputs.folder_id }}"
+            "--task-id"
+            "${{ inputs.task_id }}"
+          )
+
+          # Append --action argument if provided
+          if ('${{ inputs.action }}'.Trim() -ne '') {
+            $args += @("--action", "${{ inputs.action }}")
+          }
+
+          # Append --data argument if provided
+          if ('${{ inputs.data }}'.Trim() -ne '') {
+            $args += @("--data", "${{ inputs.data }}")
+          }
+
+          # Execute CLI command with OAuth token in environment if needed
+          # Assuming the CLI automatically uses UIPATH_ORCH_AUTH environment variable or similar
+          uipath @args

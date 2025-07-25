@@ -1,0 +1,52 @@
+name: UiPath Orchestrator Delete Task Catalog by ID
+description: |
+  NAME:
+     uipath orchestrator task-catalogs delete-by-id - Deletes Task Catalog.
+
+  USAGE:
+     uipath orchestrator task-catalogs delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Required permissions: TaskCatalogs.Delete.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+        Id of the catalog to be deleted
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      key:
+        description: 'Id of the catalog to be deleted (required)'
+        required: true
+        type: string
+    secrets: {}
+jobs:
+  delete-task-catalog:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator task-catalogs delete-by-id
+        shell: pwsh
+        run: |
+          # Construct arguments array
+          $args = @()
+
+          # Append required --folder-id argument
+          $args += '--folder-id'
+          $args += '${{ inputs.folder_id }}'
+
+          # Append required --key argument
+          $args += '--key'
+          $args += '${{ inputs.key }}'
+
+          # Execute the CLI command with constructed arguments
+          uipath orchestrator task-catalogs delete-by-id @args

@@ -1,0 +1,68 @@
+name: UiPath Orchestrator Machines Get By Id
+description: |
+  OAuth required scopes: OR.Machines or OR.Machines.Read.
+
+  Required permissions: Machines.View.
+
+  Gets a single machine based on its id.
+
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: The machine ID to retrieve
+        required: true
+        type: integer
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  get_machine_by_id:
+    runs-on: [windows, self-hosted]
+    outputs:
+      output: ${{ steps.run_cli.outputs.result }}
+    steps:
+      - name: Run uipath orchestrator machines get-by-id command
+        id: run_cli
+        shell: pwsh
+        run: |
+          # Build arguments array
+          $args = @('orchestrator', 'machines', 'get-by-id')
+
+          # Required parameter --key
+          $args += @('--key', ${{ inputs.key }})
+          
+          # Optional parameter --expand
+          if ('${{ inputs.expand }}'.Length -gt 0) {
+            $args += @('--expand', "${{ inputs.expand }}")
+          }
+
+          # Optional parameter --select
+          if ('${{ inputs.select }}'.Length -gt 0) {
+            $args += @('--select', "${{ inputs.select }}")
+          }
+
+          # Invoke the uipath CLI with constructed arguments
+          $processInfo = Start-Process -FilePath 'uipath' -ArgumentList $args -NoNewWindow -Wait -PassThru -RedirectStandardOutput out.txt -RedirectStandardError err.txt
+
+          $output = Get-Content -Path out.txt -Raw
+          $errorOutput = Get-Content -Path err.txt -Raw
+
+          if ($processInfo.ExitCode -ne 0) {
+            Write-Error "Command failed with exit code $($processInfo.ExitCode): $errorOutput"
+            exit $processInfo.ExitCode
+          }
+          else {
+            Write-Output $output
+          }
+        # Capture command output for further use
+        outputs:
+          result: ${{ steps.run_cli.outputs.stdout }}

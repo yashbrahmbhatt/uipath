@@ -1,0 +1,175 @@
+name: uipath-orchestrator-save-and-reassign-task
+description: |
+  NAME:
+     uipath orchestrator task-forms save-and-reassign-task - Save changes done by the current user and Reassign Task to another user
+
+  USAGE:
+     uipath orchestrator task-forms save-and-reassign-task [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Required permissions: Tasks.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --assignee-names-or-emails string,string,...
+        Gets or sets the collection of assignee names or emails for this task assignment.
+
+     --assignee-user-ids integer,integer,...
+        Gets or sets the collection of assignee UserIds for this task assignment.
+
+     --assignment-criteria string
+        Gets or sets the assignment criteria for this task assignment.
+        Can be "SingleUser", Hierarchy", "Workload", "AllUsers", etc.
+
+        Allowed values:
+        - SingleUser
+        - Workload
+        - AllUsers
+        - Hierarchy
+
+     --data object
+        Gets or sets the Task data
+
+     --note-text string
+        Gets or sets the Task Note
+
+     --save-data boolean
+        Gets or Sets whether the data has to be saved
+
+     --task-id integer
+        Gets or sets the taskId for this task assignment.
+
+     --user-id integer
+        Gets or sets the userId for this task assignment.
+
+     --user-name-or-email string
+        Gets or sets the UserName or Email for this task assignment. If UserId is provided, this property is ignored.
+  
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: integer
+      assignee_names_or_emails:
+        description: 'Collection of assignee names or emails for this task assignment, comma separated'
+        required: false
+        type: string
+        default: ''
+      assignee_user_ids:
+        description: 'Collection of assignee UserIds for this task assignment, comma separated'
+        required: false
+        type: string
+        default: ''
+      assignment_criteria:
+        description: |
+          Assignment criteria for this task assignment.
+          Allowed values: SingleUser, Workload, AllUsers, Hierarchy
+        required: false
+        type: string
+        default: ''
+      data:
+        description: 'Task data (object JSON string)'
+        required: false
+        type: string
+        default: ''
+      note_text:
+        description: 'Task note text'
+        required: false
+        type: string
+        default: ''
+      save_data:
+        description: 'Whether the data has to be saved'
+        required: false
+        type: boolean
+        default: false
+      task_id:
+        description: 'TaskId for this task assignment'
+        required: false
+        type: integer
+        default: 0
+      user_id:
+        description: 'UserId for this task assignment'
+        required: false
+        type: integer
+        default: 0
+      user_name_or_email:
+        description: |
+          UserName or Email for this task assignment. Ignored if UserId is provided.
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  save-and-reassign-task:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator save-and-reassign-task command
+        shell: pwsh
+        run: |
+          # Build arguments array for uipath CLI command
+          $args = @('orchestrator','task-forms','save-and-reassign-task')
+          # Required argument --folder-id
+          $args += '--folder-id'
+          $args += ${{ inputs.folder_id }}
+
+          # Optional arguments conditionally appended if provided
+          if (${{ inputs.assignee_names_or_emails }} -ne '') {
+            $args += '--assignee-names-or-emails'
+            $args += "${{ inputs.assignee_names_or_emails }}"
+          }
+
+          if (${{ inputs.assignee_user_ids }} -ne '') {
+            $args += '--assignee-user-ids'
+            $args += "${{ inputs.assignee_user_ids }}"
+          }
+
+          if (${{ inputs.assignment_criteria }} -ne '') {
+            $validCriteria = @('SingleUser','Workload','AllUsers','Hierarchy')
+            if (-not $validCriteria -contains ${{ inputs.assignment_criteria }}) {
+              Write-Error "Invalid assignment-criteria value: '${{ inputs.assignment_criteria }}'. Allowed values are: $($validCriteria -join ', ')"
+              exit 1
+            }
+            $args += '--assignment-criteria'
+            $args += "${{ inputs.assignment_criteria }}"
+          }
+
+          if (${{ inputs.data }} -ne '') {
+            $args += '--data'
+            $args += "${{ inputs.data }}"
+          }
+
+          if (${{ inputs.note_text }} -ne '') {
+            $args += '--note-text'
+            $args += "${{ inputs.note_text }}"
+          }
+
+          if (${{ inputs.save_data }}) {
+            $args += '--save-data'
+            $args += 'true'
+          } else {
+            $args += '--save-data'
+            $args += 'false'
+          }
+
+          if (${{ inputs.task_id }} -ne 0) {
+            $args += '--task-id'
+            $args += ${{ inputs.task_id }}
+          }
+
+          if (${{ inputs.user_id }} -ne 0) {
+            $args += '--user-id'
+            $args += ${{ inputs.user_id }}
+          } elseif (${{ inputs.user_name_or_email }} -ne '') {
+            $args += '--user-name-or-email'
+            $args += "${{ inputs.user_name_or_email }}"
+          }
+
+          # Execute the CLI command
+          Write-Host "Executing: uipath $($args -join ' ')"
+          & uipath @args

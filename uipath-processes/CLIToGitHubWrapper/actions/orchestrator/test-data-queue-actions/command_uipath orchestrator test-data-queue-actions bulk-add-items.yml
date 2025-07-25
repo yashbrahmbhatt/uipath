@@ -1,0 +1,76 @@
+name: uipath orchestrator test-data-queue-actions bulk-add-items
+
+description: |
+  NAME:
+     uipath orchestrator test-data-queue-actions bulk-add-items - Bulk adds an array of data queue items
+
+  USAGE:
+     uipath orchestrator test-data-queue-actions bulk-add-items [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+     Required permissions: TestDataQueueItems.Create.
+
+     Responses:
+     200 Returns the number of items added
+     403 If the caller doesn't have permissions to create test data queue items
+     409 If the test data queue items violates the content JSON schema set on the queue
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (integer)'
+        required: true
+        type: number
+      items:
+        description: 'Items array to bulk add (JSON string array)'
+        required: true
+        type: string
+      queue_name:
+        description: 'Queue name string'
+        required: true
+        type: string
+    secrets: []
+
+jobs:
+  bulk-add-items:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator test-data-queue-actions bulk-add-items
+        shell: pwsh
+        run: |
+          # Construct argument list for the CLI command
+          $args = @()
+          $args += "orchestrator"
+          $args += "test-data-queue-actions"
+          $args += "bulk-add-items"
+
+          # Add required folder-id argument
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          # Add required items argument, which can accept multiple objects, pass as JSON array string
+          # The CLI expects multiple --items object, but since the input is a JSON string array, split it appropriately
+          try {
+            $jsonItems = ${{ inputs.items }} | ConvertFrom-Json
+            foreach ($item in $jsonItems) {
+              $jsonString = $item | ConvertTo-Json -Compress
+              $args += "--items"
+              $args += $jsonString
+            }
+          }
+          catch {
+            Write-Error "Failed to parse 'items' input as JSON array of objects. Please provide a valid JSON array string."
+            Exit 1
+          }
+
+          # Add required queue name argument
+          $args += "--queue-name"
+          $args += "${{ inputs.queue_name }}"
+
+          # Invoke the CLI command passing all arguments
+          uipath $args -join ' ' | Write-Host
+          & uipath @args

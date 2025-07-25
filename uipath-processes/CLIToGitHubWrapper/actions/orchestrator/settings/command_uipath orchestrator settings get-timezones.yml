@@ -1,0 +1,49 @@
+name: uipath-orchestrator-settings-get-timezones
+description: |
+  NAME:
+     uipath orchestrator settings get-timezones - Gets timezones.
+
+  USAGE:
+     uipath orchestrator settings get-timezones [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+  OPTIONS:
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+jobs:
+  run-get-timezones:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator settings get-timezones command
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'settings', 'get-timezones')
+          if (${{ inputs.expand }} -ne '') {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+          if (${{ inputs.select }} -ne '') {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+          # Execute the constructed command
+          uipath $args

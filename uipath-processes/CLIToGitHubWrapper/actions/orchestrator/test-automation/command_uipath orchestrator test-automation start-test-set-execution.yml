@@ -1,0 +1,75 @@
+name: 'uipath orchestrator test-automation start-test-set-execution'
+
+description: |
+  OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Write.
+  Required permissions: TestSetExecutions.Create.
+  Responses:
+  200 OK returns test set execution Id
+  403 If the caller doesn't have permissions to execute a test set
+  404 If the test set was not found
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      test_set_id:
+        description: 'Test Set Id (optional)'
+        required: false
+        type: number
+      test_set_key:
+        description: 'Test Set Key (optional)'
+        required: false
+        type: string
+      trigger_type:
+        description: 'Specifies how was the execution triggered'
+        required: false
+        default: 'Manual'
+        type: string
+        # Allowed values: Manual, Scheduled, ExternalTool, TestManager
+
+jobs:
+  start-test-set-execution:
+    runs-on: [windows, self-hosted]
+    outputs:
+      exit_code: ${{ steps.call-orchestrator.outputs.exit_code }}
+    steps:
+      - name: Run uipath orchestrator test-automation start-test-set-execution
+        id: call-orchestrator
+        shell: pwsh
+        run: |
+          # Build the argument array for the CLI command
+          $args = @('orchestrator', 'test-automation', 'start-test-set-execution')
+
+          # Required folder id
+          $args += '--folder-id'
+          $args += ${{ inputs.folder_id }}
+
+          # Add test-set-id if provided
+          if (${{ inputs.test_set_id }} -ne $null -and ${{ inputs.test_set_id }}.ToString().Trim() -ne '') {
+            $args += '--test-set-id'
+            $args += ${{ inputs.test_set_id }}
+          }
+          # Add test-set-key if provided
+          if (${{ inputs.test_set_key }} -ne $null -and ${{ inputs.test_set_key }}.Trim() -ne '') {
+            $args += '--test-set-key'
+            $args += '"' + ${{ inputs.test_set_key }} + '"'
+          }
+
+          # Validate trigger_type if set, else use default
+          $validTriggers = @('Manual','Scheduled','ExternalTool','TestManager')
+          $triggerType = ${{ inputs.trigger_type }}
+          if (-not $validTriggers.Contains($triggerType)) {
+            Write-Error "Invalid trigger_type value '$triggerType'. Allowed values are: $($validTriggers -join ', ')"
+            exit 1
+          }
+          $args += '--trigger-type'
+          $args += $triggerType
+
+          # Compose and run the final command
+          $command = "uipath " + ($args -join ' ')
+          Write-Output "Executing command: $command"
+          Invoke-Expression $command
+          exit $LASTEXITCODE

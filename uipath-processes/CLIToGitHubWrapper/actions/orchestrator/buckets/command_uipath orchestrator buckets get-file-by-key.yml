@@ -1,0 +1,87 @@
+name: uipath-orchestrator-buckets-get-file-by-key
+description: |
+  NAME:
+     uipath orchestrator buckets get-file-by-key - Gets a file metadata.
+
+  USAGE:
+     uipath orchestrator buckets get-file-by-key [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Administration or OR.Administration.Read.
+
+     Required permissions: Buckets.View and BlobFiles.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+        The Bucket Id
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --path string
+        The BlobFile full path
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        required: true
+        description: Folder/OrganizationUnit Id (integer)
+        type: integer
+      key:
+        required: true
+        description: The Bucket Id (integer)
+        type: integer
+      expand:
+        required: false
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        type: string
+        default: ''
+      path:
+        required: false
+        description: The BlobFile full path
+        type: string
+        default: ''
+      select:
+        required: false
+        description: Limits the properties returned in the result
+        type: string
+        default: ''
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator buckets get-file-by-key command
+        shell: pwsh
+        run: |
+          $args = @()
+          # Required parameters
+          $args += '--folder-id'
+          $args += "${{ inputs.folder-id }}"
+
+          $args += '--key'
+          $args += "${{ inputs.key }}"
+
+          # Optional parameters - only add if not empty
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += '--expand'
+            $args += "${{ inputs.expand }}"
+          }
+
+          if ('${{ inputs.path }}' -ne '') {
+            $args += '--path'
+            $args += "${{ inputs.path }}"
+          }
+
+          if ('${{ inputs.select }}' -ne '') {
+            $args += '--select'
+            $args += "${{ inputs.select }}"
+          }
+          
+          # Execute the CLI command with constructed arguments
+          uipath orchestrator buckets get-file-by-key @args

@@ -1,0 +1,71 @@
+name: uipath-orchestrator-personal-workspaces-get-personal-workspace
+description: |
+  NAME:
+     uipath orchestrator personal-workspaces get-personal-workspace - Gets Personal Workspace for current User
+
+  USAGE:
+     uipath orchestrator personal-workspaces get-personal-workspace [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth authentication is not supported.
+
+     Requires authentication.
+
+  OPTIONS:
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      # Assuming that authentication requires an api_key or token to be passed as a secret or environment variable
+    secrets:
+      UIPATH_AUTH_TOKEN:
+        description: 'Authentication token or secret for UiPath CLI'
+
+jobs:
+  call-get-personal-workspace:
+    runs-on: [windows, self-hosted]
+    steps:
+    - name: Run UiPath Orchestrator get-personal-workspace command
+      shell: pwsh
+      env:
+        UIPATH_AUTH_TOKEN: ${{ secrets.UIPATH_AUTH_TOKEN }}
+      run: |
+        # Initialize argument array for CLI command construction
+        $args = @('orchestrator', 'personal-workspaces', 'get-personal-workspace')
+
+        # Add --expand option if provided
+        if ('${{ inputs.expand }}' -ne '') {
+          $args += '--expand'
+          $args += '${{ inputs.expand }}'
+        }
+
+        # Add --select option if provided
+        if ('${{ inputs.select }}' -ne '') {
+          $args += '--select'
+          $args += '${{ inputs.select }}'
+        }
+
+        # Note: Insert authentication logic here if needed, e.g., passing token as an environment variable or flag
+
+        # Compose the command string safely
+        $command = "uipath " + ($args | ForEach-Object { "'$_'" }) -join ' '
+
+        Write-Host "Executing command: $command"
+
+        # Execute the CLI command
+        iex $command

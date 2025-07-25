@@ -1,0 +1,124 @@
+name: uipath-orchestrator-get-machine-sessions-by-key
+description: |
+  NAME:
+     uipath orchestrator sessions get-machine-sessions-by-key - Get sessions for a machine
+
+  USAGE:
+     uipath orchestrator sessions get-machine-sessions-by-key [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Robots or OR.Robots.Read.
+
+     Required permissions: Machines.View.
+
+  OPTIONS:
+     --key integer (required)
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: The machine key (required).
+        required: true
+        type: string
+      count:
+        description: Indicates whether the total count of items are returned (true/false).
+        required: false
+        default: 'false'
+        type: boolean
+      expand:
+        description: Related entities to be represented inline.
+        required: false
+        type: string
+      filter:
+        description: Filter expression to restrict items returned.
+        required: false
+        type: string
+      orderby:
+        description: Order by expressions.
+        required: false
+        type: string
+      select:
+        description: Limit the properties returned.
+        required: false
+        type: string
+      skip:
+        description: Number of items to exclude from result.
+        required: false
+        type: string
+      top:
+        description: Max number of items to return (max 1000).
+        required: false
+        type: string
+
+jobs:
+  get_machine_sessions_by_key:
+    runs-on:
+      - windows
+      - self-hosted
+    steps:
+      - name: Run uipath orchestrator sessions get-machine-sessions-by-key
+        shell: pwsh
+        run: |
+          # Initialize argument array with mandatory required --key parameter
+          $args = @("uipath", "orchestrator", "sessions", "get-machine-sessions-by-key", "--key", "${{ inputs.key }}" )
+
+          # Add --count if true
+          if (${{ inputs.count }} -eq 'true' -or ${{ inputs.count }} -eq $true) {
+            $args += "--count"
+          }
+
+          # Conditionally add optional parameters if provided
+          if (${{ inputs.expand }}) {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+
+          if (${{ inputs.filter }}) {
+            $args += "--filter"
+            $args += "${{ inputs.filter }}"
+          }
+
+          if (${{ inputs.orderby }}) {
+            $args += "--orderby"
+            $args += "${{ inputs.orderby }}"
+          }
+
+          if (${{ inputs.select }}) {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          if (${{ inputs.skip }}) {
+            $args += "--skip"
+            $args += "${{ inputs.skip }}"
+          }
+
+          if (${{ inputs.top }}) {
+            $args += "--top"
+            $args += "${{ inputs.top }}"
+          }
+
+          # Execute the CLI command with constructed arguments
+          & $args[0] @args[1..($args.Length - 1)]

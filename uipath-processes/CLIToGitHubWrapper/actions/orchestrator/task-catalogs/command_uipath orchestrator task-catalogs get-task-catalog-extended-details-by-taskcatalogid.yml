@@ -1,0 +1,83 @@
+name: UiPath Orchestrator Get Task Catalog Extended Details by TaskCatalogId
+description: |
+  NAME:
+     uipath orchestrator task-catalogs get-task-catalog-extended-details-by-taskcatalogid - Validates task catalog deletion request.
+
+  USAGE:
+     uipath orchestrator task-catalogs get-task-catalog-extended-details-by-taskcatalogid [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --task-catalog-id integer (required)
+        Id of task catalog
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: Folder/OrganizationUnit Id (required)
+        required: true
+        type: number
+      task_catalog_id:
+        description: Id of task catalog (required)
+        required: true
+        type: number
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+      uipath_token:
+        description: UiPath authentication token required for API access
+        required: true
+        type: string
+    secrets:
+      uipath_token: 
+        required: true
+jobs:
+  get-task-catalog-details:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Call UiPath Orchestrator CLI to get task catalog extended details
+        shell: pwsh
+        env:
+          UIPATH_AUTH_TOKEN: ${{ secrets.uipath_token }}
+        run: |
+          # Initialize argument array with base command and required options
+          $args = @(
+            'orchestrator', 'task-catalogs', 'get-task-catalog-extended-details-by-taskcatalogid';
+            '--folder-id', "${{ inputs.folder_id }}";
+            '--task-catalog-id', "${{ inputs.task_catalog_id }}"
+          )
+
+          # Append --expand option if specified
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += '--expand'
+            $args += '${{ inputs.expand }}'
+          }
+
+          # Append --select option if specified
+          if ('${{ inputs.select }}' -ne '') {
+            $args += '--select'
+            $args += '${{ inputs.select }}'
+          }
+
+          # Run the uipath CLI with assembled arguments, authentication handled via env token
+          uipath @args

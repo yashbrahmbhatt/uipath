@@ -1,0 +1,209 @@
+name: 'UiPath Orchestrator Get Tasks Across Folders'
+
+description: |
+  NAME:
+     uipath orchestrator tasks get-tasks-across-folders - Gets Task objects across folders (including Modern folders) with the given OData queries.
+
+  USAGE:
+     uipath orchestrator tasks get-tasks-across-folders [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --event string
+        Operation performed on the task
+
+        Allowed values:
+        - ForwardedEver
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id, required.'
+        required: true
+        type: number
+      count:
+        description: 'Return the total count of items within the collection.'
+        required: false
+        type: boolean
+        default: false
+      event:
+        description: 'Operation performed on the task. Allowed value: ForwardedEver'
+        required: false
+        type: string
+      expand:
+        description: 'Related entities to be represented inline. Max depth: 2.'
+        required: false
+        type: string
+      filter:
+        description: 'Restricts the set of items returned. Max expressions: 100.'
+        required: false
+        type: string
+      orderby:
+        description: 'Specifies the order for returned items. Max expressions: 5.'
+        required: false
+        type: string
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+      skip:
+        description: 'Number of items to exclude from the start of the result.'
+        required: false
+        type: number
+        default: 0
+      top:
+        description: 'Limits the number of items returned. Max value: 1000.'
+        required: false
+        type: number
+        default: 1000
+
+jobs:
+  get-tasks:
+    runs-on:
+      - windows
+      - self-hosted
+    outputs:
+      command-exit-code: ${{steps.run-task.outputs.exit-code}}
+    steps:
+      - name: Setup command arguments array
+        id: prep-args
+        shell: pwsh
+        run: |
+          $args = @()
+          # Required folder-id argument
+          $args += '--folder-id'
+          $args += ${{ inputs.folder_id }}
+
+          # Optional boolean --count parameter
+          if (${{ inputs.count }}) {
+            $args += '--count'
+            $args += 'true'
+          }
+
+          # Optional --event parameter
+          if (${{ inputs.event }}) {
+            if (${{ inputs.event }} -ne '') {
+              # Validate allowed value ForwardedEver
+              if (${{ inputs.event }} -eq 'ForwardedEver') {
+                $args += '--event'
+                $args += ${{ inputs.event }}
+              } else {
+                Write-Error "Invalid value for 'event': ${{ inputs.event }}. Allowed value: ForwardedEver"
+                exit 1
+              }
+            }
+          }
+
+          # Optional --expand parameter
+          if (${{ inputs.expand }} -and ${{ inputs.expand }} -ne '') {
+            $args += '--expand'
+            $args += ${{ inputs.expand }}
+          }
+
+          # Optional --filter parameter
+          if (${{ inputs.filter }} -and ${{ inputs.filter }} -ne '') {
+            $args += '--filter'
+            $args += ${{ inputs.filter }}
+          }
+
+          # Optional --orderby parameter
+          if (${{ inputs.orderby }} -and ${{ inputs.orderby }} -ne '') {
+            $args += '--orderby'
+            $args += ${{ inputs.orderby }}
+          }
+
+          # Optional --select parameter
+          if (${{ inputs.select }} -and ${{ inputs.select }} -ne '') {
+            $args += '--select'
+            $args += ${{ inputs.select }}
+          }
+
+          # Optional --skip parameter
+          if (${{ inputs.skip }} -gt 0) {
+            $args += '--skip'
+            $args += ${{ inputs.skip }}
+          }
+
+          # Optional --top parameter
+          if (${{ inputs.top }} -lt 1000 -and ${{ inputs.top }} -gt 0) {
+            $args += '--top'
+            $args += ${{ inputs.top }}
+          } elseif (${{ inputs.top }} -gt 1000) {
+            Write-Warning "Top value is above maximum (1000). Using 1000."
+            $args += '--top'
+            $args += 1000
+          }
+
+          # Save the constructed arguments as a job output for consumption in next step
+          # Not possible directly, so we output to environment variable
+          $argsstring = $args -join ' '
+          echo "Args assembled: $argsstring"
+          echo "::set-output name=cmdargs::$argsstring"
+          # Also set environment variable for next step
+          echo "cmdargs=$argsstring" >> $env:GITHUB_ENV
+
+      - name: Run uipath orchestrator tasks get-tasks-across-folders command
+        id: run-task
+        shell: pwsh
+        run: |
+          $args = @()
+          # Read args string from environment variable
+          $argsString = $env:cmdargs
+          if ([string]::IsNullOrWhiteSpace($argsString)) {
+            Write-Error "No arguments assembled for the command."
+            exit 1
+          }
+          # Use PowerShell to split args string into array safely
+          $args = $argsString -split ' (?=(?:[^"]*"[^"]*")*[^"]*$)'
+          # Build full command array
+          $cmd = @('uipath', 'orchestrator', 'tasks', 'get-tasks-across-folders') + $args
+
+          # For logging, join command with escaping quotes
+          $cmdline = $cmd | ForEach-Object { ($_ -replace '"', '`"') }
+          Write-Host "Running command: $($cmdline -join ' ')"
+          
+          # Run the command and capture output and exit code
+          $process = Start-Process -FilePath 'uipath' -ArgumentList @('orchestrator', 'tasks', 'get-tasks-across-folders') + $args -NoNewWindow -Wait -PassThru -RedirectStandardOutput output.txt -RedirectStandardError error.txt
+          $exitCode = $process.ExitCode
+          Write-Host "Command exited with code $exitCode"
+          if ($exitCode -ne 0) {
+            Write-Host "Standard error output:"
+            Get-Content error.txt | ForEach-Object { Write-Host $_ }
+            exit $exitCode
+          }
+
+          # Output the command result to logs
+          Write-Host "Command standard output:"
+          Get-Content output.txt | ForEach-Object { Write-Host $_ }
+
+          # Set step output for exit code
+          echo "::set-output name=exit-code::$exitCode"

@@ -1,0 +1,56 @@
+name: 'uipath orchestrator users toggle-role-by-id'
+
+description: |
+  NAME:
+     uipath orchestrator users toggle-role-by-id - Associates/dissociates the given user with/from a role based on toggle parameter.
+
+  USAGE:
+     uipath orchestrator users toggle-role-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Write.
+
+     Required permissions: Users.Edit.
+
+  OPTIONS:
+     --key integer (required)
+
+     --role string (required)
+
+     --toggle boolean (required)
+
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The user key (integer) to associate/dissociate role for.'
+        required: true
+        type: number
+      role:
+        description: 'The role name to toggle.'
+        required: true
+        type: string
+      toggle:
+        description: 'Boolean indicating whether to associate (true) or dissociate (false) the role.'
+        required: true
+        type: boolean
+
+jobs:
+  toggle_user_role:
+    runs-on:
+      - windows
+      - self-hosted
+    steps:
+      - name: Run uipath orchestrator users toggle-role-by-id
+        shell: pwsh
+        run: |
+          # Prepare argument array for the CLI command
+          $args = @(
+            'orchestrator', 'users', 'toggle-role-by-id'
+            '--key', ${{ inputs.key }}
+            '--role', "'${{ inputs.role }}'"
+            '--toggle', ${{ inputs.toggle }}
+          )
+
+          # Execute the CLI command with constructed arguments
+          uipath @args

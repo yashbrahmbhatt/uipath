@@ -1,0 +1,116 @@
+name: 'UiPath Orchestrator Test Case Definitions Get'
+description: |
+  NAME:
+     uipath orchestrator test-case-definitions get - Returns a list of Test Case Definitions
+
+  USAGE:
+     uipath orchestrator test-case-definitions get [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSets or OR.TestSets.Read.
+
+     Required permissions: TestSets.View.
+
+     Responses:
+     200 Returns a list of Test Case Definitions filtered with queryOptions
+     403 If the caller doesn't have permissions to view Test Case Definitions
+
+on:
+  workflow_call:
+    inputs:
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        type: boolean
+        default: false
+      distinctByUniqueIdAndPackageIdentifier:
+        description: 'To get one entry per UniqueId and PackageIdentifier combination.'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restricts the set of items returned. The maximum number of expressions is 100.'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Specifies the order in which items are returned. The maximum number of expressions is 5.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Excludes the specified number of items of the queried collection from the result.'
+        required: false
+        type: integer
+        default: 0
+      top:
+        description: 'Limits the number of items returned from a collection. The maximum value is 1000.'
+        required: false
+        type: integer
+        default: 0
+
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator test-case-definitions get
+        shell: pwsh
+        run: |
+          # Initialize argument array for the CLI command
+          $args = @('orchestrator', 'test-case-definitions', 'get')
+
+          # Conditionally add boolean flags if true
+          if (${{ inputs.count }}) {
+            $args += '--count'
+          }
+
+          if (${{ inputs.distinctByUniqueIdAndPackageIdentifier }}) {
+            $args += '--distinct-by-unique-id-and-package-identifier'
+            $args += 'true'
+          }
+
+          # Add string arguments only if not empty
+          if (${{ inputs.expand }}) {
+            $args += '--expand'
+            $args += ${{ inputs.expand }}
+          }
+
+          if (${{ inputs.filter }}) {
+            $args += '--filter'
+            $args += ${{ inputs.filter }}
+          }
+
+          if (${{ inputs.orderby }}) {
+            $args += '--orderby'
+            $args += ${{ inputs.orderby }}
+          }
+
+          if (${{ inputs.select }}) {
+            $args += '--select'
+            $args += ${{ inputs.select }}
+          }
+
+          # Add integer options if different from default 0
+          if (${{ inputs.skip }} -gt 0) {
+            $args += '--skip'
+            $args += [string]${{ inputs.skip }}
+          }
+
+          if (${{ inputs.top }} -gt 0) {
+            $args += '--top'
+            $args += [string]${{ inputs.top }}
+          }
+
+          # Build and run the CLI command with arguments
+          Write-Host "Running: uipath $($args -join ' ')"
+          uipath @args

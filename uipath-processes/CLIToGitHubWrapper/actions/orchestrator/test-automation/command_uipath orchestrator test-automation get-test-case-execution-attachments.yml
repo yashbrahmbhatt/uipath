@@ -1,0 +1,90 @@
+name: uipath-orchestrator-test-automation-get-test-case-execution-attachments
+description: |
+  NAME:
+     uipath orchestrator test-automation get-test-case-execution-attachments - This will list all test case execution attachments filtered by identifier and tags
+
+  USAGE:
+     uipath orchestrator test-automation get-test-case-execution-attachments [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Write.
+
+     Required permissions: TestSetExecutions.View.
+
+     Responses:
+     200 OK
+     404 If there is no test case execution for the specified identifier
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --job-key string
+
+     --tags string,string,...
+
+     --test-case-execution-id integer
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      job_key:
+        description: 'Job key string (optional)'
+        required: false
+        type: string
+        default: ''
+      tags:
+        description: 'Comma separated list of tags (optional)'
+        required: false
+        type: string
+        default: ''
+      test_case_execution_id:
+        description: 'Test case execution id (optional)'
+        required: false
+        type: number
+        default: 0
+    secrets: {}
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run UiPath Orchestrator Test Automation Get Test Case Execution Attachments
+        shell: pwsh
+        run: |
+          # Construct argument array for CLI command
+          $args = @('orchestrator', 'test-automation', 'get-test-case-execution-attachments')
+
+          # Add required folder-id argument
+          $args += "--folder-id"
+          $args += ${{ inputs.folder_id }}
+
+          # Optionally add job-key if provided (non-empty)
+          if (${{ inputs.job_key }} -ne '') {
+              $args += "--job-key"
+              $args += ${{ inputs.job_key }}
+          }
+
+          # Optionally add tags if provided (non-empty)
+          if (${{ inputs.tags }} -ne '') {
+              $args += "--tags"
+              $args += ${{ inputs.tags }}
+          }
+
+          # Optionally add test-case-execution-id if provided and greater than 0
+          if (${{ inputs.test_case_execution_id }} -gt 0) {
+              $args += "--test-case-execution-id"
+              $args += ${{ inputs.test_case_execution_id }}
+          }
+
+          # Join and quote arguments properly for the command invocation
+          $command = "uipath " + ($args | ForEach-Object { if ($_ -match '\s') { '\"' + $_ + '\"' } else { $_ } }) -join ' '
+
+          Write-Host "Executing command:"
+          Write-Host $command
+
+          # Execute the CLI command constructed from inputs
+          & uipath @args

@@ -1,0 +1,172 @@
+name: uipath-orchestrator-test-sets-get
+description: |
+  NAME:
+     uipath orchestrator test-sets get - Returns a list of Test Sets cross-folder when no current folder is sent by header.
+                                         It will return Test Sets from folder where current user has TestSetsView.
+                                         If there is none, will return forbidden.
+
+  USAGE:
+     uipath orchestrator test-sets get [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSets or OR.TestSets.Read.
+
+     Required permissions: TestSets.View.
+
+     Responses:
+     200 Returns a list of Test Sets filtered with queryOptions
+     403 If the caller doesn't have permissions to view Test Sets
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --at-least-one-permissions string,string,...
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --mandatory-permissions string,string,...
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      at_least_one_permissions:
+        description: 'Comma separated list for --at-least-one-permissions'
+        required: false
+        type: string
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Related entities to be represented inline. Max depth 2.'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Filter expression to restrict the set of items returned'
+        required: false
+        type: string
+        default: ''
+      mandatory_permissions:
+        description: 'Comma separated list for --mandatory-permissions'
+        required: false
+        type: string
+      orderby:
+        description: 'Order by expression. Max 5 expressions.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Number of items to skip from the result'
+        required: false
+        type: number
+        default: 0
+      top:
+        description: 'Limits number of items returned. Max 1000.'
+        required: false
+        type: number
+        default: 1000
+    secrets:
+      UIPATH_API_KEY:
+        description: 'API key or token for authentication (if required by uipath CLI)'
+        required: false
+
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator test-sets get command
+        shell: pwsh
+        run: |
+          # Initialize arguments array
+          $args = @('orchestrator', 'test-sets', 'get')
+
+          # Add required folder-id argument
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          # Add optional parameters if provided
+
+          if ('${{ inputs.at_least_one_permissions }}' -ne '') {
+            $args += "--at-least-one-permissions"
+            $args += "${{ inputs.at_least_one_permissions }}"
+          }
+
+          if (${{ inputs.count }}) {
+            $args += "--count"
+          }
+
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+
+          if ('${{ inputs.filter }}' -ne '') {
+            $args += "--filter"
+            $args += "${{ inputs.filter }}"
+          }
+
+          if ('${{ inputs.mandatory_permissions }}' -ne '') {
+            $args += "--mandatory-permissions"
+            $args += "${{ inputs.mandatory_permissions }}"
+          }
+
+          if ('${{ inputs.orderby }}' -ne '') {
+            $args += "--orderby"
+            $args += "${{ inputs.orderby }}"
+          }
+
+          if ('${{ inputs.select }}' -ne '') {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          if (${{ inputs.skip }} -gt 0) {
+            $args += "--skip"
+            $args += "${{ inputs.skip }}"
+          }
+
+          if (${{ inputs.top }} -gt 0 -and ${{ inputs.top }} -le 1000) {
+            $args += "--top"
+            $args += "${{ inputs.top }}"
+          }
+
+          # If UIPATH_API_KEY secret is provided, we can add it as an environment variable or set it before command
+          # but since no explicit auth arg shown, assumed it is configured elsewhere.
+
+          # Compose the command string safely
+          $command = "uipath " + ($args | ForEach-Object { '"' + $_ + '"' }) -join ' '
+          Write-Host "Running command: $command"
+
+          # Execute the command
+          & uipath @args

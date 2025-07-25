@@ -1,0 +1,88 @@
+name: UiPath Orchestrator Releases Get-By-Id
+
+description: |
+  NAME:
+     uipath orchestrator releases get-by-id - Gets a release by id.
+
+  USAGE:
+     uipath orchestrator releases get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+     Required permissions: Processes.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      key:
+        description: 'Key of the release (required)'
+        required: true
+        type: number
+      expand:
+        description: 'Related entities to be represented inline (optional, max depth 2)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      ORCHESTRATOR_API_TOKEN:
+        description: 'API Token or other auth credentials if required'
+
+jobs:
+  get-release-by-id:
+    runs-on: [windows, self-hosted]
+    outputs:
+      api-result: ${{ steps.invoke.outputs.result }}
+    steps:
+      - name: Invoke UiPath Orchestrator Releases Get-By-Id
+        id: invoke
+        shell: pwsh
+        env:
+          ORCHESTRATOR_API_TOKEN: ${{ secrets.ORCHESTRATOR_API_TOKEN }}
+        run: |
+          # Build argument list for the CLI command
+          $args = @(
+            'orchestrator', 'releases', 'get-by-id'
+            '--folder-id', ${{ inputs.folder_id }}
+            '--key', ${{ inputs.key }}
+          )
+
+          # Append optional --expand if provided
+          if ('${{ inputs.expand }}'.Trim() -ne '') {
+            $args += '--expand'
+            $args += '${{ inputs.expand }}'
+          }
+
+          # Append optional --select if provided
+          if ('${{ inputs.select }}'.Trim() -ne '') {
+            $args += '--select'
+            $args += '${{ inputs.select }}'
+          }
+
+          # Call the CLI command and capture the output
+          Write-Host "Executing: uipath $($args -join ' ')"
+          $result = uipath @args
+
+          # Output the result for the workflow
+          Write-Output "::set-output name=result::$result"

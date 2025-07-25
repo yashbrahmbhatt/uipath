@@ -1,0 +1,59 @@
+name: 'uipath orchestrator folders toggle-folder-machine-inherit'
+
+description: |
+  NAME:
+     uipath orchestrator folders toggle-folder-machine-inherit - Toggle machine propagation for a folder to all subfolders.
+
+  USAGE:
+     uipath orchestrator folders toggle-folder-machine-inherit [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Folders or OR.Folders.Write.
+
+     Required permissions: (Units.Edit or SubFolders.Edit - Propagate machine to subfolders only if Units.Edit permission is provided or only if SubFolders.Edit permission on all folders provided).
+
+  OPTIONS:
+     --folder-id integer
+
+     --inherit-enabled boolean
+
+     --machine-id integer
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'The folder ID to toggle inheritance for'
+        required: true
+        type: number
+      inherit_enabled:
+        description: 'Set to true to enable inheritance, false to disable'
+        required: true
+        type: boolean
+      machine_id:
+        description: 'The machine ID to apply propagation to'
+        required: true
+        type: number
+
+jobs:
+  toggle-folder-machine-inherit:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Build and run uipath orchestrator folders toggle-folder-machine-inherit command
+        shell: pwsh
+        run: |
+          # Initialize argument array for the CLI command
+          $args = @('orchestrator', 'folders', 'toggle-folder-machine-inherit')
+
+          # Add required parameters
+          $args += @('--folder-id', ${{ inputs.folder_id }})
+          $args += @('--inherit-enabled', if (${{ inputs.inherit_enabled }} ) { 'true' } else { 'false' })
+          $args += @('--machine-id', ${{ inputs.machine_id }})
+
+          # Join args with spaces taking care of quoting where needed
+          $command = "uipath " + ($args | ForEach-Object { if ($_ -match '\s') { '"{0}"' -f $_ } else { $_ } }) -join ' '
+
+          Write-Host "Running command: $command"
+          # Invoke the CLI command
+          iex $command

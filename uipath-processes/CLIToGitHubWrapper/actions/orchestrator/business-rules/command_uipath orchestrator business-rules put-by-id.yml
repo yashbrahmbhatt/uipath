@@ -1,0 +1,77 @@
+name: 'uipath orchestrator business-rules put-by-id'
+description: |
+  NAME:
+     uipath orchestrator business-rules put-by-id - Update Business Rule
+
+  USAGE:
+     uipath orchestrator business-rules put-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.BusinessRules or OR.BusinessRules.Write.
+
+     Required permissions: (BusinessRules.Edit).
+
+  OPTIONS:
+     --business-rule string (required)
+        The BusinessRuleDto object
+
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key string (required)
+
+     --file binary
+on:
+  workflow_call:
+    inputs:
+      business_rule:
+        description: 'The BusinessRuleDto object (required)'
+        required: true
+        type: string
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      key:
+        description: 'Key (required)'
+        required: true
+        type: string
+      file:
+        description: 'File path for binary input (optional)'
+        required: false
+        type: string
+    secrets: {}
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator business-rules put-by-id
+        shell: pwsh
+        run: |
+          # Prepare argument array
+          $args = @('orchestrator', 'business-rules', 'put-by-id')
+          
+          # Add required parameters with quotes to handle spaces/special characters
+          $args += @('--business-rule', ${{ inputs.business_rule }})
+          $args += @('--folder-id', ${{ inputs.folder_id }})
+          $args += @('--key', ${{ inputs.key }})
+          
+          # Add the --file option only if input was provided and not empty
+          if ('${{ inputs.file }}' -and ${{ inputs.file }}.Trim() -ne '') {
+              $args += @('--file', ${{ inputs.file }})
+          }
+
+          # Combine arguments as a single string ensuring proper quoting
+          $escapedArgs = $args | ForEach-Object { 
+              if ($_ -match '\s' -or $_ -eq '') { 
+                  # Quote arguments containing spaces or empty strings
+                  '"{0}"' -f $_ 
+              } else { 
+                  $_ 
+              }
+          } | Out-String
+
+          # Trim trailing newline and invoke the CLI
+          $command = "uipath " + $escapedArgs.Trim()
+          Write-Host "Running command: $command"
+          iex $command

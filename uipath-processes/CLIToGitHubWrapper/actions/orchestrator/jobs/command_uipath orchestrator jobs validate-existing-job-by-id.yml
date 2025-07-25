@@ -1,0 +1,65 @@
+name: Validate Existing Job By Id
+description: |
+  NAME:
+     uipath orchestrator jobs validate-existing-job-by-id - Validates an existing job.
+
+  USAGE:
+     uipath orchestrator jobs validate-existing-job-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+     Required permissions: (Jobs.View).
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      key:
+        description: 'Key for the job'
+        required: true
+        type: number
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+jobs:
+  validate-existing-job-by-id:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # Optionally, outputs can be added here if needed for other workflows.
+    steps:
+      - name: Validate existing job by id
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'jobs', 'validate-existing-job-by-id')
+          $args += '--folder-id'; $args += "${{ inputs.folder_id }}"
+          $args += '--key'; $args += "${{ inputs.key }}"
+          if ("${{ inputs.expand }}" -ne '') {
+            $args += '--expand'; $args += "${{ inputs.expand }}"
+          }
+          if ("${{ inputs.select }}" -ne '') {
+            $args += '--select'; $args += "${{ inputs.select }}"
+          }
+          # Execute the CLI command with constructed arguments
+          uipath @args

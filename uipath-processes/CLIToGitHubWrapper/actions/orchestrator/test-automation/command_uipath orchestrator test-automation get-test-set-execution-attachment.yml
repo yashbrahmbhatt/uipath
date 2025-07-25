@@ -1,0 +1,57 @@
+name: UiPath Orchestrator Test Automation Get Test Set Execution Attachment
+description: |
+  NAME:
+     uipath orchestrator test-automation get-test-set-execution-attachment - Get the attachment for the specified test set execution attachment.
+
+  USAGE:
+     uipath orchestrator test-automation get-test-set-execution-attachment [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Read.
+
+     Required permissions: TestSetExecutions.View.
+
+     Responses:
+     200 OK
+     404 If the test set execution attachment is not found or the storage location is not found
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --test-set-execution-attachment-id integer
+        Id of the test set execution attachment
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: string
+      test-set-execution-attachment-id:
+        description: 'Id of the test set execution attachment'
+        required: false
+        type: string
+jobs:
+  run-get-test-set-execution-attachment:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Build and run uipath command
+        shell: pwsh
+        run: |
+          # Initialize argument list
+          $args = @("orchestrator", "test-automation", "get-test-set-execution-attachment")
+
+          # Add required --folder-id argument
+          $args += "--folder-id"
+          $args += "$(folder-id)"
+
+          # Add optional --test-set-execution-attachment-id if provided
+          if ("$(test-set-execution-attachment-id)" -ne "") {
+            $args += "--test-set-execution-attachment-id"
+            $args += "$(test-set-execution-attachment-id)"
+          }
+
+          # Run the CLI command
+          uipath @args

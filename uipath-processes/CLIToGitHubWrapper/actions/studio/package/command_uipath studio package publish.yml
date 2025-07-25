@@ -1,0 +1,63 @@
+name: Publish UiPath Studio Package
+
+description: |
+  uipath studio package publish - Publishes the package to orchestrator
+
+  Usage:
+     uipath studio package publish [command options] [arguments...]
+
+  Options:
+     --source string (default: .)
+        Path to package
+
+     --folder string (default: Shared)
+        The Orchestrator Folder
+
+on:
+  workflow_call:
+    inputs:
+      source:
+        description: 'Path to package to publish'
+        required: false
+        default: '.'
+        type: string
+      folder:
+        description: 'The Orchestrator Folder'
+        required: false
+        default: 'Shared'
+        type: string
+
+jobs:
+  publish-package:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Publish Package to Orchestrator
+        shell: pwsh
+        run: |
+          # Build arguments list for uipath CLI
+          $args = @(
+            'studio', 'package', 'publish'
+          )
+
+          if (${{ inputs.source }}) {
+              $args += '--source'
+              $args += "${{ inputs.source }}"
+          } else {
+              # Use default source value '.'
+              $args += '--source'
+              $args += '.'
+          }
+
+          if (${{ inputs.folder }}) {
+              $args += '--folder'
+              $args += "${{ inputs.folder }}"
+          } else {
+              # Use default folder value 'Shared'
+              $args += '--folder'
+              $args += 'Shared'
+          }
+
+          # Run the UiPath CLI with constructed arguments
+          Write-Host "Running: uipath $($args -join ' ')"
+          uipath $args

@@ -1,0 +1,42 @@
+name: uipath-orchestrator-personal-workspaces-start-exploring-by-id
+description: |
+  NAME:
+     uipath orchestrator personal-workspaces start-exploring-by-id - Assigns the current User to explore a Personal Workspace.
+
+  USAGE:
+     uipath orchestrator personal-workspaces start-exploring-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth authentication is not supported.
+
+     Required permissions: Units.Edit and Users.View and Roles.View.
+
+  OPTIONS:
+     --key integer (required)
+  
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The integer key representing the Personal Workspace ID to start exploring (required).'
+        required: true
+        type: number
+
+jobs:
+  start-exploring:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # No outputs defined as this runs a CLI command without explicit output
+    steps:
+    - name: Run uipath orchestrator personal-workspaces start-exploring-by-id
+      shell: pwsh
+      run: |
+        # Construct the argument array for the CLI command
+        $args = @("orchestrator", "personal-workspaces", "start-exploring-by-id")
+
+        # Add the required --key argument
+        $args += "--key"
+        $args += "${{ inputs.key }}"
+
+        # Execute the command
+        uipath $args

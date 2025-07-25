@@ -1,0 +1,48 @@
+name: uipath-orchestrator-folders-delete-by-key
+description: |
+  NAME:
+     uipath orchestrator folders delete-by-key - Deletes a folder. Succeeds only if no entities or user associations
+                                                   exist in this folder or any of its descendants.
+
+  USAGE:
+     uipath orchestrator folders delete-by-key [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Folders or OR.Folders.Write.
+
+     Required permissions: (Units.Delete or SubFolders.Delete - Deletes any folder or only if user has SubFolders.Delete permission on the provided folder).
+
+  OPTIONS:
+     --key string
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The key of the folder to delete.'
+        required: true
+        type: string
+    secrets: {}
+jobs:
+  delete-folder-by-key:
+    runs-on:
+      - windows
+      - self-hosted
+    name: Delete UiPath Orchestrator Folder by Key
+    steps:
+      - name: Execute uipath orchestrator folders delete-by-key command
+        shell: pwsh
+        run: |
+          # Construct the argument list to call the CLI command safely
+          $args = @('orchestrator','folders','delete-by-key')
+
+          # Append --key argument if provided
+          if ('${{ inputs.key }}' -and '${{ inputs.key }}'.Trim() -ne '') {
+            $args += '--key'
+            $args += '${{ inputs.key }}'
+          } else {
+            Write-Error "The required input 'key' was not provided or is empty."
+            exit 1
+          }
+
+          # Run the uipath command with the constructed arguments
+          uipath @args

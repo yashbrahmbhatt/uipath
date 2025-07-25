@@ -1,0 +1,96 @@
+name: Create UiPath Orchestrator Task Definition
+description: |
+  NAME:
+     uipath orchestrator task-definitions create-task-definition - Creates a new Task Definition.
+
+  USAGE:
+     uipath orchestrator task-definitions create-task-definition [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Required permissions: ActionDesign.Create.
+
+  OPTIONS:
+     --description string
+        Description of this task definition.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --name string
+        Name of the Task Definition.
+
+     --properties object
+
+        Example:
+           allowedActions=string,string,...; schema=string
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      description:
+        description: 'Description of this task definition'
+        required: false
+        default: ''
+        type: string
+      expand:
+        description: 'Related entities to represent inline (max depth 2)'
+        required: false
+        default: ''
+        type: string
+      name:
+        description: 'Name of the Task Definition'
+        required: true
+        type: string
+      properties:
+        description: |
+          Properties object.
+          Example: allowedActions=string,string,...; schema=string
+        required: false
+        default: ''
+        type: string
+      select:
+        description: 'Limits the properties returned in the result'
+        required: false
+        default: ''
+        type: string
+    secrets: {}
+jobs:
+  create-task-definition:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator task-definitions create-task-definition
+        shell: pwsh
+        run: |
+          $args = @(
+            "orchestrator"
+            "task-definitions"
+            "create-task-definition"
+          )
+          if ('${{ inputs.description }}' -ne '') {
+            $args += "--description"
+            $args += '${{ inputs.description }}'
+          }
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += "--expand"
+            $args += '${{ inputs.expand }}'
+          }
+          $args += "--name"
+          $args += '${{ inputs.name }}'
+          if ('${{ inputs.properties }}' -ne '') {
+            $args += "--properties"
+            $args += '${{ inputs.properties }}'
+          }
+          if ('${{ inputs.select }}' -ne '') {
+            $args += "--select"
+            $args += '${{ inputs.select }}'
+          }
+          # Build the command string safely with proper quoting
+          $quotedArgs = $args | ForEach-Object { if ($_ -match '^\-') { $_ } else { '"' + $_ + '"' } }
+          $command = "uipath " + ($quotedArgs -join " ")
+          Write-Host "Executing command: $command"
+          iex $command

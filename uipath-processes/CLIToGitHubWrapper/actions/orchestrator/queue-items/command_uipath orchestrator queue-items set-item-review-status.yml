@@ -1,0 +1,123 @@
+name: uipath-orchestrator-queue-items-set-item-review-status
+description: |
+  NAME:
+     uipath orchestrator queue-items set-item-review-status - Updates the review status of the specified queue items to an indicated state.
+
+  USAGE:
+     uipath orchestrator queue-items set-item-review-status [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+     Required permissions: Queues.View and Transactions.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --queue-items object (multiple) (required)
+
+        Example:
+           Id=integer; RowVersion=string
+
+     --status string (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: Folder/OrganizationUnit Id
+        required: true
+        type: number
+      queue-items:
+        description: |
+          Queue items in the format "Id=integer; RowVersion=string".
+          Multiple items can be passed separated by newlines or as an array.
+        required: true
+        type: string
+      status:
+        description: Status to set for the queue items
+        required: true
+        type: string
+      expand:
+        description: Related entities to be represented inline (optional)
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result (optional)
+        required: false
+        type: string
+        default: ''
+jobs:
+  set-item-review-status:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Build and run uipath orchestrator queue-items set-item-review-status command
+        shell: pwsh
+        run: |
+          # Initialize argument array
+          $argsList = @()
+
+          # Required folder-id
+          $argsList += '--folder-id'
+          $argsList += '${{ inputs.folder-id }}'
+
+          # Required queue-items: pass multiple objects via repeated --queue-items arguments
+          $queueItemsInput = '${{ inputs.queue-items }}'
+          # Accept inputs as newline-separated or comma-separated items
+          $queueItems = @()
+          if ($queueItemsInput -match '\r?\n') {
+            $queueItems = $queueItemsInput -split "`n"
+          } elseif ($queueItemsInput -match ',') {
+            $queueItems = $queueItemsInput -split ','
+          } else {
+            $queueItems = @($queueItemsInput)
+          }
+
+          foreach ($item in $queueItems) {
+            $trimmed = $item.Trim()
+            if (![string]::IsNullOrEmpty($trimmed)) {
+              $argsList += '--queue-items'
+              # Add as a quoted argument to preserve semicolons and spaces
+              $argsList += $trimmed
+            }
+          }
+
+          # Required status
+          $argsList += '--status'
+          $argsList += '${{ inputs.status }}'
+
+          # Optional expand
+          if (![string]::IsNullOrEmpty('${{ inputs.expand }}')) {
+            $argsList += '--expand'
+            $argsList += '${{ inputs.expand }}'
+          }
+
+          # Optional select
+          if (![string]::IsNullOrEmpty('${{ inputs.select }}')) {
+            $argsList += '--select'
+            $argsList += '${{ inputs.select }}'
+          }
+
+          # Build the argument string properly quoted
+          $escapedArgs = $argsList | ForEach-Object {
+            if ($_ -match '^\-') {
+              $_
+            } else {
+              '"' + $_.Replace('"','\"') + '"' 
+            }
+          }
+
+          # Compose full command
+          $command = "uipath orchestrator queue-items set-item-review-status " + ($escapedArgs -join ' ')
+
+          Write-Host "Running: $command"
+
+          # Execute command
+          iex $command

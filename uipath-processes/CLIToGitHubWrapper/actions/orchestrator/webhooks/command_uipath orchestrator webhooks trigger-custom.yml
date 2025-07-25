@@ -1,0 +1,58 @@
+name: uipath-orchestrator-webhooks-trigger-custom
+description: |
+  NAME:
+     uipath orchestrator webhooks trigger-custom - Triggers an event of type "custom"
+
+  USAGE:
+     uipath orchestrator webhooks trigger-custom [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Webhooks or OR.Webhooks.Write.
+
+     Required permissions: Webhooks.View.
+
+  OPTIONS:
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+jobs:
+  trigger-custom:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator webhooks trigger-custom
+        shell: pwsh
+        run: |
+          # Initialize an array to build the command arguments
+          $args = @("orchestrator", "webhooks", "trigger-custom")
+
+          # Append --expand option if provided
+          if ('${{ inputs.expand }}'.Length -gt 0) {
+              $args += "--expand"
+              $args += "${{ inputs.expand }}"
+          }
+
+          # Append --select option if provided
+          if ('${{ inputs.select }}'.Length -gt 0) {
+              $args += "--select"
+              $args += "${{ inputs.select }}"
+          }
+
+          # Execute the command with constructed arguments
+          uipath @args

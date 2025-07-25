@@ -1,0 +1,66 @@
+name: uipath-orchestrator-roles-get-by-id
+description: |
+  NAME:
+     uipath orchestrator roles get-by-id - Gets role based on its id.
+
+  USAGE:
+     uipath orchestrator roles get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Read.
+
+     Required permissions: Roles.View.
+
+  OPTIONS:
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'Role ID (required)'
+        required: true
+        type: number
+      expand:
+        description: 'Related entities to be represented inline (optional)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+jobs:
+  call-uipath-orchestrator-roles-get-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Call uipath orchestrator roles get-by-id CLI
+        shell: pwsh
+        run: |
+          # Initialize argument list for CLI command
+          $argsList = @()
+          # Required parameter --key
+          $argsList += '--key'
+          $argsList += ${{ inputs.key }}
+
+          # Optional parameter --expand
+          if ("${{ inputs.expand }}" -ne '') {
+            $argsList += '--expand'
+            $argsList += """${{ inputs.expand }}"""
+          }
+
+          # Optional parameter --select
+          if ("${{ inputs.select }}" -ne '') {
+            $argsList += '--select'
+            $argsList += """${{ inputs.select }}"""
+          }
+
+          # Execute the CLI command with constructed arguments
+          uipath orchestrator roles get-by-id @argsList | Write-Output

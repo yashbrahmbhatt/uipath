@@ -1,0 +1,47 @@
+name: 'uipath orchestrator settings delete-bulk'
+description: >
+  NAME:
+     uipath orchestrator settings delete-bulk - Deletes values for the specified settings in the Tenant scope.
+
+  USAGE:
+     uipath orchestrator settings delete-bulk [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+     Required permissions: Settings.Delete.
+
+  OPTIONS:
+     --setting-names string,string,...
+
+on:
+  workflow_call:
+    inputs:
+      setting_names:
+        description: >
+          Comma separated list of setting names whose values will be deleted in the Tenant scope.
+        required: true
+        type: string
+
+jobs:
+  delete_bulk_settings:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator settings delete-bulk
+        shell: pwsh
+        run: |
+          # Build the arguments array for the CLI command
+          $args = @("orchestrator", "settings", "delete-bulk")
+
+          # Add required setting names argument if provided
+          if ("${{ inputs.setting_names }}" -and ${{ inputs.setting_names }}.Trim() -ne "") {
+              $args += "--setting-names"
+              $args += "${{ inputs.setting_names }}"
+          } else {
+              Write-Error "Input 'setting_names' is required and must not be empty."
+              exit 1
+          }
+
+          # Invoke the CLI command with the arguments
+          uipath @args

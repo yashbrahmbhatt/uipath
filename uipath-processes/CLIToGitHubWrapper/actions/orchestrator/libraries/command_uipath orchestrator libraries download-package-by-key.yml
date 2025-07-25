@@ -1,0 +1,52 @@
+name: uipath-orchestrator-libraries-download-package-by-key
+description: |-
+  NAME:
+     uipath orchestrator libraries download-package-by-key - Downloads the .nupkg file of a Package.
+
+  USAGE:
+     uipath orchestrator libraries download-package-by-key [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+     Required permissions: Libraries.View.
+
+  OPTIONS:
+     --key string (required)
+
+     --feed-id string
+  
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'Package key (required)'
+        required: true
+        type: string
+      feed_id:
+        description: 'Feed ID (optional)'
+        required: false
+        type: string
+
+jobs:
+  run:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator libraries download-package-by-key
+        shell: pwsh
+        run: |
+          # Construct arguments array
+          $args = @()
+          # Required parameter: --key
+          $args += '--key'
+          $args += '"{0}"' -f ${{ inputs.key }}
+
+          # Optional parameter: --feed-id
+          if ('${{ inputs.feed_id }}' -ne '') {
+            $args += '--feed-id'
+            $args += '"{0}"' -f ${{ inputs.feed_id }}
+          }
+
+          # Run CLI command
+          uipath orchestrator libraries download-package-by-key @args

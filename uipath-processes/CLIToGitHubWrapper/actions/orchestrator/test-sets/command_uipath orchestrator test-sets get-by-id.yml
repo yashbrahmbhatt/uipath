@@ -1,0 +1,79 @@
+name: 'uipath orchestrator test-sets get-by-id'
+description: |
+  NAME:
+     uipath orchestrator test-sets get-by-id - Return a specific Test Set identified by key
+
+  USAGE:
+     uipath orchestrator test-sets get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSets or OR.TestSets.Read.
+
+     Required permissions: TestSets.View.
+
+     Responses:
+     200 Return a specific Test Set identified by key
+     403 If the caller doesn't have permissions to view Test Sets
+     404 If the Test Set is not found
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+  
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      key:
+        description: 'Key identifying the Test Set (required)'
+        required: true
+        type: string
+      expand:
+        description: 'Related entities to be represented inline (optional, max depth 2)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Properties to limit in result (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator test-sets get-by-id command
+        shell: pwsh
+        run: |
+          # Build the argument list for the command
+          $args = @('orchestrator', 'test-sets', 'get-by-id')
+          # Required options
+          $args += '--folder-id'
+          $args += "${{ inputs.folder_id }}"
+          $args += '--key'
+          $args += "${{ inputs.key }}"
+          # Optional --expand
+          if (![string]::IsNullOrEmpty("${{ inputs.expand }}")) {
+              $args += '--expand'
+              $args += "${{ inputs.expand }}"
+          }
+          # Optional --select
+          if (![string]::IsNullOrEmpty("${{ inputs.select }}")) {
+              $args += '--select'
+              $args += "${{ inputs.select }}"
+          }
+          # Invoke the CLI command with the constructed arguments
+          uipath $args

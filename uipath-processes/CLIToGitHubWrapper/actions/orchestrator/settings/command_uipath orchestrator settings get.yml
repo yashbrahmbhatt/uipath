@@ -1,0 +1,144 @@
+name: uipath-orchestrator-settings-get
+description: |
+  NAME:
+     uipath orchestrator settings get - Gets the settings.
+
+  USAGE:
+     uipath orchestrator settings get [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+     Required permissions: Settings.View.
+
+  OPTIONS:
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      count:
+        description: Indicates whether to include the total count of items
+        required: false
+        default: 'false'
+        type: boolean
+      expand:
+        description: Indicates the related entities to be represented inline (max depth 2)
+        required: false
+        default: ''
+        type: string
+      filter:
+        description: Restricts the set of items returned (max 100 expressions)
+        required: false
+        default: ''
+        type: string
+      orderby:
+        description: Specifies the order in which items are returned (max 5 expressions)
+        required: false
+        default: ''
+        type: string
+      select:
+        description: Limits the properties returned in the result
+        required: false
+        default: ''
+        type: string
+      skip:
+        description: Number of items to exclude from the query result
+        required: false
+        default: 0
+        type: integer
+      top:
+        description: Limits the number of items returned (max 1000)
+        required: false
+        default: 0
+        type: integer
+
+jobs:
+  get-settings:
+    runs-on: [windows, self-hosted]
+    outputs:
+      command: ${{ steps.build-command.outputs.command }}
+    steps:
+      - name: Build the uipath orchestrator settings get command
+        id: build-command
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'settings', 'get')
+
+          # Add --count if true
+          if ("${{ inputs.count }}" -eq 'true') {
+            $args += '--count'
+            $args += 'true'
+          }
+
+          # Add --expand if not empty
+          if (![string]::IsNullOrWhiteSpace("${{ inputs.expand }}")) {
+            $args += '--expand'
+            $args += "${{ inputs.expand }}"
+          }
+
+          # Add --filter if not empty
+          if (![string]::IsNullOrWhiteSpace("${{ inputs.filter }}")) {
+            $args += '--filter'
+            $args += "${{ inputs.filter }}"
+          }
+
+          # Add --orderby if not empty
+          if (![string]::IsNullOrWhiteSpace("${{ inputs.orderby }}")) {
+            $args += '--orderby'
+            $args += "${{ inputs.orderby }}"
+          }
+
+          # Add --select if not empty
+          if (![string]::IsNullOrWhiteSpace("${{ inputs.select }}")) {
+            $args += '--select'
+            $args += "${{ inputs.select }}"
+          }
+
+          # Add --skip if > 0
+          if (${ { inputs.skip } } -gt 0) {
+            $args += '--skip'
+            $args += "${{ inputs.skip }}"
+          }
+
+          # Add --top if > 0
+          if (${ { inputs.top } } -gt 0) {
+            $args += '--top'
+            $args += "${{ inputs.top }}"
+          }
+
+          # Join arguments with spaces and quote as needed
+          # Convert args to quoted string to handle spaces and special chars
+          $command = $args | ForEach-Object {
+            if ($_ -match '\s') { '"{0}"' -f $_ } else { $_ }
+          } -join ' '
+
+          Write-Output "::set-output name=command::$command"
+
+      - name: Run uipath orchestrator settings get command
+        shell: pwsh
+        run: |
+          # Run the constructed command
+          $command = '${{ steps.build-command.outputs.command }}'
+          Write-Host "Executing command: uipath $command"
+          $output = uipath $command
+          Write-Host $output

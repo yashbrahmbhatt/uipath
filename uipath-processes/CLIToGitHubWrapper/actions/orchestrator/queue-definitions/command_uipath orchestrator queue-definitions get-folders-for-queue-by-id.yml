@@ -1,0 +1,75 @@
+name: UiPath Orchestrator Get Folders For Queue By Id
+description: |
+  NAME:
+     uipath orchestrator queue-definitions get-folders-for-queue-by-id - Get all accesible folders where the queue is shared, and the total count of folders where it is shared (including unaccessible folders).
+
+  USAGE:
+     uipath orchestrator queue-definitions get-folders-for-queue-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --id integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      id:
+        description: 'Queue Id (required)'
+        required: true
+        type: number
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+jobs:
+  call-uipath-get-folders:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Invoke UiPath CLI - get-folders-for-queue-by-id
+        shell: pwsh
+        run: |
+          # Prepare arguments array for UiPath CLI command
+          $args = @("orchestrator", "queue-definitions", "get-folders-for-queue-by-id")
+
+          # Add required parameters
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          $args += "--id"
+          $args += "${{ inputs.id }}"
+
+          # Add optional parameters if provided
+          if ("${{ inputs.expand }}" -ne "") {
+              $args += "--expand"
+              $args += "${{ inputs.expand }}"
+          }
+          if ("${{ inputs.select }}" -ne "") {
+              $args += "--select"
+              $args += "${{ inputs.select }}"
+          }
+
+          # Run the UiPath CLI command with constructed arguments
+          uipath @args

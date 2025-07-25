@@ -1,0 +1,160 @@
+name: 'uipath orchestrator test-sets post'
+description: |
+  OAuth required scopes: OR.TestSets or OR.TestSets.Write.
+
+  Required permissions: TestSets.Create.
+
+  Responses:
+  201 Returns the newly created Test Set
+  403 If the caller doesn't have permissions to create Test Sets
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      packages:
+        description: |
+          Packages JSON string (required). Multiple packages data can be passed as a JSON array string.
+          Example format for a single package object:
+          {
+            "CreationTime": "string",
+            "CreatorUserId": 0,
+            "Id": 0,
+            "IncludePrerelease": true,
+            "LastModificationTime": "string",
+            "LastModifierUserId": 0,
+            "PackageIdentifier": "string",
+            "TestSet": {
+              "CreationTime": "string",
+              "CreatorUserId": 0,
+              "DeletionTime": "string",
+              "Description": "string",
+              "EnableCoverage": true,
+              "Environment": {
+                "Id": 0,
+                "Name": "string"
+              },
+              "EnvironmentId": 0,
+              "Id": 0,
+              "InputArguments": [
+                {
+                  "CreationTime": "string",
+                  "CreatorUserId": 0,
+                  "Id": 0,
+                  "LastModificationTime": "string",
+                  "LastModifierUserId": 0,
+                  "Name": "string",
+                  "Type": "string",
+                  "Value": "string"
+                }
+              ],
+              "IsDeleted": true,
+              "LastModificationTime": "string",
+              "LastModifierUserId": 0,
+              "Name": "string",
+              "RobotId": 0,
+              "SourceType": "string",
+              "TestCases": [
+                {
+                  "CreationTime": "string",
+                  "CreatorUserId": 0,
+                  "Definition": {
+                    "AppVersion": "string",
+                    "CreatedVersion": "string",
+                    "CreationTime": "string",
+                    "CreatorUserId": 0,
+                    "FeedId": "string",
+                    "Id": 0,
+                    "LastModificationTime": "string",
+                    "LastModifierUserId": 0,
+                    "LatestPrereleaseVersion": "string",
+                    "LatestVersion": "string",
+                    "Name": "string",
+                    "PackageIdentifier": "string",
+                    "UniqueId": "string"
+                  },
+                  "DefinitionId": 0,
+                  "Enabled": true,
+                  "Id": 0,
+                  "LastModificationTime": "string",
+                  "LastModifierUserId": 0,
+                  "ReleaseId": 0,
+                  "TestSetId": 0,
+                  "VersionNumber": "string"
+                }
+              ],
+              "TestSetId": 0,
+              "VersionMask": "string"
+            }
+          }
+        required: true
+        type: string
+      deleter_user_id:
+        description: 'Optional deleter user ID (integer)'
+        required: false
+        type: number
+      key:
+        description: 'Optional key string'
+        required: false
+        type: string
+      organization_unit_id:
+        description: 'Optional organization unit ID (integer)'
+        required: false
+        type: number
+      test_case_count:
+        description: 'Optional test case count (integer)'
+        required: false
+        type: number
+
+jobs:
+  run-uipath-orchestrator-test-sets-post:
+    runs-on: [windows, self-hosted]
+    outputs:
+      result: ${{ steps.run.outputs.result }}
+    steps:
+      - name: 'Run uipath orchestrator test-sets post command'
+        id: run
+        shell: pwsh
+        run: |
+          # Build the argument array for CLI command
+          $args = @('orchestrator', 'test-sets', 'post')
+
+          # Add required folder-id argument
+          $args += "--folder-id"; "${{ inputs.folder_id }}"
+
+          # Add required packages argument (JSON string)
+          $args += "--packages"; "${{ inputs.packages }}"
+
+          # Add optional parameters if provided
+          if (${{ inputs.deleter_user_id }} -ne $null) {
+            $args += "--deleter-user-id"; "${{ inputs.deleter_user_id }}"
+          }
+          if (${{ inputs.key }}) {
+            $args += "--key"; "${{ inputs.key }}"
+          }
+          if (${{ inputs.organization_unit_id }} -ne $null) {
+            $args += "--organization-unit-id"; "${{ inputs.organization_unit_id }}"
+          }
+          if (${{ inputs.test_case_count }} -ne $null) {
+            $args += "--test-case-count"; "${{ inputs.test_case_count }}"
+          }
+
+          # Execute the CLI command with constructed arguments
+          Write-Host "Executing: uipath $($args -join ' ')"
+          $process = Start-Process -FilePath "uipath" -ArgumentList $args -NoNewWindow -PassThru -Wait -RedirectStandardOutput out.txt -RedirectStandardError err.txt
+
+          $out = Get-Content -Path out.txt -Raw
+          $err = Get-Content -Path err.txt -Raw
+
+          if ($process.ExitCode -eq 0) {
+            Write-Host "Command succeeded."
+            Write-Output $out
+            echo "::set-output name=result::$out"
+          } else {
+            Write-Error "Command failed with exit code $($process.ExitCode). Error: $err"
+            echo "::set-output name=result::ERROR: $err"
+            exit $process.ExitCode
+          }

@@ -1,0 +1,66 @@
+name: uipath-orchestrator-organization-units-set-users-by-id
+description: |
+  NAME:
+     uipath orchestrator organization-units set-users-by-id - Associates a group of users with and dissociates another group of users from the given unit.
+
+  USAGE:
+     uipath orchestrator organization-units set-users-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Folders or OR.Folders.Write.
+
+     Required permissions: Users.Edit.
+     DEPRECATED: 
+     Kept for backwards compatibility. Use AssignUsers from FoldersController  instead
+     Please refer to https://docs.uipath.com/orchestrator/reference
+
+  OPTIONS:
+     --added-user-ids integer,integer,... (required)
+
+     --key integer (required)
+        The unit id.
+
+     --removed-user-ids integer,integer,... (required)
+  
+on:
+  workflow_call:
+    inputs:
+      added_user_ids:
+        description: 'Comma-separated list of user IDs to add (required)'
+        required: true
+        type: string
+      key:
+        description: 'Unit ID to modify (required)'
+        required: true
+        type: string
+      removed_user_ids:
+        description: 'Comma-separated list of user IDs to remove (required)'
+        required: true
+        type: string
+
+jobs:
+  set-users-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator organization-units set-users-by-id
+        shell: pwsh
+        env:
+          ADDED_USER_IDS: ${{ inputs.added_user_ids }}
+          KEY: ${{ inputs.key }}
+          REMOVED_USER_IDS: ${{ inputs.removed_user_ids }}
+        run: |
+          # Initialize argument array
+          $args = @()
+
+          # Add required parameters with appropriate quoting
+          $args += '--added-user-ids'
+          $args += ("{0}" -f $env:ADDED_USER_IDS)
+
+          $args += '--key'
+          $args += ("{0}" -f $env:KEY)
+
+          $args += '--removed-user-ids'
+          $args += ("{0}" -f $env:REMOVED_USER_IDS)
+
+          # Execute the CLI command with the composed arguments
+          uipath orchestrator organization-units set-users-by-id @args

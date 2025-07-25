@@ -1,0 +1,77 @@
+name: UiPath Orchestrator Jobs Restart-Job
+description: |
+  NAME:
+     uipath orchestrator jobs restart-job - Restarts the specified job.
+
+  USAGE:
+     uipath orchestrator jobs restart-job [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+     Required permissions: Jobs.Create.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --job-id integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: integer
+      job-id:
+        description: 'Job Id to restart'
+        required: true
+        type: integer
+      expand:
+        description: 'Related entities to be represented inline. Max depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+jobs:
+  restart-job:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Restart Job using UiPath CLI
+        shell: pwsh
+        run: |
+          # Initialize an array to build command arguments
+          $args = @("orchestrator", "jobs", "restart-job")
+
+          # Add required folder-id argument
+          $args += "--folder-id"
+          $args += "$(${{ inputs.folder-id }})"
+
+          # Add required job-id argument
+          $args += "--job-id"
+          $args += "$(${{ inputs.job-id }})"
+
+          # Conditionally add optional --expand argument if provided
+          if ("${{ inputs.expand }}" -ne "") {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+
+          # Conditionally add optional --select argument if provided
+          if ("${{ inputs.select }}" -ne "") {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Execute the uipath CLI command with constructed arguments
+          uipath $args

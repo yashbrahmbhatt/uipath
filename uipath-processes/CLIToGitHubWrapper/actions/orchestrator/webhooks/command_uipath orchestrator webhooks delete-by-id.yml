@@ -1,0 +1,42 @@
+name: 'UIPATH Orchestrator Webhooks Delete By Id'
+
+description: |
+  NAME:
+     uipath orchestrator webhooks delete-by-id - Delete a webhook subscription
+
+  USAGE:
+     uipath orchestrator webhooks delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Webhooks or OR.Webhooks.Write.
+
+     Required permissions: Webhooks.Delete.
+
+  OPTIONS:
+     --key integer (required)
+
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The ID key of the webhook subscription to delete'
+        required: true
+        type: number
+    secrets: {}
+
+jobs:
+  delete-webhook-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Delete webhook subscription by ID
+        shell: pwsh
+        run: |
+          # Initialize an array to hold all arguments for the CLI command
+          $args = @('orchestrator', 'webhooks', 'delete-by-id')
+
+          # Append the required --key argument
+          $args += '--key'
+          $args += ${{ inputs.key }}
+
+          # Execute the uipath CLI command with constructed arguments
+          uipath @args

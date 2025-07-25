@@ -1,0 +1,49 @@
+name: uipath-orchestrator-users-change-culture
+description: |
+  NAME:
+     uipath orchestrator users change-culture - Changes the culture for the current user
+
+  USAGE:
+     uipath orchestrator users change-culture [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Write.
+
+     Requires authentication.
+
+  OPTIONS:
+     --culture string (required)
+
+on:
+  workflow_call:
+    inputs:
+      culture:
+        description: 'The culture to set for the current user (e.g., en-US)'
+        required: true
+        type: string
+
+jobs:
+  change-culture:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath Orchestrator change-culture command
+        shell: pwsh
+        run: |
+          $args = @()
+          $args += 'orchestrator'
+          $args += 'users'
+          $args += 'change-culture'
+
+          # Append required --culture parameter
+          if ('${{ inputs.culture }}' -and '${{ inputs.culture }}'.Trim() -ne '') {
+            $args += '--culture'
+            $args += '${{ inputs.culture }}'
+          } else {
+            Write-Error 'The required input "culture" was not provided or is empty.'
+            exit 1
+          }
+
+          # Join the arguments with spaces, properly quoted if needed
+          $command = "uipath " + ($args | ForEach-Object { if ($_ -match '\s') { "'$_'" } else { $_ } } | Out-String).Trim()
+          Write-Host "Executing command: $command"
+          iex $command

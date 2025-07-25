@@ -1,0 +1,55 @@
+name: uipath-orchestrator-processes-delete-by-id
+description: |-
+  NAME:
+     uipath orchestrator processes delete-by-id - Deletes a package.
+
+  USAGE:
+     uipath orchestrator processes delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Execution or OR.Execution.Write.
+
+     Required permissions: (Packages.Delete - Deletes a package in a Tenant Feed) and (FolderPackages.Delete - Deletes a package in a Folder Feed).
+
+  OPTIONS:
+     --key string (required)
+
+     --feed-id string
+
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'The key of the package to delete'
+        required: true
+        type: string
+      feed_id:
+        description: 'Optional feed ID'
+        required: false
+        type: string
+
+jobs:
+  delete_package:
+    runs-on: [windows, self-hosted]
+    outputs:
+      exit_code: ${{steps.delete.outputs.exit_code}}
+    steps:
+      - name: Construct and run uipath orchestrator processes delete-by-id command
+        id: delete
+        shell: pwsh
+        run: |
+          $argsArray = @()
+          # Add the required --key argument
+          $argsArray += '--key'
+          $argsArray += "${{ inputs.key }}"
+          # Add optional --feed-id argument if provided
+          if ('${{ inputs.feed_id }}' -ne '') {
+            $argsArray += '--feed-id'
+            $argsArray += "${{ inputs.feed_id }}"
+          }
+          # Build full command
+          $command = "uipath orchestrator processes delete-by-id " + ($argsArray -join ' ')
+          Write-Host "Running command: $command"
+          & uipath orchestrator processes delete-by-id @argsArray
+          $LASTEXITCODE | Out-String | ForEach-Object { Write-Output $_ }
+          exit $LASTEXITCODE

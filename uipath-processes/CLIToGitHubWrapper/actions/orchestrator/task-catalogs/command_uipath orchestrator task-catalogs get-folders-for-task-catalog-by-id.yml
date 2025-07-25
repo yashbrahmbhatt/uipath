@@ -1,0 +1,82 @@
+name: Get Folders for Task Catalog by ID
+description: |
+  NAME:
+     uipath orchestrator task-catalogs get-folders-for-task-catalog-by-id - Get all accessible folders where the task catalog is shared, and the total count of folders where it is shared (including unaccessible folders).
+
+  USAGE:
+     uipath orchestrator task-catalogs get-folders-for-task-catalog-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --id integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+  
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      id:
+        description: 'Task catalog id (required)'
+        required: true
+        type: number
+      expand:
+        description: 'Related entities to represent inline (optional)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      UIPATH_AUTH_TOKEN:
+        description: 'Authentication token for UiPath Orchestrator'
+        required: true
+
+jobs:
+  get-folders-for-task-catalog-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Invoke UiPath Orchestrator CLI to get folders for task catalog by ID
+        shell: pwsh
+        env:
+          UIPATH_AUTH_TOKEN: ${{ secrets.UIPATH_AUTH_TOKEN }}
+        run: |
+          # Build CLI arguments array with required parameters
+          $args = @(
+            "orchestrator", "task-catalogs", "get-folders-for-task-catalog-by-id"
+            "--folder-id", "$(${{ inputs.folder_id }})"
+            "--id", "$(${{ inputs.id }})"
+          )
+          
+          # Conditionally add optional parameters if provided
+          if ([string]::IsNullOrWhiteSpace("${{ inputs.expand }}") -eq $false) {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+          if ([string]::IsNullOrWhiteSpace("${{ inputs.select }}") -eq $false) {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Log the constructed command for debugging (without sensitive info)
+          Write-Host "Running: uipath $($args -join ' ')"
+
+          # Run the CLI command with the authentication token set as environment variable
+          uipath @args

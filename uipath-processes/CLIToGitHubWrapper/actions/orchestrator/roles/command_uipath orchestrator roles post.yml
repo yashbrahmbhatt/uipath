@@ -1,0 +1,141 @@
+name: UiPath Orchestrator Roles Post
+description: |
+  NAME:
+     uipath orchestrator roles post - Creates a new role - Creating mixed roles will not be supported in 21.10
+  USAGE:
+     uipath orchestrator roles post [command options] [arguments...]
+  DESCRIPTION:
+     OAuth required scopes: OR.Users or OR.Users.Write.
+     Required permissions: Roles.Create.
+  OPTIONS:
+     --display-name string
+        An alternative name used for UI display.
+     --groups string
+        Allows grouping multiple roles together.
+     --id integer
+     --is-editable boolean
+        States whether the permissions for this role can be modified or not.
+     --is-static boolean
+        States whether this role is defined by the application and cannot be deleted or it is user defined and can be deleted.
+     --name string
+        A custom name for the role.
+     --permissions object (multiple)
+        The collection of application permissions associated with the role.
+        Example:
+           Id=integer; IsGranted=boolean; Name=string; RoleId=integer; Scope=string
+     --type string
+        Can be: Mixed, Tenant or Folder based on the permissions it includes
+        Allowed values:
+        - Mixed
+        - Tenant
+        - Folder
+
+on:
+  workflow_call:
+    inputs:
+      display_name:
+        description: 'An alternative name used for UI display.'
+        required: false
+        type: string
+      groups:
+        description: 'Allows grouping multiple roles together.'
+        required: false
+        type: string
+      id:
+        description: 'Role ID.'
+        required: false
+        type: number
+      is_editable:
+        description: 'States whether the permissions for this role can be modified or not.'
+        required: false
+        type: boolean
+        default: false
+      is_static:
+        description: 'States whether this role is defined by the application and cannot be deleted or it is user defined and can be deleted.'
+        required: false
+        type: boolean
+        default: false
+      name:
+        description: 'A custom name for the role.'
+        required: false
+        type: string
+      permissions:
+        description: |
+          The collection of application permissions associated with the role.
+          Example: Id=integer; IsGranted=boolean; Name=string; RoleId=integer; Scope=string
+          Provide multiple permissions separated by semicolons, or multiple permissions separated by '|', e.g. "Id=1;IsGranted=true;Name=Read;RoleId=10;Scope=Tenant|Id=2;IsGranted=false;Name=Write;RoleId=10;Scope=Folder"
+        required: false
+        type: string
+      type:
+        description: 'Can be: Mixed, Tenant or Folder based on the permissions it includes'
+        required: false
+        type: string
+        default: Tenant
+        options:
+          - Mixed
+          - Tenant
+          - Folder
+
+jobs:
+  post-role:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath Orchestrator roles post command
+        shell: pwsh
+        env:
+          # You can use secrets for authentication tokens or other sensitive data here, add more if needed
+        run: |
+          $args = @("orchestrator", "roles", "post")
+
+          if ($env:INPUT_DISPLAY_NAME) {
+            $args += "--display-name"
+            $args += $env:INPUT_DISPLAY_NAME
+          }
+
+          if ($env:INPUT_GROUPS) {
+            $args += "--groups"
+            $args += $env:INPUT_GROUPS
+          }
+
+          if ($env:INPUT_ID) {
+            $args += "--id"
+            $args += $env:INPUT_ID
+          }
+
+          # Convert boolean input string to lowercase (true/false)
+          if ($env:INPUT_IS_EDITABLE -and $env:INPUT_IS_EDITABLE.ToLower() -in @("true","false")) {
+            $args += "--is-editable"
+            $args += $env:INPUT_IS_EDITABLE.ToLower()
+          }
+
+          if ($env:INPUT_IS_STATIC -and $env:INPUT_IS_STATIC.ToLower() -in @("true","false")) {
+            $args += "--is-static"
+            $args += $env:INPUT_IS_STATIC.ToLower()
+          }
+
+          if ($env:INPUT_NAME) {
+            $args += "--name"
+            $args += $env:INPUT_NAME
+          }
+
+          if ($env:INPUT_PERMISSIONS) {
+            # Permissions is an object (multiple). Pass as single string with proper formatting.
+            # The user must provide a correctly formatted string.
+            $args += "--permissions"
+            $args += $env:INPUT_PERMISSIONS
+          }
+
+          if ($env:INPUT_TYPE) {
+            $allowedTypes = @("Mixed","Tenant","Folder")
+            if ($allowedTypes -contains $env:INPUT_TYPE) {
+              $args += "--type"
+              $args += $env:INPUT_TYPE
+            } else {
+              Write-Error "Invalid --type value: $($env:INPUT_TYPE). Allowed values are Mixed, Tenant, Folder."
+              exit 1
+            }
+          }
+
+          # Execute the CLI command assembled
+          Write-Host "Executing: uipath $($args -join ' ')"
+          uipath @args

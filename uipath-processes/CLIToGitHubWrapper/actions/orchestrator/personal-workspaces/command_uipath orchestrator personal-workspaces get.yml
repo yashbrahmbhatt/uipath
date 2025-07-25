@@ -1,0 +1,138 @@
+name: uipath-orchestrator-personal-workspaces-get
+description: |
+  NAME:
+     uipath orchestrator personal-workspaces get - Gets Personal Workspaces.
+
+  USAGE:
+     uipath orchestrator personal-workspaces get [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Folders or OR.Folders.Read.
+
+     Required permissions: Units.View.
+
+  OPTIONS:
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+on:
+  workflow_call:
+    inputs:
+      count:
+        description: Indicates whether the total count of items within a collection are returned in the result.
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: Restricts the set of items returned. The maximum number of expressions is 100.
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: Specifies the order in which items are returned. The maximum number of expressions is 5.
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: Excludes the specified number of items of the queried collection from the result.
+        required: false
+        type: integer
+        default: 0
+      top:
+        description: Limits the number of items returned from a collection. The maximum value is 1000.
+        required: false
+        type: integer
+        default: 0
+jobs:
+  personal-workspaces-get:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Build and run uipath orchestrator personal-workspaces get command
+        shell: pwsh
+        run: |
+          # Initialize arguments array with base command and parameters
+          $args = @('orchestrator', 'personal-workspaces', 'get')
+
+          # Add --count argument if true
+          if (${{
+            inputs.count
+          }} -eq $true) {
+            $args += '--count'
+            $args += 'true'
+          }
+
+          # Add --expand if provided and not empty
+          if ('${{ inputs.expand }}'.Trim() -ne '') {
+            $args += '--expand'
+            $args += "${{ inputs.expand }}"
+          }
+
+          # Add --filter if provided and not empty
+          if ('${{ inputs.filter }}'.Trim() -ne '') {
+            $args += '--filter'
+            $args += "${{ inputs.filter }}"
+          }
+
+          # Add --orderby if provided and not empty
+          if ('${{ inputs.orderby }}'.Trim() -ne '') {
+            $args += '--orderby'
+            $args += "${{ inputs.orderby }}"
+          }
+
+          # Add --select if provided and not empty
+          if ('${{ inputs.select }}'.Trim() -ne '') {
+            $args += '--select'
+            $args += "${{ inputs.select }}"
+          }
+
+          # Add --skip if greater than 0
+          if (${{
+            inputs.skip
+          }} -gt 0) {
+            $args += '--skip'
+            $args += "${{ inputs.skip }}"
+          }
+
+          # Add --top if greater than 0
+          if (${{
+            inputs.top
+          }} -gt 0) {
+            $args += '--top'
+            $args += "${{ inputs.top }}"
+          }
+
+          # Join all arguments into a single command string for invocation
+          $cmd = "uipath $($args -join ' ')"
+          
+          Write-Host "Running command: $cmd"
+
+          # Execute the assembled command
+          iex $cmd

@@ -1,0 +1,47 @@
+name: uipath-orchestrator-test-data-queue-actions-delete-items
+description: |
+  NAME:
+     uipath orchestrator test-data-queue-actions delete-items - Delete specific test data queue items
+
+  USAGE:
+     uipath orchestrator test-data-queue-actions delete-items [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+     Required permissions: TestDataQueueItems.Delete.
+
+     Responses:
+     204 Deleted the test data queue items
+     403 If the caller doesn't have permissions to delete test data queue items
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (integer)'
+        required: true
+        type: number
+
+jobs:
+  delete-test-data-queue-items:
+    runs-on: [windows, self-hosted]
+    outputs:
+    steps:
+      - name: Build and run uipath orchestrator test-data-queue-actions delete-items command
+        shell: pwsh
+        run: |
+          # Construct argument array for the command
+          $args = @(
+            "orchestrator",
+            "test-data-queue-actions",
+            "delete-items"
+          )
+
+          # Add required folder-id argument
+          $args += "--folder-id"
+          $args += ${{ inputs.folder_id }}
+
+          # Invoke the uipath CLI with the constructed arguments
+          Write-Host "Executing: uipath $($args -join ' ')"
+          uipath @args

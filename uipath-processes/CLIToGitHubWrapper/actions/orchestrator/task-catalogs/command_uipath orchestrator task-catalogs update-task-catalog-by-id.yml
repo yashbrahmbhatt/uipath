@@ -1,0 +1,167 @@
+name: Update Task Catalog by ID
+
+description: |
+  NAME:
+     uipath orchestrator task-catalogs update-task-catalog-by-id - Updates Task Catalog.
+
+  USAGE:
+     uipath orchestrator task-catalogs update-task-catalog-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Required permissions: TaskCatalogs.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+        Key of the object
+
+     --name string (required)
+        Name of the Task Catalog.
+
+     --description string
+        Description of this task catalog.
+
+     --encrypted boolean
+
+     --retention-action string
+        Action to take at retention limit
+
+        Allowed values:
+        - Delete
+        - Archive
+        - None
+
+     --retention-bucket-id integer
+        Retention bucket Id
+
+     --retention-period integer
+        Retention period
+
+     --tags object (multiple)
+
+        Example:
+           DisplayName=string; DisplayValue=string; Name=string; Value=string
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      key:
+        description: 'Key of the object (required)'
+        required: true
+        type: string
+      name:
+        description: 'Name of the Task Catalog (required)'
+        required: true
+        type: string
+      description:
+        description: 'Description of this task catalog (optional)'
+        required: false
+        type: string
+        default: ''
+      encrypted:
+        description: 'Boolean flag to specify if encrypted (optional)'
+        required: false
+        type: boolean
+        default: false
+      retention_action:
+        description: 'Action to take at retention limit (Delete, Archive, None)'
+        required: false
+        type: string
+        default: 'None'
+      retention_bucket_id:
+        description: 'Retention bucket Id (optional)'
+        required: false
+        type: string
+        default: ''
+      retention_period:
+        description: 'Retention period (optional)'
+        required: false
+        type: string
+        default: ''
+      tags:
+        description: |
+          Multiple tags can be provided, each as a string of format:
+          "DisplayName=string; DisplayValue=string; Name=string; Value=string"
+          Provide multiple tags separated by newlines or as array inputs.
+          (optional)
+        required: false
+        type: string
+        default: ''
+    secrets:
+      UIPATH_ORCHESTRATOR_AUTH:
+        description: 'Authentication token or credentials needed for the UiPath CLI to authenticate'
+
+jobs:
+  update-task-catalog:
+    runs-on:
+      - windows
+      - self-hosted
+    steps:
+      - name: Update Task Catalog by ID
+        shell: pwsh
+        env:
+          UIPATH_ORCHESTRATOR_AUTH: ${{ secrets.UIPATH_ORCHESTRATOR_AUTH }}
+        run: |
+          # Build the argument list to call the UiPath CLI command
+          $argsList = @(
+            "orchestrator"
+            "task-catalogs"
+            "update-task-catalog-by-id"
+            "--folder-id", "${{ inputs.folder_id }}"
+            "--key", "${{ inputs.key }}"
+            "--name", "${{ inputs.name }}"
+          )
+
+          # Add description if provided (non-empty)
+          if ('${{ inputs.description }}' -ne '') {
+            $argsList += "--description"
+            $argsList += "${{ inputs.description }}"
+          }
+
+          # Add encrypted flag if true
+          if (${{ inputs.encrypted }}) {
+            $argsList += "--encrypted"
+          }
+
+          # Validate retention_action and add if set and valid
+          $validRetentionActions = @("Delete", "Archive", "None")
+          if ($validRetentionActions -contains '${{ inputs.retention_action }}' -and '${{ inputs.retention_action }}' -ne 'None') {
+            $argsList += "--retention-action"
+            $argsList += "${{ inputs.retention_action }}"
+          }
+
+          # Add retention bucket id if provided and not empty
+          if ('${{ inputs.retention_bucket_id }}' -ne '') {
+            $argsList += "--retention-bucket-id"
+            $argsList += "${{ inputs.retention_bucket_id }}"
+          }
+
+          # Add retention period if provided and not empty
+          if ('${{ inputs.retention_period }}' -ne '') {
+            $argsList += "--retention-period"
+            $argsList += "${{ inputs.retention_period }}"
+          }
+
+          # Add tags if provided, support multiple tags separated by newlines or semicolons
+          if ('${{ inputs.tags }}' -ne '') {
+            # Split input tags by newlines (in case multiple tags given)
+            $tagsArray = ${{ inputs.tags }} -split "`n" | Where-Object { $_.Trim() -ne '' }
+            foreach ($tag in $tagsArray) {
+              $argsList += "--tags"
+              $argsList += $tag.Trim()
+            }
+          }
+
+          # Output the constructed command for debugging
+          Write-Host "Executing UiPath CLI with args: $($argsList -join ' ')"
+
+          # Call UiPath CLI with constructed argument array
+          uipath @argsList

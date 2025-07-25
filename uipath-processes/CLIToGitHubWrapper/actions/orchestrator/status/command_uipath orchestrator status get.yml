@@ -1,0 +1,27 @@
+name: UiPath Orchestrator Status Get
+
+description: |
+  NAME:
+     uipath orchestrator status get - Returns whether the current endpoint should be serving traffic
+
+  USAGE:
+     uipath orchestrator status get [arguments...]
+
+on:
+  workflow_call:
+
+jobs:
+  get-status:
+    runs-on: [windows, self-hosted]
+    outputs:
+      result: ${{ steps.run-cli.outputs.result }}
+    steps:
+      - name: Run UiPath Orchestrator Status Get
+        id: run-cli
+        shell: pwsh
+        run: |
+          $args = @("orchestrator", "status", "get")
+          
+          # Run the command and capture the output
+          $output = & uipath @args
+          Write-Host "result=$output" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append

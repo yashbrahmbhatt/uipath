@@ -1,0 +1,50 @@
+name: uipath-orchestrator-cancel-test-set-execution
+description: >
+  NAME:
+     uipath orchestrator test-automation cancel-test-set-execution - Cancels the specified test set execution.
+
+  USAGE:
+     uipath orchestrator test-automation cancel-test-set-execution [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Write.
+     Required permissions: TestSetExecutions.Edit.
+     Responses:
+     202 Accepted
+     403 If the caller doesn't have permissions to cancel a test set execution
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        required: true
+        type: number
+        description: Folder/OrganizationUnit Id
+      test_set_execution_id:
+        required: false
+        type: number
+        description: Id for the test set execution to be canceled
+
+jobs:
+  cancel-test-set-execution:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Cancel UiPath Test Set Execution
+        shell: pwsh
+        run: |
+          # Construct the argument array for the CLI command
+          $args = @("orchestrator", "test-automation", "cancel-test-set-execution")
+
+          # Add required folder ID parameter
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          # Add optional test set execution ID if provided
+          if ("${{ inputs.test_set_execution_id }}" -ne "") {
+            $args += "--test-set-execution-id"
+            $args += "${{ inputs.test_set_execution_id }}"
+          }
+
+          # Execute the uipath CLI with assembled arguments
+          uipath $args

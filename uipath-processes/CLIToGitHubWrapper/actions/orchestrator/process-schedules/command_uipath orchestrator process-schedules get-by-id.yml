@@ -1,0 +1,85 @@
+name: uipath-orchestrator-process-schedules-get-by-id
+description: |
+  NAME:
+     uipath orchestrator process-schedules get-by-id - Gets a single process schedule based on its key.
+
+  USAGE:
+     uipath orchestrator process-schedules get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Jobs or OR.Jobs.Read.
+
+     Required permissions: Schedules.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      key:
+        description: 'Process schedule key (required)'
+        required: true
+        type: number
+      expand:
+        description: 'Related entities to be represented inline. Max depth 2 (optional)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    outputs:
+      output: ${{ steps.run-cli.outputs.cli_output }}
+    steps:
+      - name: Run uipath orchestrator process-schedules get-by-id
+        id: run-cli
+        shell: pwsh
+        run: |
+          # Initialize argument list
+          $args = @('orchestrator', 'process-schedules', 'get-by-id')
+
+          # Add required parameters
+          $args += '--folder-id'; $args += "${{ inputs.folder-id }}"
+          $args += '--key'; $args += "${{ inputs.key }}"
+
+          # Add optional parameter --expand if provided
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += '--expand'; $args += "${{ inputs.expand }}"
+          }
+
+          # Add optional parameter --select if provided
+          if ('${{ inputs.select }}' -ne '') {
+            $args += '--select'; $args += "${{ inputs.select }}"
+          }
+
+          # Run the uipath CLI command with constructed arguments
+          $command = "uipath " + ($args -join ' ')
+          Write-Host "Running command: $command"
+
+          # Execute command and capture output
+          $output = & uipath @($args)
+          Write-Output $output
+
+          # Set output for further steps if needed
+          echo "::set-output name=cli_output::$output"

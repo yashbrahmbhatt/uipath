@@ -1,0 +1,60 @@
+name: 'uipath orchestrator test-data-queue-actions set-items-consumed'
+description: |-
+  NAME:
+     uipath orchestrator test-data-queue-actions set-items-consumed - Set the IsConsumed flag for specific test data queue items
+
+  USAGE:
+     uipath orchestrator test-data-queue-actions set-items-consumed [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestDataQueues or OR.TestDataQueues.Write.
+
+     Required permissions: TestDataQueueItems.Edit.
+
+     Responses:
+     200 If the operation succeeded
+     403 If the caller doesn't have permissions to edit test data queue items
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --is-consumed boolean (required)
+
+     --item-ids integer,integer,... (required)
+  
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: integer
+      is_consumed:
+        description: 'Set the IsConsumed flag (true or false)'
+        required: true
+        type: boolean
+      item_ids:
+        description: 'Comma-separated list of item IDs (integers) to set as consumed'
+        required: true
+        type: string
+    secrets: {}
+
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator test-data-queue-actions set-items-consumed
+        shell: pwsh
+        run: |
+          # Build the args array for the command line parameters
+          $args = @(
+            'orchestrator', 'test-data-queue-actions', 'set-items-consumed'
+            '--folder-id', "${{ inputs.folder_id }}"
+            '--is-consumed', "${{ inputs.is_consumed }}"
+            '--item-ids', "${{ inputs.item_ids }}"
+          )
+
+          # Run the uipath CLI command with the arguments
+          & uipath @args

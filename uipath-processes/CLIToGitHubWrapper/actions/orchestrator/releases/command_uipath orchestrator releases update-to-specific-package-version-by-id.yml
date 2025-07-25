@@ -1,0 +1,56 @@
+name: Update UiPath Orchestrator Release to Specific Package Version by ID
+description: |
+  Updates the package version for the given release.
+
+  OAuth required scopes: OR.Execution or OR.Execution.Write.
+  Required permissions: Processes.Edit.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      key:
+        description: 'Key (required)'
+        required: true
+        type: number
+      package_version:
+        description: 'Package version (required)'
+        required: true
+        type: string
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  update-release-package-version:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath orchestrator releases update-to-specific-package-version-by-id
+        shell: pwsh
+        run: |
+          $args = @()
+          # Add required parameters
+          $args += '--folder-id'; $args += "${{ inputs.folder_id }}"
+          $args += '--key'; $args += "${{ inputs.key }}"
+          $args += '--package-version'; $args += "${{ inputs.package_version }}"
+
+          # Add optional parameters if provided
+          if ('${{ inputs.expand }}'.Trim() -ne '') {
+            $args += '--expand'; $args += "${{ inputs.expand }}"
+          }
+          if ('${{ inputs.select }}'.Trim() -ne '') {
+            $args += '--select'; $args += "${{ inputs.select }}"
+          }
+
+          # Invoke the CLI command with collected arguments
+          uipath orchestrator releases update-to-specific-package-version-by-id @args

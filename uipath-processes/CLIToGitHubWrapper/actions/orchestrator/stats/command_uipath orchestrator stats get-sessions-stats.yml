@@ -1,0 +1,67 @@
+name: 'UiPath Orchestrator Get Sessions Stats'
+
+description: |
+  NAME:
+     uipath orchestrator stats get-sessions-stats - Gets the total number of robots aggregated by Robot State
+
+  USAGE:
+     uipath orchestrator stats get-sessions-stats [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Monitoring or OR.Monitoring.Read.
+
+     Required permissions: Robots.View.
+
+     Returns the total number of Available, Busy, Disconnected and Unresponsive robots respectively.
+     Example of returned result:
+         [
+               {
+                 "title": "Available",
+                 "count": 1
+               },
+               {
+                 "title": "Busy",
+                 "count": 0
+               },
+               {
+                 "title": "Disconnected",
+                 "count": 1
+               },
+               {
+                 "title": "Unresponsive",
+                 "count": 0
+               }
+         ]
+
+on:
+  workflow_call:
+
+jobs:
+  get_sessions_stats:
+    runs-on: [windows, self-hosted]
+    outputs:
+      result: ${{ steps.get_stats.outputs.result }}
+    steps:
+      - name: Run UiPath Orchestrator Get Sessions Stats
+        id: get_stats
+        shell: pwsh
+        env:
+          UIPATH_ACCESS_TOKEN: ${{ secrets.UIPATH_ACCESS_TOKEN }}
+        run: |
+          # Initialize argument array with fixed command parts
+          $args = @('orchestrator', 'stats', 'get-sessions-stats')
+
+          # Build the complete command string with quoting for safety
+          $argString = $args | ForEach-Object { '"{0}"' -f $_ } | Out-String
+          $argString = $argString -replace "\r?\n", ' '
+          $argString = $argString.Trim()
+
+          # Execute the command with the proper environment variable for OAuth token
+          # The token should be provided as a secret named UIPATH_ACCESS_TOKEN
+          try {
+              $output = & uipath $args 2>&1
+              Write-Output "::set-output name=result::$output"
+          } catch {
+              Write-Error "Command failed: $_"
+              exit 1
+          }

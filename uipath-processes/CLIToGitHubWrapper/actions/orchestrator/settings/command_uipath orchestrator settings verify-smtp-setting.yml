@@ -1,0 +1,47 @@
+name: 'uipath-orchestrator-settings-verify-smtp-setting'
+description: |
+  Verify whether the given SMTP settings are correct or not by sending an email to a recipient.
+
+  OAuth required scopes: OR.Settings or OR.Settings.Write.
+  Required permissions: Settings.Edit.
+
+on:
+  workflow_call:
+    inputs:
+      send-to:
+        description: 'Email address to send the test email to'
+        required: true
+        type: string
+      smtp-setting-model:
+        description: |
+          SMTP settings model string. Example format:
+          DefaultFromAddress=string; DefaultFromDisplayName=string; Domain=string; EnableSsl=boolean; Host=string; Password=string; Port=integer; UseDefaultCredentials=boolean; UserName=string
+        required: false
+        type: string
+    secrets: {}
+
+jobs:
+  verify_smtp_setting:
+    runs-on: [windows, self-hosted]
+    name: Verify SMTP Setting
+    steps:
+      - name: Run uipath orchestrator settings verify-smtp-setting command
+        shell: pwsh
+        run: |
+          # Build argument array for the CLI command
+          $args = @('orchestrator', 'settings', 'verify-smtp-setting')
+
+          # Add mandatory --send-to argument
+          $args += '--send-to'
+          $args += "'${{ inputs.send-to }}'"
+
+          # Add optional --smtp-setting-model argument if provided
+          if ([string]::IsNullOrWhiteSpace('${{ inputs.smtp-setting-model }}') -eq $false) {
+            $args += '--smtp-setting-model'
+            $args += "'${{ inputs.smtp-setting-model }}'"
+          }
+
+          # Invoke the CLI command with constructed arguments
+          uipath $args -join ' ' | Write-Host
+          & uipath @args
+

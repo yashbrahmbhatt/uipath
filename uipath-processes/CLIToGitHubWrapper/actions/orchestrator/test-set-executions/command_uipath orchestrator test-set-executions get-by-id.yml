@@ -1,0 +1,83 @@
+name: uipath-orchestrator-test-set-executions-get-by-id
+description: |
+  NAME:
+     uipath orchestrator test-set-executions get-by-id - Return a specific Test Set Execution identified by key
+
+  USAGE:
+     uipath orchestrator test-set-executions get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSetExecutions or OR.TestSetExecutions.Read.
+
+     Required permissions: TestSetExecutions.View.
+
+     Responses:
+     200 Return a specific Test Set Execution identified by key
+     403 If the caller doesn't have permissions to view Test Set Executions
+     404 It the test set execution is not found
+
+  This workflow calls the CLI command 'uipath orchestrator test-set-executions get-by-id' with required
+  mandatory parameters folder-id and key, and optional parameters expand and select.
+  It constructs the CLI arguments dynamically in a PowerShell script and executes the command.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (integer, required)'
+        required: true
+        type: number
+      key:
+        description: 'Test Set Execution key (integer, required)'
+        required: true
+        type: number
+      expand:
+        description: 'Indicates the related entities to be represented inline (string, optional)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result (string, optional)'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  run-test-set-execution-get-by-id:
+    runs-on:
+      - windows
+      - self-hosted
+    steps:
+      - name: Execute uipath orchestrator test-set-executions get-by-id
+        shell: pwsh
+        run: |
+          # Initialize array to collect arguments for the CLI command
+          $args = @('orchestrator', 'test-set-executions', 'get-by-id')
+
+          # Append the mandatory folder-id parameter
+          $args += "--folder-id"
+          $args += ${{ inputs.folder_id }}
+
+          # Append the mandatory key parameter
+          $args += "--key"
+          $args += ${{ inputs.key }}
+
+          # Append optional --expand parameter if provided and not empty
+          if ("${{ inputs.expand }}" -ne '') {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+
+          # Append optional --select parameter if provided and not empty
+          if ("${{ inputs.select }}" -ne '') {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Join the arguments array into a single command string
+          $command = "uipath " + ($args -join ' ')
+
+          Write-Host "Running command: $command"
+
+          # Execute the constructed CLI command
+          Invoke-Expression $command

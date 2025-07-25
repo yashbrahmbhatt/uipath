@@ -1,0 +1,71 @@
+name: uipath-orchestrator-test-set-schedules-get-by-id
+description: |
+  NAME:
+     uipath orchestrator test-set-schedules get-by-id - Return a specific test set execution schedule identified by key
+
+  USAGE:
+     uipath orchestrator test-set-schedules get-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSetSchedules or OR.TestSetSchedules.Read.
+
+     Required permissions: TestSetSchedules.View.
+
+     Responses:
+     200 Return a specific test set execution schedule identified by key
+     403 If the caller doesn't have permissions to view test set execution schedules
+     404 It the test set execution schedule is not found
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: Folder/OrganizationUnit Id (required)
+        required: true
+        type: number
+      key:
+        description: The key identifying the specific test set execution schedule (required)
+        required: true
+        type: number
+      expand:
+        description: Indicates the related entities to be represented inline. The maximum depth is 2.
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result.
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  run-get-by-id:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator test-set-schedules get-by-id command
+        shell: pwsh
+        run: |
+          # Build argument list for the CLI command
+          $args = @("orchestrator", "test-set-schedules", "get-by-id")
+          
+          # Required arguments
+          $args += "--folder-id"
+          $args += "$(${{ inputs.folder-id }})"
+
+          $args += "--key"
+          $args += "$(${{ inputs.key }})"
+
+          # Optional --expand argument if provided
+          if ("${{ inputs.expand }}" -ne "") {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+
+          # Optional --select argument if provided
+          if ("${{ inputs.select }}" -ne "") {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Execute the CLI command with constructed arguments
+          uipath @args

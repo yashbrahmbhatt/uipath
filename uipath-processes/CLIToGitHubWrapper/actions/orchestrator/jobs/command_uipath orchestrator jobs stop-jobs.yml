@@ -1,0 +1,85 @@
+name: uipath-orchestrator-jobs-stop-jobs
+description: |-
+  NAME:
+     uipath orchestrator jobs stop-jobs - Cancels or terminates the specified jobs.
+
+  USAGE:
+     uipath orchestrator jobs stop-jobs [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Jobs or OR.Jobs.Write.
+
+     Required permissions: Jobs.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --job-ids integer,integer,... (required)
+
+     --strategy string (required)
+
+        Allowed values:
+        - SoftStop
+        - Kill
+
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: string
+      job-ids:
+        description: 'Comma-separated list of Job Ids (required)'
+        required: true
+        type: string
+      strategy:
+        description: 'Stop strategy (required) Allowed values: SoftStop, Kill'
+        required: true
+        type: string
+
+jobs:
+  stop-jobs:
+    runs-on: [windows, self-hosted]
+    outputs:
+      result: ${{ steps.invoke.outputs.result }}
+    steps:
+      - name: Stop UiPath Orchestrator Jobs
+        id: invoke
+        shell: pwsh
+        run: |
+          # Validate strategy input allowed values
+          $allowedStrategies = @('SoftStop', 'Kill')
+          if (-not ($allowedStrategies -contains '${{ inputs.strategy }}')) {
+            Write-Error "Invalid strategy '${{ inputs.strategy }}'. Allowed values are: SoftStop, Kill."
+            exit 1
+          }
+
+          $args = @('orchestrator', 'jobs', 'stop-jobs')
+
+          # Add required --folder-id option
+          $args += '--folder-id'
+          $args += "${{ inputs.folder-id }}"
+
+          # Add required --job-ids option
+          $args += '--job-ids'
+          $args += "${{ inputs.job-ids }}"
+
+          # Add required --strategy option
+          $args += '--strategy'
+          $args += "${{ inputs.strategy }}"
+
+          # Join args and run the CLI command
+          $cmd = "uipath " + ($args -join ' ')
+          Write-Output "Executing command: $cmd"
+          $output = & $cmd 2>&1
+          $exitCode = $LASTEXITCODE
+
+          if ($exitCode -ne 0) {
+            Write-Error "Command failed with exit code $exitCode. Output:`n$output"
+            exit $exitCode
+          }
+
+          Write-Output "Command succeeded. Output:`n$output"
+          echo "::set-output name=result::$output"

@@ -1,0 +1,79 @@
+name: 'uipath orchestrator queue-items unset-item-reviewer'
+description: |
+  OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+  Required permissions: Queues.View and Transactions.Edit.
+
+  Unsets the reviewer for multiple queue items.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: string
+      queue_items:
+        description: 'Queue items to unset reviewer for, as a JSON string array of objects with properties Id (integer) and RowVersion (string). Example: [{"Id":123,"RowVersion":"abc"}]'
+        required: true
+        type: string
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+
+jobs:
+  unset-item-reviewer:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # This job does not produce outputs, but could be extended if needed.
+    steps:
+      - name: Run uipath orchestrator queue-items unset-item-reviewer
+        shell: pwsh
+        run: |
+          # Initialize arguments array for the CLI command
+          $args = @()
+
+          # Add required folder id argument
+          $args += '--folder-id'
+          $args += "$env:INPUT_FOLDER_ID"
+
+          # Parse the JSON string input for queue_items
+          try {
+            $queueItemsArray = ConvertFrom-Json $env:INPUT_QUEUE_ITEMS
+          }
+          catch {
+            Write-Error "queue_items input is not valid JSON or not in expected format."
+            exit 1
+          }
+
+          # Add each queue item as --queue-items with the format 'Id=integer; RowVersion=string'
+          foreach ($item in $queueItemsArray) {
+            if (-not $item.Id -or -not $item.RowVersion) {
+              Write-Error "Each queue item must have 'Id' and 'RowVersion' properties."
+              exit 1
+            }
+            $queueItemStr = "Id=$($item.Id); RowVersion=$($item.RowVersion)"
+            $args += '--queue-items'
+            $args += $queueItemStr
+          }
+
+          # Add optional parameters if provided
+          if ($env:INPUT_EXPAND -and $env:INPUT_EXPAND.Trim() -ne '') {
+            $args += '--expand'
+            $args += $env:INPUT_EXPAND
+          }
+
+          if ($env:INPUT_SELECT -and $env:INPUT_SELECT.Trim() -ne '') {
+            $args += '--select'
+            $args += $env:INPUT_SELECT
+          }
+
+          # Build and execute the command
+          $cmd = "uipath orchestrator queue-items unset-item-reviewer " + ($args -join ' ')
+          Write-Host "Running command: $cmd"
+          iex $cmd

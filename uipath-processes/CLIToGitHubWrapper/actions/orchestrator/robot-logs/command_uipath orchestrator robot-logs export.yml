@@ -1,0 +1,128 @@
+name: uipath-orchestrator-robot-logs-export
+description: |
+  NAME:
+     uipath orchestrator robot-logs export - Requests a CSV export of filtered items.
+
+  USAGE:
+     uipath orchestrator robot-logs export [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Monitoring or OR.Monitoring.Write.
+
+     Required permissions: Logs.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restricts the set of items returned. The maximum number of expressions is 100.'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Specifies the order in which items are returned. The maximum number of expressions is 5.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Excludes the specified number of items of the queried collection from the result.'
+        required: false
+        type: number
+        default: 0
+      top:
+        description: 'Limits the number of items returned from a collection. The maximum value is 1000.'
+        required: false
+        type: number
+        default: 1000
+
+jobs:
+  export_logs:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator robot-logs export
+        shell: pwsh
+        run: |
+          # Initialize arguments array with required command and folder id
+          $args = @("orchestrator", "robot-logs", "export", "--folder-id", "$(${{ inputs.folder_id }})")
+
+          # Conditionally add --count if true
+          if (${{ inputs.count }}) {
+            $args += "--count"
+            $args += "true"
+          }
+
+          # Add optional string parameters if non-empty
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += "--expand"
+            $args += "'${{ inputs.expand }}'"
+          }
+          if ('${{ inputs.filter }}' -ne '') {
+            $args += "--filter"
+            $args += "'${{ inputs.filter }}'"
+          }
+          if ('${{ inputs.orderby }}' -ne '') {
+            $args += "--orderby"
+            $args += "'${{ inputs.orderby }}'"
+          }
+          if ('${{ inputs.select }}' -ne '') {
+            $args += "--select"
+            $args += "'${{ inputs.select }}'"
+          }
+
+          # Add optional numeric parameters only if greater than zero
+          if (${{ inputs.skip }} -gt 0) {
+            $args += "--skip"
+            $args += "$(${{ inputs.skip }})"
+          }
+
+          if (${{ inputs.top }} -gt 0 -and ${{ inputs.top }} -le 1000) {
+            $args += "--top"
+            $args += "$(${{ inputs.top }})"
+          }
+
+          # Invoke the CLI command with constructed arguments array
+          uipath @args

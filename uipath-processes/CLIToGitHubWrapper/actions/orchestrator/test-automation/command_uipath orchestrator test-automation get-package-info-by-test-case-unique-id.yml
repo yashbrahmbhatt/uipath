@@ -1,0 +1,56 @@
+name: 'UiPath Orchestrator Test Automation Get Package Info By Test Case Unique Id'
+description: |
+  NAME:
+     uipath orchestrator test-automation get-package-info-by-test-case-unique-id - Get the package identifier and the latest version for the specified test case.
+
+  USAGE:
+     uipath orchestrator test-automation get-package-info-by-test-case-unique-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+     Requires authentication.
+
+     Responses:
+     200 OK
+     403 If the caller doesn't have permissions to retrieve packages
+     404 If there is no test case with the specified UniqueId
+
+  OPTIONS:
+     --package-identifier string
+
+     --test-case-unique-id string
+on:
+  workflow_call:
+    inputs:
+      package_identifier:
+        description: 'Package identifier to query (optional)'
+        required: false
+        type: string
+      test_case_unique_id:
+        description: 'Test case unique ID to get package info for'
+        required: true
+        type: string
+    secrets: []
+jobs:
+  get-package-info:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Get package info by test case unique id
+        shell: pwsh
+        run: |
+          # Initialize arguments array with required subcommands
+          $args = @('orchestrator', 'test-automation', 'get-package-info-by-test-case-unique-id')
+
+          # Add --package-identifier option if provided and non-empty
+          if ('${{ inputs.package_identifier }}' -ne '') {
+            $args += '--package-identifier'
+            $args += '${{ inputs.package_identifier }}'
+          }
+
+          # Add required --test-case-unique-id option
+          $args += '--test-case-unique-id'
+          $args += '${{ inputs.test_case_unique_id }}'
+
+          # Execute the uipath CLI command with constructed arguments
+          uipath @args | Write-Host

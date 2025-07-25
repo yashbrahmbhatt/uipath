@@ -1,0 +1,360 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="DownloadTransactions" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:yra="clr-namespace:Yash.RBC.Activities;assembly=Yash.RBC.Activities.Core">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="The path to download the file to. Must contain .csv extension at the end." Name="in_Path" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="The scope of the transactions to download." Name="in_Scope" Type="InArgument(yra:TransactionScopes)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="The accounts to download the transaction for. " Name="in_AccountType" Type="InArgument(yra:AccountTypes)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="The application window to work on." Name="io_Window" Type="InOutArgument(ui:UiElement)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+  </x:Members>
+  <this:DownloadTransactions.in_Path>
+    <InArgument x:TypeArguments="x:String">
+      <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_3">Path.Combine(Directory.GetCurrentDirectory(), Path.GetTempFileName().Replace(".",""))</CSharpValue>
+    </InArgument>
+  </this:DownloadTransactions.in_Path>
+  <this:DownloadTransactions.in_Scope>
+    <InArgument x:TypeArguments="yra:TransactionScopes">
+      <CSharpValue x:TypeArguments="yra:TransactionScopes" sap2010:WorkflowViewState.IdRef="CSharpValue`1_13">TransactionScopes.All</CSharpValue>
+    </InArgument>
+  </this:DownloadTransactions.in_Scope>
+  <this:DownloadTransactions.in_AccountType>
+    <InArgument x:TypeArguments="yra:AccountTypes">
+      <CSharpValue x:TypeArguments="yra:AccountTypes" sap2010:WorkflowViewState.IdRef="CSharpValue`1_14">AccountTypes.All</CSharpValue>
+    </InArgument>
+  </this:DownloadTransactions.in_AccountType>
+  <sap2010:Annotation.AnnotationText>UPTF000000D0eyI8SGVscExpbms+a19fQmFja2luZ0ZpZWxkIjpudWxsLCI8SW5pdGlhbFRvb2x0aXA+a19fQmFja2luZ0ZpZWxkIjoiRG93bmxvYWQgeW91ciBoaXN0b3JpY2FsIHRyYW5zYWN0aW9ucyBmb3IgeW91ciBhY2NvdW50cy4iLCI8VmVyc2lvbj5rX19CYWNraW5nRmllbGQiOjF9</sap2010:Annotation.AnnotationText>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap:VirtualizedContainerService.HintSize>1154,3586</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Linq.Expressions</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationNext.Contracts</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>UiPath.UIAutomationNext.Models.CV</x:String>
+      <x:String>UiPath.UIAutomationCore.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
+      <x:String>UiPath.Shared.Activities</x:String>
+      <x:String>UiPath.Platform.ObjectLibrary</x:String>
+      <x:String>UiPath.Platform.SyncObjects</x:String>
+      <x:String>UiPath.UIAutomationNext.Models</x:String>
+      <x:String>System.Security</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>Yash.RBC.Activities</x:String>
+      <x:String>System.IO</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.Net.Mail</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
+      <AssemblyReference>System.Linq.Expressions</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
+      <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Testing.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Platform</AssemblyReference>
+      <AssemblyReference>System.Runtime.InteropServices</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.EventBasedAsync</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
+      <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
+      <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>System.Collections</AssemblyReference>
+      <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
+      <AssemblyReference>System.IO.FileSystem.Watcher</AssemblyReference>
+      <AssemblyReference>System.IO.Packaging</AssemblyReference>
+      <AssemblyReference>System.IO.FileSystem.AccessControl</AssemblyReference>
+      <AssemblyReference>System.IO.FileSystem.DriveInfo</AssemblyReference>
+      <AssemblyReference>Yash.RBC.Activities.Core</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.ViewModels</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Download your historical transactions for your accounts." DisplayName="DownloadTransactions" sap:VirtualizedContainerService.HintSize="1223,3324" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="LM: Start" sap:VirtualizedContainerService.HintSize="484,173" sap2010:WorkflowViewState.IdRef="LogMessage_1">
+      <ui:LogMessage.Message>
+        <InArgument x:TypeArguments="x:Object">
+          <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_1">"Downloading transactions"</CSharpValue>
+        </InArgument>
+      </ui:LogMessage.Message>
+    </ui:LogMessage>
+    <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="Public Home Page" HealingAgentBehavior="Job" sap:VirtualizedContainerService.HintSize="484,1466" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" OpenMode="Never" ScopeGuid="4ea7d55f-1913-4339-b81d-d45c005ebab0" Version="V2">
+      <uix:NApplicationCard.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Download File" sap:VirtualizedContainerService.HintSize="450,1297" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click 'Account Services Link'" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="416,225" sap2010:WorkflowViewState.IdRef="NClick_1" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="4ea7d55f-1913-4339-b81d-d45c005ebab0" Version="V3">
+              <uix:NClick.Target>
+                <uix:TargetAnchorable BrowserURL="https://www1.royalbank.com/sgw1/olb/index-en/#/summary?signin=" CVScreenId="3a81d536-6f9e-423e-aeca-07de1bcf46aa" ContentHash="QRmiPZUurU6oClRBVRqf6A" CvTextArea="1146, 824, 128, 15" CvTextArgument="Account Services" CvType="Text" DesignTimeRectangle="1148, 820, 342, 24" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl tag='TABLE' /&gt;&lt;webctrl id='accountServicesLocal' tableRow='1' tag='A' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='TABLE' /&gt;&lt;webctrl id='accountServicesLocal' type='' tag='A' class='' aaname=' Account Services ' check:innerText='Account Services' /&gt;" Guid="a5f96b4a-b725-4b15-a846-dc5fde56753d" ImageBase64="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" InformativeScreenshot="7a98e5da35a635e17e39d3cdecc3901d.png" Reference="WNjaHSKoL0-m35pLylBavw/lw-RPl9AwUuB6a3PMTg5Dw" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Accounts Summary - RBC Online Banking' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NClick.Target>
+              <uix:NClick.VerifyOptions>
+                <uix:VerifyExecutionOptions DisplayName="{x:Null}" Mode="Appears">
+                  <uix:VerifyExecutionOptions.Retry>
+                    <InArgument x:TypeArguments="x:Boolean" />
+                  </uix:VerifyExecutionOptions.Retry>
+                  <uix:VerifyExecutionOptions.Timeout>
+                    <InArgument x:TypeArguments="x:Double" />
+                  </uix:VerifyExecutionOptions.Timeout>
+                </uix:VerifyExecutionOptions>
+              </uix:NClick.VerifyOptions>
+            </uix:NClick>
+            <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click 'Download Transactions Link'" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="416,225" sap2010:WorkflowViewState.IdRef="NClick_2" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="4ea7d55f-1913-4339-b81d-d45c005ebab0" Version="V3">
+              <uix:NClick.Target>
+                <uix:TargetAnchorable BrowserURL="https://www1.royalbank.com/sgw1/olb/index-en/#/account-services" CVScreenId="071f6cee-3278-4544-9422-d4cb8de220e0" ContentHash="W-AGnNlFk0a9yG7kcul04A" CvTextArea="382, 586, 171, 15" CvType="AnyWordGroup" DesignTimeRectangle="421, 549, 169, 22" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl tag='TABLE' /&gt;&lt;webctrl aaname='Download Transactions' tag='A' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='TABLE' /&gt;&lt;webctrl aaname='Download Transactions' tag='A' type='' class='ng-star-inserted' check:text='Download Transactions' /&gt;" Guid="db760d65-405b-48c7-bfb2-1e51526c5efd" InformativeScreenshot="7c05a60ee9d9e547f29a80434121c64c.png" Reference="WNjaHSKoL0-m35pLylBavw/uwHj5ililEWrQz9vXNSTkg" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Account Services – RBC Online Banking' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NClick.Target>
+              <uix:NClick.VerifyOptions>
+                <uix:VerifyExecutionOptions DisplayName="{x:Null}" Mode="Appears">
+                  <uix:VerifyExecutionOptions.Retry>
+                    <InArgument x:TypeArguments="x:Boolean" />
+                  </uix:VerifyExecutionOptions.Retry>
+                  <uix:VerifyExecutionOptions.Timeout>
+                    <InArgument x:TypeArguments="x:Double" />
+                  </uix:VerifyExecutionOptions.Timeout>
+                </uix:VerifyExecutionOptions>
+              </uix:NClick.VerifyOptions>
+            </uix:NClick>
+            <uix:NCheck Action="Check" DisplayName="Check/Uncheck 'Comma Delimited'" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="416,189" sap2010:WorkflowViewState.IdRef="NCheck_1" Version="V3">
+              <uix:NCheck.Target>
+                <uix:TargetAnchorable BrowserURL="https://www1.royalbank.com/cgi-bin/rbaccess/rbcgi3m01" CVScreenId="301eb972-4c47-4d2f-afb0-0c60ed817ee9" ContentHash="aB9AhhmR3UqcBe__7CQtLQ" DesignTimeRectangle="632, 536, 13, 13" DesignTimeScaleFactor="1" ElementType="RadioButton" FullSelectorArgument="&lt;webctrl id='Excel' tableRow='13' tag='INPUT' /&gt;" FuzzySelectorArgument="&lt;webctrl id='Excel' type='radio' tag='INPUT' class='' aaname='Comma Delimited (.csv for Excel, Quattro Pro, Lotus, etc.)' /&gt;" Guid="bed12476-98f9-4f0e-ba21-575413a6dc94" ImageBase64="" Reference="WNjaHSKoL0-m35pLylBavw/74B6FZJnnkqDxMVebiLglA" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Download Transactions - RBC Online Banking' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NCheck.Target>
+            </uix:NCheck>
+            <uix:NSelectItem DisplayName="Select Item 'AccountTypes'" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="416,189" sap2010:WorkflowViewState.IdRef="NSelectItem_1" Version="V3">
+              <uix:NSelectItem.Item>
+                <InArgument x:TypeArguments="x:String">
+                  <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_6">Utilities.GetAccountTypes(in_AccountType)</CSharpValue>
+                </InArgument>
+              </uix:NSelectItem.Item>
+              <uix:NSelectItem.Target>
+                <uix:TargetAnchorable BrowserURL="https://www1.royalbank.com/cgi-bin/rbaccess/rbcgi3m01" CVScreenId="59aad410-4c12-4b4e-85b7-45d2eedc5c8a" ContentHash="3zsWqDeqckm1aV53gMf5HA" CvElementArea="664, 580, 375, 21" CvType="InputBox" DesignTimeRectangle="664, 581, 376, 19" DesignTimeScaleFactor="1" ElementType="DropDown" FullSelectorArgument="&lt;webctrl id='accountInfo' tableRow='1' tag='SELECT' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='TABLE' /&gt;&lt;webctrl id='accountInfo' type='' tag='SELECT' class='' aaname='Select which account or accounts to download' /&gt;" Guid="d3e0f11e-ad7a-4839-a503-3b5f0e25f5c3" ImageBase64="" InformativeScreenshot="9ed9e635e194707b6a73b0eed53dc99c.png" Reference="WNjaHSKoL0-m35pLylBavw/zte10VIuCUe1g2zCXHlz1g" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Download Transactions - RBC Online Banking' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NSelectItem.Target>
+            </uix:NSelectItem>
+            <uix:NSelectItem DisplayName="Select Item 'Scope'" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="416,189" sap2010:WorkflowViewState.IdRef="NSelectItem_2" Version="V3">
+              <uix:NSelectItem.Item>
+                <InArgument x:TypeArguments="x:String">
+                  <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_7">Utilities.GetTransactionScope(in_Scope)</CSharpValue>
+                </InArgument>
+              </uix:NSelectItem.Item>
+              <uix:NSelectItem.Target>
+                <uix:TargetAnchorable BrowserURL="https://www1.royalbank.com/cgi-bin/rbaccess/rbcgi3m01" CVScreenId="658dbbc0-64a9-4459-9d0b-a9832d3ade3d" ContentHash="vmVkVzJcVk6KC75N1bU6Ww" CvElementArea="626, 624, 354, 22" CvType="InputBox" DesignTimeRectangle="627, 626, 352, 19" DesignTimeScaleFactor="1" ElementType="DropDown" FullSelectorArgument="&lt;webctrl id='transactionDropDown' tableRow='3' tag='SELECT' /&gt;" FuzzySelectorArgument="&lt;webctrl id='transactionDropDown' type='' tag='SELECT' class='' aaname='Select the range of the transactions to download' /&gt;" Guid="a9fb98c0-ae21-49bd-8cfd-81773c13949e" ImageBase64="" Reference="WNjaHSKoL0-m35pLylBavw/SF6E8FlNnES_U9Azc8e__w" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Download Transactions - RBC Online Banking' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NSelectItem.Target>
+            </uix:NSelectItem>
+            <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click 'Continue'" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="416,218" sap2010:WorkflowViewState.IdRef="NClick_3" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="4ea7d55f-1913-4339-b81d-d45c005ebab0" Version="V3">
+              <uix:NClick.Target>
+                <uix:TargetAnchorable BrowserURL="https://www1.royalbank.com/cgi-bin/rbaccess/rbcgi3m01" CVScreenId="658dbbc0-64a9-4459-9d0b-a9832d3ade3d" ContentHash="PUrrb3DAMk6YZuM_gaMD8w" CvElementArea="1100, 856, 91, 24" CvTextArea="1109, 862, 71, 11" CvTextArgument="Continue &gt;" CvType="Button" DesignTimeRectangle="1111, 861, 71, 13" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl id='id_btn_continue' tableRow='1' tag='A' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='TABLE' /&gt;&lt;webctrl id='id_btn_continue' type='' tag='A' class='' aaname='Continue ' check:innerText='Continue' /&gt;" Guid="13b624ce-8349-489d-9719-9df54d3fd6b9" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAEsAAAARCAYAAACVW1F7AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAASRSURBVFhH7VVBT1RXFH4NCS6GJnQzbnRTN3WIgCbQRacLNKFt6sZudNFu3LR/gNqaLoxuxJmxhEYDUYFCLCklEtMY041jq9jW1JhiBZEWGLA7QMTNuOnXc86957573zxafwA3+XLu951zvnPeJWSidz8eh+I9jp+EXLQUbJbzNXf3PANdOeV9v8BDer9z3M8HdV5M0/8rZ6I3w+1rNOkjLTpw9FvsJ3A8cHRMInOF0WOE2pjjvr5ffDRnPEP8/xzt9/PJ2jgf71FbF+5Yi9pdGKoZD4Mo/9E3eJtg4qjcFfkPLWye76pLjc1pn9aZmlHvbqO9c057HRw3fTV6woPv6q0IZzDnOeTHXOpDb/HQWqkJd3Y1zAlR2+ERtB8ZRvthBt1dHEGb0/086TaGuoltXl1Yo9D+pK6gXM3cNKhH0svyIxwVquvdqwuwSV72GUHUemgILYcG0Urg2PKBRtLtXXMSSWtlcJ/WKpirRv1cL7VO8zxsjvWkv+8ldQzLpU7u8d4yw95baK+kFvfanNQN4tXcZwF0ruY1qh7tPngRu9+/iBxHwvgyEucFfrlgclwn0cdmmqfnDs7ir6TXhb+xIdpTjGvfJuDddL+XQtpOhKQHP9A/C684MHd58gjqiUevv9MPQefPuPNctsefP/RjVydr/RhbeoE7fcz7iPdZ3UQH6k/euZfv7L2rcwZz4kxe/WGdu/t9Am+G5pM1xP17aiToLlLPUI2Q9mA1nhbRzo7z2EHYeX1NPgeVaeE7Os7B5eguXGv0uNrzGK0Yae7+EzwzV+D5E5zqmMSk/SO4Q/rJjmn7gGsYZY9zto9yk9aLz9x1nk/w8qcS9Sc57+2g59n9Sbu/gd79yEh7MJPj745jtD3/FRgn7lVlwPq928hazUf2mn2oxYep9ZcXhdLyyziRv41b9oEeX6Pe/EM8FlbFrV71VG0Nl9m/dxnrwm2PzhO/XmzXvHDqT3Az3/hn3Xx/Xq/smX1LeazxPe3BWM/ybFsbvfZmDxgj9mPXf/sJjVbzMezlRetZMstuLOELLz/7valXP8P/wKywKn7sUU/VVjFMvPHL0K8x4Z+cF3L1qj26D4O/q7E95qqlPVTaG0QNe88is7eEzNVV477wAJl9Z9GwrxRgaMGkH12lespnirpsBccTea7/OuAP8EhYFTdLNIvyGaetYkj8Ku7jjzMvxf6fc33Jz9NOAff8i7wf1dM3NbCP3CnqdyrnHMW0hzLfbGo4Mue+aFtzAfWCMsrm5wkzEwVsay4KBuerKBeIT6yY5PwU6QV8etf8Gz69W5a6gXmhtrdAfTGvb75pva3XHtamMCMVKxjYU0R9oUK/i3TocY7x7M04Pe4A8zN+Pp6n+zGO0Y4zE+Y79DtNzvC0h+JcveQpyp5aX0RUl+tGXe4MgWJTGTfsg8WnihvdNn/FPpie+d9d7yW77PQV4k21vOtX87hyNhbR1TSFaSEruNRENd2L7uO7kpxneJ7BES/Kezv4R+bLjhbkU8f1BH4cH/E7aF1cy3oUvXEaW3hJpIpbSEequIV0pIpbSMFp/AvkgH9IX0LFewAAAABJRU5ErkJggg==" InformativeScreenshot="07571870545638fa7d339cfcb1588921.png" Reference="WNjaHSKoL0-m35pLylBavw/dFP4am67fEab3WeBvR60qw" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Download Transactions - RBC Online Banking' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NClick.Target>
+              <uix:NClick.VerifyOptions>
+                <uix:VerifyExecutionOptions DisplayName="{x:Null}" Mode="Appears">
+                  <uix:VerifyExecutionOptions.Retry>
+                    <InArgument x:TypeArguments="x:Boolean" />
+                  </uix:VerifyExecutionOptions.Retry>
+                  <uix:VerifyExecutionOptions.Timeout>
+                    <InArgument x:TypeArguments="x:Double" />
+                  </uix:VerifyExecutionOptions.Timeout>
+                </uix:VerifyExecutionOptions>
+              </uix:NClick.VerifyOptions>
+            </uix:NClick>
+          </Sequence>
+        </ActivityAction>
+      </uix:NApplicationCard.Body>
+      <uix:NApplicationCard.InUiElement>
+        <InArgument x:TypeArguments="ui:UiElement">
+          <CSharpValue x:TypeArguments="ui:UiElement" sap2010:WorkflowViewState.IdRef="CSharpValue`1_15">io_Window</CSharpValue>
+        </InArgument>
+      </uix:NApplicationCard.InUiElement>
+      <uix:NApplicationCard.OutUiElement>
+        <OutArgument x:TypeArguments="ui:UiElement">
+          <CSharpReference x:TypeArguments="ui:UiElement" sap2010:WorkflowViewState.IdRef="CSharpReference`1_1">io_Window</CSharpReference>
+        </OutArgument>
+      </uix:NApplicationCard.OutUiElement>
+      <uix:NApplicationCard.TargetApp>
+        <uix:TargetApp Area="0, 0, 0, 0" BrowserType="Chrome" ContentHash="PVd5pm2WeU-q94WMTvIsow" IconBase64="iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIRSURBVFhHzZbRkcMgDETdE5/XDz3xmX5cTDrw8YA1MnEcy77MHDM7IIGklRBOppcR0vI1nBqD0TyHjGlJKWz0l3BqGIMe+LEsy1SATmshxNiDHCCE7OvjMAZkH5tzZsgQkBkZIOvMJ7gJkPk8lD6YNShV+gaBoztXX1S8PzfCRcDe60iGsncCuQfM3hEuV0D3beVahVqJrxDAsQ26ZpyJFUgGhdDr63jtHwcBssJJiN0BDuWcCtF8CswaG64OsC+C3aeDAC9AJMYeQF6JtMDSKyhIqRKUnbsCzFzDHok1UNPTD5yLOeiS6p4IysbXA0NAZWxfByRVDWVf520llIyzCasjyTi2waTX2fIysp5g6oH6WnozO3ugl1UZCHvVoPSFSJ7ruhLthOkpJwEgJ/ZJApEYq2FfAXMh0mxD+PETEBRQsrIf71mAALB7lyogcL+rwxYc4HzUFX2WOW8rd4uAoIBbx7Vf1HRg74puXcGIsSdsIEE9sMp/UYE7cBNIac5l7CNmGX2MWz3n3tlID9wEFEiy1vxAaT3qn89nXj/WPQs3AQXSUKbSI88tYatntn6EywRYax71du/PCdgr0M1qj5Fy+oCx2lCVLNvKCG4CxahlM2aFLJzRl70zBOKO4X3wp4VfyjMVyIOPTChG24+NF/JBYHyWj5dnFCJOMj0ouBh4HHJSCLVSHsGeby7+65imX8ZiAPloMQblAAAAAElFTkSuQmCC" InformativeScreenshot="88517637ab21c0db7567cb4bfcf8dabd.jpg" Reference="WNjaHSKoL0-m35pLylBavw/RzuKUnLxd0WYKppramZYxA" Selector="&lt;html app='chrome.exe' title='Personal Banking - RBC Royal Bank' /&gt;" Url="https://www.rbcroyalbank.com/personal.html" />
+      </uix:NApplicationCard.TargetApp>
+    </uix:NApplicationCard>
+    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Save As" HealingAgentBehavior="Job" sap:VirtualizedContainerService.HintSize="484,889" sap2010:WorkflowViewState.IdRef="NApplicationCard_2" ScopeGuid="2539b8f0-8bbc-4689-9254-f8cb49e7b6b4" Version="V2">
+      <uix:NApplicationCard.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Handle Save Dialog" sap:VirtualizedContainerService.HintSize="450,566" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <uix:NTypeInto ActivateBefore="True" ClickBeforeMode="Single" DisplayName="Type Into 'File Name'" EmptyFieldMode="SingleLine" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="354,286" sap2010:WorkflowViewState.IdRef="NTypeInto_1" Version="V3">
+              <uix:NTypeInto.Target>
+                <uix:TargetAnchorable CVScreenId="e78ccd0e-4b7e-4106-8d7e-41545c9caf70" ContentHash="jDUnt0AOm0SO5ESa3XzFJA" CvElementArea="132, 425, 815, 25" CvType="InputBox" DesignTimeRectangle="136, 429, 791, 17" DesignTimeScaleFactor="1" ElementType="InputBox" FullSelectorArgument="&lt;wnd aaname='Explorer Pane' cls='DirectUIHWND' /&gt;&lt;wnd aaname='File name:' cls='ComboBox' /&gt;&lt;wnd ctrlid='1001' /&gt;" FuzzySelectorArgument="&lt;wnd aaname='Explorer Pane' cls='DirectUIHWND' /&gt;&lt;wnd aaname='File name:' cls='ComboBox' /&gt;&lt;wnd ctrlid='1001' /&gt;" Guid="c727d63d-f95e-4ef4-b92e-673fe13012b8" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAxsAAAAVCAYAAAAuPPMkAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAI4SURBVHhe7ds9biIxAIDRHGePgHIgzrA32HaOkRNQptsbIG0RKV0aREVF5x0zP3g8BoSZ6Z6lJwXPYGVS+YvhbbPZBAAAgKWJDQAAYBXF2Hj7/Y9e+PNr9vcBAAAeExsPiA0AAKgjNh4QGwAAUGfd2Pg4hWF8fX4Xrp3CdjbXjfT+7b6fbMcw//557mfSka23ALEBAAB11ouN5hi+xs3/T9iFc2ia+PN3aA5tF+xP7VwaB/Gewv3tOs1Hes+wzlSMj1nQLEBsAABAndViI9/8z2MgjYtWPNXY/4zXy/EQQ6UUG9laCxIbAABQ505s9CcQ/dhdThfyue51d60Xo+FwDNsnY2N2PYuPzo2oaO+dh8ngtef4KzYAAKDKjdjoNt+zDXwpALK5+P2Ky6Y9zo9hUFrv+diIa8+jIq5d/mjVEs/hZAMAAOqUY2PyfYvEZf5eNLQ/H47hvb8WA6Ib57Dbv3KycSMaovg75eGQXnvxOcQGAADUeS42ekNEDB87GkJhFgyJ8cRjnJvGRn6ycF3r3slFd9903cQCzyE2AACgznMfo0qkG/LLpv5wCrtWcWMfQyI58ehksTEJg3itD4zSR55GpRBJ3rvAc4gNAACoc+cL4nHTfh2X//7Hjf840rDoNvXTKEjfX4qQLDaiZP30tCEf13gorDGJjeH1dTz7HGIDAADq3IkNIrEBAAB1xMYDYgMAAOqIjQfEBgAA1CnGBgAAwKvEBgAAsAqxAQAArEJsAAAAK9iE/8N5cpqSaSCgAAAAAElFTkSuQmCC" InformativeScreenshot="b118bc05121e342f12d3686c6c03117b.png" Reference="WNjaHSKoL0-m35pLylBavw/LrpWCz2rZEmoSY26SneVuw" ScopeSelectorArgument="&lt;wnd app='chrome.exe' cls='#32770' title='Save As' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NTypeInto.Target>
+              <uix:NTypeInto.Text>
+                <InArgument x:TypeArguments="x:String">
+                  <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_8">in_Path</CSharpValue>
+                </InArgument>
+              </uix:NTypeInto.Text>
+              <uix:NTypeInto.VerifyOptions>
+                <uix:VerifyExecutionTypeIntoOptions DisplayName="{x:Null}" Mode="Appears">
+                  <uix:VerifyExecutionTypeIntoOptions.Retry>
+                    <InArgument x:TypeArguments="x:Boolean" />
+                  </uix:VerifyExecutionTypeIntoOptions.Retry>
+                  <uix:VerifyExecutionTypeIntoOptions.Timeout>
+                    <InArgument x:TypeArguments="x:Double" />
+                  </uix:VerifyExecutionTypeIntoOptions.Timeout>
+                </uix:VerifyExecutionTypeIntoOptions>
+              </uix:NTypeInto.VerifyOptions>
+            </uix:NTypeInto>
+            <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click 'Save'" HealingAgentBehavior="SameAsCard" sap:VirtualizedContainerService.HintSize="354,218" sap2010:WorkflowViewState.IdRef="NClick_4" InteractionMode="HardwareEvents" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="2539b8f0-8bbc-4689-9254-f8cb49e7b6b4" Version="V3">
+              <uix:NClick.Target>
+                <uix:TargetAnchorable CVScreenId="c60c08a7-429e-43e4-ae04-40c26fa0c69d" ContentHash="uMi7rMyTuUujd517EXhVtw" CvElementArea="746, 493, 90, 27" CvTextArea="778, 500, 26, 12" CvTextArgument="Save" CvType="Button" DesignTimeRectangle="747, 494, 88, 26" DesignTimeScaleFactor="1" ElementType="Button" FullSelectorArgument="&lt;wnd ctrlid='1' title='&amp;amp;Save' /&gt;" FuzzySelectorArgument="&lt;wnd ctrlid='1' title='&amp;amp;Save' check:text='&amp;amp;Save' /&gt;" Guid="13207c34-13dc-41e0-8550-ad084cea0682" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAFwAAAAeCAYAAAChf3k/AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE7SURBVGhD7ZbBkYMwDEW3Jy7U4mZcCBe3klLcAR1oJRuDAWf3Ej5m8j3zJnakXJ7FJz/jOArBQeFgVuHzPJMLaQqfpolcwJ/Ch2EgH4TCwVA4GAoHQ+FgKBxM38L9S7b1Et/qeRj9CndBYi1Zz8FX9YfSr3Cb7hjEtWoPpl/hg9f5NufuVNsnjdfvnIRo26qvvrD0tJR1bzR1LNzIIpOmZpzYpUQJTvcmOMnPtXw89FhNC61LRNG58IVlQlfpuxEvMk1smV7dN6d7WdXFoHmGcMXlzDi8TO0J2KbXemx6y2f67a7/fvoV7vVfSYmBJVqSxFM2V3Fh56hzrmyC378L7qDjCc+i1rXGwJbrkuRWwkvtGBnHWGGkfA8UDobCwVA4GAoHQ+FgKBzMv8LJ53krnFzHSTjBQOFQRvkFXyLcUwmLOwMAAAAASUVORK5CYII=" InformativeScreenshot="37a3381c43b7de6bd72afd01d203746f.png" Reference="WNjaHSKoL0-m35pLylBavw/ud03HgxO8kyeiXMYqXEhGQ" ScopeSelectorArgument="&lt;wnd app='chrome.exe' cls='#32770' title='Save As' /&gt;" SearchSteps="Selector" Version="V4" Visibility="Interactive" />
+              </uix:NClick.Target>
+              <uix:NClick.VerifyOptions>
+                <uix:VerifyExecutionOptions DisplayName="{x:Null}" Mode="Appears">
+                  <uix:VerifyExecutionOptions.Retry>
+                    <InArgument x:TypeArguments="x:Boolean" />
+                  </uix:VerifyExecutionOptions.Retry>
+                  <uix:VerifyExecutionOptions.Timeout>
+                    <InArgument x:TypeArguments="x:Double" />
+                  </uix:VerifyExecutionOptions.Timeout>
+                </uix:VerifyExecutionOptions>
+              </uix:NClick.VerifyOptions>
+            </uix:NClick>
+          </Sequence>
+        </ActivityAction>
+      </uix:NApplicationCard.Body>
+      <uix:NApplicationCard.TargetApp>
+        <uix:TargetApp Area="0, 0, 0, 0" ContentHash="0Eap7q4k5Ema9dN0P3q4oA" FilePath="C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" IconBase64="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" InformativeScreenshot="b1377424f00152f66b4e83184247e5ab.png" Reference="WNjaHSKoL0-m35pLylBavw/_mYWzO3UHESGp35yNZ9xKQ" Selector="&lt;wnd app='chrome.exe' cls='#32770' title='Save As' /&gt;" />
+      </uix:NApplicationCard.TargetApp>
+    </uix:NApplicationCard>
+    <ui:InterruptibleWhile CurrentIndex="{x:Null}" DisplayName="While download isn't complete" sap:VirtualizedContainerService.HintSize="484,303" sap2010:WorkflowViewState.IdRef="InterruptibleWhile_1" MaxIterations="15">
+      <ui:InterruptibleWhile.Body>
+        <Sequence DisplayName="Wait" sap:VirtualizedContainerService.HintSize="416,173" sap2010:WorkflowViewState.IdRef="Sequence_4">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Delay DisplayName="Wait a sec" Duration="00:00:01" sap:VirtualizedContainerService.HintSize="354,113" sap2010:WorkflowViewState.IdRef="Delay_1" />
+        </Sequence>
+      </ui:InterruptibleWhile.Body>
+      <ui:InterruptibleWhile.Condition>
+        <CSharpValue x:TypeArguments="x:Boolean" DisplayName="C sharp value" sap2010:WorkflowViewState.IdRef="CSharpValue`1_9">!File.Exists(in_Path)</CSharpValue>
+      </ui:InterruptibleWhile.Condition>
+    </ui:InterruptibleWhile>
+    <If DisplayName="File doesn't exist?" sap:VirtualizedContainerService.HintSize="484,275" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Condition>
+        <InArgument x:TypeArguments="x:Boolean">
+          <CSharpValue x:TypeArguments="x:Boolean" sap2010:WorkflowViewState.IdRef="CSharpValue`1_10">!File.Exists(in_Path)</CSharpValue>
+        </InArgument>
+      </If.Condition>
+      <If.Then>
+        <Throw DisplayName="Throw Timeout Exception" sap:VirtualizedContainerService.HintSize="334,90" sap2010:WorkflowViewState.IdRef="Throw_2">
+          <InArgument x:TypeArguments="s:Exception">
+            <CSharpValue x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="CSharpValue`1_12">new Exception(Exceptions.Transactions.Download.Timeout_Download)</CSharpValue>
+          </InArgument>
+        </Throw>
+      </If.Then>
+      <If.Else>
+        <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="416,25" sap2010:WorkflowViewState.IdRef="Sequence_6">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </Sequence>
+      </If.Else>
+    </If>
+    <ui:LogMessage DisplayName="LM: Done" sap:VirtualizedContainerService.HintSize="484,164" sap2010:WorkflowViewState.IdRef="LogMessage_2">
+      <ui:LogMessage.Message>
+        <InArgument x:TypeArguments="x:Object">
+          <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_2">"Transactions downloaded"</CSharpValue>
+        </InArgument>
+      </ui:LogMessage.Message>
+    </ui:LogMessage>
+  </Sequence>
+</Activity>

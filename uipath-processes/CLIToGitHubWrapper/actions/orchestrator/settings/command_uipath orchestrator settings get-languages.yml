@@ -1,0 +1,60 @@
+name: uipath-orchestrator-settings-get-languages
+description: |
+  NAME:
+     uipath orchestrator settings get-languages - Gets supported languages
+
+  USAGE:
+     uipath orchestrator settings get-languages [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+  OPTIONS:
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  run-get-languages:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator settings get-languages
+        shell: pwsh
+        run: |
+          $args = @("orchestrator", "settings", "get-languages")
+
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+
+          if ('${{ inputs.select }}' -ne '') {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Join arguments with space, properly quoted
+          $command = $args | ForEach-Object { if ($_ -match '\s') { '"{0}"' -f $_ } else { $_ } } | Out-String
+          # Trim trailing whitespace/newlines
+          $command = $command.Trim()
+
+          Write-Host "Running command: uipath $command"
+          & uipath $args

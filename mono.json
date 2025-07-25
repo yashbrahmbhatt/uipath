@@ -1,0 +1,34 @@
+{
+  "projects": [
+    {
+      "id": "LibA",
+      "path": "uipath-libraries/LibA",
+      "type": "uipath-library",
+      "build": true,
+      "deploy": true,
+      "deploySteps": ["nuget"]
+    },
+    {
+      "id": "LibB",
+      "path": "uipath-libraries/LibB",
+      "type": "uipath-library",
+      "build": false,
+      "deploy": false
+    },
+    {
+      "id": "MyProcess",
+      "path": "uipath-processes/MyProcess",
+      "type": "uipath-process",
+      "build": true,
+      "deploy": true,
+      "deploySteps": ["orchestrator"]
+    },
+    {
+      "id": "DotNetUtil",
+      "path": "vs-libraries/DotNetUtil",
+      "type": "vs",
+      "build": true,
+      "deploy": false
+    }
+  ]
+}

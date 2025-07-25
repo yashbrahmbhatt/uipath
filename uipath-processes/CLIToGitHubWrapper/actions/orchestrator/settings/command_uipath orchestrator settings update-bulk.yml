@@ -1,0 +1,72 @@
+name: Update UiPath Orchestrator Settings in Bulk
+description: |
+  NAME:
+     uipath orchestrator settings update-bulk - Updates the current settings.
+
+  USAGE:
+     uipath orchestrator settings update-bulk [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Write.
+
+     Required permissions: Settings.Edit.
+
+  OPTIONS:
+     --settings object (multiple)
+
+        Example:
+           Id=string; Name=string; Scope=string; Value=string
+
+on:
+  workflow_call:
+    inputs:
+      settings:
+        description: 'Settings to update. Multiple values can be passed separated by newlines, e.g., "Id=1; Name=Setting1; Scope=Global; Value=Value1"'
+        required: true
+        type: string
+
+jobs:
+  update_bulk_settings:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # Optionally expose outputs if needed
+      command-executed: ${{ steps.run_update_bulk_settings.outputs.command }}
+    steps:
+      - name: Run UiPath Orchestrator Settings Update Bulk
+        id: run_update_bulk_settings
+        shell: pwsh
+        run: |
+          # Initialize argument array
+          $args = @('orchestrator', 'settings', 'update-bulk')
+
+          # Process --settings input, split by newline, add multiple --settings parameters
+          $settingsRaw = "${{ inputs.settings }}"
+          if (-not [string]::IsNullOrWhiteSpace($settingsRaw)) {
+            $settingsList = $settingsRaw -split "`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' }
+            foreach ($setting in $settingsList) {
+              # Append --settings and the setting string as separate entries
+              $args += '--settings'
+              $args += $setting
+            }
+          }
+
+          # Build the command string safely: join with spaces, quote parameters as needed
+          # Use & to invoke the uipath CLI command in current environment (assumed available)
+          # Note: escaping as needed for safety
+          $escapedArgs = $args | ForEach-Object {
+            # If argument contains spaces or semicolons, quote it
+            if ($_ -match '[\s;]') {
+              '"' + $_.Replace('"', '\"') + '"'
+            } else {
+              $_
+            }
+          }
+          $command = "uipath " + ($escapedArgs -join ' ')
+
+          Write-Host "Executing command: $command"
+
+          # Execute the command
+          Invoke-Expression $command
+
+          # Set output for debugging or workflows chaining
+          Write-Output "::set-output name=command::$command"

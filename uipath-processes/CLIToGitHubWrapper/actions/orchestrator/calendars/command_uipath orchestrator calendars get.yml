@@ -1,0 +1,124 @@
+name: UiPath Orchestrator Calendars Get
+
+description: |
+  NAME:
+     uipath orchestrator calendars get - Gets calendars for current tenant.
+
+  USAGE:
+     uipath orchestrator calendars get [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Settings or OR.Settings.Read.
+
+     Requires authentication.
+
+  OPTIONS:
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100. The allowed functions are: allfunctions.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5. The allowed properties are: Name, Id.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      count:
+        description: Whether to include the total count of items in the result.
+        required: false
+        default: false
+        type: boolean
+      expand:
+        description: Related entities to include inline (max depth 2).
+        required: false
+        type: string
+      filter:
+        description: Restrict the set of items returned (max 100 expressions).
+        required: false
+        type: string
+      orderby:
+        description: Order in which items are returned. Allowed: Name, Id (max 5 expressions).
+        required: false
+        type: string
+      select:
+        description: Limit properties returned in the result.
+        required: false
+        type: string
+      skip:
+        description: Number of items to exclude from the result.
+        required: false
+        type: integer
+        default: 0
+      top:
+        description: Limit the number of items returned (max 1000).
+        required: false
+        type: integer
+        default: 1000
+
+jobs:
+  run:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator calendars get
+        shell: pwsh
+        run: |
+          $args = @("orchestrator", "calendars", "get")
+
+          # Add --count flag if true
+          if (${{ inputs.count }}) {
+            $args += "--count"
+            $args += "true"
+          }
+
+          # Add --expand if provided
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+
+          # Add --filter if provided
+          if ('${{ inputs.filter }}' -ne '') {
+            $args += "--filter"
+            $args += "${{ inputs.filter }}"
+          }
+
+          # Add --orderby if provided
+          if ('${{ inputs.orderby }}' -ne '') {
+            $args += "--orderby"
+            $args += "${{ inputs.orderby }}"
+          }
+
+          # Add --select if provided
+          if ('${{ inputs.select }}' -ne '') {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Add --skip if greater than 0
+          if (${{ inputs.skip }} -gt 0) {
+            $args += "--skip"
+            $args += "${{ inputs.skip }}"
+          }
+
+          # Add --top if less than 1000 (default) or provided
+          if (${{ inputs.top }} -lt 1000) {
+            $args += "--top"
+            $args += "${{ inputs.top }}"
+          }
+
+          # Execute the uipath CLI with the constructed arguments
+          uipath @args

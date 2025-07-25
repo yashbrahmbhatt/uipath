@@ -1,0 +1,87 @@
+name: uipath-orchestrator-sessions-set-maintenance-mode
+description: |
+  NAME:
+     uipath orchestrator sessions set-maintenance-mode - Sets the execution capabilities for a specified host
+
+  USAGE:
+     uipath orchestrator sessions set-maintenance-mode [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Robots or OR.Robots.Write.
+
+     Required permissions: Robots.Edit.
+
+  OPTIONS:
+     --maintenance-mode string
+        Allowed values:
+        - Default
+        - Enabled
+
+     --session-id integer
+
+     --stop-jobs-strategy string
+        Allowed values:
+        - SoftStop
+        - Kill
+
+on:
+  workflow_call:
+    inputs:
+      maintenance_mode:
+        description: 'Maintenance mode status (Default or Enabled)'
+        required: true
+        type: string
+        default: Default
+      session_id:
+        description: 'Session ID to target'
+        required: true
+        type: number
+      stop_jobs_strategy:
+        description: 'Job stop strategy (SoftStop or Kill)'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+
+jobs:
+  set_maintenance_mode:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator sessions set-maintenance-mode
+        shell: pwsh
+        run: |
+          $argsList = @("orchestrator", "sessions", "set-maintenance-mode")
+
+          # Validate maintenance_mode input and add argument
+          $maintenanceMode = '${{ inputs.maintenance_mode }}'
+          if ($maintenanceMode -notin @('Default', 'Enabled')) {
+            Write-Error "Invalid maintenance_mode value. Allowed values are: Default, Enabled."
+            exit 1
+          }
+          $argsList += "--maintenance-mode"
+          $argsList += $maintenanceMode
+
+          # Validate and add session_id argument
+          $sessionId = '${{ inputs.session_id }}'
+          if (-not [int]::TryParse($sessionId, [ref] $null)) {
+            Write-Error "session_id must be an integer."
+            exit 1
+          }
+          $argsList += "--session-id"
+          $argsList += $sessionId
+
+          # Optional stop_jobs_strategy argument validation and addition
+          $stopJobsStrategy = '${{ inputs.stop_jobs_strategy }}'.Trim()
+          if ($stopJobsStrategy) {
+            if ($stopJobsStrategy -notin @('SoftStop', 'Kill')) {
+              Write-Error "Invalid stop_jobs_strategy value. Allowed values are: SoftStop, Kill."
+              exit 1
+            }
+            $argsList += "--stop-jobs-strategy"
+            $argsList += $stopJobsStrategy
+          }
+
+          # Execute the command
+          uipath $argsList -join ' ' | Write-Host
+          & uipath @argsList

@@ -1,0 +1,54 @@
+name: 'UiPath Orchestrator Personal Workspaces Convert to Folder by ID'
+description: |
+  NAME:
+     uipath orchestrator personal-workspaces convert-to-folder-by-id - Converts a Personal Workspace to a standard Folder.
+
+  USAGE:
+     uipath orchestrator personal-workspaces convert-to-folder-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth authentication is not supported.
+
+     Required permissions: Units.Edit.
+
+  OPTIONS:
+     --folder-name string (required)
+
+     --key integer (required)
+
+on:
+  workflow_call:
+    inputs:
+      folder-name:
+        description: 'Name of the folder to convert the personal workspace into.'
+        required: true
+        type: string
+      key:
+        description: 'Key identifier of the personal workspace to convert.'
+        required: true
+        type: number
+
+jobs:
+  convert_to_folder:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Convert Personal Workspace to Folder by ID
+        shell: pwsh
+        run: |
+          # Initialize argument list
+          $args = @('orchestrator', 'personal-workspaces', 'convert-to-folder-by-id')
+
+          # Add required parameters
+          $args += '--folder-name'
+          $args += '"${{ inputs.folder-name }}"'
+
+          $args += '--key'
+          $args += "${{ inputs.key }}"
+
+          # Join the arguments into a command string
+          $command = "uipath " + ($args -join ' ')
+
+          Write-Host "Running command: $command"
+
+          # Execute the command
+          iex $command

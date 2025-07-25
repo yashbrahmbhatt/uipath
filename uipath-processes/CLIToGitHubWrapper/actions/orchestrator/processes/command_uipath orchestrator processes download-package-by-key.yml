@@ -1,0 +1,53 @@
+name: uipath-orchestrator-processes-download-package-by-key
+description: |
+  NAME:
+     uipath orchestrator processes download-package-by-key - Downloads the .nupkg file of a Package.
+
+  USAGE:
+     uipath orchestrator processes download-package-by-key [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Execution or OR.Execution.Read.
+
+     Required permissions: (Packages.View - Downloads a package from a Tenant Feed) and (FolderPackages.View - Downloads a package from a Folder Feed).
+
+  OPTIONS:
+     --key string (required)
+
+     --feed-id string
+
+on:
+  workflow_call:
+    inputs:
+      key:
+        description: 'Package key (required)'
+        required: true
+        type: string
+      feed_id:
+        description: 'Feed ID (optional)'
+        required: false
+        type: string
+    secrets: {}
+
+jobs:
+  download-package:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator processes download-package-by-key
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'processes', 'download-package-by-key')
+
+          # Required argument --key
+          $args += '--key'
+          $args += "${{ inputs.key }}"
+
+          # Optional argument --feed-id
+          if ('${{ inputs.feed_id }}' -ne '') {
+            $args += '--feed-id'
+            $args += "${{ inputs.feed_id }}"
+          }
+
+          # Execute the command
+          uipath $args

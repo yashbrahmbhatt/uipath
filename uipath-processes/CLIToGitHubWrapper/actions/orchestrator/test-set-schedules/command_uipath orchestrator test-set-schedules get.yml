@@ -1,0 +1,153 @@
+name: uipath-orchestrator-test-set-schedules-get
+description: |
+  NAME:
+     uipath orchestrator test-set-schedules get - Returns a list of test set execution schedules
+
+  USAGE:
+     uipath orchestrator test-set-schedules get [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSetSchedules or OR.TestSetSchedules.Read.
+
+     Required permissions: TestSetSchedules.View.
+
+     Responses:
+     200 Returns a list of test set execution schedules filtered with queryOptions
+     403 If the caller doesn't have permissions to view test set execution schedules
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: Folder/OrganizationUnit Id (required)
+        required: true
+        type: number
+      count:
+        description: Return total count of items (boolean)
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: Related entities to be represented inline (string)
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: Restricts the set of items returned (string)
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: Specifies the order in which items are returned (string)
+        required: false
+        type: string
+        default: ''
+      select:
+        description: Limits the properties returned in the result (string)
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: Number of items to exclude from the result (integer)
+        required: false
+        type: number
+        default: 0
+      top:
+        description: Limits number of items returned, max 1000 (integer)
+        required: false
+        type: number
+        default: 1000
+
+jobs:
+  get-test-set-schedules:
+    runs-on: [windows, self-hosted]
+    outputs:
+      result: ${{ steps.run-cli.outputs.result }}
+    steps:
+      - name: Run uipath orchestrator test-set-schedules get command
+        id: run-cli
+        shell: pwsh
+        run: |
+          # Build the argument list for the CLI command
+          $args = @()
+          $args += 'orchestrator'
+          $args += 'test-set-schedules'
+          $args += 'get'
+
+          # Required parameter
+          $args += "--folder-id"
+          $args += "${{ inputs.folder_id }}"
+
+          # Optional boolean parameter --count
+          if (${{ inputs.count }}) {
+            $args += "--count"
+            $args += "true"
+          }
+
+          # Optional string parameters, add only if not empty
+          if (-not [string]::IsNullOrWhiteSpace("${{ inputs.expand }}")) {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+          if (-not [string]::IsNullOrWhiteSpace("${{ inputs.filter }}")) {
+            $args += "--filter"
+            $args += "${{ inputs.filter }}"
+          }
+          if (-not [string]::IsNullOrWhiteSpace("${{ inputs.orderby }}")) {
+            $args += "--orderby"
+            $args += "${{ inputs.orderby }}"
+          }
+          if (-not [string]::IsNullOrWhiteSpace("${{ inputs.select }}")) {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Optional integer parameters, include if > 0 for skip and top adjusted max limit
+          if (${inputs.skip} -gt 0) {
+            $args += "--skip"
+            $args += "${{ inputs.skip }}"
+          }
+
+          $topValue = [math]::Min(${inputs.top}, 1000)
+          if ($topValue -gt 0) {
+            $args += "--top"
+            $args += $topValue
+          }
+
+          Write-Host "Running command: uipath $($args -join ' ')"
+          $output = & uipath @args 2>&1
+          $exitCode = $LASTEXITCODE
+
+          if ($exitCode -ne 0) {
+            Write-Host "Command failed with exit code $exitCode"
+            Write-Host $output
+            exit $exitCode
+          }
+
+          # Set the output to the command result
+          echo "::set-output name=result::$output"

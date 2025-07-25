@@ -1,0 +1,46 @@
+name: Uipath Orchestrator Folders Assign-Domain-User
+description: |
+  NAME:
+     uipath orchestrator folders assign-domain-user - Assigns a directory user or group to a set of folders with an optional set of roles per folder.
+
+  USAGE:
+     uipath orchestrator folders assign-domain-user [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Folders or OR.Folders.Write.
+
+     Required permissions: (Units.Edit or SubFolders.Edit - Assigns domain user to any folder or only if user has SubFolders.Edit permission on all folders provided).
+
+  OPTIONS:
+     --assignment object (required)
+
+        Example:
+           DirectoryIdentifier=string; Domain=string; RolesPerFolder[0].FolderId=integer; RolesPerFolder[0].RoleIds=integer,integer,...; UserName=string; UserType=string
+on:
+  workflow_call:
+    inputs:
+      assignment:
+        description: >-
+          Assignment object required to assign a directory user or group to folders with roles.
+          Example: DirectoryIdentifier=string; Domain=string; RolesPerFolder[0].FolderId=integer; RolesPerFolder[0].RoleIds=integer,integer,...; UserName=string; UserType=string
+        required: true
+        type: string
+    secrets: {}
+
+jobs:
+  assign_domain_user:
+    runs-on: [windows, self-hosted]
+    outputs: {}
+    steps:
+      - name: Run uipath orchestrator folders assign-domain-user command
+        shell: pwsh
+        run: |
+          # Initialize arguments array with fixed command parts
+          $args = @("orchestrator", "folders", "assign-domain-user")
+
+          # Add required --assignment parameter
+          $args += "--assignment"
+          $args += "${{ inputs.assignment }}"
+
+          # Execute the CLI command with constructed arguments
+          uipath @args

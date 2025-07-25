@@ -1,0 +1,140 @@
+name: UiPath Orchestrator Bulk Update Tasks
+
+description: |
+  NAME:
+     uipath orchestrator task-forms bulk-update-tasks - Bulk Update Task data by merging data.
+
+  USAGE:
+     uipath orchestrator task-forms bulk-update-tasks [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Required permissions: Tasks.Edit.
+
+  OPTIONS:
+     --data object (required)
+        Task data json
+
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --task-ids integer,integer,... (required)
+        List of Task Ids which have to be Bulk edited
+
+     --note-text string
+        Comment to be added while doing the bulk operation
+
+     --priority string
+        Priority of tasks
+
+        Allowed values:
+        - Low
+        - Medium
+        - High
+        - Critical
+
+     --task-catalog-id integer
+        Action Catalog to be associated with the tasks
+
+     --title string
+        Title of tasks
+
+     --unset-task-catalog boolean
+        Unset/Unassociate action catalogs with the tasks
+        Set to true for unassociating catalog
+
+on:
+  workflow_call:
+    inputs:
+      data:
+        description: Task data json (required)
+        required: true
+        type: string
+      folder_id:
+        description: Folder/OrganizationUnit Id (required)
+        required: true
+        type: number
+      task_ids:
+        description: List of Task Ids which have to be Bulk edited (required, comma separated)
+        required: true
+        type: string
+      note_text:
+        description: Comment to be added while doing the bulk operation (optional)
+        required: false
+        type: string
+        default: ''
+      priority:
+        description: Priority of tasks (optional). Allowed values: Low, Medium, High, Critical
+        required: false
+        type: string
+        default: ''
+      task_catalog_id:
+        description: Action Catalog to be associated with the tasks (optional)
+        required: false
+        type: number
+        default: 0
+      title:
+        description: Title of tasks (optional)
+        required: false
+        type: string
+        default: ''
+      unset_task_catalog:
+        description: Unset/Unassociate action catalogs with the tasks. Set to true for unassociating catalog (optional)
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  bulk-update-tasks:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath Orchestrator bulk update tasks command
+        shell: pwsh
+        run: |
+          # Build argument list for the CLI command
+          $args = @('orchestrator', 'task-forms', 'bulk-update-tasks')
+
+          # Add required parameters
+          $args += '--data'
+          $args += '${{ inputs.data }}'
+          $args += '--folder-id'
+          $args += ${{ inputs.folder_id }}
+
+          $args += '--task-ids'
+          $args += '${{ inputs.task_ids }}'
+
+          # Add optional parameters only if provided
+          if ('${{ inputs.note_text }}'.Trim().Length -gt 0) {
+            $args += '--note-text'
+            $args += '${{ inputs.note_text }}'
+          }
+
+          if ('${{ inputs.priority }}'.Trim().Length -gt 0) {
+            # Validate allowed priorities
+            $allowedPriorities = @('Low', 'Medium', 'High', 'Critical')
+            if ($allowedPriorities -contains '${{ inputs.priority }}') {
+              $args += '--priority'
+              $args += '${{ inputs.priority }}'
+            } else {
+              Write-Error "Invalid priority value '${{ inputs.priority }}'. Allowed values are: $($allowedPriorities -join ', ')"
+              exit 1
+            }
+          }
+
+          if (${{ inputs.task_catalog_id }} -gt 0) {
+            $args += '--task-catalog-id'
+            $args += ${{ inputs.task_catalog_id }}
+          }
+
+          if ('${{ inputs.title }}'.Trim().Length -gt 0) {
+            $args += '--title'
+            $args += '${{ inputs.title }}'
+          }
+
+          if (${{ inputs.unset_task_catalog }}) {
+            $args += '--unset-task-catalog'
+          }
+
+          # Execute the CLI command
+          uipath @args

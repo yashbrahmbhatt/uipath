@@ -1,0 +1,71 @@
+name: 'UiPath Orchestrator: Get Folders for Business Rule by ID'
+description: |
+  OAuth required scopes: OR.BusinessRules or OR.BusinessRules.Read.
+
+  Requires authentication.
+
+  Get all accessible folders where the business rule is shared, and the total count of folders where it is shared (including inaccessible folders).
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      id:
+        description: 'Business Rule ID'
+        required: true
+        type: string
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      UIPATH_API_KEY:
+        description: 'API key or token for authenticated access to the UiPath Orchestrator CLI'
+        required: true
+
+jobs:
+  get-folders:
+    runs-on: [windows, self-hosted]
+    outputs:
+      result: ${{ steps.get-folders.outputs.result }}
+    steps:
+      - name: Build and run UiPath CLI command
+        id: get-folders
+        shell: pwsh
+        run: |
+          # Initialize argument list with required parameters
+          $args = @('orchestrator', 'business-rules', 'get-folders-for-business-rule-by-id')
+          $args += '--folder-id'
+          $args += ${{ inputs.folder_id }}
+          $args += '--id'
+          $args += "${{ inputs.id }}"
+
+          # Add optional parameters if provided
+          if ('${{ inputs.expand }}' -ne '') {
+            $args += '--expand'
+            $args += "${{ inputs.expand }}"
+          }
+          if ('${{ inputs.select }}' -ne '') {
+            $args += '--select'
+            $args += "${{ inputs.select }}"
+          }
+
+          # Add authentication token as an environment variable
+          $env:UIPATH_API_KEY = '${{ secrets.UIPATH_API_KEY }}'
+
+          # Execute the command and capture output
+          $output = & uipath @args 2>&1
+          Write-Host "Command executed: uipath $($args -join ' ')"
+
+          # Set output for subsequent steps or callers
+          Write-Output $output
+          echo "::set-output name=result::$output"

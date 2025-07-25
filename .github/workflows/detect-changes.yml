@@ -1,64 +1,50 @@
 # .github/workflows/detect-changes.yml
 
-name: Detect Changed Areas
+name: Detect Changed Projects
 
 on:
   workflow_call:
     outputs:
       matrix:
-        description: "Changed project paths as matrix"
+        description: "Changed projects matrix"
         value: ${{ jobs.detect.outputs.matrix }}
-      vs_changed:
-        description: "VS Libraries changed"
-        value: ${{ jobs.detect.outputs.vs_changed }}
-      uipath_lib_changed:
-        description: "UiPath Libraries changed"
-        value: ${{ jobs.detect.outputs.uipath_lib_changed }}
-      uipath_proc_changed:
-        description: "UiPath Processes changed"
-        value: ${{ jobs.detect.outputs.uipath_proc_changed }}
 
 jobs:
   detect:
-    runs-on: [self-hosted, windows]
+    runs-on: [windows, self-hosted]
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
-      vs_changed: ${{ steps.set-matrix.outputs.vs_changed }}
-      uipath_lib_changed: ${{ steps.set-matrix.outputs.uipath_lib_changed }}
-      uipath_proc_changed: ${{ steps.set-matrix.outputs.uipath_proc_changed }}
 
     steps:
       - uses: actions/checkout@v3
 
-      - id: set-matrix
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Detect Changed Projects
+        id: set-matrix
         run: |
+          echo "Detecting changes..."
           changed=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
           echo "Changed files:"
           echo "$changed"
 
-          declare -a paths=()
-          vs=false
-          uipath_lib=false
-          uipath_proc=false
+          # Load mono.json and initialize output array
+          projects=$(cat mono.json | jq -c '.projects[]')
+          matched='[]'
 
-          if echo "$changed" | grep -q "^vs-libraries/"; then
-            paths+=("vs-libraries")
-            vs=true
-          fi
+          while read -r proj; do
+            path=$(echo "$proj" | jq -r '.path')
+            build=$(echo "$proj" | jq -r '.build')
 
-          if echo "$changed" | grep -q "^uipath-libraries/"; then
-            paths+=("uipath-libraries")
-            uipath_lib=true
-          fi
+            if [[ "$build" != "true" ]]; then
+              continue
+            fi
 
-          if echo "$changed" | grep -q "^uipath-processes/"; then
-            paths+=("uipath-processes")
-            uipath_proc=true
-          fi
+            if echo "$changed" | grep -q "^$path/"; then
+              matched=$(echo "$matched" | jq --argjson proj "$proj" '. + [$proj]')
+            fi
+          done <<< "$projects"
 
-          matrix=$(printf '%s\n' "${paths[@]}" | jq -R . | jq -s '{include: map({path: .})}')
-
+          matrix=$(echo "$matched" | jq '{include: map({id: .id, path: .path, type: .type, deploySteps: .deploySteps})}')
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
-          echo "vs_changed=$vs" >> $GITHUB_OUTPUT
-          echo "uipath_lib_changed=$uipath_lib" >> $GITHUB_OUTPUT
-          echo "uipath_proc_changed=$uipath_proc" >> $GITHUB_OUTPUT

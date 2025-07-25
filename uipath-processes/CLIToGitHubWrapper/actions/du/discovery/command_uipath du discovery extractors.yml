@@ -1,0 +1,63 @@
+name: 'uipath du discovery extractors'
+
+description: |
+  Retrieve all extractors from a project. These can be either Forms AI or deep-learning extraction skills.
+
+  Required scopes: Du.Digitization.Api or Du.Classification.Api or Du.Extraction.Api or Du.Validation.Api
+
+on:
+  workflow_call:
+    inputs:
+      api-version:
+        description: 'Version of the APIs.'
+        required: false
+        default: '1.0'
+        type: string
+      project-id:
+        description: 'ID of the Project.'
+        required: false
+        default: '00000000-0000-0000-0000-000000000000'
+        type: string
+      project-version:
+        description: 'Version of the project, referencing a snapshot of your Document Understanding project, including all its resources. If omitted, the latest project version will be used.'
+        required: false
+        type: string
+
+jobs:
+  extractors:
+    runs-on: [windows, self-hosted]
+    outputs:
+      # optionally set outputs here if needed
+    steps:
+      - name: Run uipath du discovery extractors
+        shell: pwsh
+        run: |
+          $args = @()
+          $args += 'du'
+          $args += 'discovery'
+          $args += 'extractors'
+
+          # Add optional parameters if provided or use defaults
+          if ('${{ inputs.api-version }}' -ne '') {
+            $args += '--api-version'
+            $args += '${{ inputs.api-version }}'
+          } else {
+            $args += '--api-version'
+            $args += '1.0'
+          }
+
+          if ('${{ inputs.project-id }}' -ne '') {
+            $args += '--project-id'
+            $args += '${{ inputs.project-id }}'
+          } else {
+            $args += '--project-id'
+            $args += '00000000-0000-0000-0000-000000000000'
+          }
+
+          if ('${{ inputs.project-version }}' -and '${{ inputs.project-version }}'.Length -gt 0) {
+            $args += '--project-version'
+            $args += '${{ inputs.project-version }}'
+          }
+
+          Write-Host "Executing: uipath $($args -join ' ')"
+          & uipath @args

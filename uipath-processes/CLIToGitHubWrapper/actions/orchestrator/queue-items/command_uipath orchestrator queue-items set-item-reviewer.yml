@@ -1,0 +1,101 @@
+name: uipath-orchestrator-queue-items-set-item-reviewer
+description: |
+  NAME:
+     uipath orchestrator queue-items set-item-reviewer - Sets the reviewer for multiple queue items
+
+  USAGE:
+     uipath orchestrator queue-items set-item-reviewer [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Queues or OR.Queues.Write.
+
+     Required permissions: Queues.View and Transactions.Edit.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --queue-items object (multiple) (required)
+
+        Example:
+           Id=integer; RowVersion=string
+
+     --user-id integer (required)
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      queue_items:
+        description: 'Queue items to update, format: Id=integer; RowVersion=string; provide multiple comma-separated if needed (required)'
+        required: true
+        type: string
+      user_id:
+        description: 'User Id (required)'
+        required: true
+        type: number
+      expand:
+        description: 'Related entities to be represented inline (optional)'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result (optional)'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  set-item-reviewer:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Execute uipath orchestrator queue-items set-item-reviewer command
+        shell: pwsh
+        env:
+          FOLDER_ID: ${{ inputs.folder_id }}
+          QUEUE_ITEMS_RAW: '${{ inputs.queue_items }}'
+          USER_ID: ${{ inputs.user_id }}
+          EXPAND: '${{ inputs.expand }}'
+          SELECT: '${{ inputs.select }}'
+        run: |
+          # Initialize argument array with command and required parameters
+          $args = @("orchestrator", "queue-items", "set-item-reviewer")
+          $args += "--folder-id"
+          $args += "$env:FOLDER_ID"
+
+          # Process multiple queue-items; input expected as comma-separated list of Id=integer; RowVersion=string
+          $queueItemsRaw = $env:QUEUE_ITEMS_RAW
+          $queueItemsList = $queueItemsRaw -split ',' | ForEach-Object { $_.Trim() }
+          foreach ($item in $queueItemsList) {
+            # Add each queue-item as a separate --queue-items argument
+            $args += "--queue-items"
+            $args += $item
+          }
+
+          $args += "--user-id"
+          $args += "$env:USER_ID"
+
+          # Add optional --expand parameter if provided and not empty
+          if ([string]::IsNullOrWhiteSpace($env:EXPAND) -eq $false) {
+            $args += "--expand"
+            $args += $env:EXPAND
+          }
+
+          # Add optional --select parameter if provided and not empty
+          if ([string]::IsNullOrWhiteSpace($env:SELECT) -eq $false) {
+            $args += "--select"
+            $args += $env:SELECT
+          }
+
+          # Execute the uipath CLI with constructed arguments
+          uipath $args -join ' ' | Write-Output
+          uipath @args | Write-Output

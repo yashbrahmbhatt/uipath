@@ -1,0 +1,70 @@
+name: UiPath Orchestrator Alerts Get Unread Count
+description: |
+  NAME:
+     uipath orchestrator alerts get-unread-count - Returns the total number of alerts, per tenant, that haven't been read by the current user.
+
+  USAGE:
+     uipath orchestrator alerts get-unread-count [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Monitoring or OR.Monitoring.Read.
+
+     Required permissions: Alerts.View.
+     DEPRECATED: 
+     Please refer to https://docs.uipath.com/orchestrator/reference
+
+  OPTIONS:
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+  
+on: workflow_call
+inputs:
+  expand:
+    description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+    required: false
+    type: string
+    default: ''
+  select:
+    description: 'Limits the properties returned in the result.'
+    required: false
+    type: string
+    default: ''
+runs-on: [windows, self-hosted]
+jobs:
+  get-unread-count:
+    runs-on: [windows, self-hosted]
+    outputs:
+      command-result: ${{ steps.execute.outputs.command-result }}
+    steps:
+      - name: Run UiPath Orchestrator alerts get-unread-count
+        id: execute
+        shell: pwsh
+        run: |
+          # Initialize argument list with command base
+          $args = @('orchestrator', 'alerts', 'get-unread-count')
+
+          # Add --expand option if provided
+          if ('${{ inputs.expand }}' -and '${{ inputs.expand }}' -ne '') {
+            $args += '--expand'
+            $args += '${{ inputs.expand }}'
+          }
+
+          # Add --select option if provided
+          if ('${{ inputs.select }}' -and '${{ inputs.select }}' -ne '') {
+            $args += '--select'
+            $args += '${{ inputs.select }}'
+          }
+
+          # Construct the full command string with proper quoting
+          $command = "uipath " + ($args | ForEach-Object { if ($_ -match '\s') { '"' + $_ + '"' } else { $_ } } | Out-String).Trim()
+
+          Write-Host "Executing command: $command"
+
+          # Execute the command and capture output
+          $result = Invoke-Expression $command
+
+          # Output the result as step output
+          Write-Output "::set-output name=command-result::$result"

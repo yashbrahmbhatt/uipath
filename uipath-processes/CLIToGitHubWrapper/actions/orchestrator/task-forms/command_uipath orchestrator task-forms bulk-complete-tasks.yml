@@ -1,0 +1,99 @@
+name: UiPath Orchestrator Bulk Complete Tasks
+description: |
+  uipath orchestrator task-forms bulk-complete-tasks - Bulk Complete the task by merging form data and action taken
+
+  OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+  Required permissions: Tasks.Edit.
+
+on:
+  workflow_call:
+    inputs:
+      action:
+        description: Action taken on this task
+        required: true
+        type: string
+      data:
+        description: Task data json
+        required: true
+        type: string
+      folder_id:
+        description: Folder/OrganizationUnit Id
+        required: true
+        type: number
+      task_ids:
+        description: List of Task Ids which have to be Bulk edited (comma-separated integers)
+        required: true
+        type: string
+      note_text:
+        description: Comment to be added while doing the bulk operation
+        required: false
+        type: string
+        default: ''
+      priority:
+        description: Priority of tasks (Allowed values: Low, Medium, High, Critical)
+        required: false
+        type: string
+        default: ''
+      task_catalog_id:
+        description: Action Catalog to be associated with the tasks
+        required: false
+        type: number
+        default: 0
+      title:
+        description: Title of tasks
+        required: false
+        type: string
+        default: ''
+      unset_task_catalog:
+        description: Set to true for unassociating catalog
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  bulk-complete-tasks:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator bulk-complete-tasks
+        shell: pwsh
+        run: |
+          $args = @('orchestrator', 'task-forms', 'bulk-complete-tasks')
+
+          # Required parameters
+          $args += @('--action', '${{ inputs.action }}')
+          $args += @('--data', '${{ inputs.data }}')
+          $args += @('--folder-id', ${{ inputs.folder_id }})
+          $args += @('--task-ids', '${{ inputs.task_ids }}')
+
+          # Optional parameters with conditionals
+          if ('${{ inputs.note_text }}' -ne '') {
+            $args += @('--note-text', '${{ inputs.note_text }}')
+          }
+
+          if ('${{ inputs.priority }}' -ne '') {
+            # Validate priority value
+            $allowedPriorities = @('Low', 'Medium', 'High', 'Critical')
+            if ($allowedPriorities -contains '${{ inputs.priority }}') {
+              $args += @('--priority', '${{ inputs.priority }}')
+            } else {
+              Write-Error "Invalid priority value '${{ inputs.priority }}'. Allowed values are: $($allowedPriorities -join ', ')."
+              exit 1
+            }
+          }
+
+          if (${{ inputs.task_catalog_id }} -ne 0) {
+            $args += @('--task-catalog-id', ${{ inputs.task_catalog_id }})
+          }
+
+          if ('${{ inputs.title }}' -ne '') {
+            $args += @('--title', '${{ inputs.title }}')
+          }
+
+          if (${{ inputs.unset_task_catalog }}) {
+            $args += @('--unset-task-catalog', 'true')
+          }
+
+          # Execute the CLI command
+          Write-Host "Executing: uipath $($args -join ' ')"
+          uipath @args

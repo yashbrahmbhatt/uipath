@@ -1,0 +1,133 @@
+name: uipath-orchestrator-robots-get
+description: |-
+  NAME:
+     uipath orchestrator robots get - Gets robots.
+
+  USAGE:
+     uipath orchestrator robots get [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Robots or OR.Robots.Read.
+
+     Required permissions: Robots.View.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --count boolean
+        Indicates whether the total count of items within a collection are returned in the result.
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --filter string
+        Restricts the set of items returned. The maximum number of expressions is 100.
+
+     --orderby string
+        Specifies the order in which items are returned. The maximum number of expressions is 5.
+
+     --select string
+        Limits the properties returned in the result.
+
+     --skip integer
+        Excludes the specified number of items of the queried collection from the result.
+
+     --top integer
+        Limits the number of items returned from a collection. The maximum value is 1000.
+  
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id'
+        required: true
+        type: number
+      count:
+        description: 'Indicates whether the total count of items within a collection are returned in the result.'
+        required: false
+        type: boolean
+        default: false
+      expand:
+        description: 'Indicates the related entities to be represented inline.'
+        required: false
+        type: string
+        default: ''
+      filter:
+        description: 'Restricts the set of items returned.'
+        required: false
+        type: string
+        default: ''
+      orderby:
+        description: 'Specifies the order in which items are returned.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+      skip:
+        description: 'Excludes the specified number of items of the queried collection from the result.'
+        required: false
+        type: number
+        default: 0
+      top:
+        description: 'Limits the number of items returned from a collection.'
+        required: false
+        type: number
+        default: 0
+    secrets: {}
+
+jobs:
+  run-command:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator robots get command
+        shell: pwsh
+        run: |
+          # Construct the argument array for the CLI command
+          $args = @('orchestrator', 'robots', 'get')
+
+          # Required parameter folder-id
+          $args += '--folder-id'
+          $args += "${{ inputs.folder_id }}"
+
+          # Optional boolean parameter count; only include if true
+          if ("${{ inputs.count }}" -eq 'true') {
+              $args += '--count'
+              $args += 'true'
+          }
+
+          # Optional string parameters; add if not empty
+          if ('${{ inputs.expand }}'.Length -gt 0) {
+              $args += '--expand'
+              $args += '${{ inputs.expand }}'
+          }
+          if ('${{ inputs.filter }}'.Length -gt 0) {
+              $args += '--filter'
+              $args += '${{ inputs.filter }}'
+          }
+          if ('${{ inputs.orderby }}'.Length -gt 0) {
+              $args += '--orderby'
+              $args += '${{ inputs.orderby }}'
+          }
+          if ('${{ inputs.select }}'.Length -gt 0) {
+              $args += '--select'
+              $args += '${{ inputs.select }}'
+          }
+
+          # Optional integer parameters; add if greater than zero
+          if ([int]::TryParse('${{ inputs.skip }}', [ref]$null) -and ${{ inputs.skip }} -gt 0) {
+              $args += '--skip'
+              $args += "${{ inputs.skip }}"
+          }
+          if ([int]::TryParse('${{ inputs.top }}', [ref]$null) -and ${{ inputs.top }} -gt 0) {
+              $args += '--top'
+              $args += "${{ inputs.top }}"
+          }
+
+          # Run the CLI command using the constructed argument list
+          Write-Host "Executing: uipath $args"
+          uipath @args

@@ -1,0 +1,67 @@
+name: UiPath Orchestrator Test-Sets Delete-By-Id
+description: |
+  NAME:
+     uipath orchestrator test-sets delete-by-id - Delete a test set
+
+  USAGE:
+     uipath orchestrator test-sets delete-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.TestSets or OR.TestSets.Write.
+
+     Required permissions: TestSets.Delete.
+
+     Responses:
+     204 The Test Set was deleted
+     403 If the caller doesn't have permissions to delete Test Sets
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --key integer (required)
+        ID of the Test Set to delete
+on:
+  workflow_call:
+    inputs:
+      folder_id:
+        description: 'Folder/OrganizationUnit Id (required)'
+        required: true
+        type: number
+      key:
+        description: 'ID of the Test Set to delete (required)'
+        required: true
+        type: number
+    secrets:
+      UIPATH_ORCHESTRATOR_ACCESS_TOKEN:
+        description: 'Access token for authenticating to UiPath Orchestrator with required scopes'
+jobs:
+  delete-test-set:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Delete Test Set by Id
+        shell: pwsh
+        env:
+          ACCESS_TOKEN: ${{ secrets.UIPATH_ORCHESTRATOR_ACCESS_TOKEN }}
+        run: |
+          # Build the uipath CLI command with required parameters
+          $args = @(
+            'orchestrator', 'test-sets', 'delete-by-id',
+            '--folder-id', ${{ inputs.folder_id }},
+            '--key', ${{ inputs.key }}
+          )
+
+          # Insert the authentication token as environment variable for CLI if needed
+          # Assuming the CLI picks up ACCESS_TOKEN from env or implement additional args here
+
+          Write-Host "Executing: uipath $($args -join ' ')"
+          # Execute the command
+          uipath @args
+
+          # Check the exit code for success or failure
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Failed to delete the Test Set with key $(${{ inputs.key }}) in folder $(${{ inputs.folder_id }})"
+            exit $LASTEXITCODE
+          } else {
+            Write-Host "Test Set deleted successfully."
+          }

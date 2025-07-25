@@ -1,0 +1,76 @@
+{
+  "name": "Yash.RBC.Activities",
+  "projectId": "7408007f-016e-4b30-baaa-f06c526f07f5",
+  "description": "A set of reusable activities for interacting with the RBC GUI.",
+  "main": "NewActivity.xaml",
+  "dependencies": {
+    "UiPath.System.Activities": "25.6.1",
+    "UiPath.Testing.Activities": "25.4.0",
+    "UiPath.UIAutomation.Activities": "25.10.10"
+  },
+  "webServices": [],
+  "entitiesStores": [],
+  "schemaVersion": "4.0",
+  "studioVersion": "24.10.1.0",
+  "projectVersion": "25.7.1",
+  "runtimeOptions": {
+    "autoDispose": false,
+    "netFrameworkLazyLoading": false,
+    "isPausable": true,
+    "isAttended": false,
+    "requiresUserInteraction": true,
+    "supportsPersistence": false,
+    "workflowSerialization": "DataContract",
+    "excludedLoggedData": [
+      "Private:*",
+      "*password*"
+    ],
+    "executionType": "Workflow",
+    "readyForPiP": false,
+    "startsInPiP": false,
+    "mustRestoreAllDependencies": true,
+    "pipType": "ChildSession"
+  },
+  "designOptions": {
+    "projectProfile": "Developement",
+    "outputType": "Library",
+    "libraryOptions": {
+      "includeOriginalXaml": false,
+      "privateWorkflows": []
+    },
+    "processOptions": {
+      "ignoredFiles": []
+    },
+    "fileInfoCollection": [
+      {
+        "templateType": "TestCase",
+        "fileName": ".templates\\BasicTest.xaml"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "10011141-7fdf-4f99-9c2b-ef731f9dfb98",
+        "testCaseType": "TestCase",
+        "fileName": "Application\\Initialize.Test.xaml"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "719b73d3-f9f6-4802-a3da-b2e81b57d3b7",
+        "testCaseType": "TestCase",
+        "fileName": "Transactions\\DownloadTransactions.Test.xaml"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "e361cdc5-b2a8-430e-a73e-301387ef1373",
+        "testCaseType": "TestCase",
+        "executionTemplateInvokeIsolated": false,
+        "fileName": "Application\\Terminate.Test.xaml"
+      }
+    ],
+    "saveToCloud": false
+  },
+  "expressionLanguage": "CSharp",
+  "isTemplate": false,
+  "templateProjectData": {},
+  "publishData": {},
+  "targetFramework": "Windows"
+}

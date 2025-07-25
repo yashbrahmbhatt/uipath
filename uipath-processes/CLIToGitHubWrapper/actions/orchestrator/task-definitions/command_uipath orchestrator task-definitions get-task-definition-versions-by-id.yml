@@ -1,0 +1,69 @@
+name: uipath-orchestrator-task-definitions-get-versions-by-id
+description: |
+  NAME:
+     uipath orchestrator task-definitions get-task-definition-versions-by-id - Get all versions of Task Definition.
+
+  USAGE:
+     uipath orchestrator task-definitions get-task-definition-versions-by-id [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Read.
+
+     Required permissions: ActionDesign.View.
+
+  OPTIONS:
+     --id integer (required)
+        Id of the Task Definition
+
+     --expand string
+        Indicates the related entities to be represented inline. The maximum depth is 2.
+
+     --select string
+        Limits the properties returned in the result.
+  
+on:
+  workflow_call:
+    inputs:
+      id:
+        description: 'Id of the Task Definition (required)'
+        required: true
+        type: number
+      expand:
+        description: 'Indicates the related entities to be represented inline. The maximum depth is 2.'
+        required: false
+        type: string
+        default: ''
+      select:
+        description: 'Limits the properties returned in the result.'
+        required: false
+        type: string
+        default: ''
+    secrets: {}
+jobs:
+  run-get-task-definition-versions:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator get-task-definition-versions-by-id
+        shell: pwsh
+        run: |
+          $args = @()
+          # Required parameter --id
+          $args += "--id"
+          $args += ${{ inputs.id }}
+
+          # Optional parameter --expand
+          if('${{ inputs.expand }}' -ne '') {
+            $args += "--expand"
+            $args += "${{ inputs.expand }}"
+          }
+
+          # Optional parameter --select
+          if('${{ inputs.select }}' -ne '') {
+            $args += "--select"
+            $args += "${{ inputs.select }}"
+          }
+
+          # Construct the full command and execute
+          $cmd = "uipath orchestrator task-definitions get-task-definition-versions-by-id $($args -join ' ')"
+          Write-Host "Executing: $cmd"
+          iex $cmd

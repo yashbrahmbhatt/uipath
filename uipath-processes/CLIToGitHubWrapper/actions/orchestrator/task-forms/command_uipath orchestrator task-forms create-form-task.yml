@@ -1,0 +1,181 @@
+name: uipath-orchestrator-task-forms-create-form-task
+description: |
+  NAME:
+     uipath orchestrator task-forms create-form-task - Creates a new Form Task.
+
+  USAGE:
+     uipath orchestrator task-forms create-form-task [command options] [arguments...]
+
+  DESCRIPTION:
+     OAuth required scopes: OR.Tasks or OR.Tasks.Write.
+
+     Required permissions: Tasks.Create.
+
+  OPTIONS:
+     --folder-id integer (required)
+        Folder/OrganizationUnit Id
+
+     --title string (required)
+        Gets or sets title of this task.
+
+     --bulk-form-layout-id integer
+        Unique BulkFormLayoutId for a form layout
+
+     --data object
+        Task data
+
+     --external-tag string
+        Reference or name of external system
+
+     --form-layout object
+        Text representing the form layout schema
+
+     --form-layout-id integer
+        Unique FormLayoutId for a form layout
+
+     --parent-operation-id string
+        Operation id which created the task.
+
+     --priority string
+        Gets or sets priority of this task.
+
+        Allowed values:
+        - Low
+        - Medium
+        - High
+        - Critical
+
+     --tags object (multiple)
+        List of tags associated to the task.
+
+        Example:
+           DisplayName=string; DisplayValue=string; Name=string; Value=string
+
+     --task-catalog-name string
+        Gets or sets the task catalog/category of the task
+on:
+  workflow_call:
+    inputs:
+      folder-id:
+        required: true
+        type: number
+        description: Folder/OrganizationUnit Id
+      title:
+        required: true
+        type: string
+        description: Gets or sets title of this task.
+      bulk-form-layout-id:
+        required: false
+        type: number
+        description: Unique BulkFormLayoutId for a form layout
+      data:
+        required: false
+        type: string
+        description: Task data (object as JSON string or similar)
+      external-tag:
+        required: false
+        type: string
+        description: Reference or name of external system
+      form-layout:
+        required: false
+        type: string
+        description: Text representing the form layout schema (object serialized)
+      form-layout-id:
+        required: false
+        type: number
+        description: Unique FormLayoutId for a form layout
+      parent-operation-id:
+        required: false
+        type: string
+        description: Operation id which created the task.
+      priority:
+        required: false
+        type: string
+        description: Gets or sets priority of this task. Allowed values: Low, Medium, High, Critical
+      tags:
+        required: false
+        type: string
+        description: List of tags associated to the task (multiple allowed; pass semicolon-separated if multiple)
+      task-catalog-name:
+        required: false
+        type: string
+        description: Gets or sets the task catalog/category of the task
+    secrets: {}
+jobs:
+  create-task:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run uipath orchestrator task-forms create-form-task
+        shell: pwsh
+        run: |
+          $args = @('orchestrator','task-forms','create-form-task')
+
+          # Required arguments
+          $args += '--folder-id'
+          $args += ('{0}' -f '${{ inputs.folder-id }}')
+          $args += '--title'
+          $args += ('{0}' -f '${{ inputs.title }}')
+
+          # Optional arguments - added only if provided and not empty
+
+          if ('${{ inputs.bulk-form-layout-id }}' -ne '') {
+              $args += '--bulk-form-layout-id'
+              $args += ('{0}' -f '${{ inputs.bulk-form-layout-id }}')
+          }
+
+          if ('${{ inputs.data }}' -ne '') {
+              $args += '--data'
+              $args += ('{0}' -f '${{ inputs.data }}')
+          }
+
+          if ('${{ inputs.external-tag }}' -ne '') {
+              $args += '--external-tag'
+              $args += ('{0}' -f '${{ inputs.external-tag }}')
+          }
+
+          if ('${{ inputs.form-layout }}' -ne '') {
+              $args += '--form-layout'
+              $args += ('{0}' -f '${{ inputs.form-layout }}')
+          }
+
+          if ('${{ inputs.form-layout-id }}' -ne '') {
+              $args += '--form-layout-id'
+              $args += ('{0}' -f '${{ inputs.form-layout-id }}')
+          }
+
+          if ('${{ inputs.parent-operation-id }}' -ne '') {
+              $args += '--parent-operation-id'
+              $args += ('{0}' -f '${{ inputs.parent-operation-id }}')
+          }
+
+          if ('${{ inputs.priority }}' -ne '') {
+              # Validate priority allowed values
+              $priority = '${{ inputs.priority }}'
+              $validPriorities = @('Low','Medium','High','Critical')
+              if ($validPriorities -notcontains $priority) {
+                  Write-Error "Invalid priority: $priority. Allowed values: Low, Medium, High, Critical"
+                  exit 1
+              }
+              $args += '--priority'
+              $args += $priority
+          }
+
+          if ('${{ inputs.tags }}' -ne '') {
+              # The CLI allows multiple --tags; split by semicolon and add each as separate argument
+              $tagsList = '${{ inputs.tags }}' -split ';'
+              foreach ($t in $tagsList) {
+                  $trimmedTag = $t.Trim()
+                  if ($trimmedTag -ne '') {
+                      $args += '--tags'
+                      $args += $trimmedTag
+                  }
+              }
+          }
+
+          if ('${{ inputs.task-catalog-name }}' -ne '') {
+              $args += '--task-catalog-name'
+              $args += ('{0}' -f '${{ inputs.task-catalog-name }}')
+          }
+
+          Write-Host "Running: uipath $($args -join ' ')"
+          uipath @args

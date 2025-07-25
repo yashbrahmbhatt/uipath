@@ -1,0 +1,47 @@
+name: uipath-identity-user-bulk-delete
+description: |
+  NAME:
+     uipath identity user bulk-delete - Bulk deletes the specified list of users.
+
+  USAGE:
+     uipath identity user bulk-delete [command options] [arguments...]
+
+  OPTIONS:
+     --partition-global-id string
+
+     --user-ids string,string,...
+  
+on:
+  workflow_call:
+    inputs:
+      partition-global-id:
+        description: 'Partition Global ID to filter users (optional)'
+        required: false
+        type: string
+      user-ids:
+        description: 'Comma-separated list of user IDs to bulk delete (required)'
+        required: true
+        type: string
+
+jobs:
+  bulk_delete_users:
+    runs-on: [windows, self-hosted]
+    steps:
+      - name: Run UiPath Identity User Bulk Delete
+        shell: pwsh
+        run: |
+          # Initialize argument array for the CLI command
+          $args = @("identity", "user", "bulk-delete")
+
+          # Add --partition-global-id parameter if provided
+          if ('${{ inputs.partition-global-id }}' -ne '') {
+            $args += "--partition-global-id"
+            $args += '${{ inputs.partition-global-id }}'
+          }
+
+          # Add required --user-ids parameter
+          $args += "--user-ids"
+          $args += '${{ inputs.user-ids }}'
+
+          # Execute the cli command with constructed args
+          & uipath @args
