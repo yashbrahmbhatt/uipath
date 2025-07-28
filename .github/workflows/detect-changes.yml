@@ -46,7 +46,7 @@ jobs:
               continue
             }
 
-            $projectPath = $project.path.Replace('/', '\')  # normalize path for Windows
+            $projectPath = $projectPath = [Regex]::Escape($project.path.Replace('/', '\')) # normalize path for Windows
             if ($changedFiles -match "^$projectPath[\\/]*") {
               $matched += [PSCustomObject]@{
                 id           = $project.id
