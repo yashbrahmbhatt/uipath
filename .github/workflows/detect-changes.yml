@@ -34,9 +34,17 @@ jobs:
         shell: powershell
         run: |
           Write-Host "Detecting changes..."
-          $changedFiles = git diff --name-only $env:GITHUB_EVENT_BEFORE $env:GITHUB_SHA
+          try {
+            $changedFiles = git diff --name-only $env:GITHUB_EVENT_BEFORE $env:GITHUB_SHA
+            if (-not $changedFiles) {
+              $changedFiles = git diff --name-only HEAD~1 HEAD
+            }
+          } catch {
+          $changedFiles = git diff --name-only HEAD~1 HEAD
+          }
           Write-Host "Changed files:"
           $changedFiles
+
 
           $monoJson = Get-Content "mono.json" | ConvertFrom-Json
           $matched = @()
