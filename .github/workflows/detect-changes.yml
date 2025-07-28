@@ -72,14 +72,13 @@ jobs:
             }
           }
 
-
           if ($matched.Count -eq 0) {
             Write-Host "No relevant changes detected."
             $matrix = '{"include":[]}'
           }
           else {
-            $json = $matched | ConvertTo-Json -Depth 5
-            $matrix = "{`"include`":" + $json + "}"
+            $json = $matched | ConvertTo-Json -Depth 5 -Compress
+            $matrix = "{`"include`":$json}"
           }
 
           Write-Host "Detected matrix: $matrix"
