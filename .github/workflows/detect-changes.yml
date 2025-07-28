@@ -55,17 +55,23 @@ jobs:
             if (-not $project.build) {
               continue
             }
-
-            $projectPath = $projectPath = [Regex]::Escape($project.path.Replace('/', '\')) # normalize path for Windows
-            if ($changedFiles -match "^$projectPath[\\/]*") {
-              $matched += [PSCustomObject]@{
-                id           = $project.id
-                path         = $project.path
-                type         = $project.type
-                deploySteps  = $project.deploySteps
+          
+            $projectPath = $project.path.Replace('/', '\')  # Normalize project path to Windows-style
+          
+            foreach ($file in $changedFiles) {
+              $filePath = $file.Replace('/', '\')  # Normalize changed file path
+              if ($filePath -like "$projectPath*") {
+                $matched += [PSCustomObject]@{
+                  id           = $project.id
+                  path         = $project.path
+                  type         = $project.type
+                  deploySteps  = $project.deploySteps
+                }
+                break  # Don't need to match this project again
               }
             }
           }
+
 
           if ($matched.Count -eq 0) {
             Write-Host "No relevant changes detected."
