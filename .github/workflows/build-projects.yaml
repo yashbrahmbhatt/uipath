@@ -119,6 +119,11 @@ jobs:
           release_name: Release ${{ env.FULL_VERSION }}
           draft: false
           prerelease: false
+      - name: List package files
+        if: matrix.type == 'vs'
+        run: |
+          dir ${{ matrix.path }}/bin/Release
+        shell: powershell
 
       - name: Upload NuGet Package to Release
         if: matrix.type == 'vs'
