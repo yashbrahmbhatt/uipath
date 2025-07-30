@@ -130,7 +130,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ${{ matrix.path }}/bin/Release/net6.0-windows7.0/${{ matrix.id }}.${{ steps.version.outputs.version }}.nupkg
+          asset_path: ${{ matrix.path }}/bin/Release/${{ matrix.id }}.${{ steps.version.outputs.version }}.nupkg
           asset_name: ${{ matrix.id }}-${{ steps.version.outputs.version }}.nupkg
           asset_content_type: application/octet-stream
 
