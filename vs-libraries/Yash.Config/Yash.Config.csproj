@@ -1,13 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <!-- Versioning -->
+   <PropertyGroup>
     <VersionBuild>$([System.DateTime]::UtcNow.DayOfYear.ToString("F0"))</VersionBuild>
     <VersionRevision>$([System.DateTime]::UtcNow.TimeOfDay.TotalSeconds.ToString("F0"))</VersionRevision>
-    <VersionPrefix>1.0.$(VersionBuild)-dev.$(VersionRevision)</VersionPrefix>
-    <PackageVersion>$(VersionPrefix)</PackageVersion>
-
-    <!-- Metadata -->
     <PackageId>Yash.Config</PackageId>
     <PackageDescription>Configuration management and wizard utilities for UiPath.</PackageDescription>
     <PackageTags>Yash;Config;Wizard</PackageTags>
@@ -19,48 +13,55 @@
     <PackageReleaseNotes>Initial public release</PackageReleaseNotes>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+   <PropertyGroup>
+        <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+        <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
+  </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
+        <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+        <FileVersion>$(VersionPrefix)</FileVersion>
+      <UseWindowsForms>true</UseWindowsForms>
 
-    <!-- Build Configuration Defaults -->
-    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-    <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
-
-    <!-- Target framework -->
-    <TargetFramework>net6.0-windows7.0</TargetFramework>
-
-    <!-- Nullable & Implicit usings -->
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-
-    <!-- Windows Forms -->
-    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
-  <!-- Debug Configuration -->
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <VersionPrefix>1.0.$(VersionBuild)-dev.$(VersionRevision)</VersionPrefix>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.0.0</FileVersion>
+     
+  </PropertyGroup>
+    <PropertyGroup>
+        <PackageVersion>$(VersionPrefix)</PackageVersion>
   </PropertyGroup>
 
-  <!-- Release Configuration -->
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
-    <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
-    <FileVersion>$(VersionPrefix)</FileVersion>
-  </PropertyGroup>
-
-  <!-- Clean NuGet Packages before build -->
-  <Target Name="CleanPackageFiles" BeforeTargets="Build">
-    <Message Text="Deleting packages ..." />
-    <ItemGroup>
-      <PackageFilesToDelete Include="$(PackageOutputPath)\$(PackageId)*.nupkg" />
+   <Target Name="CleanPackageFiles" BeforeTargets="Build">
+        <Message Text="Deleting packages ..." />
+        <ItemGroup>
+            <PackageFilesToDelete Include="$(PackageOutputPath)\$(PackageId)*.nupkg" /> 
     </ItemGroup>
-    <Delete Files="@(PackageFilesToDelete)" ContinueOnError="WarnAndContinue" />
+        <Delete Files="@(PackageFilesToDelete)" ContinueOnError="WarnAndContinue" />
+     
   </Target>
 
-  <!-- Source Exclusions -->
+
+
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+
+  </PropertyGroup>
+
+
+
+
   <ItemGroup>
     <Compile Remove="Output\**" />
     <Compile Remove="Yash.Config.StudioTestProject\**" />
@@ -70,18 +71,59 @@
     <None Remove="Yash.Config.StudioTestProject\**" />
   </ItemGroup>
 
+
+
+
   <ItemGroup>
     <None Remove="Activities\ActivitiesMetadata.json" />
     <None Remove="ConfigTemplate.xlsx" />
   </ItemGroup>
 
-  <!-- Embedded Resources -->
+
+
+
   <ItemGroup>
     <EmbeddedResource Include="Activities\ActivitiesMetadata.json" />
     <EmbeddedResource Include="ConfigTemplate.xlsx" />
-    <None Include="icon.png" Pack="true" PackagePath="\" />
-    <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.5.0-2.22527.10" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0-2.22527.10" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.5.0-2.22527.10" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RestSharp" Version="112.1.0" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <PackageReference Include="System.Activities.Core.Presentation" Version="6.0.0-20231204.1" PrivateAssets="All" />
+    <PackageReference Include="System.Activities.Metadata" Version="6.0.0-20240517.13" PrivateAssets="All" />
+    <PackageReference Include="System.Activities.ViewModels" Version="1.0.0-20250625.2" PrivateAssets="All" />
+    <PackageReference Include="UiPath.Activities.Api" Version="24.10.1">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="UiPath.Workflow" Version="6.0.0-20240401-07" PrivateAssets="All" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <Compile Update="Activities\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Settings\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+
 
   <ItemGroup>
     <EmbeddedResource Update="Activities\Resources.resx">
@@ -92,45 +134,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <!-- Designer files for resources -->
-  <ItemGroup>
-    <Compile Update="Activities\Resources.Designer.cs">
-      <DesignTime>true</DesignTime>
-      <AutoGen>true</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Settings\Resources.Designer.cs">
-      <DesignTime>true</DesignTime>
-      <AutoGen>true</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <!-- Package References - Core -->
-  <ItemGroup>
-    <PackageReference Include="ClosedXML" Version="0.105.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="RestSharp" Version="112.1.0" />
-  </ItemGroup>
-
-  <!-- Package References - Roslyn -->
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.5.0-2.22527.10" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0-2.22527.10" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.5.0-2.22527.10" />
-  </ItemGroup>
-
-  <!-- Package References - UiPath & System.Activities -->
-  <ItemGroup>
-    <PackageReference Include="System.Activities.Core.Presentation" Version="6.0.0-20231204.1" PrivateAssets="All" />
-    <PackageReference Include="System.Activities.Metadata" Version="6.0.0-20240517.13" PrivateAssets="All" />
-    <PackageReference Include="System.Activities.ViewModels" Version="1.0.0-20250625.2" PrivateAssets="All" />
-    <PackageReference Include="UiPath.Activities.Api" Version="24.10.1">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="UiPath.Workflow" Version="6.0.0-20240401-07" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
