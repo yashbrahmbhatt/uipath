@@ -127,7 +127,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ${{ matrix.path }}/bin/Release/*.nupkg
+          asset_path: ${{ matrix.path }}/Output/*.nupkg
           asset_name: ${{ matrix.id }}-${{ env.VERSION }}.nupkg
           asset_content_type: application/octet-stream
 
