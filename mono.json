@@ -38,7 +38,8 @@
       "type": "vs",
       "build": true,
       "deploy": true,
-      "deploySteps": ["nuget"]
+      "deploySteps": ["nuget"],
+      "dependsOn": ["Yash.Orchestrator"]
     },
     {
       "id": "Yash.Orchestrator",

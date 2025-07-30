@@ -135,21 +135,28 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
-      - name: Publish NuGet Package to GitHub Packages
+      - name: Publish NuGet Package to GitHub Packages and nuget.org
         if: matrix.type == 'vs'
         shell: powershell
         run: |
           $packagePath = "${{ matrix.path }}/bin/Release/${{ matrix.id }}.${{ steps.version.outputs.version }}.nupkg"
           Write-Host "Pushing package: $packagePath"
-          
-          dotnet nuget push @(
-            "$packagePath",
-            "--api-key", "$env:GITHUB_TOKEN",
-            "--source", "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json",
-            "--skip-duplicate"
-          )
+
+          # Push to GitHub Packages
+          dotnet nuget push $packagePath `
+            --api-key "$env:GITHUB_TOKEN" `
+            --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
+            --skip-duplicate
+
+          # Push to nuget.org
+          dotnet nuget push $packagePath `
+            --api-key "$env:NUGET_ORG_API_KEY" `
+            --source "https://api.nuget.org/v3/index.json" `
+            --skip-duplicate
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NUGET_ORG_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}
+
 
 
 

@@ -1,5 +1,3 @@
-# .github/workflows/detect-changes.yml
-
 name: Detect Changed Projects
 
 on:
@@ -18,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 2 # <-- fetch at least 2 commits for HEAD~1 to work
+          fetch-depth: 2  # Required for HEAD~1 to work
 
       - name: Download jq
         run: |
@@ -44,31 +42,73 @@ jobs:
           } catch {
             $changedFiles = git diff --name-only HEAD~1 HEAD
           }
+
           Write-Host "Changed files:"
           $changedFiles
 
-
           $monoJson = Get-Content "mono.json" | ConvertFrom-Json
-          $matched = @()
+          $projectMap = @{}
+          $matchedIds = @{}
 
+          # Map all projects by ID
           foreach ($project in $monoJson.projects) {
-            if (-not $project.build) {
-              continue
-            }
-          
-            $projectPath = $project.path.Replace('/', '\')  # Normalize project path to Windows-style
-          
+            $projectMap[$project.id] = $project
+          }
+
+          # First pass: mark directly changed projects
+          foreach ($project in $monoJson.projects) {
+            if (-not $project.build) { continue }
+
+            $projectPath = $project.path.Replace('/', '\')
             foreach ($file in $changedFiles) {
-              $filePath = $file.Replace('/', '\')  # Normalize changed file path
+              $filePath = $file.Replace('/', '\')
               if ($filePath -like "$projectPath*") {
-                $matched += [PSCustomObject]@{
-                  id           = $project.id
-                  path         = $project.path
-                  type         = $project.type
-                  deploySteps  = $project.deploySteps
-                }
-                break  # Don't need to match this project again
+                $matchedIds[$project.id] = $true
+                break
               }
+            }
+          }
+
+          # Recursive dependency expander
+          function Add-DependentProjectsRecursively {
+            param (
+              [hashtable]$projectMap,
+              [hashtable]$matchedIds
+            )
+
+            $dependentsAdded = $false
+
+            foreach ($project in $projectMap.Values) {
+              if ($matchedIds.ContainsKey($project.id)) { continue }
+
+              if ($project.PSObject.Properties['dependsOn']) {
+                foreach ($depId in $project.dependsOn) {
+                  if ($matchedIds.ContainsKey($depId)) {
+                    $matchedIds[$project.id] = $true
+                    $dependentsAdded = $true
+                    break
+                  }
+                }
+              }
+            }
+
+            if ($dependentsAdded) {
+              Add-DependentProjectsRecursively -projectMap $projectMap -matchedIds $matchedIds
+            }
+          }
+
+          # Expand all transitive dependents
+          Add-DependentProjectsRecursively -projectMap $projectMap -matchedIds $matchedIds
+
+          # Build final matched list
+          $matched = @()
+          foreach ($id in $matchedIds.Keys) {
+            $project = $projectMap[$id]
+            $matched += [PSCustomObject]@{
+              id          = $project.id
+              path        = $project.path
+              type        = $project.type
+              deploySteps = $project.deploySteps
             }
           }
 
@@ -78,12 +118,11 @@ jobs:
           }
           else {
             $json = $matched | ConvertTo-Json -Depth 5 -Compress
-            # Ensure it's wrapped as an array
             if ($matched.Count -eq 1) {
               $matrix = "{`"include`":[${json}]}"
-            }
-            else {
+            } else {
               $matrix = "{`"include`":$json}"
             }
           }
+
           "matrix=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
