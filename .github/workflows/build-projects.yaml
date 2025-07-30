@@ -40,19 +40,21 @@ jobs:
       - name: Generate Semantic Version (YY.MM.X)
         if: matrix.type == 'vs'
         id: version
-        shell: bash
+        shell: powershell
         run: |
-          YY=$(date +'%y')
-          MM=$(date +'%m')
-          BASE="$YY.$MM"
+          $yy = (Get-Date -Format "yy")
+          $mm = (Get-Date -Format "MM")
+          $base = "$yy.$mm"
+              
+          git fetch --tags
+              
+          $count = (git tag --list "$base.*" | Measure-Object).Count
+          $version = "$base.$count"
+              
+          Write-Host "Computed version: $version"
+          "VERSION=$version" >> $env:GITHUB_ENV
+          "version=$version" >> $env:GITHUB_OUTPUT
 
-          # Count existing tags matching YY.MM.*
-          COUNT=$(git tag --list "$BASE.*" | wc -l)
-          VERSION="$BASE.$COUNT"
-
-          echo "Computed version: $VERSION"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Build Visual Studio Project ${{ matrix.id }}
         if: matrix.type == 'vs'
