@@ -1,0 +1,52 @@
+name: Build Changed Projects
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  detect:
+    uses: ./.github/workflows/detect-changes.yml
+
+  build-uipath:
+    needs: detect
+    if: needs.detect.outputs.matrix != '{"include":[]}'
+    runs-on: [self-hosted, windows]
+    strategy:
+      matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build UiPath Project ${{ matrix.id }}
+        if: startsWith(matrix.type, 'uipath-')
+        run: |
+          echo "Packing UiPath project ${{ matrix.id }}"
+          cd ${{ matrix.path }}
+          uipcli pack --project-path .
+
+  build-vs:
+    needs: detect
+    if: needs.detect.outputs.matrix != '{"include":[]}'
+    runs-on: [self-hosted, windows]
+    strategy:
+      matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Visual Studio Project ${{ matrix.id }}
+        if: matrix.type == 'vs'
+        run: |
+          echo "Building VS project ${{ matrix.id }} at path ${{ matrix.path }}"
+          cd ${{ matrix.path }}
+
+          # Prefer dotnet if you're using SDK-style projects
+          if (Test-Path *.csproj) {
+            dotnet restore
+            dotnet build --configuration Release
+          } else {
+            echo "No .csproj found. Skipping build."
+            exit 1
+          }
+        shell: pwsh
