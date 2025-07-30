@@ -41,31 +41,45 @@ jobs:
 
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Needed to fetch all tags for versioning
+          fetch-depth: 0  # Fetch all tags
 
-      - name: Generate Semantic Version (YY.MM.X)
-        if: matrix.type == 'vs'
+      - name: Generate Per-Project Semantic Version
         id: version
         shell: powershell
         run: |
-          $yy = (Get-Date -Format "yy")
-          $mm = (Get-Date -Format "MM")
+          $projectId = "${{ matrix.id }}"
+          $yy = [int](Get-Date -Format "yy")
+          $mm = [int](Get-Date -Format "MM")
           $base = "$yy.$mm"
-              
-          git fetch --tags
-              
-          $count = (git tag --list "$base.*" | Measure-Object).Count
-          $version = "$base.$count"
-              
-          Write-Host "Computed version: $version"
-          "VERSION=$version" >> $env:GITHUB_ENV
-          "version=$version" >> $env:GITHUB_OUTPUT
 
+          git fetch --tags
+
+          $pattern = "$projectId@$base.*"
+          $tags = git tag --list $pattern
+
+          if (-not $tags) {
+            $patch = 0
+          } else {
+            $patches = $tags | ForEach-Object {
+              if ($_ -match "@$base\.(\d+)$") { [int]$matches[1] } else { 0 }
+            }
+            $patch = ($patches | Measure-Object -Maximum).Maximum + 1
+          }
+
+          $version = "$base.$patch"
+          $fullVersion = "$projectId@$version"
+
+          Write-Host "Computed version: $fullVersion"
+          "VERSION=$version" >> $env:GITHUB_ENV
+          "FULL_VERSION=$fullVersion" >> $env:GITHUB_ENV
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "full_version=$fullVersion" >> $env:GITHUB_OUTPUT
 
       - name: Build Visual Studio Project ${{ matrix.id }}
         if: matrix.type == 'vs'
+        shell: powershell
         run: |
-          echo "Building VS project ${{ matrix.id }} at path ${{ matrix.path }}"
+          Write-Host "Building VS project ${{ matrix.id }} at path ${{ matrix.path }}"
           cd ${{ matrix.path }}
 
           $csproj = Get-ChildItem *.csproj -Recurse | Select-Object -First 1
@@ -74,23 +88,46 @@ jobs:
             dotnet build $csproj.FullName --configuration Release
             dotnet pack $csproj.FullName --configuration Release -p:PackageVersion=$env:VERSION --output ./bin/Release
           } else {
-            echo "No .csproj found. Skipping."
+            Write-Host "No .csproj found. Skipping."
             exit 1
           }
-        shell: powershell
 
       - name: Upload NuGet Package ${{ matrix.id }}
         if: matrix.type == 'vs'
         uses: actions/upload-artifact@v4
         with:
-          name: nuget-${{ matrix.id }}-${{ steps.version.outputs.version }}
+          name: nuget-${{ matrix.id }}-${{ env.VERSION }}
           path: ${{ matrix.path }}/bin/Release/*.nupkg
 
       - name: Create Git Tag for Version
         if: matrix.type == 'vs'
+        shell: powershell
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git tag $env:VERSION
-          git push origin $env:VERSION
-        shell: powershell
+          git tag $env:FULL_VERSION
+          git push origin $env:FULL_VERSION
+
+      - name: Create GitHub Release
+        if: matrix.type == 'vs'
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.FULL_VERSION }}
+          release_name: Release ${{ env.FULL_VERSION }}
+          draft: false
+          prerelease: false
+
+      - name: Upload NuGet Package to Release
+        if: matrix.type == 'vs'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ${{ matrix.path }}/bin/Release/*.nupkg
+          asset_name: ${{ matrix.id }}-${{ env.VERSION }}.nupkg
+          asset_content_type: application/octet-stream
+
