@@ -125,13 +125,15 @@ jobs:
           dir ${{ matrix.path }}/bin/Release
         shell: powershell
 
-      - name: Upload NuGet Package ${{ matrix.id }}
-        if: matrix.type == 'vs'
+      - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ matrix.path }}/bin/Release/${{ matrix.id }}.${{ steps.version.outputs.version }}.nupkg
           asset_name: ${{ matrix.id }}-${{ steps.version.outputs.version }}.nupkg
           asset_content_type: application/octet-stream
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
 
