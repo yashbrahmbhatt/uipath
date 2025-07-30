@@ -11,6 +11,7 @@ jobs:
     uses: ./.github/workflows/detect-changes.yml
 
   build-uipath:
+    environment: dev
     needs: detect
     if: needs.detect.outputs.matrix != '{"include":[]}'
     runs-on: [self-hosted, windows]
@@ -27,6 +28,7 @@ jobs:
           uipcli pack --project-path .
 
   build-vs:
+    environment: dev
     needs: detect
     if: needs.detect.outputs.matrix != '{"include":[]}'
     runs-on: [self-hosted, windows]
