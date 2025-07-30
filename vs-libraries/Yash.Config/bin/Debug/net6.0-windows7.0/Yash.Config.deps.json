@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "Yash.Config/1.0.206-dev.54439": {
+      "Yash.Config/1.0.210-dev.69601": {
         "dependencies": {
           "ClosedXML": "0.105.0",
           "Microsoft.CodeAnalysis.CSharp": "4.5.0-2.22527.10",
@@ -793,7 +793,7 @@
     }
   },
   "libraries": {
-    "Yash.Config/1.0.206-dev.54439": {
+    "Yash.Config/1.0.210-dev.69601": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

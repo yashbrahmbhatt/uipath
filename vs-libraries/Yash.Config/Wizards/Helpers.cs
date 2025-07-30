@@ -20,7 +20,7 @@ namespace Yash.Config.Wizards
             // INPUT FILE
             if (!forcePrompt)
             {
-                if (!TryGetOrCreateInputFilePath(out inputFile)) return false;
+                if (!TryGetOrCreateInputFilePath(api, out inputFile)) return false;
             }
             else
             {

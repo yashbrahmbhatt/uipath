@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" sap2010:ExpressionActivityEditor.ExpressionActivityEditor="C#" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:yca="clr-namespace:Yash.Config.Activities;assembly=Yash.Config" xmlns:ycm="clr-namespace:Yash.Config.Models;assembly=Yash.Config" xmlns:ycsmc="clr-namespace:Yash.Config.StudioTestProject.Models.Configs;assembly=Yash.Config.StudioTestProject.Core">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" sap2010:ExpressionActivityEditor.ExpressionActivityEditor="C#" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:yca="clr-namespace:Yash.Config.Activities;assembly=Yash.Config" xmlns:ycsmc="clr-namespace:Yash.Config.StudioTestProject.Models.Configs;assembly=Yash.Config.StudioTestProject.Core">
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>System.Activities</x:String>
@@ -14,13 +14,14 @@
       <x:String>System.Dynamic</x:String>
       <x:String>System.Runtime.Serialization</x:String>
       <x:String>System.Reflection</x:String>
-      <x:String>Yash.Config.Models</x:String>
-      <x:String>Yash.Config.Activities</x:String>
-      <x:String>Yash.Config.StudioTestProject</x:String>
       <x:String>UiPath.Core</x:String>
       <x:String>System.Linq.Expressions</x:String>
-      <x:String>Yash.Config</x:String>
+      <x:String>Yash.Config.Activities</x:String>
+      <x:String>UiPath.Platform.ResourceHandling</x:String>
       <x:String>Yash.Config.StudioTestProject.Models.Configs</x:String>
+      <x:String>Yash.Config.Models</x:String>
+      <x:String>Yash.Config.StudioTestProject</x:String>
+      <x:String>Yash.Config</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -81,64 +82,52 @@
       <AssemblyReference>Yash.Config.StudioTestProject.Core</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="1804,934.04" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="1804,955.6566666666666" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:String" Name="file">
-        <Variable.Default>
-          <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_26">@"C:\Users\eyash\UiPath\Wizard\Yash.Config.Wizard\Yash.Config.StudioTestProject\Data\TestConfig.xlsx"</CSharpValue>
-        </Variable.Default>
-      </Variable>
-      <Variable x:TypeArguments="ycm:Config" Name="Config" />
-      <Variable x:TypeArguments="ycm:Config" Name="Result" />
-      <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="dict" />
-      <Variable x:TypeArguments="ycsmc:TestConfig" Name="testConfig" />
+      <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="dict_Config" />
+      <Variable x:TypeArguments="ycsmc:Config" Name="testConfig" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <yca:LoadConfig DisplayName="Load Config" sap:VirtualizedContainerService.HintSize="478.6666666666667,176.66666666666666" sap2010:WorkflowViewState.IdRef="LoadConfig_8">
+    <yca:LoadConfig DisplayName="Load Config" sap:VirtualizedContainerService.HintSize="477.3333333333333,176.66666666666666" sap2010:WorkflowViewState.IdRef="LoadConfig_1" WorkbookPath="Data\\Config.xlsx">
       <yca:LoadConfig.Result>
         <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)">
-          <CSharpReference x:TypeArguments="scg:Dictionary(x:String, x:Object)" sap2010:WorkflowViewState.IdRef="CSharpReference`1_7">dict</CSharpReference>
+          <CSharpReference x:TypeArguments="scg:Dictionary(x:String, x:Object)" sap2010:WorkflowViewState.IdRef="CSharpReference`1_1">dict_Config</CSharpReference>
         </OutArgument>
       </yca:LoadConfig.Result>
-      <yca:LoadConfig.WorkbookPath>
-        <InArgument x:TypeArguments="x:String">
-          <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_21">file</CSharpValue>
-        </InArgument>
-      </yca:LoadConfig.WorkbookPath>
     </yca:LoadConfig>
-    <ui:LogMessage DisplayName="REFramework Usage" sap:VirtualizedContainerService.HintSize="478.6666666666667,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_3">
+    <ui:LogMessage DisplayName="Still Compatible With Legacy Method" sap:VirtualizedContainerService.HintSize="477.3333333333333,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_1">
       <ui:LogMessage.Message>
         <InArgument x:TypeArguments="x:Object">
-          <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_27">dict["KeyName"]</CSharpValue>
+          <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_27">dict_Config["Key"]</CSharpValue>
         </InArgument>
       </ui:LogMessage.Message>
     </ui:LogMessage>
-    <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="478.6666666666667,149.33333333333334" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
+    <ui:MultipleAssign DisplayName="New Method Requires Parsing to Custom Type" sap:VirtualizedContainerService.HintSize="477.3333333333333,149.33333333333334" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
             <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="ycsmc:TestConfig">
-                <CSharpReference x:TypeArguments="ycsmc:TestConfig" sap2010:WorkflowViewState.IdRef="CSharpReference`1_8">testConfig</CSharpReference>
+              <OutArgument x:TypeArguments="ycsmc:Config">
+                <CSharpReference x:TypeArguments="ycsmc:Config" sap2010:WorkflowViewState.IdRef="CSharpReference`1_2">testConfig</CSharpReference>
               </OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="ycsmc:TestConfig">
-                <CSharpValue x:TypeArguments="ycsmc:TestConfig" sap2010:WorkflowViewState.IdRef="CSharpValue`1_29">ConfigFactory.FromDictionary&lt;TestConfig&gt;(dict)</CSharpValue>
+              <InArgument x:TypeArguments="ycsmc:Config">
+                <CSharpValue x:TypeArguments="ycsmc:Config" sap2010:WorkflowViewState.IdRef="CSharpValue`1_28">ConfigFactory.FromDictionary&lt;Yash.Config.StudioTestProject.Models.Configs.Config&gt;(dict_Config)</CSharpValue>
               </InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-    <ui:LogMessage DisplayName="New Usage" sap:VirtualizedContainerService.HintSize="478.6666666666667,167.33333333333334" sap2010:WorkflowViewState.IdRef="LogMessage_4">
+    <ui:LogMessage DisplayName="New Method" sap:VirtualizedContainerService.HintSize="477.3333333333333,167.33333333333334" sap2010:WorkflowViewState.IdRef="LogMessage_2">
       <ui:LogMessage.Message>
         <InArgument x:TypeArguments="x:Object">
-          <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_28">testConfig.KeyName</CSharpValue>
+          <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_29">testConfig.Key</CSharpValue>
         </InArgument>
       </ui:LogMessage.Message>
     </ui:LogMessage>
