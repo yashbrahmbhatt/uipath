@@ -157,7 +157,11 @@ jobs:
         run: |
           $packagePath = "${{ matrix.path }}/bin/Release/${{ matrix.id }}.${{ steps.version.outputs.version }}.nupkg"
           Write-Host "Pushing package to nuget.org: $packagePath"
-
+          $apiKey = $env:NUGET_ORG_API_KEY
+          if (-not $apiKey) {
+            Write-Error "NUGET_ORG_API_KEY is not set. Skipping nuget.org push."
+            exit 1
+          }
           dotnet nuget push @(
             "$packagePath",
             "--api-key", "$env:NUGET_ORG_API_KEY",
