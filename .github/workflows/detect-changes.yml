@@ -82,5 +82,4 @@ jobs:
           }
 
           Write-Host "Detected matrix: $matrix"
-          "matrix=$matrix" >> $env:GITHUB_OUTPUT
-
+          "matrix=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
