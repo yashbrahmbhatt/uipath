@@ -1,6 +1,8 @@
-# UiPath Automation Framework
+[![Build Changed Projects](https://github.com/yashbrahmbhatt/uipath/actions/workflows/build-projects.yaml/badge.svg)](https://github.com/yashbrahmbhatt/uipath/actions/workflows/build-projects.yaml)
 
-A modular framework for building scalable, maintainable automations using UiPath and .NET. This structure supports reusable components, configurable processes, and custom extensions that enable robust automation delivery in enterprise environments.
+# Yash's UiPath Repo
+
+This is a single **monorepo** containing all of Yash's UiPath-related automation components. It consolidates reusable libraries, production-ready automation projects, and supporting .NET packages into a unified structure to simplify development, testing, and deployment.
 
 ---
 
