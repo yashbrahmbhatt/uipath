@@ -78,8 +78,12 @@ jobs:
           }
           else {
             $json = $matched | ConvertTo-Json -Depth 5 -Compress
-            $matrix = "{`"include`":$json}"
+            # Ensure it's wrapped as an array
+            if ($matched.Count -eq 1) {
+              $matrix = "{`"include`":[${json}]}"
+            }
+            else {
+              $matrix = "{`"include`":$json}"
+            }
           }
-
-          Write-Host "Detected matrix: $matrix"
           "matrix=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
