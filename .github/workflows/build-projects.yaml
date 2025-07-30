@@ -134,6 +134,19 @@ jobs:
           asset_content_type: application/octet-stream
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+      - name: Publish NuGet Package to GitHub Packages
+        if: matrix.type == 'vs'
+        shell: powershell
+        run: |
+          $packagePath = Join-Path ${{ matrix.path }} "bin/Release/${{ matrix.id }}.${{ steps.version.outputs.version }}.nupkg"
+          dotnet nuget push $packagePath `
+            --api-key $env.GITHUB_TOKEN `
+            --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
+            --skip-duplicate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
 
 
