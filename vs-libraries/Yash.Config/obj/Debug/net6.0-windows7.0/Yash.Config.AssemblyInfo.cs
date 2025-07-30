@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Yash Brahmbhatt")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.211-dev.45087+a6901b3a9bb3626f471b08e0099a1cd6774693d4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.211-dev.47198+1e06824c3afd481f70a9bf53ca6920afe885f0f0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Yash.Config")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Yash.Config")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

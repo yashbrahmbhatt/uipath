@@ -34,6 +34,25 @@ jobs:
       matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Needed to fetch all tags for versioning
+
+      - name: Generate Semantic Version (YY.MM.X)
+        if: matrix.type == 'vs'
+        id: version
+        shell: bash
+        run: |
+          YY=$(date +'%y')
+          MM=$(date +'%m')
+          BASE="$YY.$MM"
+
+          # Count existing tags matching YY.MM.*
+          COUNT=$(git tag --list "$BASE.*" | wc -l)
+          VERSION="$BASE.$COUNT"
+
+          echo "Computed version: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Build Visual Studio Project ${{ matrix.id }}
         if: matrix.type == 'vs'
@@ -41,12 +60,28 @@ jobs:
           echo "Building VS project ${{ matrix.id }} at path ${{ matrix.path }}"
           cd ${{ matrix.path }}
 
-          # Prefer dotnet if you're using SDK-style projects
-          if (Test-Path *.csproj) {
-            dotnet restore
-            dotnet build --configuration Release
+          $csproj = Get-ChildItem *.csproj -Recurse | Select-Object -First 1
+          if ($csproj -ne $null) {
+            dotnet restore $csproj.FullName
+            dotnet pack $csproj.FullName --configuration Release -p:PackageVersion=$env:VERSION --output ./bin/Release
           } else {
-            echo "No .csproj found. Skipping build."
+            echo "No .csproj found. Skipping."
             exit 1
           }
+        shell: powershell
+
+      - name: Upload NuGet Package ${{ matrix.id }}
+        if: matrix.type == 'vs'
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-${{ matrix.id }}-${{ steps.version.outputs.version }}
+          path: ${{ matrix.path }}/bin/Release/*.nupkg
+
+      - name: Create Git Tag for Version
+        if: matrix.type == 'vs'
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag $env:VERSION
+          git push origin $env:VERSION
         shell: powershell

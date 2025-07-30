@@ -2636,7 +2636,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "1.0.211-dev.45087",
+    "version": "1.0.211-dev.47198",
     "restore": {
       "projectUniqueName": "C:\\Users\\eyash\\UiPath\\vs-libraries\\Yash.Config\\Yash.Config.csproj",
       "projectName": "Yash.Config",
@@ -2648,6 +2648,7 @@
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
+        "C:\\Users\\eyash\\UiPath\\NuGet.Config",
         "C:\\Users\\eyash\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -2656,11 +2657,8 @@
         "net6.0-windows7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Users\\eyash\\UiPath\\vs-libraries\\Yash.Config\\Output": {},
-        "C:\\Users\\eyash\\source\\repos\\Company.Product1\\Company.Product1.Activities.Design\\bin\\Debug": {},
-        "C:\\Users\\eyash\\source\\repos\\LazyFramework.DX\\src\\bin\\Debug": {},
         "https://api.nuget.org/v3/index.json": {},
+        "https://gallery.uipath.com/api/v3/index.json": {},
         "https://pkgs.dev.azure.com/uipath/Public.Feeds/_packaging/UiPath-Official/nuget/v3/index.json": {}
       },
       "frameworks": {
