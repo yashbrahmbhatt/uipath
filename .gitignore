@@ -2,3 +2,7 @@
 .vs
 bin
 obj
+**/Output/**/*.dll
+**/Output/**/*.nupkg
+**/Output/*.dll
+**/Output/*.nupkg
