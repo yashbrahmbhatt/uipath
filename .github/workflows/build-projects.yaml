@@ -65,6 +65,7 @@ jobs:
           $csproj = Get-ChildItem *.csproj -Recurse | Select-Object -First 1
           if ($csproj -ne $null) {
             dotnet restore $csproj.FullName
+            dotnet build $csproj.FullName --configuration Release
             dotnet pack $csproj.FullName --configuration Release -p:PackageVersion=$env:VERSION --output ./bin/Release
           } else {
             echo "No .csproj found. Skipping."
