@@ -10,7 +10,6 @@
         <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
   </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <VersionPrefix>25.7.0</VersionPrefix>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
         <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
