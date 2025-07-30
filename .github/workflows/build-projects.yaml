@@ -49,4 +49,4 @@ jobs:
             echo "No .csproj found. Skipping build."
             exit 1
           }
-        shell: pwsh
+        shell: powershell
