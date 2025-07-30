@@ -2636,7 +2636,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "1.0.211-dev.48220",
+    "version": "1.0.211-dev.48366",
     "restore": {
       "projectUniqueName": "C:\\Users\\eyash\\UiPath\\vs-libraries\\Yash.Config\\Yash.Config.csproj",
       "projectName": "Yash.Config",
