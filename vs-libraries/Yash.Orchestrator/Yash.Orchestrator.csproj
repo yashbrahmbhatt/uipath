@@ -2,8 +2,17 @@
    <PropertyGroup>
         <VersionBuild>$([System.DateTime]::UtcNow.DayOfYear.ToString("F0"))</VersionBuild>
         <VersionRevision>$([System.DateTime]::UtcNow.TimeOfDay.TotalSeconds.ToString("F0"))</VersionRevision>
-    <Authors>Yash Brahmbhatt</Authors>
-    <PackageTags>Yash;Orchestrator</PackageTags>
+     <PackageId>Yash.Orchestrator</PackageId>
+     <PackageDescription>Reusable service for interacting with UiPath Orchestrator APIs (folders, assets, buckets, and more).</PackageDescription>
+     <PackageTags>Yash;Orchestrator;UiPath;Buckets;Assets</PackageTags>
+     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+     <PackageProjectUrl>https://github.com/yashbrahmbhatt/uipath/tree/main/vs-libraries/Yash.Orchestrator</PackageProjectUrl>
+     <RepositoryUrl>https://github.com/yashbrahmbhatt/uipath</RepositoryUrl>
+     <RepositoryType>git</RepositoryType>
+     <Authors>Yash Brahmbhatt</Authors>
+     <PackageReleaseNotes>Initial release with support for folders, assets, buckets, and file download.</PackageReleaseNotes>
+     <PackageIcon>icon.png</PackageIcon>
+     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
    <PropertyGroup>
         <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
@@ -59,7 +68,10 @@
   </ItemGroup>
 
 
-
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="\" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
 
 

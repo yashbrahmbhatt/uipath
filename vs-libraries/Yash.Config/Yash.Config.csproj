@@ -6,7 +6,7 @@
     <PackageDescription>Configuration management and wizard utilities for UiPath.</PackageDescription>
     <PackageTags>Yash;Config;Wizard</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/yashbrahmbhatt/Yash.Config</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/yashbrahmbhatt/uipath/tree/main/vs-libraries/Yash.Config</PackageProjectUrl>
     <RepositoryUrl>https://github.com/yashbrahmbhatt/Yash.Config</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Authors>Yash Brahmbhatt</Authors>
@@ -85,8 +85,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Activities\ActivitiesMetadata.json" />
     <EmbeddedResource Include="ConfigTemplate.xlsx" />
-    <None Include="icon.png" Pack="true" PackagePath="" />
-    <None Include="README.md" Pack="true" PackagePath="" />
+    <None Include="icon.png" Pack="true" PackagePath="\" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
