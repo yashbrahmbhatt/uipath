@@ -1,3 +1,5 @@
+name: Build VS Project
+
 on:
   workflow_call:
     inputs:
@@ -20,7 +22,7 @@ jobs:
       - uses: actions/checkout@v3
         with: { fetch-depth: 0 }
 
-      - name: Build
+      - name: Build Project
         run: |
           cd ${{ inputs.path }}
           dotnet build -c Release
@@ -38,25 +40,28 @@ jobs:
       id: ${{ inputs.id }}
       version: ${{ needs.compute-version.outputs.version }}
       full_version: ${{ needs.compute-version.outputs.full_version }}
+
   release:
-    runs-on: [self-hosted, windows]
     needs: tag
+    runs-on: [self-hosted, windows]
     steps:
       - name: Create GitHub Release
         uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
         with:
           tag_name: ${{ needs.compute-version.outputs.full_version }}
           release_name: Release ${{ needs.compute-version.outputs.full_version }}
-      secrets:
-        GITHUB_TOKEN: ${{ secrets.github_token }}
+          draft: false
+          prerelease: false
+
   publish-github:
     needs: release
     uses: ./.github/workflows/publish-to-GitHub.yml
     with:
       package_path: ${{ inputs.path }}/bin/Release/${{ needs.compute-version.outputs.full_version }}.nupkg
       repository_owner: ${{ github.repository_owner }}
-    secrets:
-        GITHUB_TOKEN: ${{ secrets.github_token }}
+
   publish-nuget:
     needs: publish-github
     uses: ./.github/workflows/publish-to-NuGet.yml

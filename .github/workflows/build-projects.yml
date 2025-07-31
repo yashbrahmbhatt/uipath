@@ -17,7 +17,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-  
+
   detect:
     uses: ./.github/workflows/detect-changes.yml
 
@@ -39,14 +39,14 @@ jobs:
           uipcli pack --project-path .
 
   build-vs:
-    uses: ./.github/workflows/build-vs-project.yml
     needs: detect
     if: needs.detect.outputs.matrix != '{"include":[]}'
     strategy:
       matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
+    uses: ./.github/workflows/build-vs-project.yml
     with:
       id: ${{ matrix.id }}
       path: ${{ matrix.path }}
-    secrets: 
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      NUGET_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}
+    secrets:
+      github_token: ${{ secrets.GITHUB_TOKEN }}
+      nuget_api_key: ${{ secrets.NUGET_ORG_API_KEY }}
