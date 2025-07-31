@@ -49,4 +49,4 @@ This approach ensures minimal build time, consistent release management, and ful
 ## 📄 License
 
 
-This project is licensed under the MIT License. a
+This project is licensed under the MIT License.
