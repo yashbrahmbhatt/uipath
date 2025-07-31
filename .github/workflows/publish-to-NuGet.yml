@@ -6,9 +6,9 @@ on:
       nupkg_path:
         required: true
         type: string
+    secrets:
       nuget_api_key:
         required: true
-        type: string  # Note: no 'secret' input type
 
 jobs:
   publish:
@@ -19,16 +19,14 @@ jobs:
         run: |
           $packagePath = "${{ inputs.nupkg_path }}"
           Write-Host "Pushing package to nuget.org: $packagePath"
-          $apiKey = $env:NUGET_ORG_API_KEY
+          $apiKey = "${{ secrets.nuget_api_key }}"
           if (-not $apiKey) {
             Write-Error "NUGET_ORG_API_KEY is not set. Skipping nuget.org push."
             exit 1
           }
           dotnet nuget push @(
             "$packagePath",
-            "--api-key", "$env:NUGET_ORG_API_KEY",
+            "--api-key", "${{ secrets.nuget_api_key }}",
             "--source", "https://api.nuget.org/v3/index.json",
             "--skip-duplicate"
           )
-        env:
-          NUGET_ORG_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}

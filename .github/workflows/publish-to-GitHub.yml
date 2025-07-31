@@ -6,12 +6,12 @@ on:
       package_path:
         required: true
         type: string
-      github_token:
-        required: true
-        type: string
       repository_owner:
         required: true
         type: string
+    secrets:
+      GITHUB_TOKEN:
+        required: true
 
 jobs:
   publish:
@@ -25,9 +25,7 @@ jobs:
 
           dotnet nuget push @(
               "$packagePath",
-              "--api-key", "$env:GITHUB_TOKEN",
+              "--api-key", "${{ secrets.GITHUB_TOKEN }}",
               "--source", "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json",
               "--skip-duplicate"
           )
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
