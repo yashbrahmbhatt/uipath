@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using Yash.Config.Services.Orchestrator.GetAssets;
-using Yash.Config.Services.Orchestrator.GetFolders;
 
 namespace Yash.Config.Models
 {

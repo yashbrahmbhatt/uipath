@@ -15,8 +15,8 @@ using UiPath.Activities.Api.Base;
 using UiPath.Studio.Activities.Api;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
-using Yash.Config.Services.Orchestrator;
 using System.ComponentModel;
+using Yash.Orchestrator;
 
 namespace Yash.Config.Activities
 {
