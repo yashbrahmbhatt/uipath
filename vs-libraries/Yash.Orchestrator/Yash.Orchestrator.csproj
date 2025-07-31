@@ -97,4 +97,10 @@
     </PackageReference>
     <PackageReference Include="UiPath.Workflow" Version="6.0.0-20240401-07" PrivateAssets="All" />
   </ItemGroup>
+
+
+
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
 </Project>
