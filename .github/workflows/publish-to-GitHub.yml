@@ -1,0 +1,33 @@
+name: Publish to GitHub Packages
+
+on:
+  workflow_call:
+    inputs:
+      package_path:
+        required: true
+        type: string
+      github_token:
+        required: true
+        type: string
+      repository_owner:
+        required: true
+        type: string
+
+jobs:
+  publish:
+    runs-on: [self-hosted, windows]
+    steps:
+      - name: Publish NuGet Package to GitHub Packages
+        shell: powershell
+        run: |
+          $packagePath = "${{ inputs.package_path }}"
+          Write-Host "Pushing package to GitHub Packages: $packagePath"
+
+          dotnet nuget push @(
+              "$packagePath",
+              "--api-key", "$env:GITHUB_TOKEN",
+              "--source", "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json",
+              "--skip-duplicate"
+          )
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

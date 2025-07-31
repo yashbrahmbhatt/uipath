@@ -1,0 +1,54 @@
+name: Compute Version
+
+on:
+  workflow_call:
+    inputs:
+      id:
+        required: true
+        type: string
+    outputs:
+      version:
+        value: ${{ jobs.version.outputs.version }}
+      full_version:
+        value: ${{ jobs.version.outputs.full_version }}
+
+jobs:
+  version:
+    runs-on: [self-hosted, windows]
+    outputs:
+      version: ${{ steps.set.outputs.version }}
+      full_version: ${{ steps.set.outputs.full_version }}
+    steps:
+      - uses: actions/checkout@v3
+        with: { fetch-depth: 0 }
+
+      - id: set
+        shell: powershell
+        run: |
+          $projectId = "${{ inputs.id }}"
+          $yy = [int](Get-Date -Format "yy")
+          $mm = [int](Get-Date -Format "MM")
+          $base = "$yy.$mm"
+
+          git fetch --tags
+
+          $pattern = "$projectId@$base.*"
+          $tags = git tag --list $pattern
+
+          if (-not $tags) {
+            $patch = 0
+          } else {
+            $patches = $tags | ForEach-Object {
+              if ($_ -match "@$base\.(\d+)$") { [int]$matches[1] } else { 0 }
+            }
+            $patch = ($patches | Measure-Object -Maximum).Maximum + 1
+          }
+
+          $version = "$base.$patch"
+          $fullVersion = "$projectId@$version"
+
+          Write-Host "Computed version: $fullVersion"
+          "VERSION=$version" >> $env:GITHUB_ENV
+          "FULL_VERSION=$fullVersion" >> $env:GITHUB_ENV
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "full_version=$fullVersion" >> $env:GITHUB_OUTPUT

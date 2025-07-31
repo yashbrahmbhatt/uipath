@@ -1,0 +1,34 @@
+name: Publish to NuGet
+
+on:
+  workflow_call:
+    inputs:
+      nupkg_path:
+        required: true
+        type: string
+      nuget_api_key:
+        required: true
+        type: string  # Note: no 'secret' input type
+
+jobs:
+  publish:
+    runs-on: [self-hosted, windows]
+    steps:
+      - name: Publish NuGet Package to nuget.org
+        shell: powershell
+        run: |
+          $packagePath = "${{ inputs.nupkg_path }}"
+          Write-Host "Pushing package to nuget.org: $packagePath"
+          $apiKey = $env:NUGET_ORG_API_KEY
+          if (-not $apiKey) {
+            Write-Error "NUGET_ORG_API_KEY is not set. Skipping nuget.org push."
+            exit 1
+          }
+          dotnet nuget push @(
+            "$packagePath",
+            "--api-key", "$env:NUGET_ORG_API_KEY",
+            "--source", "https://api.nuget.org/v3/index.json",
+            "--skip-duplicate"
+          )
+        env:
+          NUGET_ORG_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}

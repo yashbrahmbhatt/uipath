@@ -1,0 +1,44 @@
+name: Build VS Project
+
+on:
+  workflow_call:
+    inputs:
+      id:
+        required: true
+        type: string
+      path:
+        required: true
+        type: string
+      version:
+        required: true
+        type: string
+    outputs:
+      nupkg_path:
+        value: ${{ jobs.build.outputs.nupkg_path }}
+
+jobs:
+  build:
+    runs-on: [self-hosted, windows]
+    outputs:
+      nupkg_path: ${{ steps.set-output.outputs.nupkg_path }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Build and Pack
+        shell: powershell
+        run: |
+          cd "${{ inputs.path }}"
+          $csproj = Get-ChildItem *.csproj -Recurse | Select -First 1
+          dotnet restore $csproj.FullName --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+          dotnet build $csproj.FullName --configuration Release
+          dotnet pack $csproj.FullName --configuration Release -p:PackageVersion=${{ inputs.version }} --output ./bin/Release
+
+      - name: Set Output Path
+        id: set-output
+        shell: powershell
+        run: |
+          $path = "${{ inputs.path }}\bin\Release\${{ inputs.id }}.${{ inputs.version }}.nupkg"
+          "nupkg_path=$path" >> $env:GITHUB_OUTPUT

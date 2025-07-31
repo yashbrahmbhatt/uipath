@@ -1,0 +1,29 @@
+name: Create GitHub Tag
+
+on:
+  workflow_call:
+    inputs:
+      id:
+        required: true
+        type: string
+      version:
+        required: true
+        type: string
+      full_version:
+        required: true
+        type: string
+
+jobs:
+  create-tag:
+    runs-on: [self-hosted, windows]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Create Git Tag
+        shell: powershell
+        run: |
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git tag $env:FULL_VERSION
+            git push origin $env:FULL_VERSION
