@@ -8,7 +8,7 @@ on:
 
 jobs:
   detect:
-    uses: ./.github/workflows/detect-changes.yml
+    uses: ./.github/workflows/pipeline/detect-changes.yml
 
   build-uipath:
     environment: dev
@@ -43,13 +43,13 @@ jobs:
 
       - name: Compute Version
         id: version
-        uses: ./.github/workflows/compute-version.yml
+        uses: ./.github/workflows/pipeline/compute-version.yml
         with:
           id: ${{ matrix.id }}
 
       - name: Build Visual Studio Project ${{ matrix.id }}
         if: matrix.type == 'vs'
-        uses: ./.github/workflows/build-vs-project.yml
+        uses: ./.github/workflows/pipeline/build-vs-project.yml
         with:
           id: ${{ matrix.id }}
           path: ${{ matrix.path }}
@@ -64,7 +64,7 @@ jobs:
           path: ${{ matrix.path }}/bin/Release/*.nupkg
 
       - name: Create Git Tag for Version
-        uses: ./.github/workflows/create-github-tag.yml
+        uses: ./.github/workflows/pipeline/create-github-tag.yml
         with:
           id: ${{ matrix.id }}
           version: ${{ steps.version.outputs.version }}
@@ -94,7 +94,7 @@ jobs:
     
       - name: Publish NuGet Package to GitHub Packages
         if: matrix.type == 'vs'
-        uses: ./.github/workflows/publish-to-GitHub.yml
+        uses: ./.github/workflows/pipeline/publish-to-GitHub.yml
         with:
           package_path: ${{ matrix.path }}/bin/Release/${{ steps.version.outputs.full_version }}.nupkg
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -102,7 +102,7 @@ jobs:
 
       - name: Publish NuGet Package to nuget.org
         if: matrix.type == 'vs'
-        uses: ./.github/workflows/publish-to-NuGet.yml
+        uses: ./.github/workflows/pipeline/publish-to-NuGet.yml
         with:
           nupkg_path: ${{ matrix.path }}/bin/Release/${{ steps.version.outputs.full_version }}.nupkg
           nuget_api_key: ${{ secrets.NUGET_ORG_API_KEY }}
