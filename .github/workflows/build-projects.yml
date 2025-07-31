@@ -7,6 +7,17 @@ on:
     branches: [main]
 
 jobs:
+  initialize:
+    runs-on: [self-hosted, windows]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure Git for GitHub Actions
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+  
   detect:
     uses: ./.github/workflows/detect-changes.yml
 
@@ -28,83 +39,14 @@ jobs:
           uipcli pack --project-path .
 
   build-vs:
-    environment: dev
+    uses: ./.github/workflows/build-vs-project.yml
     needs: detect
     if: needs.detect.outputs.matrix != '{"include":[]}'
-    runs-on: [self-hosted, windows]
     strategy:
       matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Configure Git for GitHub Actions
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-
-      - name: Compute Version
-        id: version
-        uses: ./.github/workflows/compute-version.yml
-        with:
-          id: ${{ matrix.id }}
-
-      - name: Build Visual Studio Project ${{ matrix.id }}
-        if: matrix.type == 'vs'
-        uses: ./.github/workflows/build-vs-project.yml
-        with:
-          id: ${{ matrix.id }}
-          path: ${{ matrix.path }}
-          version: ${{ steps.version.outputs.version }}
-
-
-      - name: Upload NuGet Package ${{ matrix.id }}
-        if: matrix.type == 'vs'
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ steps.version.outputs.full_version }}
-          path: ${{ matrix.path }}/bin/Release/*.nupkg
-
-      - name: Create Git Tag for Version
-        uses: ./.github/workflows/create-github-tag.yml
-        with:
-          id: ${{ matrix.id }}
-          version: ${{ steps.version.outputs.version }}
-          full_version: ${{ steps.version.outputs.full_version }}
-
-      - name: Create GitHub Release
-        if: matrix.type == 'vs'
-        id: create-release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.version.outputs.full_version }}
-          release_name: Release ${{ steps.version.outputs.full_version }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ${{ matrix.path }}/bin/Release/${{steps.version.outputs.full_version }}.nupkg
-          asset_name: ${{ matrix.id }}-${{ steps.version.outputs.version }}.nupkg
-          asset_content_type: application/octet-stream
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
-      - name: Publish NuGet Package to GitHub Packages
-        if: matrix.type == 'vs'
-        uses: ./.github/workflows/publish-to-GitHub.yml
-        with:
-          package_path: ${{ matrix.path }}/bin/Release/${{ steps.version.outputs.full_version }}.nupkg
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          repository_owner: ${{ github.repository_owner }}
-
-      - name: Publish NuGet Package to nuget.org
-        if: matrix.type == 'vs'
-        uses: ./.github/workflows/publish-to-NuGet.yml
-        with:
-          nupkg_path: ${{ matrix.path }}/bin/Release/${{ steps.version.outputs.full_version }}.nupkg
-          nuget_api_key: ${{ secrets.NUGET_ORG_API_KEY }}
+    with:
+      id: ${{ matrix.id }}
+      path: ${{ matrix.path }}
+    secrets: 
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      NUGET_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}
