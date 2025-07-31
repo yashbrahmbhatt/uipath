@@ -17,6 +17,7 @@ jobs:
   publish:
     runs-on: [self-hosted, windows]
     steps:
+      - uses: actions/checkout@v3
       - name: Publish NuGet Package to GitHub Packages
         shell: powershell
         run: |
