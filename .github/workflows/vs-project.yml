@@ -20,7 +20,7 @@ jobs:
     with:
       id: ${{ inputs.id }}
       folder_path: ${{ inputs.path }}
-      full_version: ${{ needs.compute-version.outputs.full_version }}
+      full_version: ${{ needs.compute-version.outputs.version }}
 
   tag:
     needs: [build-and-artifact, compute-version]
