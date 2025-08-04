@@ -43,7 +43,7 @@ jobs:
     if: needs.detect.outputs.matrix != '{"include":[]}'
     strategy:
       matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
-    uses: ./.github/workflows/build-vs-project.yml
+    uses: ./.github/workflows/vs-project.yml
     with:
       id: ${{ matrix.id }}
       path: ${{ matrix.path }}

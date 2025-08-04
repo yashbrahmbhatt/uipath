@@ -10,38 +10,28 @@ on:
       
 jobs:
   compute-version:
-    uses: ./.github/workflows/compute-version.yml
+    uses: ./.github/workflows/step-compute-version.yml
     with:
       id: ${{ inputs.id }}
 
-  build:
+  build-and-artifact:
     needs: compute-version
-    runs-on: [self-hosted, windows]
-    steps:
-      - uses: actions/checkout@v3
-        with: { fetch-depth: 0 }
-
-      - name: Build Project
-        run: |
-          cd ${{ inputs.path }}
-          dotnet build -c Release
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ needs.compute-version.outputs.full_version }}
-          path: ${{ inputs.path }}/bin/Release/*.nupkg
+    uses: ./.github/workflows/step-build-vs-project.yml
+    with:
+      id: ${{ inputs.id }}
+      folder_path: ${{ inputs.path }}
+      full_version: ${{ needs.compute-version.outputs.full_version }}
 
   tag:
-    needs: [build, compute-version]
-    uses: ./.github/workflows/create-github-tag.yml
+    needs: [build-and-artifact, compute-version]
+    uses: ./.github/workflows/step-create-github-tag.yml
     with:
       id: ${{ inputs.id }}
       version: ${{ needs.compute-version.outputs.version }}
       full_version: ${{ needs.compute-version.outputs.full_version }}
 
   release:
-    needs: [tag, build, compute-version]
+    needs: [tag, build-and-artifact, compute-version]
     runs-on: [self-hosted, windows]
     steps:
       - name: Create GitHub Release
@@ -55,15 +45,15 @@ jobs:
           prerelease: false
 
   publish-github:
-    needs: [release, tag, build, compute-version]
-    uses: ./.github/workflows/publish-to-GitHub.yml
+    needs: [release, tag, build-and-artifact, compute-version]
+    uses: ./.github/workflows/step-publish-to-GitHub.yml
     with:
       package_path: ${{ inputs.path }}/bin/Release/${{ needs.compute-version.outputs.full_version }}.nupkg
       repository_owner: ${{ github.repository_owner }}
 
   publish-nuget:
-    needs: [release, tag, build, compute-version]
-    uses: ./.github/workflows/publish-to-NuGet.yml
+    needs: [release, tag, build-and-artifact, compute-version]
+    uses: ./.github/workflows/step-publish-to-NuGet.yml
     with:
       nupkg_path: ${{ inputs.path }}/bin/Release/${{ needs.compute-version.outputs.full_version }}.nupkg
     secrets: inherit

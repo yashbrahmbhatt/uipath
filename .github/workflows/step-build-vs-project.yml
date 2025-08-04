@@ -1,0 +1,41 @@
+name: Build Visual Studio Project
+
+on:
+  workflow_call:
+    inputs:
+      id:
+        required: true
+        type: string
+      folder_path:
+        required: true
+        type: string
+      full_version:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: [self-hosted, windows]
+    steps:
+      - uses: actions/checkout@v3
+        with: { fetch-depth: 0 }
+
+      - name: Restore, Build and Package Project
+        shell: powershell
+        run: |
+          cd ${{ inputs.folder_path }}
+          $csproj = Get-ChildItem *.csproj -Recurse | Select-Object -First 1
+          if ($csproj -ne $null) {
+            dotnet restore $csproj.FullName
+            dotnet build $csproj.FullName --configuration Release
+            dotnet pack $csproj.FullName --configuration Release -p:PackageVersion=${{ inputs.full_version }} --output ./bin/Release
+          } else {
+            Write-Host "No .csproj found. Skipping."
+            exit 1
+          }
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.full_version }}
+          path: ${{ inputs.folder_path }}/bin/Release/*.nupkg
