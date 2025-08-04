@@ -33,7 +33,7 @@ jobs:
           path: ${{ inputs.path }}/bin/Release/*.nupkg
 
   tag:
-    needs: build
+    needs: [build, compute-version]
     uses: ./.github/workflows/create-github-tag.yml
     with:
       id: ${{ inputs.id }}
@@ -41,7 +41,7 @@ jobs:
       full_version: ${{ needs.compute-version.outputs.full_version }}
 
   release:
-    needs: tag
+    needs: [tag, build, compute-version]
     runs-on: [self-hosted, windows]
     steps:
       - name: Create GitHub Release
@@ -55,14 +55,14 @@ jobs:
           prerelease: false
 
   publish-github:
-    needs: release
+    needs: [release, tag, build, compute-version]
     uses: ./.github/workflows/publish-to-GitHub.yml
     with:
       package_path: ${{ inputs.path }}/bin/Release/${{ needs.compute-version.outputs.full_version }}.nupkg
       repository_owner: ${{ github.repository_owner }}
 
   publish-nuget:
-    needs: publish-github
+    needs: [release, tag, build, compute-version]
     uses: ./.github/workflows/publish-to-NuGet.yml
     with:
       nupkg_path: ${{ inputs.path }}/bin/Release/${{ needs.compute-version.outputs.full_version }}.nupkg
