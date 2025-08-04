@@ -20,7 +20,7 @@ jobs:
 
   detect:
     needs: initialize
-    uses: ./.github/workflows/detect-changes.yml
+    uses: ./.github/workflows/step-detect-changes.yml
 
   build-uipath:
     needs: detect
