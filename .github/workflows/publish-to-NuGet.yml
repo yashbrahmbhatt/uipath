@@ -6,9 +6,6 @@ on:
       nupkg_path:
         required: true
         type: string
-    secrets:
-      nuget_api_key:
-        required: true
 
 jobs:
   publish:
@@ -26,7 +23,7 @@ jobs:
           }
           dotnet nuget push @(
             "$packagePath",
-            "--api-key", "${{ secrets.nuget_api_key }}",
+            "--api-key", "${{ secrets.NUGET_ORG_API_KEY }}",
             "--source", "https://api.nuget.org/v3/index.json",
             "--skip-duplicate"
           )

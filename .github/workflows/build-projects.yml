@@ -47,5 +47,4 @@ jobs:
     with:
       id: ${{ matrix.id }}
       path: ${{ matrix.path }}
-    secrets:
-      nuget_api_key: ${{ secrets.NUGET_ORG_API_KEY }}
+    secrets: inherit

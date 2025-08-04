@@ -5,9 +5,9 @@ on:
     inputs:
       id: { required: true, type: string }
       path: { required: true, type: string }
-    secrets:
-      nuget_api_key: { required: true }
 
+
+      
 jobs:
   compute-version:
     uses: ./.github/workflows/compute-version.yml
@@ -66,5 +66,4 @@ jobs:
     uses: ./.github/workflows/publish-to-NuGet.yml
     with:
       nupkg_path: ${{ inputs.path }}/bin/Release/${{ needs.compute-version.outputs.full_version }}.nupkg
-    secrets:
-      nuget_api_key: ${{ secrets.nuget_api_key }}
+    secrets: inherit
