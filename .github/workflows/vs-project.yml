@@ -49,7 +49,8 @@ jobs:
     needs: [release, tag, build-and-artifact, compute-version]
     uses: ./.github/workflows/step-publish-to-GitHub.yml
     with:
-      package_path: ${{ inputs.path }}/bin/Release/${{ needs.compute-version.outputs.full_version }}.nupkg
+      artifact-id: ${{ needs.build-and-artifact.outputs.artifact_id }}
+      full_name: ${{ needs.compute-version.outputs.full_version }}.nupkg
       repository_owner: ${{ github.repository_owner }}
 
   publish-nuget:

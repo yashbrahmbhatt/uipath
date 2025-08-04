@@ -3,10 +3,13 @@ name: Publish to GitHub Packages
 on:
   workflow_call:
     inputs:
-      package_path:
+      repository_owner:
         required: true
         type: string
-      repository_owner:
+      artifact-id:
+        required: true
+        type: string
+      full_name:
         required: true
         type: string
 
@@ -15,10 +18,20 @@ jobs:
     runs-on: [self-hosted, windows]
     steps:
       - uses: actions/checkout@v3
+      
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v4.3.0
+        with:
+          # IDs of the artifacts to download, comma-separated. Either inputs `artifact-ids` or `name` can be used, but not both.
+          artifact-ids: ${{inputs.artifact-id}}
+          path: ${{ github.workspace }}/artifacts
+          merge-multiple: true
+          
+
       - name: Publish NuGet Package to GitHub Packages
         shell: powershell
         run: |
-          $packagePath = "${{ inputs.package_path }}"
+          $packagePath = "${{ github.workspace }}/artifacts/${{ inputs.full_name }}"
           Write-Host "Pushing package to GitHub Packages: $packagePath"
 
           dotnet nuget push @(
