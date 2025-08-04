@@ -48,5 +48,4 @@ jobs:
       id: ${{ matrix.id }}
       path: ${{ matrix.path }}
     secrets:
-      github_token: ${{ secrets.GITHUB_TOKEN }}
       nuget_api_key: ${{ secrets.NUGET_ORG_API_KEY }}
