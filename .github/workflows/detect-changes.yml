@@ -124,5 +124,5 @@ jobs:
               $matrix = "{`"include`":$json}"
             }
           }
-
+          Write-Host "Detected matrix: $matrix"
           "matrix=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
