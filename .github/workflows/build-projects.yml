@@ -39,15 +39,13 @@ jobs:
           uipcli pack --project-path .
 
   build-vs:
-    runs-on: [self-hosted, windows]
-    environment: dev
     needs: detect
     if: needs.detect.outputs.matrix != '{"include":[]}'
     strategy:
       matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
-    steps:
-      - uses: ./.github/workflows/build-vs-project.yml
-        with:
-          id: ${{ matrix.id }}
-          path: ${{ matrix.path }}
-          nuget_api_key: ${{ secrets.NUGET_ORG_API_KEY }}
+    uses: ./.github/workflows/build-vs-project.yml
+    with:
+      id: ${{ matrix.id }}
+      path: ${{ matrix.path }}
+    secrets:
+      nuget_api_key: ${{ secrets.NUGET_ORG_API_KEY }}
