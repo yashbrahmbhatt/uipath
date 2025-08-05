@@ -99,7 +99,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.compute-version.outputs.version.full_version }}
+          name: ${{ steps.compute-version.outputs.full_version }}
           path: ${{ matrix.path }}/*.nupkg
         id: upload-artifact
       
