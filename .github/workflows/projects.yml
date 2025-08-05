@@ -17,18 +17,161 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          
+  detect-changes:
+    runs-on: [windows, self-hosted]
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
 
-  detect:
-    needs: initialize
-    uses: ./.github/workflows/step-detect-changes.yml
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2  # Required for HEAD~1 to work
+
+      - name: Download jq
+        run: |
+          Invoke-WebRequest -Uri https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe -OutFile jq.exe
+        shell: powershell
+
+      - name: Add jq to PATH
+        run: |
+          $env:PATH = "$PWD;$env:PATH"
+          jq.exe --version
+        shell: powershell
+
+      - name: Detect Changed Projects
+        id: set-matrix
+        shell: powershell
+        run: |
+          Write-Host "Detecting changes..."
+          try {
+            $changedFiles = git diff --name-only $env:GITHUB_EVENT_BEFORE $env:GITHUB_SHA
+            if (-not $changedFiles) {
+              $changedFiles = git diff --name-only HEAD~1 HEAD
+            }
+          } catch {
+            $changedFiles = git diff --name-only HEAD~1 HEAD
+          }
+
+          Write-Host "Changed files:"
+          $changedFiles
+
+          $monoJson = Get-Content "mono.json" | ConvertFrom-Json
+          $projectMap = @{}
+          $matchedIds = @{}
+
+          # Map all projects by ID
+          foreach ($project in $monoJson.projects) {
+            $projectMap[$project.id] = $project
+          }
+
+          # First pass: mark directly changed projects
+          foreach ($project in $monoJson.projects) {
+            if (-not $project.build) { continue }
+
+            $projectPath = $project.path.Replace('/', '\')
+            foreach ($file in $changedFiles) {
+              $filePath = $file.Replace('/', '\')
+              if ($filePath -like "$projectPath*") {
+                $matchedIds[$project.id] = $true
+                break
+              }
+            }
+          }
+
+          # Recursive dependency expander
+          function Add-DependentProjectsRecursively {
+            param (
+              [hashtable]$projectMap,
+              [hashtable]$matchedIds
+            )
+
+            $dependentsAdded = $false
+
+            foreach ($project in $projectMap.Values) {
+              if ($matchedIds.ContainsKey($project.id)) { continue }
+
+              if ($project.PSObject.Properties['dependsOn']) {
+                foreach ($depId in $project.dependsOn) {
+                  if ($matchedIds.ContainsKey($depId)) {
+                    $matchedIds[$project.id] = $true
+                    $dependentsAdded = $true
+                    break
+                  }
+                }
+              }
+            }
+
+            if ($dependentsAdded) {
+              Add-DependentProjectsRecursively -projectMap $projectMap -matchedIds $matchedIds
+            }
+          }
+
+          # Expand all transitive dependents
+          Add-DependentProjectsRecursively -projectMap $projectMap -matchedIds $matchedIds
+          
+          # Topological sort helper
+          function TopoSort {
+            param (
+              [hashtable]$projectMap,
+              [hashtable]$matchedIds
+            )
+
+            $visited = @{}
+            $result = New-Object System.Collections.Generic.List[object]
+
+            function Visit {
+              param ($id)
+              if ($visited[$id] -eq 'temp') {
+                throw "Cyclic dependency detected at $id"
+              }
+              if ($visited[$id]) { return }
+            
+              $visited[$id] = 'temp'
+              $proj = $projectMap[$id]
+              if ($proj.PSObject.Properties['dependsOn']) {
+                foreach ($depId in $proj.dependsOn) {
+                  if ($matchedIds.ContainsKey($depId)) {
+                    Visit $depId
+                  }
+                }
+              }
+              $visited[$id] = 'perm'
+              $result.Add($proj)
+            }
+          
+            foreach ($id in $matchedIds.Keys) {
+              Visit $id
+            }
+          
+            return $result
+          }
+
+          # Run topological sort
+          $sortedProjects = TopoSort -projectMap $projectMap -matchedIds $matchedIds
+
+          # Prepare matrix
+          $matched = @()
+          foreach ($project in $sortedProjects) {
+            $matched += [PSCustomObject]@{
+              id          = $project.id
+              path        = $project.path
+              type        = $project.type
+              deploySteps = $project.deploySteps
+            }
+          }
+
+          
+          Write-Host "Detected matrix: $matrix"
+          "matrix=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
     
   project:
     environment: Dev
     name: Build Changed Projects
-    if: ${{ needs.detect.outputs.matrix != '{"include":[]}' }}
-    needs: detect
+    if: ${{ needs.detect-changes.outputs.matrix != '{"include":[]}' }}
+    needs: detect-changes
     strategy:
-      matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.detect-changes.outputs.matrix) }}
     runs-on: [self-hosted, windows]
     steps:
       - uses: actions/checkout@v3
@@ -142,31 +285,3 @@ jobs:
             "--source", "https://api.nuget.org/v3/index.json",
             "--skip-duplicate"
           )
-        
-
-  # build-uipath:
-  #   needs: detect
-  #   if: needs.detect.outputs.matrix != '{"include":[]}'
-  #   runs-on: [self-hosted, windows]
-  #   strategy:
-  #     matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
-  #   steps:
-  #     - uses: actions/checkout@v3
-
-  #     - name: Build UiPath Project ${{ matrix.id }}
-  #       if: startsWith(matrix.type, 'uipath-')
-  #       run: |
-  #         echo "Packing UiPath project ${{ matrix.id }}"
-  #         cd ${{ matrix.path }}
-  #         uipcli pack --project-path .
-
-  # build-vs:
-  #   needs: detect
-  #   if: needs.detect.outputs.matrix != '{"include":[]}'
-  #   strategy:
-  #     matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
-  #   uses: ./.github/workflows/vs-project.yml
-  #   with:
-  #     id: ${{ matrix.id }}
-  #     path: ${{ matrix.path }}
-  #   secrets: inherit
