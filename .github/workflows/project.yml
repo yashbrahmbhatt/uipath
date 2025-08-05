@@ -16,7 +16,7 @@ jobs:
       id: ${{ inputs.id }}
 
   build-uipath:
-    if: ${{ startsWith(inputs.type, 'uipath-') }}
+    if: ${{ startsWith(inputs.type, 'uipath') }}
     needs: compute-version
     uses: ./.github/workflows/step-build-uipath-project.yml
     with:
@@ -26,7 +26,7 @@ jobs:
         full_version: ${{ needs.compute-version.outputs.full_version }}
 
   build-vs:
-    if: ${{ startsWith(inputs.type, 'vs-') }}
+    if: ${{ startsWith(inputs.type, 'vs') }}
     needs: compute-version
     uses: ./.github/workflows/step-build-vs-project.yml
     with:
