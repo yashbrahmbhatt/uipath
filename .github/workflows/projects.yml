@@ -158,7 +158,7 @@ jobs:
               id          = $project.id
               path        = $project.path
               type        = $project.type
-              deploySteps = $project.deploySteps,
+              deploySteps = $project.deploySteps
               dependsOn   = $project.dependsOn
             }
           }

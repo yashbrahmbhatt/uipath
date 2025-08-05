@@ -118,4 +118,4 @@ This project is licensed under the MIT License.
 
 ---
 
-*Built and maintained by Yash Brahmbhatt*
+*Built and maintained by Yash Brahmbhatt.*
