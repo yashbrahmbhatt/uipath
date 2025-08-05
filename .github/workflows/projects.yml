@@ -40,8 +40,8 @@ jobs:
           jq.exe --version
         shell: powershell
 
-      - name: Detect Changed Projects
-        id: set-matrix
+      - name: Get Changed Files
+        id: get-changed-files
         shell: powershell
         run: |
           Write-Host "Detecting changes..."
@@ -54,19 +54,23 @@ jobs:
             $changedFiles = git diff --name-only HEAD~1 HEAD
           }
 
+          $changedFiles | Set-Content changed-files.txt
           Write-Host "Changed files:"
-          $changedFiles
+          Get-Content changed-files.txt
 
+      - name: Map Changed Projects
+        id: map-changes
+        shell: powershell
+        run: |
+          $changedFiles = Get-Content changed-files.txt
           $monoJson = Get-Content "mono.json" | ConvertFrom-Json
           $projectMap = @{}
           $matchedIds = @{}
 
-          # Map all projects by ID
           foreach ($project in $monoJson.projects) {
             $projectMap[$project.id] = $project
           }
 
-          # First pass: mark directly changed projects
           foreach ($project in $monoJson.projects) {
             if (-not $project.build) { continue }
 
@@ -80,38 +84,61 @@ jobs:
             }
           }
 
-          # Recursive dependency expander
+          $matchedIds.Keys | Set-Content matched-ids.txt
+          $monoJson | ConvertTo-Json -Depth 10 | Set-Content mono-full.json
+
+          Write-Host "Directly matched project IDs:"
+          Get-Content matched-ids.txt
+
+      - name: Expand Transitive Dependencies
+        id: expand-dependencies
+        shell: powershell
+        run: |
+          $matchedIds = @{}
+          Get-Content matched-ids.txt | ForEach-Object { $matchedIds[$_] = $true }
+          $projectMap = (Get-Content mono-full.json | ConvertFrom-Json).projects | ForEach-Object {
+            @{ id = $_.id; data = $_ }
+          } | Group-Object -AsHashTable -Property id
+
           function Add-DependentProjectsRecursively {
             param (
               [hashtable]$projectMap,
               [hashtable]$matchedIds
             )
-
-            $dependentsAdded = $false
-
+            $added = $false
             foreach ($project in $projectMap.Values) {
-              if ($matchedIds.ContainsKey($project.id)) { continue }
-
-              if ($project.PSObject.Properties['dependsOn']) {
-                foreach ($depId in $project.dependsOn) {
+              $proj = $project.data
+              if ($matchedIds.ContainsKey($proj.id)) { continue }
+              if ($proj.PSObject.Properties['dependsOn']) {
+                foreach ($depId in $proj.dependsOn) {
                   if ($matchedIds.ContainsKey($depId)) {
-                    $matchedIds[$project.id] = $true
-                    $dependentsAdded = $true
+                    $matchedIds[$proj.id] = $true
+                    $added = $true
                     break
                   }
                 }
               }
             }
-
-            if ($dependentsAdded) {
+            if ($added) {
               Add-DependentProjectsRecursively -projectMap $projectMap -matchedIds $matchedIds
             }
           }
 
-          # Expand all transitive dependents
           Add-DependentProjectsRecursively -projectMap $projectMap -matchedIds $matchedIds
+          $matchedIds.Keys | Set-Content matched-expanded-ids.txt
+          Write-Host "Expanded matched project IDs:"
+          Get-Content matched-expanded-ids.txt
 
-          # Topological sort helper
+      - name: Topologically Sort Projects and Emit Matrix
+        id: set-matrix
+        shell: powershell
+        run: |
+          $matchedIds = @{}
+          Get-Content matched-expanded-ids.txt | ForEach-Object { $matchedIds[$_] = $true }
+          $projectMap = (Get-Content mono-full.json | ConvertFrom-Json).projects | ForEach-Object {
+            @{ id = $_.id; data = $_ }
+          } | Group-Object -AsHashTable -Property id
+
           function TopoSort {
             param (
               [hashtable]$projectMap,
@@ -127,9 +154,9 @@ jobs:
                 throw "Cyclic dependency detected at $id"
               }
               if ($visited[$id]) { return }
-            
+
               $visited[$id] = 'temp'
-              $proj = $projectMap[$id]
+              $proj = $projectMap[$id].data
               if ($proj.PSObject.Properties['dependsOn']) {
                 foreach ($depId in $proj.dependsOn) {
                   if ($matchedIds.ContainsKey($depId)) {
@@ -140,18 +167,19 @@ jobs:
               $visited[$id] = 'perm'
               $result.Add($proj)
             }
-          
+
             foreach ($id in $matchedIds.Keys) {
               Visit $id
             }
-          
+
             return $result
           }
 
-          # Run topological sort
           $sortedProjects = TopoSort -projectMap $projectMap -matchedIds $matchedIds
-          Write-Host "Sorted projects: $($sortedProjects | ForEach-Object { $_ } | Out-String)"
-          # Prepare matrix
+
+          Write-Host "Topologically sorted project IDs:"
+          $sortedProjects | ForEach-Object { $_.id }
+
           $matched = @()
           foreach ($project in $sortedProjects) {
             $matched += [PSCustomObject]@{
@@ -163,8 +191,6 @@ jobs:
             }
           }
 
-          Write-Host "Matched projects: $($matched | ForEach-Object { $_ } | Out-String)"
-
           if ($matched.Count -eq 0) {
             Write-Host "No relevant changes detected."
             $matrix = '{"include":[]}'
@@ -172,13 +198,15 @@ jobs:
           else {
             $json = $matched | ConvertTo-Json -Depth 5 -Compress
             if ($matched.Count -eq 1) {
-              $matrix = "{"include":[${json}]}"
+              $matrix = "{`"include`":[${json}]}"
             } else {
-              $matrix = "{"include":$json}"
+              $matrix = "{`"include`":$json}"
             }
           }
-          
-          Write-Host "Detected matrix: $matrix"
+
+          Write-Host "Final build matrix:"
+          Write-Host $matrix
+
           "matrix=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
     
   project:
