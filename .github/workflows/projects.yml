@@ -150,7 +150,7 @@ jobs:
 
           # Run topological sort
           $sortedProjects = TopoSort -projectMap $projectMap -matchedIds $matchedIds
-          Write-Host "Sorted projects: $($sortedProjects | ForEach-Object { $_.id, $_.path, $_.type, $_.deploySteps, $_.dependsOn } | Out-String)"
+          Write-Host "Sorted projects: $($sortedProjects | ForEach-Object { $_ } | Out-String)"
           # Prepare matrix
           $matched = @()
           foreach ($project in $sortedProjects) {
@@ -162,7 +162,9 @@ jobs:
               dependsOn   = $project.dependsOn
             }
           }
-            
+
+          Write-Host "Matched projects: $($matched | ForEach-Object { $_ } | Out-String)"
+
           if ($matched.Count -eq 0) {
             Write-Host "No relevant changes detected."
             $matrix = '{"include":[]}'
