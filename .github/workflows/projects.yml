@@ -96,7 +96,7 @@ jobs:
         run: |
           $matchedIds = @{}
           Get-Content matched-ids.txt | ForEach-Object { $matchedIds[$_] = $true }
-          $projectMap = (Get-Content mono-full.json | ConvertFrom-Json).projects | ForEach-Object {
+          $projectMap = (Get-Content mono.json | ConvertFrom-Json).projects | ForEach-Object {
             @{ id = $_.id; data = $_ }
           } | Group-Object -AsHashTable -Property id
 
@@ -135,7 +135,7 @@ jobs:
         run: |
           $matchedIds = @{}
           Get-Content matched-expanded-ids.txt | ForEach-Object { $matchedIds[$_] = $true }
-          $projectMap = (Get-Content mono-full.json | ConvertFrom-Json).projects | ForEach-Object {
+          $projectMap = (Get-Content mono.json | ConvertFrom-Json).projects | ForEach-Object {
             @{ id = $_.id; data = $_ }
           } | Group-Object -AsHashTable -Property id
 
