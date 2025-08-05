@@ -77,7 +77,7 @@ jobs:
     needs: [release, tag, build-uipath, build-vs, compute-version]
     uses: ./.github/workflows/step-publish-to-GitHub.yml
     with:
-      artifact-id: ${{  needs.build-uipath.outputs.artifact_id }}
+      artifact-id: ${{  needs.build-uipath.outputs.artifact-id }}
       full_name: ${{ needs.compute-version.outputs.full_version }}.nupkg
       repository_owner: ${{ github.repository_owner }}
 

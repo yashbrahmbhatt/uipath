@@ -8,9 +8,9 @@ on:
         type: string
     outputs:
       version:
-        value: ${{ jobs.version.outputs.version }}
+        value: ${{ jobs.compute-version.outputs.version }}
       full_version:
-        value: ${{ jobs.version.outputs.full_version }}
+        value: ${{ jobs.compute-version.outputs.full_version }}
 
 jobs:
   compute-version:
