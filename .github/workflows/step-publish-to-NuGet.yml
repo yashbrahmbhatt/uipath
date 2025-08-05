@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  publish:
+  publish-nuget:
     runs-on: [self-hosted, windows]
     steps:
       - name: Publish NuGet Package to nuget.org

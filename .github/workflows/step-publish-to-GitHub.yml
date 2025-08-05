@@ -14,7 +14,7 @@ on:
         type: string
 
 jobs:
-  publish:
+  publis-github:
     runs-on: [self-hosted, windows]
     steps:
       - uses: actions/checkout@v3
