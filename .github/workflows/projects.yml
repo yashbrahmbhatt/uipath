@@ -29,43 +29,32 @@ jobs:
         with:
           fetch-depth: 2  # Required for HEAD~1 to work
 
-      - name: Download jq
-        run: |
-          Invoke-WebRequest -Uri https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe -OutFile jq.exe
-        shell: powershell
-
-      - name: Add jq to PATH
-        run: |
-          $env:PATH = "$PWD;$env:PATH"
-          jq.exe --version
-        shell: powershell
-
       - name: Get Changed Files
         id: get-changed-files
         shell: powershell
         run: |
-          Write-Host "Detecting changes..."
           try {
-            $changedFiles = git diff --name-only $env:GITHUB_EVENT_BEFORE $env:GITHUB_SHA
-            if (-not $changedFiles) {
-              $changedFiles = git diff --name-only HEAD~1 HEAD
+            $changed = git diff --name-only $env:GITHUB_EVENT_BEFORE $env:GITHUB_SHA
+            if (-not $changed) {
+              $changed = git diff --name-only HEAD~1 HEAD
             }
           } catch {
-            $changedFiles = git diff --name-only HEAD~1 HEAD
+            $changed = git diff --name-only HEAD~1 HEAD
           }
 
-          $changedFiles | Set-Content changed-files.txt
-          Write-Host "Changed files:"
-          Get-Content changed-files.txt
+          $json = $changed | ConvertTo-Json -Compress
+          "changed=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Changed files: $json"
 
       - name: Map Changed Projects
         id: map-changes
         shell: powershell
         run: |
-          $changedFiles = Get-Content changed-files.txt
+          $changedFiles = ConvertFrom-Json '${{ steps.get-changed-files.outputs.changed }}'
           $monoJson = Get-Content "mono.json" | ConvertFrom-Json
+
           $projectMap = @{}
-          $matchedIds = @{}
+          $matchedIds = @()
 
           foreach ($project in $monoJson.projects) {
             $projectMap[$project.id] = $project
@@ -78,41 +67,45 @@ jobs:
             foreach ($file in $changedFiles) {
               $filePath = $file.Replace('/', '\')
               if ($filePath -like "$projectPath*") {
-                $matchedIds[$project.id] = $true
+                $matchedIds += $project.id
                 break
               }
             }
           }
 
-          $matchedIds.Keys | Set-Content matched-ids.txt
-          $monoJson | ConvertTo-Json -Depth 10 | Set-Content mono-full.json
+          $outMap = @{
+            matchedIds = $matchedIds
+            monoJson   = $monoJson | ConvertTo-Json -Depth 10 -Compress
+          }
 
-          Write-Host "Directly matched project IDs:"
-          Get-Content matched-ids.txt
+          $json = $outMap | ConvertTo-Json -Depth 10 -Compress
+          "output=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Matched projects: $($matchedIds -join ', ')"
 
       - name: Expand Transitive Dependencies
-        id: expand-dependencies
+        id: expand
         shell: powershell
         run: |
+          $input = ConvertFrom-Json '${{ steps.map-changes.outputs.output }}'
           $matchedIds = @{}
-          Get-Content matched-ids.txt | ForEach-Object { $matchedIds[$_] = $true }
-          $projectMap = (Get-Content mono.json | ConvertFrom-Json).projects | ForEach-Object {
-            @{ id = $_.id; data = $_ }
-          } | Group-Object -AsHashTable -Property id
+          foreach ($id in $input.matchedIds) {
+            $matchedIds[$id] = $true
+          }
+
+          $projectMap = @{}
+          foreach ($p in $input.monoJson.projects) {
+            $projectMap[$p.id] = $p
+          }
 
           function Add-DependentProjectsRecursively {
-            param (
-              [hashtable]$projectMap,
-              [hashtable]$matchedIds
-            )
+            param ($projectMap, $matchedIds)
             $added = $false
-            foreach ($project in $projectMap.Values) {
-              $proj = $project.data
-              if ($matchedIds.ContainsKey($proj.id)) { continue }
-              if ($proj.PSObject.Properties['dependsOn']) {
-                foreach ($depId in $proj.dependsOn) {
-                  if ($matchedIds.ContainsKey($depId)) {
-                    $matchedIds[$proj.id] = $true
+            foreach ($p in $projectMap.Values) {
+              if ($matchedIds.ContainsKey($p.id)) { continue }
+              if ($p.PSObject.Properties['dependsOn']) {
+                foreach ($d in $p.dependsOn) {
+                  if ($matchedIds.ContainsKey($d)) {
+                    $matchedIds[$p.id] = $true
                     $added = $true
                     break
                   }
@@ -120,82 +113,72 @@ jobs:
               }
             }
             if ($added) {
-              Add-DependentProjectsRecursively -projectMap $projectMap -matchedIds $matchedIds
+              Add-DependentProjectsRecursively $projectMap $matchedIds
             }
           }
 
-          Add-DependentProjectsRecursively -projectMap $projectMap -matchedIds $matchedIds
-          $matchedIds.Keys | Set-Content matched-expanded-ids.txt
-          Write-Host "Expanded matched project IDs:"
-          Get-Content matched-expanded-ids.txt
+          Add-DependentProjectsRecursively $projectMap $matchedIds
 
-      - name: Topologically Sort Projects and Emit Matrix
+          $out = @{
+            matchedIds = $matchedIds.Keys
+            monoJson   = $input.monoJson
+          }
+          $json = $out | ConvertTo-Json -Depth 10 -Compress
+          "output=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Expanded matched projects: $($matchedIds.Keys -join ', ')"
+
+      - name: TopoSort & Emit Matrix
         id: set-matrix
         shell: powershell
         run: |
-          $matchedIds = @{}
-          Get-Content matched-expanded-ids.txt | ForEach-Object { $matchedIds[$_] = $true }
-          $projectMap = (Get-Content mono.json | ConvertFrom-Json).projects | ForEach-Object {
-            @{ id = $_.id; data = $_ }
-          } | Group-Object -AsHashTable -Property id
+          $input = ConvertFrom-Json '${{ steps.expand.outputs.output }}'
+          $projectMap = @{}
+          foreach ($p in $input.monoJson.projects) {
+            $projectMap[$p.id] = $p
+          }
 
           function TopoSort {
-            param (
-              [hashtable]$projectMap,
-              [hashtable]$matchedIds
-            )
-
+            param ($projectMap, $matchedIds)
             $visited = @{}
             $result = New-Object System.Collections.Generic.List[object]
-
             function Visit {
               param ($id)
-              if ($visited[$id] -eq 'temp') {
-                throw "Cyclic dependency detected at $id"
-              }
+              if ($visited[$id] -eq 'temp') { throw "Cycle at $id" }
               if ($visited[$id]) { return }
-
               $visited[$id] = 'temp'
-              $proj = $projectMap[$id].data
+              $proj = $projectMap[$id]
               if ($proj.PSObject.Properties['dependsOn']) {
-                foreach ($depId in $proj.dependsOn) {
-                  if ($matchedIds.ContainsKey($depId)) {
-                    Visit $depId
+                foreach ($dep in $proj.dependsOn) {
+                  if ($matchedIds -contains $dep) {
+                    Visit $dep
                   }
                 }
               }
               $visited[$id] = 'perm'
               $result.Add($proj)
             }
-
-            foreach ($id in $matchedIds.Keys) {
+            foreach ($id in $input.matchedIds) {
               Visit $id
             }
-
             return $result
           }
 
-          $sortedProjects = TopoSort -projectMap $projectMap -matchedIds $matchedIds
-
-          Write-Host "Topologically sorted project IDs:"
-          $sortedProjects | ForEach-Object { $_.id }
+          $sorted = TopoSort $projectMap $input.matchedIds
 
           $matched = @()
-          foreach ($project in $sortedProjects) {
+          foreach ($p in $sorted) {
             $matched += [PSCustomObject]@{
-              id          = $project.id
-              path        = $project.path
-              type        = $project.type
-              deploySteps = $project.deploySteps
-              dependsOn   = $project.dependsOn
+              id          = $p.id
+              path        = $p.path
+              type        = $p.type
+              deploySteps = $p.deploySteps
+              dependsOn   = $p.dependsOn
             }
           }
 
           if ($matched.Count -eq 0) {
-            Write-Host "No relevant changes detected."
             $matrix = '{"include":[]}'
-          }
-          else {
+          } else {
             $json = $matched | ConvertTo-Json -Depth 5 -Compress
             if ($matched.Count -eq 1) {
               $matrix = "{`"include`":[${json}]}"
@@ -204,10 +187,8 @@ jobs:
             }
           }
 
-          Write-Host "Final build matrix:"
-          Write-Host $matrix
-
           "matrix=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Final matrix: $matrix"
     
   project:
     environment: Dev
