@@ -1,0 +1,77 @@
+name: Build Project
+
+on:
+  workflow_call:
+    inputs:
+      id: { required: true, type: string }
+      path: { required: true, type: string }
+      type: { required: true, type: string }
+
+
+      
+jobs:
+  compute-version:
+    uses: ./.github/workflows/step-compute-version.yml
+    with:
+      id: ${{ inputs.id }}
+
+  build-uipath:
+    if: ${{ startsWith(inputs.type, 'uipath-') }}
+    needs: compute-version
+    uses: ./.github/workflows/step-build-uipath-project.yml
+    with:
+        id: ${{ inputs.id }}
+        folder_path: ${{ inputs.path }}
+        version: ${{ needs.compute-version.outputs.version }}
+        full_version: ${{ needs.compute-version.outputs.full_version }}
+
+  build-vs:
+    if: ${{ startsWith(inputs.type, 'vs-') }}
+    needs: compute-version
+    uses: ./.github/workflows/step-build-vs-project.yml
+    with:
+      id: ${{ inputs.id }}
+      folder_path: ${{ inputs.path }}
+      version: ${{ needs.compute-version.outputs.version }}
+      full_version: ${{ needs.compute-version.outputs.full_version }}
+
+  tag:
+    if: ${{ !needs.build-uipath.result == 'skipped' || !needs.build-vs.result == 'skipped' }}
+    needs: [build-uipath, build-vs, compute-version]
+    uses: ./.github/workflows/step-create-github-tag.yml
+    with:
+      id: ${{ inputs.id }}
+      version: ${{ needs.compute-version.outputs.version }}
+      full_version: ${{ needs.compute-version.outputs.full_version }}
+
+  release:
+    if: ${{ !needs.build-uipath.result == 'skipped' || !needs.build-vs.result == 'skipped' }}
+    needs: [tag, build-uipath, build-vs, compute-version]
+    runs-on: [self-hosted, windows]
+    steps:
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          tag_name: ${{ needs.compute-version.outputs.full_version }}
+          release_name: Release ${{ needs.compute-version.outputs.full_version }}
+          draft: false
+          prerelease: false
+
+  publish-github:
+    if: ${{ !needs.build-uipath.result == 'skipped' || !needs.build-vs.result == 'skipped' }}
+    needs: [release, tag, build-uipath, build-vs, compute-version]
+    uses: ./.github/workflows/step-publish-to-GitHub.yml
+    with:
+      artifact-id: ${{ needs.build-and-artifact.outputs.artifact_id }}
+      full_name: ${{ needs.compute-version.outputs.full_version }}.nupkg
+      repository_owner: ${{ github.repository_owner }}
+
+  publish-nuget:
+    if: ${{ !needs.build-uipath.result == 'skipped' || !needs.build-vs.result == 'skipped' }}
+    needs: [release, tag, build-uipath, build-vs, compute-version]
+    uses: ./.github/workflows/step-publish-to-NuGet.yml
+    with:
+      nupkg_path: ${{ inputs.path }}/bin/Release/${{ needs.compute-version.outputs.full_version }}.nupkg
+    secrets: inherit

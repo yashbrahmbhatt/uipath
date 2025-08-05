@@ -21,30 +21,41 @@ jobs:
   detect:
     needs: initialize
     uses: ./.github/workflows/step-detect-changes.yml
-
-  build-uipath:
+    
+  build:
+    if: ${{ needs.detect.outputs.matrix != '{"include":[]}' }}
     needs: detect
-    if: needs.detect.outputs.matrix != '{"include":[]}'
-    runs-on: [self-hosted, windows]
     strategy:
       matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Build UiPath Project ${{ matrix.id }}
-        if: startsWith(matrix.type, 'uipath-')
-        run: |
-          echo "Packing UiPath project ${{ matrix.id }}"
-          cd ${{ matrix.path }}
-          uipcli pack --project-path .
-
-  build-vs:
-    needs: detect
-    if: needs.detect.outputs.matrix != '{"include":[]}'
-    strategy:
-      matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
-    uses: ./.github/workflows/vs-project.yml
+    uses: ./.github/workflows/project.yml
     with:
       id: ${{ matrix.id }}
       path: ${{ matrix.path }}
-    secrets: inherit
+      type: ${{ matrix.type }}
+
+  # build-uipath:
+  #   needs: detect
+  #   if: needs.detect.outputs.matrix != '{"include":[]}'
+  #   runs-on: [self-hosted, windows]
+  #   strategy:
+  #     matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+
+  #     - name: Build UiPath Project ${{ matrix.id }}
+  #       if: startsWith(matrix.type, 'uipath-')
+  #       run: |
+  #         echo "Packing UiPath project ${{ matrix.id }}"
+  #         cd ${{ matrix.path }}
+  #         uipcli pack --project-path .
+
+  # build-vs:
+  #   needs: detect
+  #   if: needs.detect.outputs.matrix != '{"include":[]}'
+  #   strategy:
+  #     matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
+  #   uses: ./.github/workflows/vs-project.yml
+  #   with:
+  #     id: ${{ matrix.id }}
+  #     path: ${{ matrix.path }}
+  #   secrets: inherit
