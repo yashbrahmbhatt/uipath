@@ -13,7 +13,7 @@ on:
         value: ${{ jobs.version.outputs.full_version }}
 
 jobs:
-  version:
+  compute-version:
     runs-on: [self-hosted, windows]
     outputs:
       version: ${{ steps.set.outputs.version }}
