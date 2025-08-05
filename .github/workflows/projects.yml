@@ -19,6 +19,7 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           
   detect-changes:
+    needs: initialize
     runs-on: [windows, self-hosted]
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -109,7 +110,7 @@ jobs:
 
           # Expand all transitive dependents
           Add-DependentProjectsRecursively -projectMap $projectMap -matchedIds $matchedIds
-          
+
           # Topological sort helper
           function TopoSort {
             param (
@@ -149,7 +150,7 @@ jobs:
 
           # Run topological sort
           $sortedProjects = TopoSort -projectMap $projectMap -matchedIds $matchedIds
-
+          Write-Host "Sorted projects: $($sortedProjects | ForEach-Object { $_.id })"
           # Prepare matrix
           $matched = @()
           foreach ($project in $sortedProjects) {
