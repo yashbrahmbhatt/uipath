@@ -150,7 +150,7 @@ jobs:
 
           # Run topological sort
           $sortedProjects = TopoSort -projectMap $projectMap -matchedIds $matchedIds
-          Write-Host "Sorted projects: $($sortedProjects | ForEach-Object { $_ })"
+          Write-Host "Sorted projects: $($sortedProjects | ForEach-Object { $_.id, $_.path, $_.type, $_.deploySteps, $_.dependsOn } | Out-String)"
           # Prepare matrix
           $matched = @()
           foreach ($project in $sortedProjects) {
@@ -158,7 +158,8 @@ jobs:
               id          = $project.id
               path        = $project.path
               type        = $project.type
-              deploySteps = $project.deploySteps
+              deploySteps = $project.deploySteps,
+              dependsOn   = $project.dependsOn
             }
           }
 
