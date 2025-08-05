@@ -27,11 +27,16 @@ jobs:
     needs: detect
     strategy:
       matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
-    uses: ./.github/workflows/project.yml
-    with:
-      id: ${{ matrix.id }}
-      path: ${{ matrix.path }}
-      type: ${{ matrix.type }}
+    runs-on: [self-hosted, windows]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Project ${{ matrix.id }}
+        uses: ./.github/workflows/project.yml
+        with:
+          id: ${{ matrix.id }}
+          path: ${{ matrix.path }}
+          type: ${{ matrix.type }}
 
   # build-uipath:
   #   needs: detect
