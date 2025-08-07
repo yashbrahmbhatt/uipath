@@ -33,54 +33,93 @@ jobs:
         id: get-changed-files
         shell: powershell
         run: |
+          Write-Host "Detecting changed files..."
+                  
           try {
+            Write-Host "Trying: git diff --name-only $env:GITHUB_EVENT_BEFORE $env:GITHUB_SHA"
             $changed = git diff --name-only $env:GITHUB_EVENT_BEFORE $env:GITHUB_SHA
             if (-not $changed) {
+              Write-Host "No changes detected with event range, falling back to HEAD~1..HEAD"
               $changed = git diff --name-only HEAD~1 HEAD
             }
           } catch {
+            Write-Host "Primary diff failed, using fallback: git diff --name-only HEAD~1 HEAD"
             $changed = git diff --name-only HEAD~1 HEAD
           }
-
+                
+          if (-not $changed) {
+            Write-Host "Still no changes detected — result is empty."
+          } else {
+            Write-Host "Changed files list:"
+            $changed | ForEach-Object { Write-Host "  $_" }
+          }
+                
           $json = $changed | ConvertTo-Json -Compress
+          Write-Host "Serialized JSON of changed files: $json"
+                
           "changed=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-          Write-Host "Changed files: $json"
 
       - name: Map Changed Projects
         id: map-changes
         shell: powershell
         run: |
-          $changedFiles = ConvertFrom-Json '${{ steps.get-changed-files.outputs.changed }}'
-          $monoJson = Get-Content "mono.json" | ConvertFrom-Json
+          Write-Host "Raw input JSON:"
+          Write-Host '${{ steps.map-changes.outputs.output }}'
 
+          $input = ConvertFrom-Json '${{ steps.map-changes.outputs.output }}'
+
+          Write-Host "Parsed matched IDs:"
+          $matchedIds = @{}
+          foreach ($id in $input.matchedIds) {
+            $matchedIds[$id] = $true
+          }
+          Write-Host ($matchedIds.Keys -join ', ')
+
+          Write-Host "Parsed project map:"
           $projectMap = @{}
-          $matchedIds = @()
-
-          foreach ($project in $monoJson.projects) {
-            $projectMap[$project.id] = $project
+          foreach ($p in $input.monoJson.projects) {
+            $projectMap[$p.id] = $p
+            Write-Host "  Project ID: $($p.id)"
           }
 
-          foreach ($project in $monoJson.projects) {
-            if (-not $project.build) { continue }
-
-            $projectPath = $project.path.Replace('/', '\')
-            foreach ($file in $changedFiles) {
-              $filePath = $file.Replace('/', '\')
-              if ($filePath -like "$projectPath*") {
-                $matchedIds += $project.id
-                break
+          function Add-DependentProjectsRecursively {
+            param ($projectMap, $matchedIds)
+            $added = $false
+            foreach ($p in $projectMap.Values) {
+              if ($matchedIds.ContainsKey($p.id)) { continue }
+              if ($p.PSObject.Properties['dependsOn']) {
+                foreach ($d in $p.dependsOn) {
+                  if ($matchedIds.ContainsKey($d)) {
+                    Write-Host "Adding dependent project: $($p.id) because it depends on $d"
+                    $matchedIds[$p.id] = $true
+                    $added = $true
+                    break
+                  }
+                }
               }
+            }
+            if ($added) {
+              Write-Host "Recursing to add further dependent projects..."
+              Add-DependentProjectsRecursively $projectMap $matchedIds
             }
           }
 
-          $outMap = @{
-            matchedIds = $matchedIds
-            monoJson   = $monoJson | ConvertTo-Json -Depth 10 -Compress
-          }
+          Write-Host "Expanding matched projects to include dependents..."
+          Add-DependentProjectsRecursively $projectMap $matchedIds
 
-          $json = $outMap | ConvertTo-Json -Depth 10 -Compress
+          $out = @{
+            matchedIds = $matchedIds.Keys
+            monoJson   = $input.monoJson
+          }
+          $json = $out | ConvertTo-Json -Depth 10 -Compress
+
+          Write-Host "Final expanded matched project IDs:"
+          Write-Host ($matchedIds.Keys -join ', ')
+
+          Write-Host "Serialized output JSON:"
+          Write-Host $json
+
           "output=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-          Write-Host "Matched projects: $($matchedIds -join ', ')"
 
       - name: Expand Transitive Dependencies
         id: expand
