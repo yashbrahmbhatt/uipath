@@ -57,7 +57,9 @@ jobs:
           $json = $changed | ConvertTo-Json -Compress
           Write-Host "Serialized JSON of changed files: $json"
                 
-          "changed=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          # ✅ Safe output to GitHub Actions
+          Add-Content -Path $env:GITHUB_OUTPUT -Value "changed=$json"
+
 
       - name: Map Changed Projects
         id: map-changes
