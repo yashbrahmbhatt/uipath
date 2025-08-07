@@ -164,7 +164,7 @@ jobs:
           }
 
           $sorted = TopoSort $projectMap $input.matchedIds
-
+          Write-Host "Sorted projects: $($sorted | ForEach-Object { $_.id } -join ', ')"
           $matched = @()
           foreach ($p in $sorted) {
             $matched += [PSCustomObject]@{
@@ -175,7 +175,7 @@ jobs:
               dependsOn   = $p.dependsOn
             }
           }
-
+          Write-Host "Final matched projects: $($matched | ForEach-Object { $_.id } -join ', ')"
           if ($matched.Count -eq 0) {
             $matrix = '{"include":[]}'
           } else {
