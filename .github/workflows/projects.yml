@@ -180,6 +180,7 @@ jobs:
             $matrix = '{"include":[]}'
           } else {
             $json = $matched | ConvertTo-Json -Depth 5 -Compress
+            Write-Host "Raw json: $json"
             if ($matched.Count -eq 1) {
               $matrix = "{`"include`":[${json}]}"
             } else {
