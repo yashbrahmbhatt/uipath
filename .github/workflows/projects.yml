@@ -131,26 +131,40 @@ jobs:
         id: set-matrix
         shell: powershell
         run: |
+          Write-Host ">>> Starting TopoSort step"
+                  
+          # Parse the input JSON
           $input = ConvertFrom-Json '${{ steps.expand.outputs.output }}'
+          Write-Host "Parsed input JSON"
+          Write-Host "Matched IDs: $($input.matchedIds -join ', ')"
+          Write-Host "Project count: $($input.monoJson.projects.Count)"
+                  
+          # Build project map
           $projectMap = @{}
           foreach ($p in $input.monoJson.projects) {
             $projectMap[$p.id] = $p
           }
-
+          Write-Host "Constructed projectMap with keys: $($projectMap.Keys -join ', ')"
+                  
+          # Topological sort definition
           function TopoSort {
             param ($projectMap, $matchedIds)
             $visited = @{}
             $result = New-Object System.Collections.Generic.List[object]
             function Visit {
               param ($id)
+              Write-Host "Visiting: $id"
               if ($visited[$id] -eq 'temp') { throw "Cycle at $id" }
               if ($visited[$id]) { return }
               $visited[$id] = 'temp'
               $proj = $projectMap[$id]
               if ($proj.PSObject.Properties['dependsOn']) {
                 foreach ($dep in $proj.dependsOn) {
+                  Write-Host "  $id depends on $dep"
                   if ($matchedIds -contains $dep) {
                     Visit $dep
+                  } else {
+                    Write-Host "  Skipping dependency $dep (not in matchedIds)"
                   }
                 }
               }
@@ -162,9 +176,12 @@ jobs:
             }
             return $result
           }
-
+                
+          # Execute topological sort
           $sorted = TopoSort $projectMap $input.matchedIds
           Write-Host "Sorted projects: $($sorted | ForEach-Object { $_.id } -join ', ')"
+                
+          # Build matched array
           $matched = @()
           foreach ($p in $sorted) {
             $matched += [PSCustomObject]@{
@@ -176,20 +193,29 @@ jobs:
             }
           }
           Write-Host "Final matched projects: $($matched | ForEach-Object { $_.id } -join ', ')"
+          Write-Host "Matched count: $($matched.Count)"
+                
+          # Build JSON matrix
           if ($matched.Count -eq 0) {
+            Write-Host "No matched projects. Empty matrix."
             $matrix = '{"include":[]}'
           } else {
             $json = $matched | ConvertTo-Json -Depth 5 -Compress
-            Write-Host "Raw json: $json"
+            Write-Host "Raw JSON: $json"
+                
             if ($matched.Count -eq 1) {
+              Write-Host "Single matched project, wrapping in array"
               $matrix = "{`"include`":[${json}]}"
             } else {
+              Write-Host "Multiple matched projects"
               $matrix = "{`"include`":$json}"
             }
           }
-
+                
+          # Output matrix
           "matrix=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           Write-Host "Final matrix: $matrix"
+          Write-Host ">>> TopoSort step complete"
     
   project:
     environment: Dev
