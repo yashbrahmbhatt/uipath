@@ -46,7 +46,7 @@ jobs:
             Write-Host "Primary diff failed, using fallback: git diff --name-only HEAD~1 HEAD"
             $changed = git diff --name-only HEAD~1 HEAD
           }
-                
+
           if (-not $changed) {
             Write-Host "Still no changes detected — result is empty."
           } else {
@@ -55,10 +55,10 @@ jobs:
               Write-Host "  $file"
             }
           }
-                
+
           $json = $changed | ConvertTo-Json -Compress
-          Write-Host "Serialized JSON of changed files: $json"
-                
+          Write-Host ('Serialized JSON of changed files: ' + $json)
+
           # ✅ Safe output to GitHub Actions
           Add-Content -Path $env:GITHUB_OUTPUT -Value ('changed=' + $json)
 
