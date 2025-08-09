@@ -34,7 +34,7 @@ jobs:
         shell: powershell
         run: |
           Write-Host "Detecting changed files..."
-                  
+            
           try {
             Write-Host "Trying: git diff --name-only $env:GITHUB_EVENT_BEFORE $env:GITHUB_SHA"
             $changed = git diff --name-only $env:GITHUB_EVENT_BEFORE $env:GITHUB_SHA
@@ -51,8 +51,13 @@ jobs:
             Write-Host "Still no changes detected — result is empty."
           } else {
             Write-Host "Changed files list:"
-            $changed | ForEach-Object { Write-Host "  $_" }
+            ForEach ($file in $changed) {
+              Write-Host "  $file"
+            }
           }
+                
+          $json = $changed | ConvertTo-Json -Compress
+          Write-Host "Serialized JSON of changed files: $json"
                 
           # ✅ Safe output to GitHub Actions
           Add-Content -Path $env:GITHUB_OUTPUT -Value ('changed=' + $json)
