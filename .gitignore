@@ -16,3 +16,20 @@ yarn-error.log*
 # GitHub Actions build artifacts (if any)
 .github/actions/**/lib/
 .github/actions/**/dist/
+
+# Test configuration and sensitive data
+**/.env
+**/.env.local
+**/.env.*.local
+**/Properties/launchSettings.json
+**/appsettings.Development.json
+**/testsettings.json
+
+# IDE and OS specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db

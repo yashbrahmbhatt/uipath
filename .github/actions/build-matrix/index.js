@@ -25,7 +25,7 @@ function getChangedFiles() {
     const files = output.split('\n').filter(line => line.trim());
     
     core.info(`Found ${files.length} changed files`);
-    files.forEach(file => core.debug(`Changed: ${file}`));
+    files.forEach(file => core.info(`Changed: ${file}`));
     
     return files;
   } catch (error) {
@@ -48,7 +48,7 @@ function findChangedProjects(changedFiles, monoConfig) {
   // Find directly changed projects
   for (const project of monoConfig.projects) {
     if (!project.build) {
-      core.debug(`Skipping ${project.id} (build: false)`);
+      core.info(`Skipping ${project.id} (build: false)`);
       continue;
     }
     
@@ -122,7 +122,7 @@ function topologicalSort(projects) {
         if (dep) {
           visit(dep);
         } else {
-          core.debug(`Dependency ${depId} not in build set, skipping`);
+          core.info(`Dependency ${depId} not in build set, skipping`);
         }
       }
     }
@@ -168,6 +168,8 @@ async function main() {
         id: p.id,
         path: p.path,
         type: p.type,
+        test: p.test || false,
+        testPath: p.testPath || p.path,
         deploySteps: p.deploySteps || [],
         dependsOn: p.dependsOn || []
       }))

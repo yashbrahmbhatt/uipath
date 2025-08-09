@@ -1,0 +1,36 @@
+name: 'Test Project'
+description: 'Runs tests for .NET and UiPath projects based on project type'
+inputs:
+  project-id:
+    description: 'The project identifier'
+    required: true
+  test-path:
+    description: 'Path to the test project folder'
+    required: true
+  project-type:
+    description: 'Type of project (vs, uipath-library, uipath-process)'
+    required: true
+  configuration:
+    description: 'Build configuration for .NET projects (Debug/Release)'
+    required: false
+    default: 'Release'
+  orchestrator-url:
+    description: 'UiPath Orchestrator URL (for UiPath projects)'
+    required: false
+  orchestrator-tenant:
+    description: 'UiPath Orchestrator tenant (for UiPath projects)'
+    required: false
+outputs:
+  test-results-path:
+    description: 'Path to the test results file'
+  test-passed:
+    description: 'Whether all tests passed (true/false)'
+  test-count:
+    description: 'Total number of tests executed'
+  passed-count:
+    description: 'Number of tests that passed'
+  failed-count:
+    description: 'Number of tests that failed'
+runs:
+  using: 'node20'
+  main: 'index.js'

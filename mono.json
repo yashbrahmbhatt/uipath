@@ -5,6 +5,8 @@
       "path": "uipath-libraries/Yash.RBC.Activities",
       "type": "uipath-library",
       "build": true,
+      "test": false,
+      "testPath": "uipath-libraries/Yash.RBC.Activities",
       "deploy": true,
       "deploySteps": ["orchestrator", "nuget"],
       "dependsOn": []
@@ -14,6 +16,7 @@
       "path": "uipath-processes/CLIToGitHubWrapper",
       "type": "uipath-process",
       "build": false,
+      "test": false,
       "deploy": false,
       "deploySteps": ["orchestrator"],
       "dependsOn": []
@@ -23,6 +26,8 @@
       "path": "uipath-processes/Diagnostic",
       "type": "uipath-process",
       "build": true,
+      "test": false,
+      "testPath": "uipath-processes/Diagnostic",
       "deploy": true,
       "deploySteps": ["orchestrator"],
       "dependsOn": []
@@ -32,6 +37,8 @@
       "path": "uipath-processes/Finance.IngestTransactions",
       "type": "uipath-process",
       "build": true,
+      "test": false,
+      "testPath": "uipath-processes/Finance.IngestTransactions",
       "deploy": true,
       "deploySteps": ["orchestrator"],
       "dependsOn": []
@@ -41,6 +48,8 @@
       "path": "vs-libraries/Yash.Config",
       "type": "vs",
       "build": true,
+      "test": true,
+      "testPath": "vs-libraries/Yash.Config.Tests",
       "deploy": true,
       "deploySteps": ["nuget"],
       "dependsOn": ["Yash.Orchestrator"]
@@ -50,6 +59,8 @@
       "path": "vs-libraries/Yash.Orchestrator",
       "type": "vs",
       "build": true,
+      "test": true,
+      "testPath": "vs-libraries/Yash.Orchestrator.Tests",
       "deploy": true,
       "deploySteps": ["nuget"],
       "dependsOn": []

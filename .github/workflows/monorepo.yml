@@ -1,4 +1,4 @@
-name: Build Changed Projects (Optimized)
+name: Monorepo Build
 
 on:
   push:
@@ -68,7 +68,7 @@ jobs:
 
       - name: Install Action Dependencies
         run: |
-          $actions = @('compute-version', 'build-artifact', 'create-github-tag', 'publish-github-packages', 'publish-nuget')
+          $actions = @('compute-version', 'build-artifact', 'create-github-tag', 'publish-github-packages', 'publish-nuget', 'test-project')
           $originalLocation = Get-Location
           foreach ($action in $actions) {
             $actionPath = ".github/actions/$action"
@@ -98,6 +98,43 @@ jobs:
           project-type: ${{ matrix.type }}
           version: ${{ steps.version.outputs.version }}
           full-version: ${{ steps.version.outputs.full-version }}
+
+      - name: Run Tests
+        id: test
+        if: ${{ matrix.test }}
+        uses: ./.github/actions/test-project
+        with:
+          project-id: ${{ matrix.id }}
+          test-path: ${{ matrix.testPath }}
+          project-type: ${{ matrix.type }}
+        env:
+          # UiPath Orchestrator Test Configuration
+          UIP_ACCOUNT_NAME: ${{ secrets.UIP_ACCOUNT_NAME }}
+          UIP_APPLICATION_ID: ${{ secrets.UIP_APPLICATION_ID }}
+          UIP_APPLICATION_SECRET: ${{ secrets.UIP_APPLICATION_SECRET }}
+          UIP_TENANT_NAME: ${{ secrets.UIP_TENANT_NAME }}
+        continue-on-error: false
+
+      - name: Check Test Results
+        if: ${{ matrix.test }}
+        run: |
+          $testPassed = "${{ steps.test.outputs.test-passed }}"
+          $testCount = "${{ steps.test.outputs.test-count }}"
+          $passedCount = "${{ steps.test.outputs.passed-count }}"
+          $failedCount = "${{ steps.test.outputs.failed-count }}"
+          
+          Write-Host "Test Results for ${{ matrix.id }}:"
+          Write-Host "  Total: $testCount"
+          Write-Host "  Passed: $passedCount"
+          Write-Host "  Failed: $failedCount"
+          
+          if ($testPassed -eq "false") {
+            Write-Error "Tests failed for ${{ matrix.id }}"
+            exit 1
+          } else {
+            Write-Host "All tests passed for ${{ matrix.id }}"
+          }
+        shell: powershell
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
