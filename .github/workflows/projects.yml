@@ -109,7 +109,7 @@ jobs:
         run: |
           $packagePath = "${{ steps.build.outputs.package-path }}"
           $localSource = $env:LOCAL_PACKAGE_SOURCE
-          if (Test-Path $packagePath -and $localSource) {
+          if ((Test-Path $packagePath) -and $localSource) {
             $packageName = Split-Path $packagePath -Leaf
             $localPackagePath = Join-Path $localSource $packageName
             Copy-Item $packagePath $localPackagePath -Force
