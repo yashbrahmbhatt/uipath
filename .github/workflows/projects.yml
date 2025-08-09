@@ -52,7 +52,7 @@ jobs:
           } else {
             Write-Host "Changed files list:"
             ForEach ($file in $changed) {
-              Write-Host "  $file"
+              Write-Host ("  " + $file)
             }
           }
 
