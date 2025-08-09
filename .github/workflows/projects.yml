@@ -88,22 +88,19 @@ jobs:
         id: expand
         shell: powershell
         run: |
-          $input = ConvertFrom-Json '${{ steps.map-changes.outputs.output }}'
-          $matchedIds = @{}
-          foreach ($id in $input.matchedIds) {
-            $matchedIds[$id] = $true
+          $projectMap = ConvertFrom-Json '${{ steps.map-changes.outputs.projectMap }}'
+          $matchedIds = ConvertFrom-Json '${{ steps.map-changes.outputs.matchedIds }}'
+          $projectsToBuild = @{}
+          foreach ($id in $matchedIds) {
+            $projectsToBuild[$id] = $true
           }
 
-          $projectMap = @{}
-          foreach ($p in $input.monoJson.projects) {
-            $projectMap[$p.id] = $p
-          }
 
           function Add-DependentProjectsRecursively {
-            param ($projectMap, $matchedIds)
+            param ($projectMap, $projectsToBuild)
             $added = $false
             foreach ($p in $projectMap.Values) {
-              if ($matchedIds.ContainsKey($p.id)) { continue }
+              if ($projectsToBuild.ContainsKey($p.id)) { continue }
               if ($p.PSObject.Properties['dependsOn']) {
                 foreach ($d in $p.dependsOn) {
                   if ($matchedIds.ContainsKey($d)) {
@@ -121,13 +118,8 @@ jobs:
 
           Add-DependentProjectsRecursively $projectMap $matchedIds
 
-          $out = @{
-            matchedIds = $matchedIds.Keys
-            monoJson   = $input.monoJson
-          }
-          $json = $out | ConvertTo-Json -Depth 10 -Compress
-          "output=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-          Write-Host "Expanded matched projects: $($matchedIds.Keys -join ', ')"
+          Write-Host "Matched IDs after expansion: $($matchedIds.Keys -join ', ')"
+          "projectsToBuild=$($projectsToBuild.Keys -join ', ')" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
 
       - name: TopoSort & Emit Matrix
         id: set-matrix
@@ -136,21 +128,15 @@ jobs:
           Write-Host ">>> Starting TopoSort step"
                   
           # Parse the input JSON
-          $input = ConvertFrom-Json '${{ steps.expand.outputs.output }}'
+          $projectsToBuild = ConvertFrom-Json '${{ steps.expand.outputs.projectsToBuild }}'
+          $projectMap = ConvertFrom-Json '${{ steps.map-changes.outputs.projectMap }}'
           Write-Host "Parsed input JSON"
-          Write-Host "Matched IDs: $($input.matchedIds -join ', ')"
-          Write-Host "Project count: $($input.monoJson.projects.Count)"
-                  
-          # Build project map
-          $projectMap = @{}
-          foreach ($p in $input.monoJson.projects) {
-            $projectMap[$p.id] = $p
-          }
-          Write-Host "Constructed projectMap with keys: $($projectMap.Keys -join ', ')"
+          Write-Host "Projects to Build: $($projectsToBuild -join ', ')"
+          Write-Host "All Project count: $($input.monoJson.projects.Count)"
                   
           # Topological sort definition
           function TopoSort {
-            param ($projectMap, $matchedIds)
+            param ($projectMap, $projectsToBuild)
             $visited = @{}
             $result = New-Object System.Collections.Generic.List[object]
             function Visit {
@@ -173,39 +159,26 @@ jobs:
               $visited[$id] = 'perm'
               $result.Add($proj)
             }
-            foreach ($id in $input.matchedIds) {
+            foreach ($id in $projectsToBuild) {
               Visit $id
             }
             return $result
           }
                 
           # Execute topological sort
-          $sorted = TopoSort $projectMap $input.matchedIds
+          $sorted = TopoSort $projectMap $projectsToBuild
           Write-Host "Sorted projects: $($sorted | ForEach-Object { $_.id } -join ', ')"
-                
-          # Build matched array
-          $matched = @()
-          foreach ($p in $sorted) {
-            $matched += [PSCustomObject]@{
-              id          = $p.id
-              path        = $p.path
-              type        = $p.type
-              deploySteps = $p.deploySteps
-              dependsOn   = $p.dependsOn
-            }
-          }
-          Write-Host "Final matched projects: $($matched | ForEach-Object { $_.id } -join ', ')"
-          Write-Host "Matched count: $($matched.Count)"
+
                 
           # Build JSON matrix
-          if ($matched.Count -eq 0) {
+          if ($sorted.Count -eq 0) {
             Write-Host "No matched projects. Empty matrix."
             $matrix = '{"include":[]}'
           } else {
-            $json = $matched | ConvertTo-Json -Depth 5 -Compress
+            $json = $sorted | ConvertTo-Json -Depth 5 -Compress
             Write-Host "Raw JSON: $json"
-                
-            if ($matched.Count -eq 1) {
+
+            if ($sorted.Count -eq 1) {
               Write-Host "Single matched project, wrapping in array"
               $matrix = "{`"include`":[${json}]}"
             } else {
