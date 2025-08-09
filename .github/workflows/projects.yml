@@ -25,7 +25,7 @@ jobs:
         run: |
           cd .github/actions/build-matrix
           npm install
-        shell: bash
+        shell: powershell
 
       - name: Build Matrix
         id: build-matrix
@@ -53,14 +53,20 @@ jobs:
 
       - name: Install Action Dependencies
         run: |
-          for action in compute-version build-artifact create-github-tag publish-github-packages publish-nuget; do
-            if [ -d ".github/actions/$action" ]; then
-              cd ".github/actions/$action"
+          $actions = @('compute-version', 'build-artifact', 'create-github-tag', 'publish-github-packages', 'publish-nuget')
+          $originalLocation = Get-Location
+          foreach ($action in $actions) {
+            $actionPath = ".github/actions/$action"
+            if (Test-Path $actionPath) {
+              Write-Host "Installing dependencies for $action..."
+              Set-Location $actionPath
               npm install
-              cd - > /dev/null
-            fi
-          done
-        shell: bash
+              Set-Location $originalLocation
+            } else {
+              Write-Warning "Action path not found: $actionPath"
+            }
+          }
+        shell: powershell
 
       - name: Compute Version
         id: version
