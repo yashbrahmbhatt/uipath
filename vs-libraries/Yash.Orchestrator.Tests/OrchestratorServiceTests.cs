@@ -37,11 +37,11 @@ namespace Yash.Orchestrator.Tests
         {
             // Read test configuration from environment variables - REQUIRED except for scopes
             _testBaseUrl = $"https://" +
-                Environment.GetEnvironmentVariable("UIP_ACCOUNT_NAME")
+                (Environment.GetEnvironmentVariable("UIP_ACCOUNT_NAME")
                           ?? throw new InvalidOperationException(
                               "UIP_ACCOUNT_NAME environment variable is required. " +
-                              "Set this to your UiPath Account Name (e.g., https://your-account-name.uipath.com)");
-            +".uipath.com";
+                              "Set this to your UiPath Account Name (e.g., https://your-account-name.uipath.com)"))
+                + ".uipath.com";
 
             _testClientId = Environment.GetEnvironmentVariable("UIP_APPLICATION_ID")
                            ?? throw new InvalidOperationException(
