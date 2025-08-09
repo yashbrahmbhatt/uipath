@@ -1,0 +1,14 @@
+name: 'Compute Project Version'
+description: 'Computes semantic version for a project based on Git tags'
+inputs:
+  project-id:
+    description: 'The project identifier'
+    required: true
+outputs:
+  version:
+    description: 'The computed version (e.g., 25.8.0)'
+  full-version:
+    description: 'The full version with project ID (e.g., MyProject@25.8.0)'
+runs:
+  using: 'node20'
+  main: 'index.js'

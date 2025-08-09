@@ -1,0 +1,16 @@
+name: 'Publish to GitHub Packages'
+description: 'Publishes NuGet packages to GitHub Packages'
+inputs:
+  package-path:
+    description: 'Path to the .nupkg file to publish'
+    required: true
+  github-token:
+    description: 'GitHub token for authentication'
+    required: false
+    default: ${{ github.token }}
+  repository-owner:
+    description: 'Repository owner (organization or user)'
+    required: false
+runs:
+  using: 'node20'
+  main: 'index.js'

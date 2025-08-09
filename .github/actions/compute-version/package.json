@@ -1,0 +1,9 @@
+{
+  "name": "compute-version-action",
+  "version": "1.0.0",
+  "description": "Compute semantic version for projects",
+  "main": "index.js",
+  "dependencies": {
+    "@actions/core": "^1.10.0"
+  }
+}

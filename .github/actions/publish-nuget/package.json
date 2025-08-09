@@ -1,0 +1,9 @@
+{
+  "name": "publish-nuget-action",
+  "version": "1.0.0",
+  "description": "Publish NuGet packages to NuGet.org",
+  "main": "index.js",
+  "dependencies": {
+    "@actions/core": "^1.10.0"
+  }
+}

@@ -1,0 +1,12 @@
+name: 'Publish to NuGet.org'
+description: 'Publishes NuGet packages to NuGet.org'
+inputs:
+  package-path:
+    description: 'Path to the .nupkg file to publish'
+    required: true
+  nuget-api-key:
+    description: 'NuGet.org API key for authentication'
+    required: true
+runs:
+  using: 'node20'
+  main: 'index.js'

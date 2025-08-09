@@ -1,0 +1,13 @@
+name: 'Create GitHub Tag'
+description: 'Creates and pushes a Git tag for the project version'
+inputs:
+  full-version:
+    description: 'Full version string to use as tag (e.g., MyProject@1.0.0)'
+    required: true
+  github-token:
+    description: 'GitHub token for authentication'
+    required: false
+    default: ${{ github.token }}
+runs:
+  using: 'node20'
+  main: 'index.js'

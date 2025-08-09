@@ -1,0 +1,13 @@
+name: 'Build Matrix Generator'
+description: 'Generates a build matrix for changed projects based on mono.json configuration'
+inputs:
+  mono-config-path:
+    description: 'Path to the mono.json configuration file'
+    required: false
+    default: 'mono.json'
+outputs:
+  matrix:
+    description: 'The generated matrix for GitHub Actions'
+runs:
+  using: 'node20'
+  main: 'index.js'

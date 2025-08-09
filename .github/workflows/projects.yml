@@ -1,4 +1,4 @@
-name: Build Changed Projects
+name: Build Changed Projects (Optimized)
 
 on:
   push:
@@ -7,194 +7,35 @@ on:
     branches: [main]
 
 jobs:
-  initialize:
-    runs-on: [self-hosted, windows]
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Configure Git for GitHub Actions
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          
   detect-changes:
-    needs: initialize
-    runs-on: [windows, self-hosted]
+    runs-on: [self-hosted, windows]
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-
+      matrix: ${{ steps.build-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 2  # Required for HEAD~1 to work
+          fetch-depth: 2
 
-      - name: Get Changed Files
-        id: get-changed-files
-        shell: powershell
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Action Dependencies
         run: |
-          Write-Host "Detecting changed files..."
-            
-          try {
-            $changed = git diff --name-only $env:GITHUB_EVENT_BEFORE $env:GITHUB_SHA
-            if (-not $changed) {
-              $changed = git diff --name-only HEAD~1 HEAD
-            }
-          } catch {
-            $changed = git diff --name-only HEAD~1 HEAD
-          }
+          cd .github/actions/build-matrix
+          npm install
+        shell: bash
 
-          $json = $changed | ConvertTo-Json -Compress
-          "changed=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-          Write-Host "Changed files: $json"
+      - name: Build Matrix
+        id: build-matrix
+        uses: ./.github/actions/build-matrix
+        with:
+          mono-config-path: 'mono.json'
 
-      - name: Map Changed Projects
-        id: map-changes
-        shell: powershell
-        run: |
-          $changedFiles = ConvertFrom-Json '${{ steps.get-changed-files.outputs.changed }}'
-          $monoJson = Get-Content "mono.json" | ConvertFrom-Json
-
-          $projectMap = @{}
-          $matchedIds = @()
-          
-          foreach ($project in $monoJson.projects) {
-            $projectMap[$project.id] = $project
-          }
-
-          foreach ($project in $monoJson.projects) {
-            if (-not $project.build) { continue }
-
-            $projectPath = $project.path.Replace('/', '\')
-
-            foreach ($file in $changedFiles) {
-              $filePath = $file.Replace('/', '\')
-              if ($filePath -like "$projectPath*") {
-                $matchedIds += $project.id
-                break
-              }
-            }
-          }
-
-          $projectMapJson = $projectMap | ConvertTo-Json -Depth 10 -Compress
-          $matchedIdsJson = $matchedIds | ConvertTo-Json -Depth 10 -Compress
-
-          "projectMap=$projectMapJson" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-          Write-Host "projectMap: $projectMapJson"
-          "matchedIds=$matchedIdsJson" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-          Write-Host "matchedIds: $matchedIdsJson"
-
-      - name: Expand Transitive Dependencies
-        id: expand
-        shell: powershell
-        run: |
-          $projectMap = ConvertFrom-Json '${{ steps.map-changes.outputs.projectMap }}'
-          $matchedIds = ConvertFrom-Json '${{ steps.map-changes.outputs.matchedIds }}'
-          $projectsToBuild = @{}
-          foreach ($id in $matchedIds) {
-            $projectsToBuild[$id] = $true
-          }
-
-
-          function Add-DependentProjectsRecursively {
-            param ($projectMap, $projectsToBuild)
-            $added = $false
-            foreach ($p in $projectMap.Values) {
-              if ($projectsToBuild.ContainsKey($p.id)) { continue }
-              if ($p.PSObject.Properties['dependsOn']) {
-                foreach ($d in $p.dependsOn) {
-                  if ($matchedIds.ContainsKey($d)) {
-                    $matchedIds[$p.id] = $true
-                    $added = $true
-                    break
-                  }
-                }
-              }
-            }
-            if ($added) {
-              Add-DependentProjectsRecursively $projectMap $matchedIds
-            }
-          }
-
-          Add-DependentProjectsRecursively $projectMap $matchedIds
-
-          Write-Host "Matched IDs after expansion: $($matchedIds.Keys -join ', ')"
-          "projectsToBuild=$($projectsToBuild.Keys -join ', ')" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-
-      - name: TopoSort & Emit Matrix
-        id: set-matrix
-        shell: powershell
-        run: |
-          Write-Host ">>> Starting TopoSort step"
-                  
-          # Parse the input JSON
-          $projectsToBuild = ConvertFrom-Json '${{ steps.expand.outputs.projectsToBuild }}'
-          $projectMap = ConvertFrom-Json '${{ steps.map-changes.outputs.projectMap }}'
-          Write-Host "Parsed input JSON"
-          Write-Host "Projects to Build: $($projectsToBuild -join ', ')"
-          Write-Host "All Project count: $($input.monoJson.projects.Count)"
-                  
-          # Topological sort definition
-          function TopoSort {
-            param ($projectMap, $projectsToBuild)
-            $visited = @{}
-            $result = New-Object System.Collections.Generic.List[object]
-            function Visit {
-              param ($id)
-              Write-Host "Visiting: $id"
-              if ($visited[$id] -eq 'temp') { throw "Cycle at $id" }
-              if ($visited[$id]) { return }
-              $visited[$id] = 'temp'
-              $proj = $projectMap[$id]
-              if ($proj.PSObject.Properties['dependsOn']) {
-                foreach ($dep in $proj.dependsOn) {
-                  Write-Host "  $id depends on $dep"
-                  if ($matchedIds -contains $dep) {
-                    Visit $dep
-                  } else {
-                    Write-Host "  Skipping dependency $dep (not in matchedIds)"
-                  }
-                }
-              }
-              $visited[$id] = 'perm'
-              $result.Add($proj)
-            }
-            foreach ($id in $projectsToBuild) {
-              Visit $id
-            }
-            return $result
-          }
-                
-          # Execute topological sort
-          $sorted = TopoSort $projectMap $projectsToBuild
-          Write-Host "Sorted projects: $($sorted | ForEach-Object { $_.id } -join ', ')"
-
-                
-          # Build JSON matrix
-          if ($sorted.Count -eq 0) {
-            Write-Host "No matched projects. Empty matrix."
-            $matrix = '{"include":[]}'
-          } else {
-            $json = $sorted | ConvertTo-Json -Depth 5 -Compress
-            Write-Host "Raw JSON: $json"
-
-            if ($sorted.Count -eq 1) {
-              Write-Host "Single matched project, wrapping in array"
-              $matrix = "{`"include`":[${json}]}"
-            } else {
-              Write-Host "Multiple matched projects"
-              $matrix = "{`"include`":$json}"
-            }
-          }
-                
-          # Output matrix
-          "matrix=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-          Write-Host "Final matrix: $matrix"
-          Write-Host ">>> TopoSort step complete"
-    
-  project:
+  build:
+    name: Build ${{ matrix.id }}
     environment: Dev
-    name: Build Changed Projects
     if: ${{ needs.detect-changes.outputs.matrix != '{"include":[]}' }}
     needs: detect-changes
     strategy:
@@ -202,113 +43,64 @@ jobs:
     runs-on: [self-hosted, windows]
     steps:
       - uses: actions/checkout@v3
-        name: "Checkout Project ${{ matrix.id }}"
-        with: { fetch-depth: 0 }
+        with:
+          fetch-depth: 0
 
-      - id: compute-version
-        name: "Compute Version for ${{ matrix.id }}"
-        shell: powershell
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Action Dependencies
         run: |
-          $projectId = "${{ matrix.id }}"
-          $yy = [int](Get-Date -Format "yy")
-          $mm = [int](Get-Date -Format "MM")
-          $base = "$yy.$mm"
+          for action in compute-version build-artifact create-github-tag publish-github-packages publish-nuget; do
+            if [ -d ".github/actions/$action" ]; then
+              cd ".github/actions/$action"
+              npm install
+              cd - > /dev/null
+            fi
+          done
+        shell: bash
 
-          git fetch --tags
+      - name: Compute Version
+        id: version
+        uses: ./.github/actions/compute-version
+        with:
+          project-id: ${{ matrix.id }}
 
-          $pattern = "$projectId@$base.*"
-          $tags = git tag --list $pattern
+      - name: Build Artifact
+        id: build
+        uses: ./.github/actions/build-artifact
+        with:
+          project-id: ${{ matrix.id }}
+          project-path: ${{ matrix.path }}
+          project-type: ${{ matrix.type }}
+          version: ${{ steps.version.outputs.version }}
+          full-version: ${{ steps.version.outputs.full-version }}
 
-          if (-not $tags) {
-            $patch = 0
-          } else {
-            $patches = $tags | ForEach-Object {
-              if ($_ -match "@$base\.(\d+)$") { [int]$matches[1] } else { 0 }
-            }
-            $patch = ($patches | Measure-Object -Maximum).Maximum + 1
-          }
-
-          $version = "$base.$patch"
-          $fullVersion = "$projectId@$version"
-
-          Write-Host "Computed version: $fullVersion"
-          "VERSION=$version" >> $env:GITHUB_ENV
-          "FULL_VERSION=$fullVersion" >> $env:GITHUB_ENV
-          "version=$version" >> $env:GITHUB_OUTPUT
-          "full_version=$fullVersion" >> $env:GITHUB_OUTPUT
-
-      - uses: actions/checkout@v3
-        with: { fetch-depth: 0 }
-
-      - name: Restore, Build and Package VS Project
-        if: ${{ startsWith(matrix.type, 'vs') }}
-        shell: powershell
-        id: build-vs
-        run: |
-          cd ${{ matrix.path }}
-          $csproj = Get-ChildItem *.csproj -Recurse | Select-Object -First 1
-          if ($csproj -ne $null) {
-            dotnet restore $csproj.FullName
-            dotnet build $csproj.FullName --configuration Release
-            dotnet pack $csproj.FullName --configuration Release -p:PackageVersion=${{ steps.compute-version.outputs.version }} --output ./
-          } else {
-            Write-Host "No .csproj found. Skipping."
-            exit 1
-          }
-          "nuget_path=$version" >> $env:GITHUB_OUTPUT
-
-      - name: Restore, Build and Package Project
-        if: ${{ startsWith(matrix.type, 'uipath') }}
-        shell: powershell
-        id: build-uipath
-        run: |
-          echo "Packing UiPath project ${{ matrix.id }}"
-          cd ${{ matrix.path }}
-          uipcli pack --project-path .
-     
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.compute-version.outputs.full_version }}
-          path: ${{ matrix.path }}/*.nupkg
-        id: upload-artifact
-      
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
-        with:
-          tag_name: ${{ steps.compute-version.outputs.full_version }}
-          release_name: Release ${{ steps.compute-version.outputs.full_version }}
-          draft: false
-          prerelease: false
-      
-      - name: Publish NuGet Package to GitHub Packages
-        shell: powershell
-        run: |
-          $packagePath = "${{ matrix.path }}/${{ matrix.id }}.${{ steps.compute-version.outputs.version }}.nupkg"
-          Write-Host "Pushing package to GitHub Packages: $packagePath"
+          name: ${{ steps.version.outputs.full-version }}
+          path: ${{ steps.build.outputs.package-path }}
 
-          dotnet nuget push @(
-              "$packagePath",
-              "--api-key", "${{ secrets.GITHUB_TOKEN }}",
-              "--source", "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json",
-              "--skip-duplicate"
-          )
+      - name: Create GitHub Tag
+        uses: ./.github/actions/create-github-tag
+        with:
+          full-version: ${{ steps.version.outputs.full-version }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Publish to GitHub Packages
+        if: contains(matrix.deploySteps, 'nuget')
+        uses: ./.github/actions/publish-github-packages
+        with:
+          package-path: ${{ steps.build.outputs.package-path }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository-owner: ${{ github.repository_owner }}
     
-      - name: Publish NuGet Package to nuget.org
-        shell: powershell
-        run: |
-          $packagePath = "${{ matrix.path }}/${{ matrix.id }}.${{ steps.compute-version.outputs.version }}.nupkg"
-          Write-Host "Pushing package to nuget.org: $packagePath"
-          $apiKey = "${{ secrets.NUGET_ORG_API_KEY }}"
-          if (-not $apiKey) {
-            Write-Error "NUGET_ORG_API_KEY is not set. Skipping nuget.org push."
-            exit 1
-          }
-          dotnet nuget push @(
-            "$packagePath",
-            "--api-key", "${{ secrets.NUGET_ORG_API_KEY }}",
-            "--source", "https://api.nuget.org/v3/index.json",
-            "--skip-duplicate"
-          )
+      - name: Publish to NuGet.org
+        if: contains(matrix.deploySteps, 'nuget')
+        uses: ./.github/actions/publish-nuget
+        with:
+          package-path: ${{ steps.build.outputs.package-path }}
+          nuget-api-key: ${{ secrets.NUGET_ORG_API_KEY }}

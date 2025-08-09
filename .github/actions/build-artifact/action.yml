@@ -1,0 +1,26 @@
+name: 'Build Project Artifact'
+description: 'Builds and packages .NET or UiPath projects'
+inputs:
+  project-id:
+    description: 'The project identifier'
+    required: true
+  project-path:
+    description: 'Path to the project folder'
+    required: true
+  project-type:
+    description: 'Type of project (vs, uipath-library, uipath-process)'
+    required: true
+  version:
+    description: 'Version to use for packaging'
+    required: true
+  full-version:
+    description: 'Full version string for artifact naming'
+    required: true
+outputs:
+  artifact-id:
+    description: 'The ID of the uploaded artifact'
+  package-path:
+    description: 'Path to the generated package'
+runs:
+  using: 'node20'
+  main: 'index.js'
