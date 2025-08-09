@@ -9,6 +9,19 @@ async function main() {
     
     core.info(`Creating tag: ${fullVersion}`);
     
+    // Ensure we're in the workspace directory
+    const workspaceDir = process.env.GITHUB_WORKSPACE || process.cwd();
+    process.chdir(workspaceDir);
+    core.info(`Working directory: ${process.cwd()}`);
+    
+    // Verify we're in a git repository
+    try {
+      execSync('git rev-parse --git-dir', { stdio: 'pipe' });
+      core.info('Confirmed we are in a git repository');
+    } catch (error) {
+      throw new Error(`Not in a git repository. Current directory: ${process.cwd()}`);
+    }
+    
     // Configure git for GitHub Actions
     execSync('git config user.name "github-actions"', { stdio: 'inherit' });
     execSync('git config user.email "github-actions@github.com"', { stdio: 'inherit' });
