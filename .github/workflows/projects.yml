@@ -51,6 +51,21 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Create Local Package Source
+        run: |
+          $localSource = "${{ github.workspace }}/local-packages"
+          New-Item -ItemType Directory -Path $localSource -Force
+          dotnet nuget add source $localSource --name "LocalBuild"
+          "LOCAL_PACKAGE_SOURCE=$localSource" >> $env:GITHUB_ENV
+        shell: powershell
+
+      - name: Download Previous Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ github.workspace }}/local-packages
+          merge-multiple: true
+        continue-on-error: true
+
       - name: Install Action Dependencies
         run: |
           $actions = @('compute-version', 'build-artifact', 'create-github-tag', 'publish-github-packages', 'publish-nuget')
@@ -89,6 +104,21 @@ jobs:
         with:
           name: ${{ steps.version.outputs.full-version }}
           path: ${{ steps.build.outputs.package-path }}
+
+      - name: Add Package to Local Source
+        run: |
+          $packagePath = "${{ steps.build.outputs.package-path }}"
+          $localSource = $env:LOCAL_PACKAGE_SOURCE
+          if (Test-Path $packagePath -and $localSource) {
+            $packageName = Split-Path $packagePath -Leaf
+            $localPackagePath = Join-Path $localSource $packageName
+            Copy-Item $packagePath $localPackagePath -Force
+            Write-Host "Package added to local source: $localPackagePath"
+            
+            # Refresh local source
+            dotnet nuget locals all --clear
+          }
+        shell: powershell
 
       - name: Create GitHub Tag
         uses: ./.github/actions/create-github-tag
