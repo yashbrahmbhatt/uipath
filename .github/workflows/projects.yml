@@ -54,9 +54,6 @@ jobs:
             $changed | ForEach-Object { Write-Host "  $_" }
           }
                 
-          $json = $changed | ConvertTo-Json -Compress
-          Write-Host "Serialized JSON of changed files: $json"
-                
           # ✅ Safe output to GitHub Actions
           Add-Content -Path $env:GITHUB_OUTPUT -Value ('changed=' + $json)
 
