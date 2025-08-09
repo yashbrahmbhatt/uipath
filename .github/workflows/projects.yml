@@ -48,70 +48,41 @@ jobs:
           "changed=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           Write-Host "Changed files: $json"
 
-          # ✅ Safe output to GitHub Actions
-          Add-Content -Path $env:GITHUB_OUTPUT -Value ('changed=' + $json)
-
       - name: Map Changed Projects
         id: map-changes
         shell: powershell
         run: |
-          Write-Host "Raw input JSON:"
-          Write-Host '${{ steps.get-changed-files.outputs.changed }}'
+          $changedFiles = ConvertFrom-Json '${{ steps.get-changed-files.outputs.changed }}'
+          $monoJson = Get-Content "mono.json" | ConvertFrom-Json
 
-          $input = ConvertFrom-Json '${{ steps.get-changed-files.outputs.changed }}'
-
-          Write-Host "Parsed matched IDs:"
-          $matchedIds = @{}
-          foreach ($id in $input.matchedIds) {
-            $matchedIds[$id] = $true
-          }
-          Write-Host ($matchedIds.Keys -join ', ')
-
-          Write-Host "Parsed project map:"
           $projectMap = @{}
-          foreach ($p in $input.monoJson.projects) {
-            $projectMap[$p.id] = $p
-            Write-Host "  Project ID: $($p.id)"
+          $matchedIds = @()
+          
+          foreach ($project in $monoJson.projects) {
+            $projectMap[$project.id] = $project
           }
 
-          function Add-DependentProjectsRecursively {
-            param ($projectMap, $matchedIds)
-            $added = $false
-            foreach ($p in $projectMap.Values) {
-              if ($matchedIds.ContainsKey($p.id)) { continue }
-              if ($p.PSObject.Properties['dependsOn']) {
-                foreach ($d in $p.dependsOn) {
-                  if ($matchedIds.ContainsKey($d)) {
-                    Write-Host "Adding dependent project: $($p.id) because it depends on $d"
-                    $matchedIds[$p.id] = $true
-                    $added = $true
-                    break
-                  }
-                }
+          foreach ($project in $monoJson.projects) {
+            if (-not $project.build) { continue }
+
+            $projectPath = $project.path.Replace('/', '\')
+
+            foreach ($file in $changedFiles) {
+              $filePath = $file.Replace('/', '\')
+              if ($filePath -like "$projectPath*") {
+                $matchedIds += $project.id
+                break
               }
             }
-            if ($added) {
-              Write-Host "Recursing to add further dependent projects..."
-              Add-DependentProjectsRecursively $projectMap $matchedIds
-            }
           }
 
-          Write-Host "Expanding matched projects to include dependents..."
-          Add-DependentProjectsRecursively $projectMap $matchedIds
+          $projectMapJson = $projectMap | ConvertTo-Json -Depth 10 -Compress
+          $matchedIdsJson = $matchedIds | ConvertTo-Json -Depth 10 -Compress
 
-          $out = @{
-            matchedIds = $matchedIds.Keys
-            monoJson   = $input.monoJson
-          }
-          $json = $out | ConvertTo-Json -Depth 10 -Compress
-
-          Write-Host "Final expanded matched project IDs:"
-          Write-Host ($matchedIds.Keys -join ', ')
-
-          Write-Host "Serialized output JSON:"
-          Write-Host $json
-
-          "output=$json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "projectMap=$projectMapJson" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "projectMap: $projectMapJson"
+          "matchedIds=$matchedIdsJson" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "matchedIds: $matchedIdsJson"
 
       - name: Expand Transitive Dependencies
         id: expand
