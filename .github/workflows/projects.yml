@@ -56,9 +56,9 @@ jobs:
         shell: powershell
         run: |
           Write-Host "Raw input JSON:"
-          Write-Host '${{ steps.map-changes.outputs.output }}'
+          Write-Host '${{ steps.get-changed-files.outputs.output }}'
 
-          $input = ConvertFrom-Json '${{ steps.map-changes.outputs.output }}'
+          $input = ConvertFrom-Json '${{ steps.get-changed-files.outputs.output }}'
 
           Write-Host "Parsed matched IDs:"
           $matchedIds = @{}
