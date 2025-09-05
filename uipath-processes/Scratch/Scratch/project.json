@@ -1,16 +1,16 @@
 {
-  "name": "Yash.Config.StudioTestProject",
-  "projectId": "8eb9040b-d854-4d95-ab8e-71eead973d0c",
-  "description": ".",
+  "name": "Scratch",
+  "projectId": "44eb5541-8760-4429-9a0b-233df7ba89d3",
+  "description": "Blank Process",
   "main": "Main.xaml",
   "dependencies": {
     "UiPath.System.Activities": "[25.6.1]",
-    "Yash.Config": "[1.0.248-dev.59535]"
+    "Yash.Frameworks": "[1.0.248-dev.52474]"
   },
   "webServices": [],
   "entitiesStores": [],
   "schemaVersion": "4.0",
-  "studioVersion": "25.0.167.0",
+  "studioVersion": "25.0.172.0",
   "projectVersion": "1.0.0",
   "runtimeOptions": {
     "autoDispose": false,
@@ -18,7 +18,7 @@
     "isPausable": true,
     "isAttended": false,
     "requiresUserInteraction": true,
-    "supportsPersistence": true,
+    "supportsPersistence": false,
     "workflowSerialization": "NewtonsoftJson",
     "excludedLoggedData": [
       "Private:*",
@@ -47,7 +47,7 @@
   "entryPoints": [
     {
       "filePath": "Main.xaml",
-      "uniqueId": "2f94a6e6-7509-4efe-8927-40a64693007c",
+      "uniqueId": "b163d2e1-b323-4bf6-8484-55778b85e3a3",
       "input": [],
       "output": []
     }

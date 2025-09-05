@@ -15,7 +15,7 @@ namespace Yash.Config.Wizards
         {
             try
             {
-                if (!Helpers.EnsureOrPromptSettings(api, forcePrompt: true, out _, out _, out _, out _, out _))
+                if (!Helpers.EnsureOrPromptSettings(api, forcePrompt: true, out _, out _, out _, out _))
                     return null;
 
                 System.Windows.MessageBox.Show("Settings have been successfully updated.", "Done", MessageBoxButton.OK, MessageBoxImage.Information);

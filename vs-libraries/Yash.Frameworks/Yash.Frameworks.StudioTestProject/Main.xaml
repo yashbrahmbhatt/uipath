@@ -22,7 +22,6 @@
       <x:String>Yash.Config.Models</x:String>
       <x:String>Yash.Config.StudioTestProject</x:String>
       <x:String>Yash.Config</x:String>
-      <x:String>UiPath.Activities.System.Jobs</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -83,10 +82,10 @@
       <AssemblyReference>Yash.Config.StudioTestProject.Core</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="1782,955.6566666666666" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="1804,955.6566666666666" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="dict_Config" />
-      <Variable x:TypeArguments="ycsmc:SharedConfig" Name="testConfig" />
+      <Variable x:TypeArguments="ycsmc:Config" Name="testConfig" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -96,7 +95,7 @@
     <yca:LoadConfig DisplayName="Load Config" sap:VirtualizedContainerService.HintSize="477.3333333333333,176.66666666666666" sap2010:WorkflowViewState.IdRef="LoadConfig_1" WorkbookPath="Data\\Config.xlsx">
       <yca:LoadConfig.Result>
         <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)">
-          <CSharpReference x:TypeArguments="scg:Dictionary(x:String, x:Object)" sap2010:WorkflowViewState.IdRef="CSharpReference`1_3">dict_Config</CSharpReference>
+          <CSharpReference x:TypeArguments="scg:Dictionary(x:String, x:Object)" sap2010:WorkflowViewState.IdRef="CSharpReference`1_1">dict_Config</CSharpReference>
         </OutArgument>
       </yca:LoadConfig.Result>
     </yca:LoadConfig>
@@ -112,13 +111,13 @@
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
             <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="ycsmc:SharedConfig">
-                <CSharpReference x:TypeArguments="ycsmc:SharedConfig" sap2010:WorkflowViewState.IdRef="CSharpReference`1_4">testConfig</CSharpReference>
+              <OutArgument x:TypeArguments="ycsmc:Config">
+                <CSharpReference x:TypeArguments="ycsmc:Config" sap2010:WorkflowViewState.IdRef="CSharpReference`1_2">testConfig</CSharpReference>
               </OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="ycsmc:SharedConfig">
-                <CSharpValue x:TypeArguments="ycsmc:SharedConfig" sap2010:WorkflowViewState.IdRef="CSharpValue`1_31">ConfigFactory.FromDictionary&lt;Yash.Config.StudioTestProject.Models.Configs.SharedConfig&gt;(dict_Config)</CSharpValue>
+              <InArgument x:TypeArguments="ycsmc:Config">
+                <CSharpValue x:TypeArguments="ycsmc:Config" sap2010:WorkflowViewState.IdRef="CSharpValue`1_28">ConfigFactory.FromDictionary&lt;Yash.Config.StudioTestProject.Models.Configs.Config&gt;(dict_Config)</CSharpValue>
               </InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>

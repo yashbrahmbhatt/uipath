@@ -24,6 +24,11 @@ namespace Yash.Config.Models
         /// The folder where the asset is stored in Orchestrator.
         /// </summary>
         public string Folder = "";
+        
+        /// <summary>
+        /// The scope this applies to (different files created for each scope
+        /// </summary>
+        public string Scope = "";
 
         /// <summary>
         /// A description of the asset.

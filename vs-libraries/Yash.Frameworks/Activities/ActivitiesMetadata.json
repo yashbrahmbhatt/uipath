@@ -1,0 +1,13 @@
+{
+  "resourceManagerName": "Yash.Frameworks.Activities.Resources",
+  "activities": [
+    {
+      "fullName": "Yash.Frameworks.Activities.LazyFramework",
+      "shortName": "LazyFramework",
+      "displayNameKey": "LazyFramework_DisplayName",
+      "descriptionKey": "LazyFramework_Description",
+      "categoryKey": "Frameworks.Performers",
+      "viewModelType": "Yash.Frameworks.Activities.ViewModels.LazyFrameworkViewModel"
+    }
+  ]
+}

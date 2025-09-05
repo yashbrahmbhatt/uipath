@@ -39,7 +39,11 @@ namespace Yash.Config.Models
         /// The type to associate the value of the configuration key (for autogen purposes)
         /// </summary>
         public string Type = "";
-
+        
+        /// <summary>
+        /// The scope this applies to (different files created for each scope
+        /// </summary>
+        public string Scope = "";
         /// <summary>
         /// The file type (e.g., CSV, XLSX, TXT).
         /// </summary>

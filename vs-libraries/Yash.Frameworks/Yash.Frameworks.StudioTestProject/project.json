@@ -5,7 +5,7 @@
   "main": "Main.xaml",
   "dependencies": {
     "UiPath.System.Activities": "[25.6.1]",
-    "Yash.Config": "[1.0.248-dev.59535]"
+    "Yash.Config": "[1.0.211-dev.86214]"
   },
   "webServices": [],
   "entitiesStores": [],
@@ -18,7 +18,7 @@
     "isPausable": true,
     "isAttended": false,
     "requiresUserInteraction": true,
-    "supportsPersistence": true,
+    "supportsPersistence": false,
     "workflowSerialization": "NewtonsoftJson",
     "excludedLoggedData": [
       "Private:*",

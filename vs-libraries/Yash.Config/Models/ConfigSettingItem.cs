@@ -19,6 +19,11 @@ namespace Yash.Config.Models
         /// The value of the key.
         /// </summary>
         public string Value = "";
+        
+        /// <summary>
+        /// The scope this applies to (different files created for each scope
+        /// </summary>
+        public string Scope = "";
 
         /// <summary>
         /// A description of the key.
