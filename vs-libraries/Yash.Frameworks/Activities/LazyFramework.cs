@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Vml;
+using Newtonsoft.Json;
 using System;
 using System.Activities;
 using System.Activities.Statements;
@@ -20,7 +22,7 @@ using LogMessage = UiPath.Robot.Activities.Api.LogMessage;
 
 namespace Yash.Frameworks.Activities
 {
-    public class LazyFramework : CodeActivity// This base class exposes an OutArgument named Result
+    public class LazyFramework : NativeActivity// This base class exposes an OutArgument named Result
     {
         public Activity FrameworkInitializeConfig { get; set; }
         public Activity FrameworkInitializeApplications { get; set; }
@@ -30,6 +32,7 @@ namespace Yash.Frameworks.Activities
         public Activity FrameworkSystemException { get; set; }
         public Activity FrameworkSuccessful { get; set; }
         public Activity FrameworkEnd { get; set; }
+        public Activity 
         public InArgument<string> QueueName { get; set; }
         public InArgument<string> QueueFolder { get; set; }
         public bool EnableQueue { get; set; } = false;
@@ -43,6 +46,8 @@ namespace Yash.Frameworks.Activities
 
         [Browsable(false)]
         private IExecutorRuntime _executorRuntime;
+        [Browsable(false)]
+        private NativeActivityContext? _context;
 
         public LazyFramework()
         {
@@ -79,43 +84,71 @@ namespace Yash.Frameworks.Activities
         /*
          * The returned value will be used to set the value of the Result argument
          */
-        protected override void Execute(CodeActivityContext context)
+        protected override void Execute(NativeActivityContext context)
         {
             // This is how you can log messages from your activity. logs are sent to the Robot which will forward them to Orchestrator
             _executorRuntime = context.GetExecutorRuntime();
+            _context = context;
 
             var qName = QueueName.Get<string>(context);
             var qFolder = QueueFolder.Get<string>(context);
 
             Log($"Starting execution of LazyFramework with Queue: {qName}, Folder: {qFolder}", TraceEventType.Information);
             Log($"The primary screen resolution is: {SystemParameters.PrimaryScreenWidth.ToString()} x {SystemParameters.PrimaryScreenHeight.ToString()}", TraceEventType.Information);
-            ExecuteInternal(qName, qFolder);
 
-        }
-
-        public void ExecuteInternal(string QueueName, string QueueFolder)
-        {
             if (EnableInitializeConfig)
             {
                 Log($"Executing Initialize Config");
-                WorkflowInvoker.Invoke(FrameworkInitializeConfig);
+                CallActivity(FrameworkInitializeConfig);
                 Log($"Completed Initialize Config");
             }
             if (EnableInitializeApplications)
             {
+                Log($"Execution Initial Close of Applications");
+                CallActivity(FrameworkCloseApplications);
+                Log($"Completed Initial Close of Applications");
+            }
+            if (EnableInitializeApplications)
+            {
                 Log($"Executing Initialize Applications");
-                WorkflowInvoker.Invoke(FrameworkInitializeApplications);
+                CallActivity(FrameworkInitializeApplications);
                 Log($"Completed Initialize Applications");
             }
-            var asset = new GetRobotAsset()
+            if (EnableQueue)
             {
-                FolderPath = "LazyFramework",
-                AssetName = "ShouldLoadAsset",
-
-            };
-            Log($"Starting Transaction Processing for Queue: {QueueName}, Folder: {QueueFolder}");
-
+                Log($"Queue Enabled: {qName} in Folder: {qFolder}. Starting Loop");
+                while (true)
+                {
+                    var transactionItem = new GetTransactionItem()
+                    {
+                        FolderPath = qFolder,
+                        QueueType = qName,
+                        
+                    };
+                }
+            }
+            // Process Transaction
         }
+
+
+        public void CallActivity(Activity activity, Action? callback = null)
+        {
+            if (activity == null)
+                return;
+            _context?.ScheduleActivity(activity, OnActivityCompletedCallback, OnActivityFaultedCallback);
+        }
+
+
+        private void OnActivityFaultedCallback(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
+        {
+            throw propagatedException;
+        }
+
+        private void OnActivityCompletedCallback(NativeActivityContext context, ActivityInstance completedInstance)
+        {
+        }
+
+  
 
         public void Log(string message, TraceEventType level = TraceEventType.Verbose)
         {

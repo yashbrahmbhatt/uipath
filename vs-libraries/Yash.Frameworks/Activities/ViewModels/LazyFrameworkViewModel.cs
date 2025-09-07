@@ -80,14 +80,6 @@ namespace Yash.Frameworks.Activities.ViewModels
             EnableInitializeApplications.Tooltip = "Enable or disable framework initialization.";
             EnableInitializeApplications.OrderIndex = orderIndex++;
 
-            FrameworkInitializeApplications.IsPrincipal = true;
-            FrameworkInitializeApplications.IsVisible = false;
-            FrameworkInitializeApplications.ColumnOrder = 1;
-            FrameworkInitializeApplications.DisplayName = "Initialize Applications Workflow";
-            FrameworkInitializeApplications.Tooltip = "The workflow that initializes the applications.";
-            FrameworkInitializeApplications.OrderIndex = orderIndex++;
-            FrameworkInitializeApplications.Widget = new DefaultWidget() { Type = "Container" };
-
             FrameworkCloseApplications.IsPrincipal = true;
             FrameworkCloseApplications.IsVisible = false;
             FrameworkCloseApplications.ColumnOrder = 1;
@@ -95,6 +87,14 @@ namespace Yash.Frameworks.Activities.ViewModels
             FrameworkCloseApplications.Tooltip = "The workflow that closes the applications.";
             FrameworkCloseApplications.OrderIndex = orderIndex++;
             FrameworkCloseApplications.Widget = new DefaultWidget() { Type = "Container" };
+
+            FrameworkInitializeApplications.IsPrincipal = true;
+            FrameworkInitializeApplications.IsVisible = false;
+            FrameworkInitializeApplications.ColumnOrder = 1;
+            FrameworkInitializeApplications.DisplayName = "Initialize Applications Workflow";
+            FrameworkInitializeApplications.Tooltip = "The workflow that initializes the applications.";
+            FrameworkInitializeApplications.OrderIndex = orderIndex++;
+            FrameworkInitializeApplications.Widget = new DefaultWidget() { Type = "Container" };
 
             FrameworkProcessTransaction.IsPrincipal = true;
             FrameworkProcessTransaction.IsVisible = true;
