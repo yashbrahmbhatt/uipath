@@ -16,6 +16,10 @@ using System.Net.Http.Headers;
 using System.ComponentModel;
 using Yash.Frameworks.Helpers;
 using System.Activities.DesignViewModels;
+using System.Activities.ViewModels;
+using Yash.Frameworks.Activities.ViewModels.Helpers;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Markup;
 
 namespace Yash.Frameworks.Activities
 {
@@ -29,44 +33,101 @@ namespace Yash.Frameworks.Activities
         }
         public TraceEventType EventType { get; private set; } = TraceEventType.Error;
     }
-    public class LazyFramework : AsyncCodeActivity
+
+
+    public class LazyFramework : CodeActivity<LazyFrameworkResult>
     {
-        public Activity Framework_Initialize { get; set; } = new Sequence();
-        public Activity Framework_Config { get; set; } = new Sequence();
-        public bool EnableConfig { get; set; } = true;
+        
+        public Activity Framework_Initialize { get; set; }
 
+        public Activity Framework_Settings { get; set; }
 
-        private IExecutorRuntime _runtime;
+        public bool EnableSettings { get; set; } = false;
+        public bool EnableInitialize { get; set; } = false;
 
-        protected override IAsyncResult BeginExecute(AsyncCodeActivityContext context, AsyncCallback callback, object state)
+        [Browsable(false)]
+
+        private IExecutorRuntime? _runtime;
+
+        public LazyFramework()
         {
-            _runtime = context.GetExtension<IExecutorRuntime>();
-
-
-            var task = RunWorkflowAsync(context);
-            return TaskHelpers.BeginTask(task, callback, state);
+            Framework_Settings =
+                new Sequence
+                {
+                    DisplayName = "Initialize Settings Workflow"
+                };
+            Framework_Initialize = new Sequence
+            {
+                DisplayName = "Initialize Framework Workflow"
+            };
         }
 
-        private async Task<Dictionary<string, object>> RunWorkflowAsync(AsyncCodeActivityContext context)
+        public LazyFramework(IDesignServices serivices) : base()
         {
-            return new();
         }
+        
+
+        #region Activity Implementation
 
 
-        protected override void EndExecute(AsyncCodeActivityContext context, IAsyncResult result)
+        protected override LazyFrameworkResult Execute(CodeActivityContext context)
         {
-            TaskHelpers.EndTask(result);
+            _runtime = ActivityContextExtensions.GetExecutorRuntime(context);
+            var doConfig = EnableSettings && Framework_Settings != null;
+            var doInit = EnableInitialize && Framework_Initialize != null;
+
+            var result = ExecuteInternal(Framework_Settings,Framework_Initialize,doConfig,doInit); 
+            Result.Set(context, new LazyFrameworkResult());
+            return new LazyFrameworkResult();
         }
+
+        public LazyFrameworkResult ExecuteInternal(Activity? initConfig, Activity? initApps, bool doConfig, bool doInit)
+        {
+            try
+            {
+                if (doConfig && initConfig != null)
+                {
+                    Log("Starting Settings Initialization");
+                    WorkflowInvoker.Invoke(initConfig, new Dictionary<string, object?>());
+                    Log("Settings Initialization Completed");
+                }
+                if (doInit && initApps != null)
+                {
+                    Log("Starting Framework Initialization");
+                    WorkflowInvoker.Invoke(initApps, new Dictionary<string, object?>());
+                    Log("Framework Initialization Completed");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new LazyFrameworkException("Error during framework initialization", ex);
+            }
+            return new LazyFrameworkResult();
+        }
+
+        #endregion
+
+        #region Utility
 
         private void Log(string msg, TraceEventType level = TraceEventType.Information)
         {
-            _runtime?.LogMessage(new LogMessage
+            _runtime?.LogMessage(new UiPath.Robot.Activities.Api.LogMessage
             {
                 EventType = level,
                 Message = msg
             });
         }
 
-    }
+       
 
+        #endregion
+
+        #region Generative Methods
+
+
+        #endregion
+    }
+    public class LazyFrameworkResult
+    {
+    }
 }

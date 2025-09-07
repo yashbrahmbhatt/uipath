@@ -55,8 +55,8 @@
     <TargetFramework>net6.0-windows7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
-
+    <UseWindowsForms>false</UseWindowsForms>
+    <UseWPF>false</UseWPF>
   </PropertyGroup>
 
 
@@ -71,7 +71,18 @@
     <None Remove="Yash.Frameworks.StudioTestProject\**" />
   </ItemGroup>
 
-
+  <ItemGroup>
+    <Compile Include="..\Shared\UiPath.Activities.Presentation\ActivityDecoratorControl.cs">
+      <Link>Controls\ActivityDecoratorControl.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="..\Shared\UiPath.Activities.Presentation\Themes\Generic.xaml">
+      <Link>Themes\Generic.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
 
 
   <ItemGroup>
@@ -82,7 +93,23 @@
 
 
   <ItemGroup>
-    <EmbeddedResource Include="Activities\ActivitiesMetadata.json" />
+    <Page Remove="Yash.Frameworks.StudioTestProject\**.xaml" />
+  </ItemGroup>
+
+
+
+
+  <ItemGroup>
+    <Compile Remove="Activities\LazyFrameworkV2.cs" />
+    <Compile Remove="Activities\ViewModels\LazyFrameworkV2Designer.xaml.cs" />
+    <Compile Remove="Activities\Widgets\ActivityEditor.xaml.cs" />
+  </ItemGroup>
+
+
+
+
+  <ItemGroup>
+    <EmbeddedResource Include="Activities\Resources\ActivitiesMetadata.json" />
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
@@ -99,7 +126,6 @@
 
   <ItemGroup>
     <PackageReference Include="System.Activities.Core.Presentation" Version="6.0.0-20231204.1" PrivateAssets="All" />
-    <PackageReference Include="System.Activities.Metadata" Version="6.0.0-20240517.13" PrivateAssets="All" />
     <PackageReference Include="System.Activities.ViewModels" Version="1.0.0-20250625.2" PrivateAssets="All" />
     <PackageReference Include="UiPath.Activities.Api" Version="24.10.1">
       <PrivateAssets>All</PrivateAssets>
@@ -110,7 +136,7 @@
 
 
   <ItemGroup>
-    <Compile Update="Activities\Resources.Designer.cs">
+    <Compile Update="Activities\Resources\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -125,7 +151,7 @@
 
 
   <ItemGroup>
-    <EmbeddedResource Update="Activities\Resources.resx">
+    <EmbeddedResource Update="Activities\Resources\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -133,6 +159,37 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <Page Remove="Activities\Themes\Generic.xaml" />
+    <Page Remove="Activities\ViewModels\LazyFrameworkV2Designer.xaml" />
+    <Page Remove="Activities\Widgets\ActivityEditor.xaml" />
+    <Page Remove="Yash.Frameworks.StudioTestProject\Sequence.xaml" />
+    <Page Remove="Yash.Frameworks.StudioTestProject\~Sequence.xaml" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <None Include="Yash.Frameworks.StudioTestProject\Sequence.xaml" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <None Update="Activities\ViewModels\LazyFrameworkV2Designer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <Folder Include="Activities\Themes\" />
+    <Folder Include="Activities\Widgets\" />
   </ItemGroup>
 
 </Project>

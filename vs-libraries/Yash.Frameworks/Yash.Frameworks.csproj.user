@@ -2,11 +2,29 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <EmbeddedResource Update="Activities\Resources.resx">
+    <EmbeddedResource Update="Activities\Resources\Resources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="Settings\Resources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Activities\ViewModels\LazyFrameworkV2Designer.xaml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Yash.Frameworks.StudioTestProject\Sequence.xaml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Yash.Frameworks.StudioTestProject\Sequence.xaml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Yash.Frameworks.StudioTestProject\Sequence.xaml">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
 </Project>

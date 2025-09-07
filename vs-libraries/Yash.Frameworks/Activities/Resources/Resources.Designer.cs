@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Yash.Frameworks.Activities {
+namespace Yash.Frameworks.Activities.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Yash.Frameworks.Activities {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Yash.Frameworks.Activities.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Yash.Frameworks.Activities.Resources.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,24 @@ namespace Yash.Frameworks.Activities {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activity template.
+        /// </summary>
+        internal static string ActivityTemplate_Description {
+            get {
+                return ResourceManager.GetString("ActivityTemplate_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template.
+        /// </summary>
+        internal static string ActivityTemplate_DisplayName {
+            get {
+                return ResourceManager.GetString("ActivityTemplate_DisplayName", resourceCulture);
             }
         }
         

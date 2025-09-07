@@ -1,7 +1,10 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using Newtonsoft.Json;
+using System;
 using System.Activities;
 using System.Activities.DesignViewModels;
 using System.Activities.Statements;
+using System.Activities.ViewModels;
 using System.Activities.ViewModels.Interfaces;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,118 +15,174 @@ using System.Threading.Tasks;
 using UiPath.Api;
 using UiPath.Studio.Activities.Api;
 using UiPath.Studio.Activities.Api.Widgets;
+using Yash.Frameworks.Activities.ViewModels.Helpers;
 
 namespace Yash.Frameworks.Activities.ViewModels
 {
     public class LazyFrameworkViewModel : DesignPropertiesViewModel
     {
-        private readonly IWorkflowDesignApi _workflowDesignApi;
-        string AddButtonLabelKey = "AddButtonLabelKey";
-        private const string AddButtonTooltipKey = "AddButtonTooltipKey";
-        private const string DefaultDisplayNameKey = "DefaultDisplayNameKey";
-        private bool _removeContainerGroupProperties;
-
-        [Category("Framework")]
         public DesignProperty<Activity> Framework_Initialize { get; set; }
 
-        [Category("Framework")]
-        public DesignProperty<Activity> Framework_Config { get; set; }
+        public DesignProperty<Activity> Framework_Settings { get; set; }
 
-        [Category("Options")]
-        public DesignProperty<bool> EnableConfig { get; set; }
+        public DesignProperty<bool> EnableSettings { get; set; }
 
-        [Category("Options")]
 
         public DesignProperty<bool> EnableInitialize { get; set; }
+
+        public DesignProperty<string> Debug { get; set; }
+        public DesignOutArgument<LazyFrameworkResult> Result { get; set; }
 
 
         public LazyFrameworkViewModel(IDesignServices services) : base(services)
         {
-            this._workflowDesignApi = services.GetService<IWorkflowDesignApi>();
         }
 
-        protected override async ValueTask InitializeModelAsync()
+        protected override void InitializeModel()
         {
+
             //Debugger.Break(); 
             /*
              * The base call will initialize the properties of the view model with the values from the xaml or with the default values from the activity
              */
-            await base.InitializeModelAsync();
+            base.InitializeModel();
 
-            PersistValuesChangedDuringInit(); // just for heads-up here; it's a mandatory call only when you change the values of properties during initialization
+            //PersistValuesChangedDuringInit(); // just for heads-up here; it's a mandatory call only when you change the values of properties during initialization
 
-            var orderIndex = 0;
+            var _orderIndex = 0;
 
-            EnableConfig.IsPrincipal = true;
-            EnableConfig.IsVisible = true;
-            EnableConfig.Tooltip = "Enable or disable loading configuration.";
-            EnableConfig.OrderIndex = orderIndex++;
+            Debug.IsPrincipal = true;
+                Debug.IsVisible = true;
+            Debug.Category = "Debug";
+            Debug.Tooltip = "Debug Information";
+            Debug.Widget =  new TextBlockWidget()
+                            {
+                                Center = false,
+                                Multiline = true,
+                                Level = "Info",
+                            };
+            Debug.OrderIndex = _orderIndex++;
+            Debug.Value = "Debug";
 
-            Framework_Config.IsRequired = false;
-            Framework_Config.IsPrincipal = true;
-            Framework_Config.IsVisible = true;
-            Framework_Config.ActivityPropertyName = "Framework_Config";
-            Framework_Config.Widget = (IWidget)new DefaultWidget()
-            {
-                Type = "Container",
-            };
-            Framework_Config.OrderIndex = orderIndex++;
+            EnableSettings.Name = "Do you have settings?";
+            EnableSettings.OrderIndex = _orderIndex++;
+            EnableSettings.IsVisible = true;
+            EnableSettings.IsPrincipal = true;
+            EnableSettings.Category = "Settings";
+            EnableSettings.Tooltip = "Enable or disable loading configuration.";
+            EnableSettings.Widget = new DefaultWidget() { Type = "Toggle" };
 
-            EnableInitialize.IsPrincipal = true;
+            Framework_Settings.Name = "Initialize Settings Workflow";
+            Framework_Settings.OrderIndex = _orderIndex++;
+            Framework_Settings.IsVisible = true;
+            Framework_Settings.IsPrincipal = true;
+            Framework_Settings.Category = "Framework";
+            Framework_Settings.Tooltip = "The configuration loading sequence.";
+            Framework_Settings.Widget = new DefaultWidget() { Type = "Container", Metadata = { { "ShowExpanded", "true" } } };
+
+            EnableInitialize.Name = "Do you need to initialize applications?";
+            EnableInitialize.OrderIndex = _orderIndex++;
             EnableInitialize.IsVisible = true;
-            EnableInitialize.Tooltip = "Enable or disable loading configuration.";
-            EnableInitialize.OrderIndex = orderIndex++;
+            EnableInitialize.IsPrincipal = true;
+            EnableInitialize.Category = "Settings";
+            EnableInitialize.Tooltip = "Enable or disable framework initialization.";
+            EnableInitialize.Widget = new DefaultWidget() { Type = "Toggle" };
 
-            Framework_Initialize.IsRequired = false;
-            Framework_Initialize.IsPrincipal = false;
-            Framework_Initialize.IsVisible = false;
-            Framework_Initialize.ActivityPropertyName = "Framework_Initialize";
-            Framework_Initialize.Widget = (IWidget)new DefaultWidget()
-            {
-                Type = "Container",
-            };
-            Framework_Initialize.OrderIndex = orderIndex++;
+            Framework_Initialize.Name = "Initialize Applications Workflow";
+            Framework_Initialize.OrderIndex = _orderIndex++;
+            Framework_Initialize.IsVisible = true;
+            Framework_Initialize.IsPrincipal = true;
+            Framework_Initialize.Category = "Framework";
+            Framework_Initialize.Tooltip = "The framework initialization sequence.";
+            Framework_Initialize.Widget = new DefaultWidget() { Type = "Container", Metadata = { { "ShowExpanded", "true" } } };
 
-            //WorkbookPath.DisplayName = Resources.LoadConfig_WorkflowPath_DisplayName;
-            //WorkbookPath.Tooltip = Resources.LoadConfig_WorkflowPath_Tooltip;
-            ///*
-            // * Required fields will automatically raise validation errors when empty.
-            // * Unless you do custom validation, required activity properties should be marked as such both in the view model and in the activity:
-            // *   -> in the view model use the IsRequired property
-            // *   -> in the activity use the [RequiredArgument] attribute.
-            // */
-            //WorkbookPath.IsRequired = true;
+            Result.Name = "Result";
+            Result.OrderIndex = _orderIndex++;
+            Result.IsVisible = true;
+            Result.IsPrincipal = false;
+            Result.Category = "Output";
+            Result.Tooltip = "The result of the framework execution.";
 
-            //WorkbookPath.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
-            //WorkbookPath.OrderIndex = orderIndex++; // indicates the order in which the fields appear in the designer (i.e. the line number);
 
-            //ConfigType.DisplayName = Resources.LoadConfig_ConfigType_DisplayName;
-            //ConfigType.Tooltip = Resources.LoadConfig_ConfigType_Tooltip;
-            //ConfigType.IsRequired = true; // this is a required field, so it will raise validation errors when empty
-            //ConfigType.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
-            //ConfigType.OrderIndex = orderIndex++; // indicates the order in which the fields appear in the designer (i.e. the line number);
+
+
+            Debug.Value =  $"Framework Settings Enabled: {EnableSettings.Value}\n" +
+                           $"Framework Initialize Enabled: {EnableInitialize.Value}\n" +
+                           $"Framework_Initialize Metadata: {JsonConvert.SerializeObject(EnableSettings.ActivityPropertyName)}";
+
+
+            //UpdateDebug(_workflowDesignApi, "test");
         }
 
-        //private void ConfigType_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        //protected override void ManualRegisterDependencies()
         //{
-        //    if (e.PropertyName == nameof(ConfigType.Value) && ConfigType.Value is Type t)
-        //    {
-        //        Result.DisplayName = $"{Resources.LoadConfig_Config_DisplayName} ({t.Name})";
-        //        Result.Tooltip = $"The loaded configuration object of type {t.FullName}";
-        //    }
+        //    base.ManualRegisterDependencies();
+        //    //RegisterDependency(EnableSettings, "Value", "ToggleSettings");
+        //    //RegisterDependency(EnableInitialize, "Value", "ToggleInitialize");
+        //    //RegisterDependency(Framework_Initialize, "Value", "Framework_Initialize");
+        //    //RegisterDependency(Framework_Settings, "Value", "Framework_Settings");
+        //}
+        
+        //private void UpdateDebug(object obj, string prop)
+        //{
+        //    Debug.Value = JsonConvert.SerializeObject(obj, Formatting.Indented);
         //}
 
-        public virtual async ValueTask<IReadOnlyList<ReadOnlyDesignProperty>> GetPropertiesAsync()
-        {
-            IReadOnlyList<ReadOnlyDesignProperty> propertiesAsync = await base.GetPropertiesAsync();
-            return !this._removeContainerGroupProperties ? propertiesAsync : (IReadOnlyList<ReadOnlyDesignProperty>)propertiesAsync.AsEnumerable<ReadOnlyDesignProperty>().Where<ReadOnlyDesignProperty>((Func<ReadOnlyDesignProperty, bool>)(p => p.ActivityPropertyName != "ElseIfs")).ToArray<ReadOnlyDesignProperty>();
-        }
+        //protected override void InitializeRules()
+        //{
+        //    base.InitializeRules();
+        //   // Rule("ToggleSettings", new Action(ToggleSettings));
+        //    //Rule("ToggleInitialize", new Action(ToggleInitialize));
+        //   // Rule("Framework_Initialize", new Action(Framework_InitializedChanged));
+        //   // Rule("Framework_Settings", new Action(Framework_SettingsChanged));
+        //}
 
-        public virtual async ValueTask<ReadOnlyObservableCollection<ReadOnlyDesignProperty>> GetBrowsablePropertiesAsync()
-        {
-            ReadOnlyObservableCollection<ReadOnlyDesignProperty> browsablePropertiesAsync = await base.GetBrowsablePropertiesAsync();
-            return !this._removeContainerGroupProperties ? browsablePropertiesAsync : new ReadOnlyObservableCollection<ReadOnlyDesignProperty>(new ObservableCollection<ReadOnlyDesignProperty>(browsablePropertiesAsync.AsEnumerable<ReadOnlyDesignProperty>().Where<ReadOnlyDesignProperty>((Func<ReadOnlyDesignProperty, bool>)(p => p.ActivityPropertyName != "ElseIfs"))));
-        }
-        }
-    internal record RestrictedActivity(string AssemblyQualifiedName, string DisplayName);
+        //private void Framework_InitializedChanged()
+        //{
+        //    UpdateDebug(Framework_Initialize, nameof(Framework_Initialize));
+        //}
+        //protected void Framework_SettingsChanged()
+        //{
+        //    UpdateDebug(Framework_Settings, nameof(Framework_Settings));
+        //}
+        //private void ToggleSettings()
+        //{
+        //    //if (EnableSettings.Value)
+        //    //{
+        //    //    Framework_Settings.IsVisible = true;
+        //    //    EnableSettings.IsPrincipal = false;
+        //    //}
+        //    //else
+        //    //{
+        //    //    Framework_Settings.IsVisible = false;
+        //    //    EnableSettings.IsPrincipal = true;
+        //    //}
+        //}
+        //private void ToggleInitialize()
+        //{
+        //    if (EnableInitialize.Value)
+        //    {
+        //        Framework_Initialize.IsVisible = true;
+        //        EnableInitialize.IsPrincipal = false;
+        //    }
+        //    else
+        //    {
+        //        Framework_Initialize.IsVisible = false;
+        //        EnableInitialize.IsPrincipal = true;
+        //    }
+        //}
+        //public override async ValueTask<IReadOnlyList<ReadOnlyDesignProperty>> GetPropertiesAsync()
+        //{
+        //    IReadOnlyList<ReadOnlyDesignProperty> propertiesAsync = await base.GetPropertiesAsync();
+        //    return !this._removeContainerGroupProperties ? propertiesAsync : (IReadOnlyList<ReadOnlyDesignProperty>)propertiesAsync.AsEnumerable<ReadOnlyDesignProperty>().Where<ReadOnlyDesignProperty>((Func<ReadOnlyDesignProperty, bool>)(p => p.ActivityPropertyName != "ElseIfs")).ToArray<ReadOnlyDesignProperty>();
+        //}
+
+        //public override async ValueTask<ReadOnlyObservableCollection<ReadOnlyDesignProperty>> GetBrowsablePropertiesAsync()
+        //{
+        //    ReadOnlyObservableCollection<ReadOnlyDesignProperty> browsablePropertiesAsync = await base.GetBrowsablePropertiesAsync();
+        //    return !this._removeContainerGroupProperties ? browsablePropertiesAsync : new ReadOnlyObservableCollection<ReadOnlyDesignProperty>(new ObservableCollection<ReadOnlyDesignProperty>(browsablePropertiesAsync.AsEnumerable<ReadOnlyDesignProperty>().Where<ReadOnlyDesignProperty>((Func<ReadOnlyDesignProperty, bool>)(p => p.ActivityPropertyName != "ElseIfs"))));
+        //}
+
+    }
+    //record RestrictedActivity(string AssemblyQualifiedName, string DisplayName);
 }

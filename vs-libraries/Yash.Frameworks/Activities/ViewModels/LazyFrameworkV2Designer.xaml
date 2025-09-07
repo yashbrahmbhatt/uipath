@@ -1,0 +1,20 @@
+﻿<sap:ActivityDesigner xmlns:Widgets="clr-namespace:Yash.Frameworks.Activities.Widgets"  x:Class="Yash.Frameworks.Activities.ViewModels.LazyFrameworkV2Designer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
+    xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation" 
+                      xmlns:uip="clr-namespace:UiPath.Activities.Presentation" 
+                      xmlns:sapc="clr-namespace:System.Activities.Presentation.Converters;assembly=System.Activities.Presentation"
+                      xmlns:sa="clr-namespace:System.Activities;assembly=System.Activities"
+                      Collapsible="True"
+                      >
+    <sap:ActivityDesigner.Resources>
+        <ResourceDictionary>
+            <sapc:ArgumentToExpressionConverter x:Key="ArgumentToExpressionConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Yash.Frameworks;component/Activities/ViewModels/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </sap:ActivityDesigner.Resources>
+    <Widgets:ActivityEditor />
+</sap:ActivityDesigner>

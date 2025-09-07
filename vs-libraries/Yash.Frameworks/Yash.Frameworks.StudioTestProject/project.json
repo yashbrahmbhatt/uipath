@@ -2,10 +2,10 @@
   "name": "Yash.Config.StudioTestProject",
   "projectId": "8eb9040b-d854-4d95-ab8e-71eead973d0c",
   "description": ".",
-  "main": "Main.xaml",
+  "main": "Sequence.xaml",
   "dependencies": {
-    "UiPath.System.Activities": "[25.6.1]",
-    "Yash.Config": "[1.0.211-dev.86214]"
+    "UiPath.System.Activities": "[25.8.0]",
+    "Yash.Frameworks": "[1.0.250-dev.14626]"
   },
   "webServices": [],
   "entitiesStores": [],
@@ -46,8 +46,8 @@
   "expressionLanguage": "CSharp",
   "entryPoints": [
     {
-      "filePath": "Main.xaml",
-      "uniqueId": "2f94a6e6-7509-4efe-8927-40a64693007c",
+      "filePath": "Sequence.xaml",
+      "uniqueId": "eea5aa29-3c79-4e49-a5b7-f097e7543464",
       "input": [],
       "output": []
     }

@@ -117,10 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActivityTemplate_Description" xml:space="preserve">
+    <value>Activity template</value>
+    <comment>activity description</comment>
+  </data>
+  <data name="ActivityTemplate_DisplayName" xml:space="preserve">
+    <value>Template</value>
+    <comment>activity name</comment>
+  </data>
   <data name="LazyFramework_Description" xml:space="preserve">
     <value>The lazy framework automation framework.</value>
+    <comment>activity description</comment>
   </data>
   <data name="LazyFramework_DisplayName" xml:space="preserve">
     <value>LazyFramework</value>
+    <comment>activity name</comment>
   </data>
 </root>
