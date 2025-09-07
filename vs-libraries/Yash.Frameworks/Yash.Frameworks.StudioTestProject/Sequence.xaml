@@ -64,7 +64,7 @@
       <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Sequence" sap:VirtualizedContainerService.HintSize="1276,1199.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Sequence" sap:VirtualizedContainerService.HintSize="1293.3333333333333,527.3733333333332" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -93,33 +93,6 @@
         </Sequence>
       </ui:IfElseIfV2.Then>
     </ui:IfElseIfV2>
-    <yfa:ActivityTemplate DisplayName="Template" EnableInitializeApplications="False" EnableInitializeSettings="False" sap:VirtualizedContainerService.HintSize="450,448.6666666666667" sap2010:WorkflowViewState.IdRef="ActivityTemplate_1" SelectedOperation="Multiply">
-      <yfa:ActivityTemplate.FrameworkInitializeApplications>
-        <Sequence DisplayName="Initialize Applications Workflow" sap:VirtualizedContainerService.HintSize="416,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_13">
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </Sequence>
-      </yfa:ActivityTemplate.FrameworkInitializeApplications>
-      <yfa:ActivityTemplate.FrameworkInitializeSettings>
-        <Sequence DisplayName="Initialize Settings Workflow" sap:VirtualizedContainerService.HintSize="416,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_12">
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </Sequence>
-      </yfa:ActivityTemplate.FrameworkInitializeSettings>
-    </yfa:ActivityTemplate>
-    <yfa:LazyFramework EnableInitialize="False" EnableSettings="False" sap:VirtualizedContainerService.HintSize="450,326.6666666666667" sap2010:WorkflowViewState.IdRef="LazyFramework_2">
-      <yfa:LazyFramework.Framework_Initialize>
-        <Sequence DisplayName="Initialize Framework Workflow" sap2010:WorkflowViewState.IdRef="Sequence_10" />
-      </yfa:LazyFramework.Framework_Initialize>
-      <yfa:LazyFramework.Framework_Settings>
-        <Sequence DisplayName="Initialize Settings Workflow" sap2010:WorkflowViewState.IdRef="Sequence_11" />
-      </yfa:LazyFramework.Framework_Settings>
-    </yfa:LazyFramework>
+    <yfa:LazyFramework FrameworkInitializeApplications="{x:Null}" FrameworkInitializeSettings="{x:Null}" EnableInitializeApplications="False" EnableInitializeSettings="False" sap:VirtualizedContainerService.HintSize="450,48" sap2010:WorkflowViewState.IdRef="LazyFramework_1" />
   </Sequence>
 </Activity>

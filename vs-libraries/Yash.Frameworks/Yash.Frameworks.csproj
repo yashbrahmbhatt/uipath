@@ -165,7 +165,6 @@
 
   <ItemGroup>
     <Page Remove="Activities\Themes\Generic.xaml" />
-    <Page Remove="Activities\ViewModels\LazyFrameworkV2Designer.xaml" />
     <Page Remove="Activities\Widgets\ActivityEditor.xaml" />
     <Page Remove="Yash.Frameworks.StudioTestProject\Sequence.xaml" />
     <Page Remove="Yash.Frameworks.StudioTestProject\~Sequence.xaml" />
@@ -175,14 +174,6 @@
 
   <ItemGroup>
     <None Include="Yash.Frameworks.StudioTestProject\Sequence.xaml" />
-  </ItemGroup>
-
-
-
-  <ItemGroup>
-    <None Update="Activities\ViewModels\LazyFrameworkV2Designer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
   </ItemGroup>
 
 

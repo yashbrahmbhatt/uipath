@@ -8,14 +8,6 @@
       "descriptionKey": "LazyFramework_Description",
       "categoryKey": "Frameworks.Performers",
       "viewModelType": "Yash.Frameworks.Activities.ViewModels.LazyFrameworkViewModel"
-    },
-    {
-      "fullName": "Yash.Frameworks.Activities.ActivityTemplate",
-      "shortName": "Template",
-      "displayNameKey": "ActivityTemplate_DisplayName",
-      "descriptionKey": "ActivityTemplate_Description",
-      "categoryKey": "Templates",
-      "viewModelType": "Yash.Frameworks.Activities.ViewModels.ActivityTemplateViewModel"
     }
   ]
 }
