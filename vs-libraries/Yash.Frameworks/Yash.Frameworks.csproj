@@ -130,7 +130,9 @@
     <PackageReference Include="UiPath.Activities.Api" Version="24.10.1">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="UiPath.System.Activities" Version="25.8.0" />
     <PackageReference Include="UiPath.Workflow" Version="6.0.0-20240401-07" PrivateAssets="All" />
+    <PackageReference Include="Yash.Config" Version="25.8.9" />
   </ItemGroup>
 
 
