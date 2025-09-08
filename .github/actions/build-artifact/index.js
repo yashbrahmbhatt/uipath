@@ -57,17 +57,40 @@ async function buildVSProject(projectPath, version) {
   const csprojPath = path.join(projectPath, csprojFiles[0]);
   core.info(`Found project file: ${csprojPath}`);
   
-  // Restore dependencies
-  core.info('Restoring dependencies...');
-  execSync(`dotnet restore "${csprojPath}"`, { stdio: 'inherit' });
+  // Create a temporary NuGet.config that only includes online sources for CI builds
+  const tempNuGetConfig = path.join(projectPath, 'temp-nuget.config');
+  const nugetConfigContent = `<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <packageSources>
+        <clear />
+        <add key="NuGet.org" value="https://api.nuget.org/v3/index.json" />
+        <add key="UiPath Official" value="https://pkgs.dev.azure.com/uipath/Public.Feeds/_packaging/UiPath-Official/nuget/v3/index.json" />
+        <add key="UiPath Marketplace" value="https://gallery.uipath.com/api/v3/index.json" />
+    </packageSources>
+</configuration>`;
   
-  // Build project
-  core.info('Building project...');
-  execSync(`dotnet build "${csprojPath}" --configuration Release --no-restore`, { stdio: 'inherit' });
+  core.info('Creating temporary NuGet.config without local sources for CI build');
+  fs.writeFileSync(tempNuGetConfig, nugetConfigContent);
   
-  // Pack project
-  core.info('Packing project...');
-  execSync(`dotnet pack "${csprojPath}" --configuration Release --no-build -p:PackageVersion=${version} --output "${projectPath}"`, { stdio: 'inherit' });
+  try {
+    // Restore dependencies using the temporary config
+    core.info('Restoring dependencies...');
+    execSync(`dotnet restore "${csprojPath}" --configfile "${tempNuGetConfig}"`, { stdio: 'inherit' });
+    
+    // Build project
+    core.info('Building project...');
+    execSync(`dotnet build "${csprojPath}" --configuration Release --no-restore`, { stdio: 'inherit' });
+    
+    // Pack project
+    core.info('Packing project...');
+    execSync(`dotnet pack "${csprojPath}" --configuration Release --no-build -p:PackageVersion=${version} --output "${projectPath}"`, { stdio: 'inherit' });
+    
+  } finally {
+    // Clean up temporary config file
+    if (fs.existsSync(tempNuGetConfig)) {
+      fs.unlinkSync(tempNuGetConfig);
+    }
+  }
   
   // Find generated package
   const nupkgFiles = glob.sync('*.nupkg', { cwd: projectPath });
