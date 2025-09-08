@@ -3,11 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yash.Config", "Yash.Config.csproj", "{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yash.Orchestrator", "..\Yash.Orchestrator\Yash.Orchestrator.csproj", "{D7302AA2-8728-4765-9BD7-27EC9512BF67}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yash.Orchestrator.Tests", "..\Yash.Orchestrator.Tests\Yash.Orchestrator.Tests.csproj", "{76B8C5B8-950E-40D1-B6E6-BA8CAF33EAFE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yash.Config", "Yash.Config\Yash.Config.csproj", "{32F90933-114D-4120-AA1C-5A7F49B584C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3043D57F-32D2-4D0F-B3C3-DFC503D847C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7302AA2-8728-4765-9BD7-27EC9512BF67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7302AA2-8728-4765-9BD7-27EC9512BF67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7302AA2-8728-4765-9BD7-27EC9512BF67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7302AA2-8728-4765-9BD7-27EC9512BF67}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76B8C5B8-950E-40D1-B6E6-BA8CAF33EAFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76B8C5B8-950E-40D1-B6E6-BA8CAF33EAFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76B8C5B8-950E-40D1-B6E6-BA8CAF33EAFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76B8C5B8-950E-40D1-B6E6-BA8CAF33EAFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32F90933-114D-4120-AA1C-5A7F49B584C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32F90933-114D-4120-AA1C-5A7F49B584C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32F90933-114D-4120-AA1C-5A7F49B584C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32F90933-114D-4120-AA1C-5A7F49B584C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

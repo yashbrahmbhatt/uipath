@@ -110,7 +110,7 @@
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="UiPath.Workflow" Version="6.0.0-20240401-07" PrivateAssets="All" />
-    <PackageReference Include="Yash.Orchestrator" Version="1.0.251-dev.41437" />
+    <PackageReference Include="Yash.Orchestrator" Version="*" />
   </ItemGroup>
 
 
