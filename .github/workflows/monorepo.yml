@@ -178,6 +178,9 @@ jobs:
           package-path: ${{ steps.build.outputs.package-path }}
           orchestrator-url: ${{ secrets.UIP_URL }}
           orchestrator-tenant: ${{ secrets.UIP_TENANT_NAME }}
+          # Use existing UiPath secrets for application authentication
+          application-id: ${{ secrets.UIP_APPLICATION_ID }}
+          application-secret: ${{ secrets.UIP_APPLICATION_SECRET }}
       
       - name: Publish to GitHub Packages
         if: ${{ matrix.deploy && contains(matrix.deploySteps, 'nuget') }}
