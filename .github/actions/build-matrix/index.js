@@ -66,14 +66,50 @@ function getChangedFiles() {
     
     return files;
   } catch (error) {
-    core.warning(`Error getting changed files: ${error.message}`);
-    return null; // Signal to build all projects
+    core.warning(`Failed to use commit range ${before}..${after}: ${error.message}`);
+    // Fallback to HEAD~1 comparison
+    try {
+      core.info('Fallback: Using HEAD~1..HEAD comparison');
+      const output = execSync('git diff --name-only HEAD~1 HEAD', { encoding: 'utf8' });
+      const files = output.split('\n').filter(line => line.trim());
+      core.info(`Found ${files.length} changed files via fallback`);
+      return files;
+    } catch (fallbackError) {
+      core.warning(`Failed HEAD~1 comparison: ${fallbackError.message}`);
+      // Try origin/main..HEAD fallback
+      try {
+        core.info('Fallback: Using origin/main..HEAD comparison');
+        const output = execSync('git diff --name-only origin/main HEAD', { encoding: 'utf8' });
+        const files = output.split('\n').filter(line => line.trim());
+        core.info(`Found ${files.length} changed files via origin/main fallback`);
+        return files;
+      } catch (originError) {
+        core.warning(`Failed origin/main comparison: ${originError.message}`);
+        core.warning('Could not determine changed files, will build all projects');
+        return null; // Signal that we should build all projects
+      }
+    }
   }
 }
 
 function findChangedProjects(changedFiles, monoConfig) {
   core.info('Finding changed projects...');
   const projectsToBuild = new Map();
+  
+  // If changedFiles is null, build all projects that have build: true
+  if (changedFiles === null) {
+    core.warning('Building all projects due to inability to determine changes');
+    for (const project of monoConfig.projects) {
+      if (project.build) {
+        core.info(`Adding ${project.id} to build (build all mode)`);
+        projectsToBuild.set(project.id, project);
+      }
+    }
+    const result = Array.from(projectsToBuild.values());
+    core.info(`Total projects to build (all mode): ${result.length}`);
+    result.forEach(p => core.info(`  - ${p.id}`));
+    return result;
+  }
   
   // Find directly changed projects
   for (const project of monoConfig.projects) {
@@ -133,6 +169,13 @@ function findChangedProjects(changedFiles, monoConfig) {
 
 function topologicalSort(projects) {
   core.info('Performing topological sort...');
+  
+  // Safety check to ensure projects is an array
+  if (!Array.isArray(projects)) {
+    core.error(`Expected projects to be an array, got ${typeof projects}`);
+    throw new Error(`topologicalSort expects an array but received ${typeof projects}`);
+  }
+  
   const visited = new Map();
   const result = [];
   const projectMap = new Map(projects.map(p => [p.id, p]));
@@ -204,6 +247,22 @@ async function main() {
     } else {
       projectsToBuild = findChangedProjects(changedFiles, monoConfig);
     }
+    
+    // Check if configuration files changed - if so, build everything
+    let shouldBuildAll = changedFiles === null;
+    if (changedFiles && !shouldBuildAll) {
+      const configFiles = ['mono.json', '.github/workflows/', 'nuget.config'];
+      shouldBuildAll = changedFiles.some(file => 
+        configFiles.some(configFile => file.includes(configFile))
+      );
+      if (shouldBuildAll) {
+        core.info('Configuration files changed, building all projects');
+      }
+    }
+    
+    const projectsToBuild = shouldBuildAll 
+      ? findChangedProjects(null, monoConfig)  // Build all
+      : findChangedProjects(changedFiles, monoConfig);
     
     const sortedProjects = topologicalSort(projectsToBuild);
     
