@@ -9,7 +9,7 @@
     "UiPath.IntegrationService.Activities": "[1.17.0]",
     "UiPath.System.Activities": "[25.6.1]",
     "UiPath.Testing.Activities": "[25.4.0]",
-    "Yash.Config": "[1.0.251-dev.41493]",
+    "Yash.Config": "[29.9.0]",
     "Yash.RBC.Activities": "[25.7.1]",
     "Yash.Utility.Activities": "[25.7.1]"
   },
