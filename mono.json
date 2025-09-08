@@ -12,33 +12,12 @@
       "dependsOn": []
     },
     {
-      "id": "CLIToGitHubWrapper",
-      "path": "uipath-processes/CLIToGitHubWrapper",
-      "type": "uipath-process",
-      "build": false,
-      "test": false,
-      "deploy": false,
-      "deploySteps": ["orchestrator"],
-      "dependsOn": []
-    },
-    {
-      "id": "Diagnostic",
-      "path": "uipath-processes/Diagnostic",
+      "id": "Finance.Automations",
+      "path": "uipath-processes/Finance.Automations",
       "type": "uipath-process",
       "build": true,
       "test": false,
-      "testPath": "uipath-processes/Diagnostic",
-      "deploy": true,
-      "deploySteps": ["orchestrator"],
-      "dependsOn": []
-    },
-    {
-      "id": "Finance.IngestTransactions",
-      "path": "uipath-processes/Finance.IngestTransactions",
-      "type": "uipath-process",
-      "build": true,
-      "test": false,
-      "testPath": "uipath-processes/Finance.IngestTransactions",
+      "testPath": "uipath-processes/Finance.Automations",
       "deploy": true,
       "deploySteps": ["orchestrator"],
       "dependsOn": []

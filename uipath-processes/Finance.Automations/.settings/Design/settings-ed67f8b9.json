@@ -1,0 +1,6 @@
+﻿{
+  "Yash.Config.AutoGeneration.FilePath": "C:\\Users\\eyash\\OneDrive\\Documents\\UiPath\\Finance.Ingest\\Data\\Config.xlsx",
+  "Yash.Config.AutoGeneration.OutputDirectory": "C:\\Users\\eyash\\OneDrive\\Documents\\UiPath\\Finance.Ingest\\Configs",
+  "Yash.Config.AutoGeneration.Namespace": "Finance.Automations.Configs",
+  "Yash.Config.AutoGeneration.AdditionalUsings": "System,System.Collections.Generic"
+}

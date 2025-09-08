@@ -1,0 +1,150 @@
+{
+  "name": "Finance.Automations",
+  "projectId": "fa96c4f7-5d74-4c81-8d3d-4f721519bf21",
+  "description": "All automations within Finance functions.",
+  "main": "01_Dispatcher\\Dispatcher.cs",
+  "dependencies": {
+    "UiPath.Excel.Activities": "[3.2.1]",
+    "UiPath.GSuite.Activities": "[3.4.1-preview]",
+    "UiPath.IntegrationService.Activities": "[1.17.0]",
+    "UiPath.System.Activities": "[25.6.1]",
+    "UiPath.Testing.Activities": "[25.4.0]",
+    "Yash.Config": "[1.0.251-dev.41493]",
+    "Yash.RBC.Activities": "[25.7.1]",
+    "Yash.Utility.Activities": "[25.7.1]"
+  },
+  "webServices": [],
+  "entitiesStores": [],
+  "schemaVersion": "4.0",
+  "studioVersion": "24.10.16.0",
+  "projectVersion": "25.9.4-alpha.1",
+  "runtimeOptions": {
+    "autoDispose": false,
+    "netFrameworkLazyLoading": false,
+    "isPausable": true,
+    "isAttended": false,
+    "requiresUserInteraction": false,
+    "supportsPersistence": false,
+    "workflowSerialization": "DataContract",
+    "excludedLoggedData": [
+      "Private:*",
+      "*password*"
+    ],
+    "executionType": "Workflow",
+    "readyForPiP": false,
+    "startsInPiP": false,
+    "mustRestoreAllDependencies": true,
+    "pipType": "ChildSession"
+  },
+  "designOptions": {
+    "projectProfile": "Developement",
+    "outputType": "Process",
+    "libraryOptions": {
+      "includeOriginalXaml": false,
+      "privateWorkflows": []
+    },
+    "processOptions": {
+      "ignoredFiles": []
+    },
+    "fileInfoCollection": [
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "b8433807-69cf-496f-bfbe-6ed76ed57931",
+        "testCaseType": "TestCase",
+        "fileName": "01_Dispatcher\\Tests\\BaseDispatcherTest.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "ec502e2c-b158-4db7-8f34-de504ecae696",
+        "testCaseType": "TestCase",
+        "fileName": "01_Dispatcher\\Tests\\Dispatcher.Success.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "5b180a49-dbd2-4ff9-99c7-e6aadcf901d7",
+        "testCaseType": "TestCase",
+        "fileName": "01_Dispatcher\\Tests\\Dispatcher.Failure.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "61029758-67b5-401f-9aa7-659f1e3b9561",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\BasePerformerTest.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "1f9ebd34-60dc-4a33-961b-70fea69412d2",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\Performer.BusinessException.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "0053d8d0-4fd8-4c83-a738-661c37691d43",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\Performer.InitializationError.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "9756d91e-d498-44f5-9020-505376beb488",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\Performer.MaintenanceTime.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "e641d8fd-e484-42d1-b1e0-4d68428f86d5",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\Performer.Success.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "6a2ed482-1fcc-474c-9e8c-178d862a6bbc",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\Performer.SystemException.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "b3775522-a5d0-431c-bfb3-5b68dbf43d0c",
+        "testCaseType": "TestCase",
+        "fileName": "99_Reporter\\Tests\\Reporter.Success.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "66662018-1eb8-4ac7-a53d-bd7e03d66839",
+        "testCaseType": "TestCase",
+        "fileName": "99_Reporter\\Tests\\Reporter.Failure.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "f0a8553f-f6d3-4d8d-a8fe-52e1a6308c02",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\Performer.NoData.cs"
+      }
+    ],
+    "saveToCloud": false
+  },
+  "expressionLanguage": "CSharp",
+  "entryPoints": [
+    {
+      "filePath": "02_Performer\\Performer.cs",
+      "uniqueId": "ab8fa640-17ff-4b41-8c3f-2e6bdd2ced89",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "01_Dispatcher\\Dispatcher.cs",
+      "uniqueId": "31d77c08-e5e2-4373-b31f-7963c352cace",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "99_Reporter\\Reporter.cs",
+      "uniqueId": "68bcb7a9-77b1-4c35-be52-d5bc4f04fe2b",
+      "input": [],
+      "output": []
+    }
+  ],
+  "isTemplate": false,
+  "templateProjectData": {},
+  "publishData": {},
+  "targetFramework": "Windows"
+}

@@ -244,6 +244,7 @@ async function main() {
         type: p.type,
         test: p.test || false,
         testPath: p.testPath || p.path,
+        deploy: p.deploy || false,
         deploySteps: p.deploySteps || [],
         dependsOn: p.dependsOn || [],
       })),
@@ -262,8 +263,16 @@ async function main() {
             { data: "Project ID", header: true },
             { data: "Type", header: true },
             { data: "Path", header: true },
+            { data: "Deploy", header: true },
+            { data: "Deploy Steps", header: true },
           ],
-          ...sortedProjects.map((p) => [p.id, p.type, p.path]),
+          ...sortedProjects.map((p) => [
+            p.id, 
+            p.type, 
+            p.path,
+            p.deploy ? "✅" : "❌",
+            (p.deploySteps || []).join(", ") || "None"
+          ]),
         ])
         .write();
     } else {

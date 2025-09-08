@@ -466,14 +466,14 @@ describe('Build Matrix Functions', () => {
 
     test('should preserve project properties in sorted result', () => {
       const projects = [
-        { id: 'project-b', path: 'apps/b', type: 'uipath', dependsOn: ['project-a'] },
-        { id: 'project-a', path: 'apps/a', type: 'vs', dependsOn: [] }
+        { id: 'project-b', path: 'apps/b', type: 'uipath', deploy: true, deploySteps: ['orchestrator'], dependsOn: ['project-a'] },
+        { id: 'project-a', path: 'apps/a', type: 'vs', deploy: true, deploySteps: ['nuget'], dependsOn: [] }
       ];
 
       const result = topologicalSort(projects);
 
-      expect(result[0]).toEqual({ id: 'project-a', path: 'apps/a', type: 'vs', dependsOn: [] });
-      expect(result[1]).toEqual({ id: 'project-b', path: 'apps/b', type: 'uipath', dependsOn: ['project-a'] });
+      expect(result[0]).toEqual({ id: 'project-a', path: 'apps/a', type: 'vs', deploy: true, deploySteps: ['nuget'], dependsOn: [] });
+      expect(result[1]).toEqual({ id: 'project-b', path: 'apps/b', type: 'uipath', deploy: true, deploySteps: ['orchestrator'], dependsOn: ['project-a'] });
     });
 
     test('should handle complex three-way dependency', () => {

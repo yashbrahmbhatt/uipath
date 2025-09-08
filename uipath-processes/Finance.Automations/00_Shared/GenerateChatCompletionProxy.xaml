@@ -1,0 +1,185 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="GenerateChatCompletion" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:isactr="http://schemas.uipath.com/workflow/integration-service-activities/isactr" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uiascb="clr-namespace:UiPath.IntegrationService.Activities.SWEntities.C950AC660F2_v2_sub_chat_sub_completion_Create.Bundle;assembly=C950AC660F2_v2_sub_c.afO651iBdCH1vsj0H4rh20K2" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="out_str_CompletionResult" Type="OutArgument(x:String)" />
+    <x:Property Name="in_str_Instructions" Type="InArgument(x:String)" />
+    <x:Property Name="in_str_Prompt" Type="InArgument(x:String)" />
+  </x:Members>
+  <this:GenerateChatCompletion.in_str_Instructions>
+    <InArgument x:TypeArguments="x:String" />
+  </this:GenerateChatCompletion.in_str_Instructions>
+  <this:GenerateChatCompletion.in_str_Prompt>
+    <InArgument x:TypeArguments="x:String" />
+  </this:GenerateChatCompletion.in_str_Prompt>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>GlobalConstantsNamespace</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>UiPath.IntegrationService.Activities.Runtime.Activities</x:String>
+      <x:String>UiPath.IntegrationService.Activities.Runtime.Helpers.TypeDetailsCustomization</x:String>
+      <x:String>UiPath.IntegrationService.Activities.Runtime.Models</x:String>
+      <x:String>UiPath.IntegrationService.Activities.Runtime.Models.FilterBuilder</x:String>
+      <x:String>UiPath.Platform.Activities</x:String>
+      <x:String>System.Linq.Expressions</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.Net.Mail</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>UiPath.IntegrationService.Activities.Runtime</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.EventBasedAsync</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
+      <AssemblyReference>UiPath.Platform</AssemblyReference>
+      <AssemblyReference>C950AC660F2_v2_sub_c.afO651iBdCH1vsj0H4rh20K2</AssemblyReference>
+      <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
+      <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>System.Reflection.MetadataLoadContext</AssemblyReference>
+      <AssemblyReference>System.Memory.Data</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
+      <AssemblyReference>System.Linq.Async</AssemblyReference>
+      <AssemblyReference>NPOI.Core</AssemblyReference>
+      <AssemblyReference>System.Collections</AssemblyReference>
+      <AssemblyReference>Microsoft.Extensions.DependencyModel</AssemblyReference>
+      <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
+      <AssemblyReference>System.Linq.Expressions</AssemblyReference>
+      <AssemblyReference>Finance.Automations.Core</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="GenerateChatCompletion" sap:VirtualizedContainerService.HintSize="1742,556.4239999999999" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <isactr:ConnectorActivity Configuration="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" ConnectionId="0bf8d4ad-0453-4d85-b3f7-79950ac660f2" DisplayName="Generate Chat Completion" sap:VirtualizedContainerService.HintSize="416,322.6666666666667" sap2010:WorkflowViewState.IdRef="ConnectorActivity_2" UiPathActivityTypeId="296e94c2-5189-3dec-8228-e1d757da7de8">
+      <isactr:ConnectorActivity.FieldObjects>
+        <isactr:FieldObject Name="model" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:String">gpt-4-turbo</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="prompt" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:String">
+              <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_1">in_str_Prompt</CSharpValue>
+            </InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="image_type" Type="FieldArgument" />
+        <isactr:FieldObject Name="_file" Type="FieldArgument" />
+        <isactr:FieldObject Name="image_url" Type="FieldArgument" />
+        <isactr:FieldObject Name="instruction" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:String">
+              <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_2">in_str_Instructions</CSharpValue>
+            </InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="max_tokens" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Int32">1920</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="n" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Int32">1</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="temperature" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Double">1</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="top_p" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Double">1</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="_stop" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:String" />
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="presence_penalty" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Double">0</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="frequency_penalty" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:Double">0</InArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="user" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <InArgument x:TypeArguments="x:String" />
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="out_text" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <OutArgument x:TypeArguments="x:String">
+              <CSharpReference x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpReference`1_1">out_str_CompletionResult</CSharpReference>
+            </OutArgument>
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+        <isactr:FieldObject Name="Jit_v2_sub_chat_sub_completion" Type="FieldArgument">
+          <isactr:FieldObject.Value>
+            <OutArgument x:TypeArguments="uiascb:v2_sub_chat_sub_completion_Create" />
+          </isactr:FieldObject.Value>
+        </isactr:FieldObject>
+      </isactr:ConnectorActivity.FieldObjects>
+    </isactr:ConnectorActivity>
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="416,167.33333333333334" sap2010:WorkflowViewState.IdRef="LogMessage_1">
+      <ui:LogMessage.Message>
+        <InArgument x:TypeArguments="x:Object">
+          <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_3">$"Got response '{out_str_CompletionResult}' for prompt"</CSharpValue>
+        </InArgument>
+      </ui:LogMessage.Message>
+    </ui:LogMessage>
+  </Sequence>
+</Activity>

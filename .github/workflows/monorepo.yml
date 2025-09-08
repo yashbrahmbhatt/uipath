@@ -75,7 +75,7 @@ jobs:
 
       - name: Install Action Dependencies
         run: |
-          $actions = @('compute-version', 'build-artifact', 'create-github-tag', 'publish-github-packages', 'publish-nuget', 'test-project')
+          $actions = @('compute-version', 'build-artifact', 'create-github-tag', 'publish-github-packages', 'publish-nuget', 'publish-orchestrator', 'test-project')
           $originalLocation = Get-Location
           foreach ($action in $actions) {
             $actionPath = ".github/actions/$action"
@@ -165,13 +165,24 @@ jobs:
         shell: powershell
 
       - name: Create GitHub Tag
+        if: ${{ matrix.deploy }}
         uses: ./.github/actions/create-github-tag
         with:
           full-version: ${{ steps.version.outputs.full-version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       
+      - name: Publish to UiPath Orchestrator
+        if: ${{ matrix.deploy && contains(matrix.deploySteps, 'orchestrator') }}
+        uses: ./.github/actions/publish-orchestrator
+        with:
+          package-path: ${{ steps.build.outputs.package-path }}
+          orchestrator-url: ${{ secrets.ORCHESTRATOR_URL }}
+          orchestrator-tenant: ${{ secrets.ORCHESTRATOR_TENANT }}
+          orchestrator-folder: ${{ secrets.ORCHESTRATOR_FOLDER }}
+          orchestrator-token: ${{ secrets.ORCHESTRATOR_TOKEN }}
+      
       - name: Publish to GitHub Packages
-        if: contains(matrix.deploySteps, 'nuget')
+        if: ${{ matrix.deploy && contains(matrix.deploySteps, 'nuget') }}
         uses: ./.github/actions/publish-github-packages
         with:
           package-path: ${{ steps.build.outputs.package-path }}
@@ -179,7 +190,7 @@ jobs:
           repository-owner: ${{ github.repository_owner }}
     
       - name: Publish to NuGet.org
-        if: contains(matrix.deploySteps, 'nuget')
+        if: ${{ matrix.deploy && contains(matrix.deploySteps, 'nuget') }}
         uses: ./.github/actions/publish-nuget
         with:
           package-path: ${{ steps.build.outputs.package-path }}

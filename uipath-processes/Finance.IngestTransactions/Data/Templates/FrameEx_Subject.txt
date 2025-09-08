@@ -1,1 +1,0 @@
-[RPA] {ProcessName} - Framework Exception
