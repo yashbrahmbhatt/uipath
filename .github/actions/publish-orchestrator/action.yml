@@ -46,7 +46,6 @@ inputs:
   entry-points-path:
     description: 'Define the specific entry points to create or update a process'
     required: false
-    default: 'Main.xaml'
   environments:
     description: 'The comma-separated list of environments to deploy the package to'
     required: false
