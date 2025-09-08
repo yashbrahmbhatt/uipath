@@ -35,7 +35,7 @@ namespace Yash.Orchestrator.Tests
 
         public OrchestratorServiceTests()
         {
-            /*
+            
             _testBaseUrl = $"https://" +
                 (Environment.GetEnvironmentVariable("UIP_ACCOUNT_NAME")
                           ?? throw new InvalidOperationException(
@@ -61,7 +61,7 @@ namespace Yash.Orchestrator.Tests
             var scopesString = Environment.GetEnvironmentVariable("UIP_TEST_SCOPES")
                               ?? "OR.Assets.Read OR.Folders.Read";
             _testScopes = scopesString.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            */
+            
 
         }
 
