@@ -10,9 +10,6 @@ inputs:
   orchestrator-tenant:
     description: 'The tenant of the Orchestrator instance'
     required: true
-  orchestrator-folder:
-    description: 'The Orchestrator folder name'
-    required: false
   account-name:
     description: 'The Orchestrator organization name'
     required: true
@@ -25,7 +22,7 @@ inputs:
   application-scope:
     description: 'The space-separated list of application scopes'
     required: false
-    default: 'OR.Folders OR.BackgroundTasks OR.TestSets OR.TestSetExecutions OR.TestSetSchedules OR.Settings.Read OR.Robots.Read OR.Machines.Read OR.Execution OR.Assets OR.Users.Read OR.Jobs OR.Monitoring'
+    default: 'OR.Administration OR.Analytics OR.Assets OR.Audit OR.AutomationSolutions.Access OR.Execution OR.Folders OR.Hypervisor OR.Jobs OR.License OR.Machines OR.ML OR.Monitoring OR.Queues OR.Robots OR.Settings OR.Tasks OR.TestDataQueues OR.TestSetExecutions OR.TestSets OR.TestSetSchedules OR.Users OR.Webhooks OR.BackgroundTasks'
 runs:
   using: 'node20'
   main: 'index.js'

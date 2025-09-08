@@ -50,13 +50,13 @@ async function main() {
     });
 
     // Set application ID
-    execSync(`uipath config set --key auth.properties.clientId --value "${applicationId}"`, {
+    execSync(`uipath config set --key auth.clientId --value "${applicationId}"`, {
       stdio: 'inherit',
       env: publishEnv
     });
 
     // Set application secret
-    execSync(`uipath config set --key auth.properties.clientSecret --value "${applicationSecret}"`, {
+    execSync(`uipath config set --key auth.clientSecret --value "${applicationSecret}"`, {
       stdio: 'inherit',
       env: publishEnv
     });
