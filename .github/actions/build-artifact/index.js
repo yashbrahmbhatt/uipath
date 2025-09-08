@@ -1,8 +1,49 @@
 const core = require('@actions/core');
-const { execSync } = require('child_process');
+const { execSync, spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
+
+// Helper function to run commands with large output using spawn
+function runCommandWithLargeOutput(command, args, options = {}) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, {
+      ...options,
+      stdio: ['inherit', 'pipe', 'pipe']
+    });
+    
+    let stdout = '';
+    let stderr = '';
+    
+    child.stdout.on('data', (data) => {
+      const chunk = data.toString();
+      stdout += chunk;
+      // Only log important lines to avoid overwhelming the console
+      const lines = chunk.split('\n');
+      lines.forEach(line => {
+        if (line.includes('Error') || line.includes('Warning') || line.includes('Success') || line.includes('Compilation done')) {
+          core.info(line.trim());
+        }
+      });
+    });
+    
+    child.stderr.on('data', (data) => {
+      stderr += data.toString();
+    });
+    
+    child.on('close', (code) => {
+      if (code === 0) {
+        resolve({ stdout, stderr });
+      } else {
+        reject(new Error(`Command failed with exit code ${code}. Stderr: ${stderr}`));
+      }
+    });
+    
+    child.on('error', (error) => {
+      reject(error);
+    });
+  });
+}
 
 async function buildVSProject(projectPath, version) {
   core.info('Building .NET project...');
@@ -84,10 +125,52 @@ async function buildUiPathProject(projectPath, projectId) {
     const absoluteProjectPath = path.resolve(projectPath);
     const packCommand = `uipcli package pack "${absoluteProjectPath}" -o "${absoluteProjectPath}"`;
     core.info(`Executing command: ${packCommand}`);
-    const output = execSync(packCommand, { stdio: 'pipe', encoding: 'utf8', cwd: projectPath });
-    core.info(`UiPath CLI output: ${output}`);
+    
+    // Use larger buffer size to handle UiPath CLI's verbose output
+    const output = execSync(packCommand, { 
+      stdio: 'pipe', 
+      encoding: 'utf8', 
+      cwd: projectPath,
+      maxBuffer: 10 * 1024 * 1024 // 10MB buffer instead of default 1MB
+    });
+    core.info(`UiPath CLI completed successfully`);
+    // Don't log the full output as it can be very verbose
+    const lines = output.split('\n');
+    if (lines.length > 20) {
+      core.info(`Output summary: ${lines.length} lines of output`);
+      core.info(`First few lines: ${lines.slice(0, 3).join('\n')}`);
+      core.info(`Last few lines: ${lines.slice(-3).join('\n')}`);
+    } else {
+      core.info(`UiPath CLI output: ${output}`);
+    }
   } catch (firstError) {
     core.warning(`Pack command failed: ${firstError.message}`);
+    
+    // Handle ENOBUFS error specifically
+    if (firstError.message.includes('ENOBUFS') || firstError.code === 'ENOBUFS') {
+      core.warning('Command failed due to buffer overflow. Trying with spawn instead of execSync...');
+      
+      try {
+        // Try using spawn instead of execSync to handle large output
+        const absoluteProjectPath = path.resolve(projectPath);
+        const result = await runCommandWithLargeOutput('uipcli', [
+          'package', 'pack', absoluteProjectPath, '-o', absoluteProjectPath
+        ], { cwd: projectPath });
+        
+        core.info('UiPath CLI completed successfully using spawn');
+        return; // Continue with the normal flow
+      } catch (spawnError) {
+        core.warning(`Spawn approach also failed: ${spawnError.message}`);
+        
+        // Still check if package was created despite the error
+        const nupkgFiles = glob.sync('*.nupkg', { cwd: projectPath });
+        if (nupkgFiles.length > 0) {
+          core.info(`Found package despite buffer error: ${nupkgFiles[0]}`);
+          return path.join(projectPath, nupkgFiles[0]);
+        }
+      }
+    }
+    
     core.info(`Error output: ${firstError.stdout || ''}`);
     core.info(`Error stderr: ${firstError.stderr || ''}`);
     
@@ -95,30 +178,60 @@ async function buildUiPathProject(projectPath, projectId) {
     if (firstError.message.includes('Invalid URI') || firstError.message.includes('format of the URI could not be determined')) {
       core.warning('Detected URI format issue. This may be due to special characters in the path or UiPath CLI version compatibility.');
       
-      // Try with a different output directory to avoid path issues
+      // Try with a simplified path structure
       try {
-        const tempOutputDir = path.join(process.cwd(), 'temp-uipath-output');
-        if (!fs.existsSync(tempOutputDir)) {
-          fs.mkdirSync(tempOutputDir, { recursive: true });
-        }
+        const tempWorkingDir = path.join(process.cwd(), 'temp-uipath-workspace');
+        const tempProjectDir = path.join(tempWorkingDir, projectId);
+        const tempOutputDir = path.join(tempWorkingDir, 'output');
         
-        const projectJsonPath = path.join(projectPath, 'project.json');
-        const altCommand = `uipcli package pack "${projectJsonPath}" -o "${tempOutputDir}"`;
-        core.info(`Trying with temp output directory: ${altCommand}`);
-        const output = execSync(altCommand, { stdio: 'pipe', encoding: 'utf8' });
-        core.info(`UiPath CLI output: ${output}`);
+        // Create directories
+        [tempWorkingDir, tempProjectDir, tempOutputDir].forEach(dir => {
+          if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+          }
+        });
         
-        // Move the generated package back to the project directory
+        // Copy project files to temp directory with simpler structure
+        core.info(`Copying project to simplified path: ${tempProjectDir}`);
+        const projectFiles = fs.readdirSync(projectPath);
+        projectFiles.forEach(file => {
+          const srcPath = path.join(projectPath, file);
+          const destPath = path.join(tempProjectDir, file);
+          const stat = fs.statSync(srcPath);
+          
+          if (stat.isDirectory()) {
+            fs.cpSync(srcPath, destPath, { recursive: true });
+          } else {
+            fs.copyFileSync(srcPath, destPath);
+          }
+        });
+        
+        // Try packing from the simplified path
+        const altCommand = `uipcli package pack "${tempProjectDir}" -o "${tempOutputDir}"`;
+        core.info(`Trying with simplified path: ${altCommand}`);
+        const output = execSync(altCommand, { 
+          stdio: 'pipe', 
+          encoding: 'utf8',
+          maxBuffer: 10 * 1024 * 1024 // 10MB buffer
+        });
+        core.info(`UiPath CLI completed successfully with simplified path`);
+        
+        // Move the generated package back to the original project directory
         const tempNupkgFiles = glob.sync('*.nupkg', { cwd: tempOutputDir });
         if (tempNupkgFiles.length > 0) {
           const sourcePath = path.join(tempOutputDir, tempNupkgFiles[0]);
           const destPath = path.join(projectPath, tempNupkgFiles[0]);
           fs.copyFileSync(sourcePath, destPath);
           core.info(`Moved package from ${sourcePath} to ${destPath}`);
+          
           // Clean up temp directory
-          fs.rmSync(tempOutputDir, { recursive: true, force: true });
+          fs.rmSync(tempWorkingDir, { recursive: true, force: true });
+          return path.join(projectPath, tempNupkgFiles[0]);
+        } else {
+          throw new Error('No package generated in simplified path');
         }
       } catch (secondError) {
+        core.warning(`Simplified path approach also failed: ${secondError.message}`);
         throw new Error(`UiPath CLI pack failed with URI format error. This may be due to UiPath CLI version compatibility or project configuration issues. Original error: ${firstError.message}. Fallback error: ${secondError.message}`);
       }
     } else {
