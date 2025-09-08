@@ -40,7 +40,9 @@
       "privateWorkflows": []
     },
     "processOptions": {
-      "ignoredFiles": []
+      "ignoredFiles": [
+        "Yash.RBC.Activities.*.nupkg"
+      ]
     },
     "fileInfoCollection": [
       {

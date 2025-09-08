@@ -116,10 +116,10 @@ jobs:
           project-type: ${{ matrix.type }}
         env:
           # UiPath Orchestrator Test Configuration
-          UIP_ACCOUNT_NAME: ${{ secrets.UIP_ACCOUNT_NAME }}
-          UIP_APPLICATION_ID: ${{ secrets.UIP_APPLICATION_ID }}
+          UIP_ACCOUNT_NAME: ${{ vars.UIP_ACCOUNT_NAME }}
+          UIP_APPLICATION_ID: ${{ vars.UIP_APPLICATION_ID }}
           UIP_APPLICATION_SECRET: ${{ secrets.UIP_APPLICATION_SECRET }}
-          UIP_TENANT_NAME: ${{ secrets.UIP_TENANT_NAME }}
+          UIP_TENANT_NAME: ${{ vars.UIP_TENANT_NAME }}
         continue-on-error: false
 
       - name: Check Test Results

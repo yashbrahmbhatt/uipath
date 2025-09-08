@@ -28,9 +28,8 @@ namespace Yash.Orchestrator.Tests
 
         // Configuration from environment variables
         private readonly string _testBaseUrl = "https://cloud.uipath.com";
-        private readonly string _testClientId = "6ee3a9eb-95a1-451a-9494-d1c6a91f1548";
-        private readonly string _testClientSecret = "OVfpeM61V_#ZKpUv_?tea5PIE?8fcw4fJXf(xgIxZE*I~$dTztxrkdzwcps^apRR";
-        private readonly string _testTenantName = "yashbdev";
+        private readonly string _testClientId;
+        private readonly string _testClientSecret;
         private readonly string[] _testScopes = new string[2] { "OR.Folders.Read", "OR.Assets.Read" };
 
         public OrchestratorServiceTests()
@@ -52,11 +51,6 @@ namespace Yash.Orchestrator.Tests
                                ?? throw new InvalidOperationException(
                                    "UIP_APPLICATION_SECRET environment variable is required. " +
                                    "Set this to your OAuth client secret for UiPath Orchestrator authentication.");
-
-            _testTenantName = Environment.GetEnvironmentVariable("UIP_TENANT_NAME")
-                             ?? throw new InvalidOperationException(
-                                 "UIP_TENANT_NAME environment variable is required. " +
-                                 "Set this to your UiPath tenant name.");
 
             var scopesString = Environment.GetEnvironmentVariable("UIP_TEST_SCOPES")
                               ?? "OR.Assets.Read OR.Folders.Read";
