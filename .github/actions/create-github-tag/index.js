@@ -44,6 +44,15 @@ async function main() {
       }
     }
     
+    // Handle Git's "dubious ownership" security feature in GitHub Actions
+    try {
+      core.info('Configuring Git safe directory for GitHub Actions...');
+      execSync(`git config --global --add safe.directory "${workspaceDir}"`, { stdio: 'pipe', timeout: 5000 });
+      core.info(`Added ${workspaceDir} to Git safe directories`);
+    } catch (configError) {
+      core.warning(`Could not configure Git safe directory: ${configError.message}`);
+    }
+    
     // Check for .git directory specifically
     try {
       const gitStatus = execSync('git status --porcelain', { encoding: 'utf8', stdio: 'pipe', timeout: 5000 });
@@ -75,6 +84,15 @@ async function main() {
         try {
           if (fs.existsSync(dir)) {
             process.chdir(dir);
+            
+            // Add this directory to safe directories as well
+            try {
+              execSync(`git config --global --add safe.directory "${dir}"`, { stdio: 'pipe', timeout: 3000 });
+              core.info(`Added ${dir} to Git safe directories`);
+            } catch (safeConfigError) {
+              core.info(`Could not add ${dir} to safe directories: ${safeConfigError.message}`);
+            }
+            
             execSync('git rev-parse --git-dir', { stdio: 'pipe', timeout: 3000 });
             core.info(`Found git repository at: ${dir}`);
             foundGit = true;
