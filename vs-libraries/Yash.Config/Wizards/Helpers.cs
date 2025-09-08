@@ -11,9 +11,9 @@ namespace Yash.Config.Wizards
 {
     public static class Helpers
     {
-        public static bool EnsureOrPromptSettings(IWorkflowDesignApi api, bool forcePrompt, out string inputFile, out string outputDirectory, out string namespaceName, out string outputClassName, out string additionalUsings)
+        public static bool EnsureOrPromptSettings(IWorkflowDesignApi api, bool forcePrompt, out string inputFile, out string outputDirectory, out string namespaceName, out string additionalUsings)
         {
-            inputFile = outputDirectory = namespaceName = outputClassName = additionalUsings = "";
+            inputFile = outputDirectory = namespaceName = additionalUsings = "";
             var projectDir = api.ProjectPropertiesService.GetProjectDirectory();
             var projectName = api.ProjectPropertiesService.GetProjectName();
 
@@ -56,19 +56,6 @@ namespace Yash.Config.Wizards
                 namespaceName = InputBoxHelpers.PromptForText("Namespace Name", "Enter the namespace for the generated class", defaultNamespace);
                 if (string.IsNullOrWhiteSpace(namespaceName)) return false;
                 api.Settings.TrySetValue(Settings.Keys.Setting_Generation_Namespace_Key, namespaceName);
-            }
-
-            // CLASS NAME
-            if (!forcePrompt && api.Settings.TryGetValue(Settings.Keys.Setting_Generation_ClassName_Key, out outputClassName) &&
-                !string.IsNullOrWhiteSpace(outputClassName))
-            {
-                // Valid existing setting
-            }
-            else
-            {
-                outputClassName = InputBoxHelpers.PromptForText("Output Class Name", "Enter the name for the generated class", Path.GetFileNameWithoutExtension(inputFile));
-                if (string.IsNullOrWhiteSpace(outputClassName)) return false;
-                api.Settings.TrySetValue(Settings.Keys.Setting_Generation_ClassName_Key, outputClassName);
             }
 
             // USINGS

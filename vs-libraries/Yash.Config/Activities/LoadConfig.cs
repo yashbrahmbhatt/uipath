@@ -17,6 +17,7 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 using System.ComponentModel;
 using Yash.Orchestrator;
+using System.Security;
 
 namespace Yash.Config.Activities
 {
@@ -33,20 +34,32 @@ namespace Yash.Config.Activities
     public class LoadConfig : AsyncCodeActivity<Dictionary<string, object>>
     {
         public InArgument<string> WorkbookPath { get; set; }
+        public InArgument<string> Scope { get; set; }
+        public InArgument<string> BaseUrl { get; set; }
 
+        public InArgument<string> ClientId { get; set; }
+        public InArgument<SecureString> ClientSecret { get; set; }
 
         private IExecutorRuntime _runtime;
-        private IAccessProvider _accessProvider;
         private OrchestratorService _orchestratorService;
 
         private string _path;
+        private string _scope;
+        private string _baseUrl;
+        private SecureString _clientSecret;
+        private string _clientId;
 
         protected override IAsyncResult BeginExecute(AsyncCodeActivityContext context, AsyncCallback callback, object state)
         {
             _runtime = context.GetExtension<IExecutorRuntime>();
-            _accessProvider = context.GetExtension<IAccessProvider>();
 
             _path = WorkbookPath.Get(context);
+            _scope = Scope.Get(context);
+            _baseUrl = BaseUrl.Get(context);
+            _clientId = ClientId.Get(context);
+            _clientSecret = ClientSecret.Get(context);
+            Log($"_baseUrl='{_baseUrl}', _clientId='{_clientId}', _clientSecret is null={_clientSecret == null}");
+            _orchestratorService = new(_baseUrl, _clientId, new System.Net.NetworkCredential("", _clientSecret).Password, new string[] { "OR.Folders.Read", "OR.Assets.Read" }, Log);
 
             if (string.IsNullOrWhiteSpace(_path))
                 throw new LoadConfigException("Workbook path is required.");
@@ -59,8 +72,8 @@ namespace Yash.Config.Activities
 
         private async Task<Dictionary<string, object>> RunWorkflowAsync(AsyncCodeActivityContext context)
         {
-            _orchestratorService = new(_accessProvider, Log);
             await _orchestratorService.InitializeAsync();
+
             var dataset = ExcelHelpers.ReadExcelFile(_path);
             Log($"Found {dataset.Tables.Count} sheets in workbook.");
             var settingsSheet = dataset.Tables.Contains("Settings") ? dataset.Tables["Settings"] : null;
@@ -84,6 +97,11 @@ namespace Yash.Config.Activities
                     Log("Setting with empty name found, skipping.", TraceEventType.Warning);
                     continue;
                 }
+                if (setting.Scope != null && _scope != null && setting.Scope != _scope)
+                {
+                    Log($"Setting '{setting.Name}' skipped due to scope mismatch (Setting Scope: '{setting.Scope}', Provided Scope: '{_scope}').", TraceEventType.Verbose);
+                    continue;
+                }
 
                 outputDict[setting.Name] = setting.Value;
                 Log($"Setting '{setting.Name}' loaded with value '{setting.Value}'.", TraceEventType.Verbose);
@@ -93,6 +111,11 @@ namespace Yash.Config.Activities
             {
                 if (!string.IsNullOrWhiteSpace(asset.Name))
                 {
+                    if (asset.Scope != null && _scope != null && asset.Scope != _scope)
+                    {
+                        Log($"Asset '{asset.Name}' skipped due to scope mismatch (Asset Scope: '{asset.Scope}', Provided Scope: '{_scope}').", TraceEventType.Verbose);
+                        continue;
+                    }
                     var folderAssets = _orchestratorService.Assets.FirstOrDefault(kvp => kvp.Key.DisplayName == asset.Folder);
                     if (folderAssets.Key == null) throw new LoadConfigException($"Folder '{asset.Folder}' not found in orchestrator.");
 
@@ -122,6 +145,11 @@ namespace Yash.Config.Activities
 
                 if (!string.IsNullOrWhiteSpace(file.Bucket) && !string.IsNullOrWhiteSpace(file.Folder))
                 {
+                    if (file.Scope != null && _scope != null && file.Scope != _scope)
+                    {
+                        Log($"File '{file.Name}' skipped due to scope mismatch (File Scope: '{file.Scope}', Provided Scope: '{_scope}').", TraceEventType.Verbose);
+                        continue;
+                    }
                     // Remote Storage Bucket file
                     Log($"[Storage Bucket] Resolving file '{file.Name}' in bucket '{file.Bucket}' and folder '{file.Folder}' with path '{file.Path}'.");
 
@@ -182,7 +210,6 @@ namespace Yash.Config.Activities
         protected override Dictionary<string, object> EndExecute(AsyncCodeActivityContext context, IAsyncResult result)
         {
             var output = TaskHelpers.EndTask<Dictionary<string, object>>(result);
-            Result.Set(context, output);
             return output; // Safe, task is already awaited
         }
 

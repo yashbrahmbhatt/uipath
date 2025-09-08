@@ -19,7 +19,9 @@
         <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
   </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+         <VersionPrefix>29.9.0</VersionPrefix>
+
+         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
         <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
         <FileVersion>$(VersionPrefix)</FileVersion>
@@ -108,7 +110,7 @@
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="UiPath.Workflow" Version="6.0.0-20240401-07" PrivateAssets="All" />
-    <PackageReference Include="Yash.Orchestrator" Version="*" />
+    <PackageReference Include="Yash.Orchestrator" Version="1.0.251-dev.41437" />
   </ItemGroup>
 
 
