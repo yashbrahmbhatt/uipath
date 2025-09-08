@@ -12,23 +12,11 @@ async function main() {
     const orchestratorTenant = core.getInput("orchestrator-tenant", {
       required: true,
     });
-    const orchestratorFolder = core.getInput("orchestrator-folder");
-    const orchestratorUsername = core.getInput("orchestrator-username");
-    const orchestratorPassword = core.getInput("orchestrator-password");
-    const authToken = core.getInput("auth-token");
+    const orchestratorFolder = core.getInput("orchestrator-folder") || "Shared";
     const accountName = core.getInput("account-name");
     const applicationId = core.getInput("application-id");
     const applicationSecret = core.getInput("application-secret");
     const applicationScope = core.getInput("application-scope");
-    const identityUrl = core.getInput("identity-url");
-    const createProcess = core.getInput("create-process");
-    const entryPointsPath = core.getInput("entry-points-path");
-    const environments = core.getInput("environments");
-    const ignoreLibraryDeployConflict = core.getInput(
-      "ignore-library-deploy-conflict"
-    );
-    const processName = core.getInput("process-name");
-    const traceLevel = core.getInput("trace-level");
 
     core.info(`Publishing package to UiPath Orchestrator: ${packagePath}`);
 
@@ -37,78 +25,64 @@ async function main() {
       throw new Error(`Package file or folder not found: ${packagePath}`);
     }
 
-    // Validate authentication parameters
-    const hasUsernamePassword = orchestratorUsername && orchestratorPassword;
-    const hasTokenAuth = authToken && accountName;
-    const hasAppAuth = applicationId && applicationSecret;
-
-    if (!hasUsernamePassword && !hasTokenAuth && !hasAppAuth) {
+    // Validate authentication parameters for app-based auth
+    if (!applicationId || !applicationSecret) {
       throw new Error(
-        "Authentication required: provide either username/password, token/account, or application credentials"
+        "Application credentials required: provide application-id and application-secret"
       );
     }
 
-    // Build the uipcli command
-    const command = ["uipcli", "package", "deploy"];
+    // Set up authentication using environment variables and config
+    const publishEnv = {
+      ...process.env,
+      UIPATH_URI: orchestratorUrl,
+      UIPATH_ORGANIZATION: accountName,
+      UIPATH_TENANT: orchestratorTenant,
+    };
 
-    // Add positional arguments
-    command.push(`"${packagePath}"`);
-    command.push(`"${orchestratorUrl}"`);
-    command.push(`"${orchestratorTenant}"`);
+    // Configure authentication using the new CLI approach
+    core.info("Configuring UiPath CLI authentication...");
+    
+    // Set auth type to credentials (external app)
+    execSync(`uipath config set --key auth.grantType --value client_credentials`, {
+      stdio: 'inherit',
+      env: publishEnv
+    });
 
-    // Add authentication parameters
-    if (hasUsernamePassword) {
-      command.push("-u", `"${orchestratorUsername}"`);
-      command.push("-p", `"${orchestratorPassword}"`);
-    } else if (hasTokenAuth) {
-      command.push("-t", `"${authToken}"`);
-      command.push("-a", `"${accountName}"`);
-    } else if (hasAppAuth) {
-      command.push("-A", `"${accountName}"`);
-      command.push("-I", `"${applicationId}"`);
-      command.push("-S", `'${applicationSecret}'`);
-      if (applicationScope) {
-        command.push("--applicationScope", `"${applicationScope}"`);
-      }
+    // Set application ID
+    execSync(`uipath config set --key auth.properties.clientId --value "${applicationId}"`, {
+      stdio: 'inherit',
+      env: publishEnv
+    });
+
+    // Set application secret
+    execSync(`uipath config set --key auth.properties.clientSecret --value "${applicationSecret}"`, {
+      stdio: 'inherit',
+      env: publishEnv
+    });
+
+    // Set scopes if provided
+    if (applicationScope) {
+      execSync(`uipath config set --key auth.scopes --value "${applicationScope}"`, {
+        stdio: 'inherit',
+        env: publishEnv
+      });
     }
 
-    // Add optional parameters
-    if (orchestratorFolder) {
-      command.push("-o", `"${orchestratorFolder}"`);
-    }
+    // Build the modern uipath command
+    const publishCommand = [
+      "uipath",
+      "studio",
+      "package", 
+      "publish",
+      "--source", `"${packagePath}"`,
+      "--folder", `"${orchestratorFolder}"`,
+      "--uri", `"${orchestratorUrl}"`,
+      "--organization", `"${accountName}"`,
+      "--tenant", `"${orchestratorTenant}"`
+    ];
 
-    if (identityUrl) {
-      command.push("--identityUrl", `"${identityUrl}"`);
-    }
-
-    if (createProcess && createProcess.toLowerCase() !== "true") {
-      command.push("-c", createProcess);
-    }
-
-    if (entryPointsPath) {
-      command.push("--entryPointsPath", `"${entryPointsPath}"`);
-    }
-
-    if (environments) {
-      command.push("-e", `"${environments}"`);
-    }
-
-    if (
-      ignoreLibraryDeployConflict &&
-      ignoreLibraryDeployConflict.toLowerCase() === "true"
-    ) {
-      command.push("--ignoreLibraryDeployConflict");
-    }
-
-    if (processName) {
-      command.push("--processName", `"${processName}"`);
-    }
-
-    if (traceLevel) {
-      command.push("--traceLevel", traceLevel);
-    }
-
-    const deployCommand = command.join(" ");
+    const deployCommand = publishCommand.join(" ");
 
     core.info("Publishing to UiPath Orchestrator...");
     core.info(`Command: ${deployCommand}`);
@@ -116,19 +90,14 @@ async function main() {
     try {
       execSync(deployCommand, {
         stdio: "inherit",
-        env: {
-          ...process.env,
-        },
+        env: publishEnv,
       });
       core.info("Package published successfully to UiPath Orchestrator");
     } catch (error) {
       // Check for specific error patterns that might be expected
-      if (
-        error.message.includes("already exists") &&
-        ignoreLibraryDeployConflict === "true"
-      ) {
+      if (error.message.includes("already exists")) {
         core.warning(
-          "Package already exists in Orchestrator, but ignoring due to ignoreLibraryDeployConflict flag"
+          "Package already exists in Orchestrator, but deployment completed"
         );
       } else {
         throw error;
@@ -146,10 +115,9 @@ async function main() {
         ],
         ["Package", packageName],
         ["Orchestrator URL", orchestratorUrl],
+        ["Organization", accountName],
         ["Tenant", orchestratorTenant],
-        ["Folder", orchestratorFolder || "Default"],
-        ["Create Process", createProcess],
-        ["Entry Points", entryPointsPath || "Main.xaml"],
+        ["Folder", orchestratorFolder],
         ["Status", "Successfully published"],
       ])
       .write();
