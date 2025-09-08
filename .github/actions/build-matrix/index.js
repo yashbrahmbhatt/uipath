@@ -72,23 +72,31 @@ function getChangedFiles() {
   }
 }
 
+function getAllBuildableProjects(monoConfig) {
+  core.info("Building all projects due to configuration changes...");
+  const projectsToBuild = new Map();
+  
+  for (const project of monoConfig.projects) {
+    if (project.build) {
+      core.info(`Adding ${project.id} to build (config changed mode)`);
+      projectsToBuild.set(project.id, project);
+    }
+  }
+  
+  const result = Array.from(projectsToBuild.values());
+  core.info(`Total projects to build (config changed): ${result.length}`);
+  result.forEach((p) => core.info(`  - ${p.id}`));
+  return result;
+}
+
 function findChangedProjects(changedFiles, monoConfig) {
   core.info("Finding changed projects...");
   const projectsToBuild = new Map();
 
-  // If changedFiles is null, build all projects that have build: true
+  // If changedFiles is null, return empty result (no builds)
   if (changedFiles === null) {
-    core.warning("Building all projects due to inability to determine changes");
-    for (const project of monoConfig.projects) {
-      if (project.build) {
-        core.info(`Adding ${project.id} to build (build all mode)`);
-        projectsToBuild.set(project.id, project);
-      }
-    }
-    const result = Array.from(projectsToBuild.values());
-    core.info(`Total projects to build (all mode): ${result.length}`);
-    result.forEach((p) => core.info(`  - ${p.id}`));
-    return result;
+    core.warning("No changes detected - skipping all builds");
+    return [];
   }
 
   // Find directly changed projects
@@ -220,8 +228,8 @@ async function main() {
     }
 
     // Check if configuration files changed - if so, build everything
-    let shouldBuildAll = changedFiles === null;
-    if (changedFiles && !shouldBuildAll) {
+    let shouldBuildAll = false;
+    if (changedFiles && changedFiles.length > 0) {
       const configFiles = ["mono.json", ".github/", "nuget.config"];
       shouldBuildAll = changedFiles.some((file) =>
         configFiles.some((configFile) => file.includes(configFile))
@@ -232,8 +240,8 @@ async function main() {
     }
 
     const projectsToBuild = shouldBuildAll
-      ? findChangedProjects(null, monoConfig) // Build all
-      : findChangedProjects(changedFiles, monoConfig);
+      ? getAllBuildableProjects(monoConfig) // Build all when config changed
+      : findChangedProjects(changedFiles, monoConfig); // Build only changed projects
 
     const sortedProjects = topologicalSort(projectsToBuild);
 
@@ -289,4 +297,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { getChangedFiles, findChangedProjects, topologicalSort };
+module.exports = { getChangedFiles, findChangedProjects, topologicalSort, getAllBuildableProjects };

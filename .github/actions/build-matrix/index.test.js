@@ -168,11 +168,11 @@ describe('Build Matrix Functions', () => {
       ]
     };
 
-    test('should build all projects when changedFiles is null', () => {
+    test('should return empty array when changedFiles is null', () => {
       const result = findChangedProjects(null, realMonoConfig);
 
-      expect(result).toHaveLength(4); // All projects have build: true
-      expect(result.map(p => p.id)).toEqual(['Yash.RBC.Activities', 'Finance.IngestTransactions', 'Yash.Config', 'Yash.Orchestrator']);
+      expect(result).toHaveLength(0);
+      expect(core.warning).toHaveBeenCalledWith('No changes detected - skipping all builds');
     });
 
     test('should detect UiPath library changes', () => {
@@ -548,6 +548,7 @@ describe('Build Matrix Functions', () => {
     });
 
     test('should handle configuration changes triggering all builds', () => {
+      // Test the getAllBuildableProjects function directly since that's what handles config changes
       const realMonoConfig = {
         "projects": [
           {
@@ -574,9 +575,10 @@ describe('Build Matrix Functions', () => {
         ]
       };
 
-      // Simulate configuration file changes by passing null (build all mode)
-      // This is how the main() function handles config file changes
-      const projectsToBuild = findChangedProjects(null, realMonoConfig);
+      // Import the new function for testing
+      const { getAllBuildableProjects } = require('./index');
+      
+      const projectsToBuild = getAllBuildableProjects(realMonoConfig);
       const sortedProjects = topologicalSort(projectsToBuild);
       
       expect(sortedProjects).toHaveLength(3);
