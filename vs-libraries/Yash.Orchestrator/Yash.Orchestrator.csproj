@@ -19,7 +19,8 @@
         <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
   </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+         <VersionPrefix>25.9.0</VersionPrefix>
+         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
         <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
         <FileVersion>$(VersionPrefix)</FileVersion>
@@ -101,6 +102,7 @@
 
 
   <ItemGroup>
-    <Folder Include="NewFolder\" />
+    <Folder Include="SetTransactionResult\" />
+    <Folder Include="StartTransaction\" />
   </ItemGroup>
 </Project>

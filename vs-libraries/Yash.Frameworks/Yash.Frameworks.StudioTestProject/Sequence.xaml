@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Sequence" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ya="clr-namespace:Yash_RBC_Activities.Application;assembly=Yash.RBC.Activities" xmlns:yca="clr-namespace:Yash.Config.Activities;assembly=Yash.Config" xmlns:yfa="clr-namespace:Yash.Frameworks.Activities;assembly=Yash.Frameworks">
+<Activity mc:Ignorable="sap sap2010" x:Class="Sequence" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:sc="clr-namespace:System.Collections;assembly=System.Private.CoreLib" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:yfa="clr-namespace:Yash.Frameworks.Activities;assembly=Yash.Frameworks">
   <x:Members>
     <x:Property Name="in_str_QueueName" Type="InArgument(x:String)" />
     <x:Property Name="in_str_QueueFolder" Type="InArgument(x:String)" />
@@ -42,7 +42,6 @@
       <x:String>System.Reflection</x:String>
       <x:String>System.IO</x:String>
       <x:String>System.Runtime.Serialization</x:String>
-      <x:String>Yash.Config.Activities</x:String>
       <x:String>System.Linq.Expressions</x:String>
       <x:String>UiPath.UIAutomationCore.Contracts</x:String>
       <x:String>Yash_RBC_Activities.Application</x:String>
@@ -58,6 +57,7 @@
       <x:String>System.Security</x:String>
       <x:String>Yash.RBC.Activities</x:String>
       <x:String>System.Activities.Runtime.Collections</x:String>
+      <x:String>System.Numerics</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -122,21 +122,74 @@
       <AssemblyReference>System.Runtime.InteropServices</AssemblyReference>
       <AssemblyReference>Yash.RBC.Activities.Core</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Linq.Parallel</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>System.Linq.Queryable</AssemblyReference>
+      <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Sequence" sap:VirtualizedContainerService.HintSize="1276,2085.3333333333335" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Sequence" sap:VirtualizedContainerService.HintSize="1290,1234.6666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="Config" />
-      <Variable x:TypeArguments="ui:UiElement" Name="Window_RBC" />
+      <Variable x:TypeArguments="ui:UiElement" Name="window_RBC" />
+      <Variable x:TypeArguments="ui:QueueItem" Name="Transaction" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <yfa:LazyFramework QueueFolder="{x:Null}" QueueName="{x:Null}" DisplayName="ErrorActivity" EnableBusinessException="False" EnableEmailNotifications="False" EnableEnd="False" EnableInitializeApplications="True" EnableInitializeConfig="True" EnableQueue="False" EnableSuccessful="False" EnableSystemException="False" sap:VirtualizedContainerService.HintSize="577.3333333333334,2062.6666666666665" sap2010:WorkflowViewState.IdRef="LazyFramework_1">
+    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="1290,57.333333333333336" sap2010:WorkflowViewState.IdRef="CommentOut_1">
+      <ui:CommentOut.Body>
+        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="484,479.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_21">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="For Each currentNumber" sap:VirtualizedContainerService.HintSize="450,419.3333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_1">
+            <ui:ForEach.Body>
+              <ActivityAction x:TypeArguments="x:Int32">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="x:Int32" Name="currentNumber" />
+                </ActivityAction.Argument>
+                <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="416,280.6666666666667" sap2010:WorkflowViewState.IdRef="Sequence_11">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:AddQueueItem ServiceBaseAddress="{x:Null}" TimeoutMS="{x:Null}" DisplayName="Add Queue Item" FolderPath="Finance" sap:VirtualizedContainerService.HintSize="382,220.66666666666666" sap2010:WorkflowViewState.IdRef="AddQueueItem_2" Priority="Normal" QueueType="001_GetBankTransactions">
+                    <ui:AddQueueItem.ItemInformation>
+                      <scg:Dictionary x:TypeArguments="x:String, InArgument" />
+                    </ui:AddQueueItem.ItemInformation>
+                    <ui:AddQueueItem.Reference>
+                      <InArgument x:TypeArguments="x:String">
+                        <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_4">currentNumber.ToString()</CSharpValue>
+                      </InArgument>
+                    </ui:AddQueueItem.Reference>
+                  </ui:AddQueueItem>
+                </Sequence>
+              </ActivityAction>
+            </ui:ForEach.Body>
+            <ui:ForEach.Values>
+              <InArgument x:TypeArguments="sc:IEnumerable">
+                <CSharpValue x:TypeArguments="sc:IEnumerable" sap2010:WorkflowViewState.IdRef="CSharpValue`1_3">Enumerable.Range(0,5)</CSharpValue>
+              </InArgument>
+            </ui:ForEach.Values>
+          </ui:ForEach>
+        </Sequence>
+      </ui:CommentOut.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:CommentOut>
+    <yfa:LazyFramework QueueFolder="{x:Null}" QueueName="{x:Null}" DisplayName="ErrorActivity" EnableBusinessException="True" EnableEnd="True" EnableInitializeApplications="True" EnableInitializeConfig="True" EnableQueue="True" EnableSuccessful="True" EnableSystemException="True" sap:VirtualizedContainerService.HintSize="1290,1154.6666666666667" sap2010:WorkflowViewState.IdRef="LazyFramework_1">
       <yfa:LazyFramework.FrameworkBusinessException>
-        <Sequence DisplayName="Business Exception" sap:VirtualizedContainerService.HintSize="416,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_5">
+        <Sequence DisplayName="Business Exception" sap:VirtualizedContainerService.HintSize="416,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_16">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -145,54 +198,16 @@
         </Sequence>
       </yfa:LazyFramework.FrameworkBusinessException>
       <yfa:LazyFramework.FrameworkCloseApplications>
-        <Sequence DisplayName="Close Applications" sap:VirtualizedContainerService.HintSize="543.3333333333334,576.6666666666666" sap2010:WorkflowViewState.IdRef="Sequence_9">
+        <Sequence DisplayName="Close Applications" sap:VirtualizedContainerService.HintSize="1256,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_13">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="509.3333333333333,516.6666666666666" sap2010:WorkflowViewState.IdRef="CommentOut_3">
-            <ui:CommentOut.Body>
-              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="472.6666666666667,414" sap2010:WorkflowViewState.IdRef="Sequence_12">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438.6666666666667,354" sap2010:WorkflowViewState.IdRef="TryCatch_1">
-                  <TryCatch.Try>
-                    <ya:Terminate sap:VirtualizedContainerService.HintSize="400,92" sap2010:WorkflowViewState.IdRef="Terminate_1">
-                      <ya:Terminate.in_Window>
-                        <InArgument x:TypeArguments="ui:UiElement">
-                          <CSharpValue x:TypeArguments="ui:UiElement" sap2010:WorkflowViewState.IdRef="CSharpValue`1_1">Window_RBC</CSharpValue>
-                        </InArgument>
-                      </ya:Terminate.in_Window>
-                    </ya:Terminate>
-                  </TryCatch.Try>
-                  <TryCatch.Catches>
-                    <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404.6666666666667,23.333333333333332" sap2010:WorkflowViewState.IdRef="Catch`1_1">
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                      <ActivityAction x:TypeArguments="s:Exception">
-                        <ActivityAction.Argument>
-                          <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
-                        </ActivityAction.Argument>
-                        <ui:KillProcess AppliesTo="{x:Null}" ContinueOnError="{x:Null}" Process="{x:Null}" DisplayName="Kill Process" sap:VirtualizedContainerService.HintSize="398.6666666666667,136.66666666666666" sap2010:WorkflowViewState.IdRef="KillProcess_1" ProcessName="chrome" />
-                      </ActivityAction>
-                    </Catch>
-                  </TryCatch.Catches>
-                </TryCatch>
-              </Sequence>
-            </ui:CommentOut.Body>
-          </ui:CommentOut>
         </Sequence>
       </yfa:LazyFramework.FrameworkCloseApplications>
       <yfa:LazyFramework.FrameworkEnd>
-        <Sequence DisplayName="End Workflow" sap:VirtualizedContainerService.HintSize="1256,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_8">
+        <Sequence DisplayName="End Workflow" sap:VirtualizedContainerService.HintSize="1256,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_20">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -200,77 +215,51 @@
           </sap:WorkflowViewStateService.ViewState>
         </Sequence>
       </yfa:LazyFramework.FrameworkEnd>
-      <yfa:LazyFramework.FrameworkInitializeApplications>
-        <Sequence DisplayName="Initialize Applications" sap:VirtualizedContainerService.HintSize="543.3333333333334,442.6666666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
+      <yfa:LazyFramework.FrameworkGetTransaction>
+        <Sequence DisplayName="Get Transaction Workflow" sap:VirtualizedContainerService.HintSize="1256,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_19">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="452.6666666666667,382.6666666666667" sap2010:WorkflowViewState.IdRef="CommentOut_2">
-            <ui:CommentOut.Body>
-              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="416,280" sap2010:WorkflowViewState.IdRef="Sequence_11">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <ya:Initialize DisplayName="Initialize RBC" sap:VirtualizedContainerService.HintSize="382,220" sap2010:WorkflowViewState.IdRef="Initialize_1" in_CredentialFolder="Shared" in_CredentialName="_creds_rbc">
-                  <ya:Initialize.out_Window>
-                    <OutArgument x:TypeArguments="ui:UiElement">
-                      <CSharpReference x:TypeArguments="ui:UiElement" sap2010:WorkflowViewState.IdRef="CSharpReference`1_2">Window_RBC</CSharpReference>
-                    </OutArgument>
-                  </ya:Initialize.out_Window>
-                </ya:Initialize>
-              </Sequence>
-            </ui:CommentOut.Body>
-          </ui:CommentOut>
+          <ui:GetQueueItem ContinueOnError="{x:Null}" TimeoutMS="{x:Null}" DisplayName="Get Transaction Item" FolderPath="Finance" sap:VirtualizedContainerService.HintSize="382,167.33333333333334" sap2010:WorkflowViewState.IdRef="GetQueueItem_1" QueueType="001_GetBankTransactions">
+            <ui:GetQueueItem.TransactionItem>
+              <OutArgument x:TypeArguments="ui:QueueItem">
+                <CSharpReference x:TypeArguments="ui:QueueItem" sap2010:WorkflowViewState.IdRef="CSharpReference`1_1">Transaction</CSharpReference>
+              </OutArgument>
+            </ui:GetQueueItem.TransactionItem>
+          </ui:GetQueueItem>
+        </Sequence>
+      </yfa:LazyFramework.FrameworkGetTransaction>
+      <yfa:LazyFramework.FrameworkInitializeApplications>
+        <Sequence DisplayName="Initialize Applications" sap:VirtualizedContainerService.HintSize="1256,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
         </Sequence>
       </yfa:LazyFramework.FrameworkInitializeApplications>
       <yfa:LazyFramework.FrameworkInitializeConfig>
-        <Sequence DisplayName="Initialize Settings" sap:VirtualizedContainerService.HintSize="543.3333333333334,514" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <Sequence DisplayName="Initialize Settings" sap:VirtualizedContainerService.HintSize="1256,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_12">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="452.6666666666667,339.3333333333333" sap2010:WorkflowViewState.IdRef="CommentOut_1">
-            <ui:CommentOut.Body>
-              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="416,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_10">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <yca:LoadConfig WorkbookPath="{x:Null}" DisplayName="Load Config" sap:VirtualizedContainerService.HintSize="382,167.33333333333334" sap2010:WorkflowViewState.IdRef="LoadConfig_1">
-                  <yca:LoadConfig.Result>
-                    <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)">
-                      <CSharpReference x:TypeArguments="scg:Dictionary(x:String, x:Object)" sap2010:WorkflowViewState.IdRef="CSharpReference`1_1">Config</CSharpReference>
-                    </OutArgument>
-                  </yca:LoadConfig.Result>
-                </yca:LoadConfig>
-              </Sequence>
-            </ui:CommentOut.Body>
-          </ui:CommentOut>
-          <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="452.6666666666667,114.66666666666667" sap2010:WorkflowViewState.IdRef="WriteLine_1" />
         </Sequence>
       </yfa:LazyFramework.FrameworkInitializeConfig>
       <yfa:LazyFramework.FrameworkProcessTransaction>
-        <Sequence DisplayName="Process Transaction" sap:VirtualizedContainerService.HintSize="543.3333333333334,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_4">
+        <Sequence DisplayName="Process Transaction" sap:VirtualizedContainerService.HintSize="1256,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_15">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:GetRobotAsset TimeoutMS="{x:Null}" AssetName="ShouldLoadAsset" CacheStrategy="None" DisplayName="Get Asset" FolderPath="LazyFramework" sap:VirtualizedContainerService.HintSize="382,167.33333333333334" sap2010:WorkflowViewState.IdRef="GetRobotAsset_1">
-            <ui:GetRobotAsset.Value>
-              <OutArgument x:TypeArguments="x:Boolean" />
-            </ui:GetRobotAsset.Value>
-          </ui:GetRobotAsset>
         </Sequence>
       </yfa:LazyFramework.FrameworkProcessTransaction>
       <yfa:LazyFramework.FrameworkSuccessful>
-        <Sequence DisplayName="Successful" sap:VirtualizedContainerService.HintSize="416,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_7">
+        <Sequence DisplayName="Successful" sap:VirtualizedContainerService.HintSize="416,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_18">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -279,7 +268,7 @@
         </Sequence>
       </yfa:LazyFramework.FrameworkSuccessful>
       <yfa:LazyFramework.FrameworkSystemException>
-        <Sequence DisplayName="System Exception" sap:VirtualizedContainerService.HintSize="416,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_6">
+        <Sequence DisplayName="System Exception" sap:VirtualizedContainerService.HintSize="416,90.66666666666667" sap2010:WorkflowViewState.IdRef="Sequence_17">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -287,6 +276,11 @@
           </sap:WorkflowViewStateService.ViewState>
         </Sequence>
       </yfa:LazyFramework.FrameworkSystemException>
+      <yfa:LazyFramework.QueueItem>
+        <InArgument x:TypeArguments="ui:QueueItem">
+          <CSharpValue x:TypeArguments="ui:QueueItem" sap2010:WorkflowViewState.IdRef="CSharpValue`1_5">Transaction</CSharpValue>
+        </InArgument>
+      </yfa:LazyFramework.QueueItem>
     </yfa:LazyFramework>
   </Sequence>
 </Activity>

@@ -1,4 +1,5 @@
 ﻿using System.Activities.DesignViewModels;
+using UiPath.Core;
 using Activity = System.Activities.Activity;
 
 namespace Yash.Frameworks.Activities.ViewModels
@@ -11,6 +12,7 @@ namespace Yash.Frameworks.Activities.ViewModels
         public DesignProperty<Activity> FrameworkCloseApplications { get; set; }
         public DesignProperty<bool> EnableInitializeApplications { get; set; }
         public DesignProperty<Activity> FrameworkProcessTransaction { get; set; }
+        public DesignProperty<Activity> FrameworkGetTransaction { get; set; }
         public DesignProperty<Activity> FrameworkBusinessException { get; set; }
         public DesignProperty<Activity> FrameworkSystemException { get; set; }
         public DesignProperty<Activity> FrameworkSuccessful { get; set; }
@@ -23,6 +25,7 @@ namespace Yash.Frameworks.Activities.ViewModels
         public DesignProperty<bool> EnableSuccessful { get; set; }
         public DesignProperty<bool> EnableEnd { get; set; }
         public DesignProperty<bool> EnableEmailNotifications { get; set; }
+        public DesignInArgument<QueueItem> QueueItem { get; set; }
 
         public LazyFrameworkViewModel(IDesignServices services) : base(services)
         {
@@ -95,6 +98,20 @@ namespace Yash.Frameworks.Activities.ViewModels
             FrameworkInitializeApplications.Tooltip = "The workflow that initializes the applications.";
             FrameworkInitializeApplications.OrderIndex = orderIndex++;
             FrameworkInitializeApplications.Widget = new DefaultWidget() { Type = "Container" };
+
+            FrameworkGetTransaction.IsPrincipal = EnableQueue.Value;
+            FrameworkGetTransaction.IsVisible = EnableQueue.Value;
+            FrameworkGetTransaction.DisplayName = "Get Transaction Workflow";
+            FrameworkGetTransaction.Tooltip = "The workflow that retrieves transactions from the queue.";
+            FrameworkGetTransaction.OrderIndex = orderIndex++;
+            FrameworkGetTransaction.Widget = new DefaultWidget() { Type = "Container" };
+
+            QueueItem.IsPrincipal = EnableQueue.Value;
+            QueueItem.IsVisible = EnableQueue.Value;
+            QueueItem.DisplayName = "Queue Item";
+            QueueItem.Tooltip = "The current queue item being processed.";
+            QueueItem.OrderIndex = orderIndex++;
+            
 
             FrameworkProcessTransaction.IsPrincipal = true;
             FrameworkProcessTransaction.IsVisible = true;
@@ -200,6 +217,8 @@ namespace Yash.Frameworks.Activities.ViewModels
             QueueFolder.IsPrincipal = EnableQueue.Value;
             EnableQueue.IsPrincipal = !QueueName.IsPrincipal;
 
+            FrameworkGetTransaction.IsVisible = EnableQueue.Value;
+            FrameworkGetTransaction.IsPrincipal = EnableQueue.Value;
             
             EnableBusinessException.IsVisible = EnableQueue.Value;
             EnableSystemException.IsVisible = EnableQueue.Value;

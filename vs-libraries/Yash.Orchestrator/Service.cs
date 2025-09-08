@@ -20,7 +20,6 @@ namespace Yash.Orchestrator
 {
     public class OrchestratorService
     {
-        private readonly IAccessProvider? _accessProvider;
         private void Log(string message, TraceEventType eventType)
         {
             LogAction?.Invoke(message, eventType);
@@ -28,10 +27,10 @@ namespace Yash.Orchestrator
         public readonly Action<string, TraceEventType>? LogAction;
         private readonly RestClient _client = new RestClient();
 
-        public string? BaseURL { get; set; } = "";
-        public string Token { get; set; } = "";
-        public string ClientId { get; set; } = "";
-        public string ClientSecret { get; set; } = "";
+        public string? BaseURL { get; set; }
+        public string Token { get; set; } = null;
+        public string? ClientId { get; set; }
+        public string? ClientSecret { get; set; }
         public string[] Scopes { get; set; } = new[] { "OR.Assets.Read", "OR.Folders.Read" };
 
         public ObservableCollection<Folder> Folders { get; set; } = new();
@@ -39,21 +38,21 @@ namespace Yash.Orchestrator
         public ObservableCollection<KeyValuePair<Folder, ObservableCollection<Bucket>>> Buckets { get; set; } = new();
         public ObservableCollection<KeyValuePair<Bucket, ObservableCollection<BucketFile>>> BucketFiles { get; set; } = new();
 
-        public OrchestratorService(Action<string, TraceEventType>? log) => LogAction = log;
+        public OrchestratorService(Action<string, TraceEventType>? log = null) => LogAction = log;
 
-        public OrchestratorService(IAccessProvider api, Action<string, TraceEventType>? log = null) : this(log) => _accessProvider = api;
 
-        public OrchestratorService(string baseUrl, string clientId, string clientSecret, Action<string, TraceEventType>? log = null) : this(log)
+        public OrchestratorService(string baseUrl, string clientId, string clientSecret, string[] scopes, Action<string, TraceEventType>? log = null) : this(log)
         {
             BaseURL = baseUrl;
             ClientId = clientId;
             ClientSecret = clientSecret;
+            Scopes = scopes;
+            LogAction = log;
         }
 
         public async Task InitializeAsync()
         {
             Log("Initializing OrchestratorService...", TraceEventType.Information);
-            BaseURL = await _accessProvider?.GetResourceUrl("Orchestrator")!;
             Log($"BaseURL resolved to {BaseURL}", TraceEventType.Information);
 
             await UpdateTokenAsync();
@@ -67,34 +66,33 @@ namespace Yash.Orchestrator
 
         public async Task UpdateTokenAsync(bool force = false)
         {
+
             Log("Updating access token...", TraceEventType.Information);
 
-            if (_accessProvider == null)
+
+            Log("Using client credentials to request token.", TraceEventType.Information);
+            if (string.IsNullOrWhiteSpace(ClientId) || string.IsNullOrWhiteSpace(ClientSecret) || Scopes.Length == 0)
             {
-                Log("Using client credentials to request token.", TraceEventType.Information);
-
-                var url = "https://cloud.uipath.com/identity_/connect/token";
-                var request = new RestRequest(url, Method.Post)
-                    .AddParameter("client_id", ClientId)
-                    .AddParameter("client_secret", ClientSecret)
-                    .AddParameter("grant_type", "client_credentials")
-                    .AddParameter("scope", string.Join(" ", Scopes));
-
-                var response = await _client.ExecuteAsync(request);
-                if (!response.IsSuccessful)
-                {
-                    Log($"Failed to get token: {response.ErrorMessage}", TraceEventType.Error);
-                    throw new Exception("Failed to get token");
-                }
-
-                var token = JsonConvert.DeserializeObject<GetTokenResponse>(response.Content!)!;
-                Token = token.AccessToken ?? throw new Exception("Token not found in response");
+                throw new Exception("ClientId and ClientSecret and Scopes must be provided for client credentials flow.");
             }
-            else
+            var url = "https://cloud.uipath.com/identity_/connect/token";
+            var request = new RestRequest(url, Method.Post)
+                .AddParameter("client_id", ClientId)
+                .AddParameter("client_secret", ClientSecret)
+                .AddParameter("grant_type", "client_credentials")
+                .AddParameter("scope", string.Join(" ", Scopes));
+
+            var response = await _client.ExecuteAsync(request);
+            if (!response.IsSuccessful)
             {
-                Log("Using IAccessProvider to request token.", TraceEventType.Information);
-                Token = await _accessProvider.GetAccessToken("OR.Assets.Read OR.Folders.Read", force);
+                Log($"Failed to get token: {response.ErrorMessage}", TraceEventType.Error);
+                throw new Exception("Failed to get token: " + JsonConvert.SerializeObject(response));
             }
+
+            var token = JsonConvert.DeserializeObject<GetTokenResponse>(response.Content!)!;
+            Token = token.AccessToken ?? throw new Exception("Token not found in response");
+
+
 
             Log("Token updated successfully.", TraceEventType.Information);
         }

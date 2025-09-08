@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Vml;
 using Newtonsoft.Json;
 using System;
 using System.Activities;
+using System.Activities.DesignViewModels;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,9 +13,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
+using UiPath.Core;
 using UiPath.Core.Activities;
 using UiPath.Robot.Activities.Api;
-using Yash.Config.Activities;
+using UiPath.Studio.Activities.Api;
 using Yash.Frameworks.Activities.ViewModels.Helpers;
 using Activity = System.Activities.Activity;
 using Formatting = Newtonsoft.Json.Formatting;
@@ -32,20 +34,22 @@ namespace Yash.Frameworks.Activities
         public Activity FrameworkSystemException { get; set; }
         public Activity FrameworkSuccessful { get; set; }
         public Activity FrameworkEnd { get; set; }
-        public Activity 
+        public Activity FrameworkGetTransaction { get; set; }
+        public bool EnableQueue { get; set; } = false;
         public InArgument<string> QueueName { get; set; }
         public InArgument<string> QueueFolder { get; set; }
-        public bool EnableQueue { get; set; } = false;
         public bool EnableInitializeConfig { get; set; } = false;
         public bool EnableInitializeApplications { get; set; } = false;
         public bool EnableBusinessException { get; set; } = false;
         public bool EnableSystemException { get; set; } = false;
         public bool EnableSuccessful { get; set; } = false;
         public bool EnableEnd { get; set; } = false;
-        public bool EnableEmailNotifications { get; set; } = false;
+        public InArgument<QueueItem> QueueItem { get; set;}
 
         [Browsable(false)]
         private IExecutorRuntime _executorRuntime;
+        [Browsable(false)]
+        public IDesignServices _designServices;
         [Browsable(false)]
         private NativeActivityContext? _context;
 
@@ -79,6 +83,14 @@ namespace Yash.Frameworks.Activities
             {
                 DisplayName = "Successful",
             };
+            FrameworkEnd = new Sequence()
+            {
+                DisplayName = "End",
+            };
+            FrameworkGetTransaction = new Sequence()
+            {
+                DisplayName = "Get Transaction",
+            };
         }
 
         /*
@@ -90,65 +102,123 @@ namespace Yash.Frameworks.Activities
             _executorRuntime = context.GetExecutorRuntime();
             _context = context;
 
-            var qName = QueueName.Get<string>(context);
-            var qFolder = QueueFolder.Get<string>(context);
+            var qName = QueueName.Get(context);
+            var qFolder = QueueFolder.Get(context);
 
-            Log($"Starting execution of LazyFramework with Queue: {qName}, Folder: {qFolder}", TraceEventType.Information);
-            Log($"The primary screen resolution is: {SystemParameters.PrimaryScreenWidth.ToString()} x {SystemParameters.PrimaryScreenHeight.ToString()}", TraceEventType.Information);
+            Log($"[INIT] Starting execution of LazyFramework with Queue: {qName}, Folder: {qFolder}", TraceEventType.Information);
+            Log($"[CONFIG] EnableQueue: {EnableQueue}, EnableInitializeConfig: {EnableInitializeConfig}, EnableInitializeApplications: {EnableInitializeApplications}", TraceEventType.Information);
+            Log($"[CONFIG] EnableBusinessException: {EnableBusinessException}, EnableSystemException: {EnableSystemException}, EnableSuccessful: {EnableSuccessful}, EnableEnd: {EnableEnd}", TraceEventType.Information);
+            Log($"[SYSTEM] The primary screen resolution is: {SystemParameters.PrimaryScreenWidth.ToString()} x {SystemParameters.PrimaryScreenHeight.ToString()}", TraceEventType.Information);
 
             if (EnableInitializeConfig)
             {
-                Log($"Executing Initialize Config");
+                Log("[WORKFLOW] Executing Framework Initialize Config", TraceEventType.Information);
                 CallActivity(FrameworkInitializeConfig);
-                Log($"Completed Initialize Config");
             }
             if (EnableInitializeApplications)
             {
-                Log($"Execution Initial Close of Applications");
+                Log("[WORKFLOW] Executing Framework Close Applications (pre-initialization)", TraceEventType.Information);
                 CallActivity(FrameworkCloseApplications);
-                Log($"Completed Initial Close of Applications");
             }
             if (EnableInitializeApplications)
             {
-                Log($"Executing Initialize Applications");
+                Log("[WORKFLOW] Executing Framework Initialize Applications", TraceEventType.Information);
                 CallActivity(FrameworkInitializeApplications);
-                Log($"Completed Initialize Applications");
             }
             if (EnableQueue)
             {
-                Log($"Queue Enabled: {qName} in Folder: {qFolder}. Starting Loop");
+                Log("[QUEUE] Starting queue processing mode", TraceEventType.Information);
                 while (true)
                 {
-                    var transactionItem = new GetTransactionItem()
+                    Log("[QUEUE] Executing Framework Get Transaction", TraceEventType.Information);
+                    CallActivity(FrameworkGetTransaction);
+                    var queueItem = QueueItem.Get(context);
+                    if (queueItem == null)
                     {
-                        FolderPath = qFolder,
-                        QueueType = qName,
-                        
-                    };
+                        Log("[QUEUE] No queue item retrieved, exiting queue processing", TraceEventType.Information);
+                        break;
+                    }
+                    try
+                    {
+                        Log("[TRANSACTION] Executing Framework Process Transaction", TraceEventType.Information);
+                        CallActivity(FrameworkProcessTransaction);
+                        if (EnableSuccessful)
+                        {
+                            Log("[SUCCESS] Executing Framework Successful", TraceEventType.Information);
+                            CallActivity(FrameworkSuccessful);
+                        }
+                        Log("[TRANSACTION] Transaction processed successfully", TraceEventType.Information);
+
+                    }
+                    catch (BusinessRuleException ex)
+                    {
+                        Log($"[BUSINESS_EXCEPTION] Business exception occurred: {ex.Message}", TraceEventType.Warning);
+                        if (EnableBusinessException)
+                        {
+                            Log("[EXCEPTION_HANDLER] Executing Framework Business Exception", TraceEventType.Information);
+                            CallActivity(FrameworkBusinessException);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log($"[SYSTEM_EXCEPTION] System exception occurred: {ex.Message}", TraceEventType.Error);
+                        if (EnableSystemException)
+                        {
+                            Log("[EXCEPTION_HANDLER] Executing Framework System Exception", TraceEventType.Information);
+                            CallActivity(FrameworkSystemException);
+                        }
+                        Log("[RECOVERY] Reinitializing applications due to system exception", TraceEventType.Information);
+                        CallActivity(FrameworkCloseApplications);
+                        CallActivity(FrameworkInitializeApplications);
+                    }
+                    break;
                 }
             }
-            // Process Transaction
+            else
+            {
+                Log("[TRANSACTION] Starting single transaction processing mode", TraceEventType.Information);
+                CallActivity(FrameworkProcessTransaction);
+            }
+                if (EnableInitializeApplications)
+                {
+                    Log("[CLEANUP] Executing Framework Close Applications (cleanup)", TraceEventType.Information);
+                    CallActivity(FrameworkCloseApplications);
+                }
+                if(EnableEnd)
+                {
+                    Log("[FINALIZE] Executing Framework End", TraceEventType.Information);
+                    CallActivity(FrameworkEnd);
+                }
+                
+                Log("[COMPLETE] LazyFramework execution completed", TraceEventType.Information);
         }
 
 
         public void CallActivity(Activity activity, Action? callback = null)
         {
             if (activity == null)
+            {
+                Log("[ACTIVITY_WARNING] Attempted to call a null activity", TraceEventType.Warning);
                 return;
+            }
+            
+            Log($"[ACTIVITY_SCHEDULE] Scheduling activity: {activity.DisplayName ?? activity.GetType().Name}", TraceEventType.Verbose);
             _context?.ScheduleActivity(activity, OnActivityCompletedCallback, OnActivityFaultedCallback);
         }
 
 
         private void OnActivityFaultedCallback(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
         {
+            Log($"[ACTIVITY_FAULT] Activity faulted: {propagatedFrom.Activity.DisplayName ?? propagatedFrom.Activity.GetType().Name} - {propagatedException.Message}", TraceEventType.Error);
             throw propagatedException;
         }
 
         private void OnActivityCompletedCallback(NativeActivityContext context, ActivityInstance completedInstance)
         {
+            Log($"[ACTIVITY_COMPLETE] Activity completed: {completedInstance.Activity.DisplayName ?? completedInstance.Activity.GetType().Name}", TraceEventType.Verbose);
         }
 
-  
+
 
         public void Log(string message, TraceEventType level = TraceEventType.Verbose)
         {

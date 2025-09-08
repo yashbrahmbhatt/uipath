@@ -32,10 +32,11 @@ namespace Yash.Config.Wizards
                         excelPath: inputFile,       
                         outputFolder: outputDir,
                         outputClassName: $"{(string.IsNullOrWhiteSpace(scope) ? "" : scope)}Config",
+                        scope: scope,
                         namespaceName: ns,
                         additionalUsings: usings
                     );
-                    var outputPath = Path.Combine(outputDir, $"{(string.IsNullOrWhiteSpace(scope) ? "" : scope)}.cs");
+                    var outputPath = Path.Combine(outputDir, $"{(string.IsNullOrWhiteSpace(scope) ? "Config" : scope)}.cs");
                     File.Delete(outputPath);// Ensure we overwrite any existing file
                     File.WriteAllText(outputPath, classString);
                     finalSummary.AppendLine($"Generated class for scope '{scope}' at: {outputPath}");

@@ -4,9 +4,11 @@ using System.Activities.DesignViewModels;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using UiPath.Studio.Activities.Api;
+using Yash.Config.Helpers;
 using Yash.Config.Models;
 
 namespace Yash.Config.Activities.ViewModels
@@ -15,12 +17,18 @@ namespace Yash.Config.Activities.ViewModels
     {
         [Category("Input")]
         public DesignInArgument<string> WorkbookPath { get; set; }
+        public DesignInArgument<string> BaseUrl { get; set; }
+        public DesignInArgument<string> ClientId { get; set; }
+        public DesignInArgument<SecureString> ClientSecret { get; set; }
+
+        public DesignInArgument<string> Scope { get; set; }
 
         [Category("Output")]
         public DesignOutArgument<Dictionary<string, object>> Result { get; set; }
 
-
-        public LoadConfigViewModel(IDesignServices services) : base(services) { }
+        
+        public LoadConfigViewModel(IDesignServices services) : base(services) { 
+        }
 
         protected override void InitializeModel()
         {
@@ -47,12 +55,33 @@ namespace Yash.Config.Activities.ViewModels
             WorkbookPath.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
             WorkbookPath.OrderIndex = orderIndex++; // indicates the order in which the fields appear in the designer (i.e. the line number);
 
+            Scope.DisplayName = Resources.LoadConfig_Scope_DisplayName;
+            Scope.Tooltip = Resources.LoadConfig_Scope_Tooltip;
+            Scope.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
+            Scope.OrderIndex = orderIndex++; // indicates the order in which the fields appear in the designer (i.e. the line number);
+            Scope.IsRequired = true; // this is an optional field
+
             //ConfigType.DisplayName = Resources.LoadConfig_ConfigType_DisplayName;
             //ConfigType.Tooltip = Resources.LoadConfig_ConfigType_Tooltip;
             //ConfigType.IsRequired = true; // this is a required field, so it will raise validation errors when empty
             //ConfigType.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
             //ConfigType.OrderIndex = orderIndex++; // indicates the order in which the fields appear in the designer (i.e. the line number);
             //ConfigType.PropertyChanged += ConfigType_PropertyChanged;
+            BaseUrl.DisplayName = Resources.LoadConfig_BaseUrl_DisplayName;
+            BaseUrl.Tooltip = Resources.LoadConfig_BaseUrl_Tooltip;
+            BaseUrl.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
+            BaseUrl.OrderIndex = orderIndex++;
+            BaseUrl.IsRequired = true; // this is an optional field
+            ClientId.DisplayName = Resources.LoadConfig_ClientId_DisplayName;
+            ClientId.Tooltip = Resources.LoadConfig_ClientId_Tooltip;
+            ClientId.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
+            ClientId.OrderIndex = orderIndex++;
+            ClientId.IsRequired = true; // this is an optional field
+            ClientSecret.DisplayName = Resources.LoadConfig_ClientSecret_DisplayName;
+            ClientSecret.Tooltip = Resources.LoadConfig_ClientSecret_Tooltip;
+            ClientSecret.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
+            ClientSecret.OrderIndex = orderIndex++;
+            ClientSecret.IsRequired = true; // this is an optional field
 
             /*
              * Output properties are never mandatory.
@@ -63,15 +92,6 @@ namespace Yash.Config.Activities.ViewModels
             Result.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
             Result.OrderIndex = orderIndex++;
         }
-
-        //private void ConfigType_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        //{
-        //    if (e.PropertyName == nameof(ConfigType.Value) && ConfigType.Value is Type t)
-        //    {
-        //        Result.DisplayName = $"{Resources.LoadConfig_Config_DisplayName} ({t.Name})";
-        //        Result.Tooltip = $"The loaded configuration object of type {t.FullName}";
-        //    }
-        //}
 
     }
 }

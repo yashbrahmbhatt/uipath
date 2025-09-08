@@ -5,7 +5,7 @@
   "main": "Sequence.xaml",
   "dependencies": {
     "UiPath.System.Activities": "[25.8.0]",
-    "Yash.Frameworks": "[1.0.250-dev.31297]",
+    "Yash.Frameworks": "[1.0.250-dev.65483]",
     "Yash.RBC.Activities": "[25.7.1]"
   },
   "webServices": [],

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yash.Frameworks", "Yash.Frameworks.csproj", "{1B0826C4-9C7D-4E9F-9502-0288AA1C3280}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yash.Orchestrator", "..\Yash.Orchestrator\Yash.Orchestrator.csproj", "{1E81C53B-A6A0-4DC1-98AC-9168A301964F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1B0826C4-9C7D-4E9F-9502-0288AA1C3280}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B0826C4-9C7D-4E9F-9502-0288AA1C3280}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B0826C4-9C7D-4E9F-9502-0288AA1C3280}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E81C53B-A6A0-4DC1-98AC-9168A301964F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E81C53B-A6A0-4DC1-98AC-9168A301964F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E81C53B-A6A0-4DC1-98AC-9168A301964F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E81C53B-A6A0-4DC1-98AC-9168A301964F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
