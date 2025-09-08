@@ -104,12 +104,12 @@ async function buildVSProject(projectPath, version) {
 async function buildUiPathProject(projectPath, projectId) {
   core.info('Building UiPath project...');
   
-  // Check if uipcli is available
+  // Check if uipath CLI is available
   try {
-    const versionOutput = execSync('uipcli --version', { stdio: 'pipe', encoding: 'utf8' });
-    core.info(`UiPath CLI version: ${versionOutput.trim()}`);
+    const versionOutput = execSync('uipath --help', { stdio: 'pipe', encoding: 'utf8' });
+    core.info(`UiPath CLI is available`);
   } catch (error) {
-    throw new Error('UiPath CLI (uipcli) is not available. Please install UiPath CLI.');
+    throw new Error('UiPath CLI (uipath) is not available. Please install UiPath CLI.');
   }
   
   // Find project.json file to verify this is a UiPath project
@@ -143,10 +143,10 @@ async function buildUiPathProject(projectPath, projectId) {
   core.info(`Packing UiPath project: ${projectId} from ${projectPath}`);
   
   try {
-    // Use the correct UiPath CLI syntax: uipcli package pack <project_path> -o <output_path>
+    // Use the correct UiPath CLI syntax: uipath studio package pack --source <project_path> --destination <output_path>
     // Try with absolute paths to avoid URI format issues
     const absoluteProjectPath = path.resolve(projectPath);
-    const packCommand = `uipcli package pack "${absoluteProjectPath}" -o "${absoluteProjectPath}"`;
+    const packCommand = `uipath studio package pack --source "${absoluteProjectPath}" --destination "${absoluteProjectPath}"`;
     core.info(`Executing command: ${packCommand}`);
     
     // Use larger buffer size to handle UiPath CLI's verbose output
@@ -176,8 +176,8 @@ async function buildUiPathProject(projectPath, projectId) {
       try {
         // Try using spawn instead of execSync to handle large output
         const absoluteProjectPath = path.resolve(projectPath);
-        const result = await runCommandWithLargeOutput('uipcli', [
-          'package', 'pack', absoluteProjectPath, '-o', absoluteProjectPath
+        const result = await runCommandWithLargeOutput('uipath', [
+          'studio', 'package', 'pack', '--source', absoluteProjectPath, '--destination', absoluteProjectPath
         ], { cwd: projectPath });
         
         core.info('UiPath CLI completed successfully using spawn');
@@ -230,7 +230,7 @@ async function buildUiPathProject(projectPath, projectId) {
         });
         
         // Try packing from the simplified path
-        const altCommand = `uipcli package pack "${tempProjectDir}" -o "${tempOutputDir}"`;
+        const altCommand = `uipath studio package pack --source "${tempProjectDir}" --destination "${tempOutputDir}"`;
         core.info(`Trying with simplified path: ${altCommand}`);
         const output = execSync(altCommand, { 
           stdio: 'pipe', 
