@@ -13,16 +13,53 @@ function getChangedFiles() {
     const after = context.sha || process.env.GITHUB_SHA;
     
     let command;
+    let files = [];
+    
+    // Try different strategies to get changed files
     if (before && after && before !== '0000000000000000000000000000000000000000') {
-      command = `git diff --name-only ${before} ${after}`;
-      core.info(`Using commit range: ${before}..${after}`);
-    } else {
-      command = 'git diff --name-only HEAD~1 HEAD';
-      core.info('Using HEAD~1..HEAD comparison');
+      // First try: use the specific commit range
+      try {
+        command = `git diff --name-only ${before} ${after}`;
+        core.info(`Using commit range: ${before}..${after}`);
+        const output = execSync(command, { encoding: 'utf8' });
+        files = output.split('\n').filter(line => line.trim());
+      } catch (error) {
+        core.warning(`Failed to use commit range ${before}..${after}: ${error.message}`);
+        files = [];
+      }
     }
     
-    const output = execSync(command, { encoding: 'utf8' });
-    const files = output.split('\n').filter(line => line.trim());
+    // Fallback 1: Compare with previous commit
+    if (files.length === 0) {
+      try {
+        command = 'git diff --name-only HEAD~1 HEAD';
+        core.info('Fallback: Using HEAD~1..HEAD comparison');
+        const output = execSync(command, { encoding: 'utf8' });
+        files = output.split('\n').filter(line => line.trim());
+      } catch (error) {
+        core.warning(`Failed HEAD~1 comparison: ${error.message}`);
+        files = [];
+      }
+    }
+    
+    // Fallback 2: Compare with origin/main
+    if (files.length === 0) {
+      try {
+        command = 'git diff --name-only origin/main HEAD';
+        core.info('Fallback: Using origin/main..HEAD comparison');
+        const output = execSync(command, { encoding: 'utf8' });
+        files = output.split('\n').filter(line => line.trim());
+      } catch (error) {
+        core.warning(`Failed origin/main comparison: ${error.message}`);
+        files = [];
+      }
+    }
+    
+    // Fallback 3: If all else fails, build all projects
+    if (files.length === 0) {
+      core.warning('Could not determine changed files, will build all projects');
+      return null; // Signal to build all projects
+    }
     
     core.info(`Found ${files.length} changed files`);
     files.forEach(file => core.info(`Changed: ${file}`));
@@ -187,13 +224,28 @@ async function main() {
     if (!fs.existsSync(monoConfigPath)) {
       throw new Error(`Mono config file not found: ${monoConfigPath}`);
     }
-    
-    const changedFiles = getChangedFiles();
+
     const monoConfig = JSON.parse(fs.readFileSync(monoConfigPath, 'utf8'));
     
     // Validate mono config structure
     if (!monoConfig.projects || !Array.isArray(monoConfig.projects)) {
       throw new Error('Invalid mono.json: missing or invalid projects array');
+    }
+
+    const changedFiles = getChangedFiles();
+    let projectsToBuild;
+    
+    if (changedFiles === null) {
+      // Build all projects if we can't determine changes
+      core.warning('Building all projects due to inability to determine changes');
+      projectsToBuild = new Map();
+      for (const project of monoConfig.projects) {
+        if (project.build !== false) {
+          projectsToBuild.set(project.id, project);
+        }
+      }
+    } else {
+      projectsToBuild = findChangedProjects(changedFiles, monoConfig);
     }
     
     // Check if configuration files changed - if so, build everything
