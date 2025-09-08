@@ -124,6 +124,20 @@ function findChangedProjects(changedFiles, monoConfig) {
 
   core.info(`Found ${projectsToBuild.size} directly changed projects`);
 
+  // Add dependencies of changed projects (projects that changed projects depend on)
+  const projectsToCheck = Array.from(projectsToBuild.values());
+  for (const project of projectsToCheck) {
+    if (project.dependsOn && Array.isArray(project.dependsOn)) {
+      for (const depId of project.dependsOn) {
+        const depProject = monoConfig.projects.find(p => p.id === depId);
+        if (depProject && depProject.build && !projectsToBuild.has(depId)) {
+          core.info(`Adding dependency ${depId} required by ${project.id}`);
+          projectsToBuild.set(depId, depProject);
+        }
+      }
+    }
+  }
+
   // Add transitive dependencies (projects that depend on changed projects)
   let added = true;
   let iteration = 0;
