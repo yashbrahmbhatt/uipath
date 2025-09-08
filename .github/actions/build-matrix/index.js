@@ -7,10 +7,13 @@ const path = require("path");
 function getChangedFiles() {
   core.info("Detecting changed files...");
 
+  // Declare variables outside try block for proper scope
+  let before, after;
+
   try {
     const context = github.context;
-    const before = context.payload.before || process.env.GITHUB_EVENT_BEFORE;
-    const after = context.sha || process.env.GITHUB_SHA;
+    before = context.payload.before || process.env.GITHUB_EVENT_BEFORE;
+    after = context.sha || process.env.GITHUB_SHA;
 
     let command;
     if (
@@ -34,7 +37,7 @@ function getChangedFiles() {
     return files;
   } catch (error) {
     core.warning(
-      `Failed to use commit range ${before}..${after}: ${error.message}`
+      `Failed to use commit range ${before || 'undefined'}..${after || 'undefined'}: ${error.message}`
     );
     // Fallback to HEAD~1 comparison
     try {
