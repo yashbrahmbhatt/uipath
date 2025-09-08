@@ -1,8 +1,8 @@
 name: 'Publish to UiPath Orchestrator'
-description: 'Publishes UiPath packages to Orchestrator'
+description: 'Publishes UiPath packages to Orchestrator using modern UiPath CLI'
 inputs:
   package-path:
-    description: 'Path to the .nupkg file or folder containing packages to publish'
+    description: 'Path to the .nupkg file to publish'
     required: true
   orchestrator-url:
     description: 'The URL of the Orchestrator instance'
@@ -13,53 +13,20 @@ inputs:
   orchestrator-folder:
     description: 'The Orchestrator folder name'
     required: false
-    default: ''
-  orchestrator-username:
-    description: 'The Orchestrator username used for authentication'
-    required: false
-  orchestrator-password:
-    description: 'The Orchestrator password used for authentication'
-    required: false
-  auth-token:
-    description: 'The Orchestrator refresh token used for authentication'
-    required: false
+    default: 'Shared'
   account-name:
     description: 'The Orchestrator organization name'
-    required: false
+    required: true
   application-id:
-    description: 'The external application id'
-    required: false
+    description: 'The external application id for authentication'
+    required: true
   application-secret:
-    description: 'The external application secret'
-    required: false
+    description: 'The external application secret for authentication'
+    required: true
   application-scope:
     description: 'The space-separated list of application scopes'
     required: false
     default: 'OR.Folders OR.BackgroundTasks OR.TestSets OR.TestSetExecutions OR.TestSetSchedules OR.Settings.Read OR.Robots.Read OR.Machines.Read OR.Execution OR.Assets OR.Users.Read OR.Jobs OR.Monitoring'
-  identity-url:
-    description: 'Url of your identity server (required for PaaS deployments)'
-    required: false
-  create-process:
-    description: 'When set to true, it will create a process in the respective folder'
-    required: false
-    default: 'true'
-  entry-points-path:
-    description: 'Define the specific entry points to create or update a process'
-    required: false
-  environments:
-    description: 'The comma-separated list of environments to deploy the package to'
-    required: false
-  ignore-library-deploy-conflict:
-    description: 'Ignore the conflict when deploying a library package with the same version as an existing one'
-    required: false
-    default: 'false'
-  process-name:
-    description: 'Optionally provide a custom name for the process to be updated/created'
-    required: false
-  trace-level:
-    description: 'Specifies what types of log messages to output'
-    required: false
-    default: 'Information'
 runs:
   using: 'node20'
   main: 'index.js'
