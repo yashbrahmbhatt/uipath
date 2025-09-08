@@ -66,7 +66,7 @@ async function main() {
     } else if (hasAppAuth) {
       command.push("-A", `"${accountName}"`);
       command.push("-I", `"${applicationId}"`);
-      command.push("-S", `"${applicationSecret}"`);
+      command.push("-S", `'${applicationSecret}'`);
       if (applicationScope) {
         command.push("--applicationScope", `"${applicationScope}"`);
       }
