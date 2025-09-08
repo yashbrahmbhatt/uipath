@@ -31,12 +31,22 @@ namespace Yash.Config.Helpers
             string outputClassName,
             string outputFolder,
             string namespaceName,
+            string scope ="",
             string additionalUsings = ""
         )
         {
             // Load the config (you'll need a method like ExcelToConfigFile)
             ConfigFile config = ReadConfigFile(excelPath);
+            if(scope != "")
+            {
+                config = new ConfigFile()
+                {
+                    Settings = config.Settings.Where(s => s.Scope == scope).ToList(),
+                    Assets = config.Assets.Where(a => a.Scope == scope).ToList(),
+                    Files = config.Files.Where(f => f.Scope == scope).ToList()
+                };
 
+            }
             var usedTypes = new HashSet<string>();
             var sb = new StringBuilder();
             var body = new StringBuilder();

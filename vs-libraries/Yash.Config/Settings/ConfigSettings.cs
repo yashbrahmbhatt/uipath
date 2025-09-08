@@ -10,7 +10,6 @@ namespace Yash.Config.Settings
 
         public const string Setting_Generation_FilePath_Key = $"{Section_Generation_Key}.FilePath";
         public const string Setting_Generation_OutputDir_Key = $"{Section_Generation_Key}.OutputDirectory";
-        public const string Setting_Generation_ClassName_Key = $"{Section_Generation_Key}.ClassName";
         public const string Setting_Generation_Namespace_Key = $"{Section_Generation_Key}.Namespace";
         public const string Setting_Generation_Usings_Key = $"{Section_Generation_Key}.AdditionalUsings";
     }
@@ -24,7 +23,6 @@ namespace Yash.Config.Settings
 
             CreateAutogenFilePathSetting(workflowDesignApi, section);
             CreateAutogenOutputDirSetting(workflowDesignApi, section);
-            CreateAutogenClassNameSetting(workflowDesignApi, section);
             CreateAutogenNamespaceSetting(workflowDesignApi, section);
             CreateAutogenUsingsSetting(workflowDesignApi, section);
         }
@@ -87,26 +85,6 @@ namespace Yash.Config.Settings
                     ? "Output directory is required."
                     : !System.IO.Directory.Exists(v)
                         ? "Directory does not exist."
-                        : null
-            };
-            if (section != null) api?.Settings.AddSetting(section, setting);
-            return setting;
-        }
-
-        public static SingleValueEditorDescription<string> CreateAutogenClassNameSetting(IWorkflowDesignApi? api = null, SettingsSection? section = null)
-        {
-            var setting = new SingleValueEditorDescription<string>
-            {
-                Key = Keys.Setting_Generation_ClassName_Key,
-                Label = "Class Name",
-                Description = "The name of the generated class.",
-                DefaultValue = "",
-                GetDisplayValue = v => string.IsNullOrWhiteSpace(v) ? "Not Set" : v,
-                IsDesignTime = true,
-                Validate = v => string.IsNullOrWhiteSpace(v)
-                    ? "Class name is required."
-                    : !char.IsLetter(v[0])
-                        ? "Class name must start with a letter."
                         : null
             };
             if (section != null) api?.Settings.AddSetting(section, setting);

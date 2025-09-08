@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Yash.Frameworks.Activities.Widgets.ActivityEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Yash.Frameworks.Activities.Widgets"
+             xmlns:uip="clr-namespace:UiPath.Activities.Presentation"
+             xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
+             xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation"
+             xmlns:sapc="clr-namespace:System.Activities.Presentation.Converters;assembly=System.Activities.Presentation"
+             xmlns:sa="clr-namespace:System.Activities;assembly=System.Activities"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+        d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <sapc:ArgumentToExpressionConverter x:Key="ArgumentToExpressionConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Yash.Frameworks;component/Activities/ViewModels/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel>
+        <DockPanel LastChildFill="True">
+            <Expander DockPanel.Dock="Right"/>
+            <TextBlock Text="Initialize"
+                    DockPanel.Dock="Left"/>
+        </DockPanel>
+        <uip:ActivityDecoratorControl Style="{StaticResource ActivityDecoratorStyle}">
+            <DockPanel LastChildFill="True">
+                <sap:WorkflowItemPresenter AutomationProperties.AutomationId="Activity"
+                        Margin="0,10,0,0"
+                                           Item="{Binding Path=ModelItem.Body.Handler, Mode=TwoWay}"
+                        AllowedItemType="{x:Type sa:Activity}"
+                        HintText="Drop activity here"
+                        MinWidth="400"
+                        DockPanel.Dock="Bottom"/>
+</DockPanel>
+</uip:ActivityDecoratorControl>
+</StackPanel >
+</UserControl>

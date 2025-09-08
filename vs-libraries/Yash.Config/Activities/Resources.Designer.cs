@@ -61,6 +61,60 @@ namespace Yash.Config.Activities {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Base Url.
+        /// </summary>
+        internal static string LoadConfig_BaseUrl_DisplayName {
+            get {
+                return ResourceManager.GetString("LoadConfig_BaseUrl_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string LoadConfig_BaseUrl_Tooltip {
+            get {
+                return ResourceManager.GetString("LoadConfig_BaseUrl_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Client Id.
+        /// </summary>
+        internal static string LoadConfig_ClientId_DisplayName {
+            get {
+                return ResourceManager.GetString("LoadConfig_ClientId_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string LoadConfig_ClientId_Tooltip {
+            get {
+                return ResourceManager.GetString("LoadConfig_ClientId_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ClientSecret.
+        /// </summary>
+        internal static string LoadConfig_ClientSecret_DisplayName {
+            get {
+                return ResourceManager.GetString("LoadConfig_ClientSecret_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string LoadConfig_ClientSecret_Tooltip {
+            get {
+                return ResourceManager.GetString("LoadConfig_ClientSecret_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Config Type.
         /// </summary>
         internal static string LoadConfig_ConfigType_DisplayName {
@@ -111,6 +165,24 @@ namespace Yash.Config.Activities {
         internal static string LoadConfig_Result_Tooltip {
             get {
                 return ResourceManager.GetString("LoadConfig_Result_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scope.
+        /// </summary>
+        internal static string LoadConfig_Scope_DisplayName {
+            get {
+                return ResourceManager.GetString("LoadConfig_Scope_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The scope to load from the config file.
+        /// </summary>
+        internal static string LoadConfig_Scope_Tooltip {
+            get {
+                return ResourceManager.GetString("LoadConfig_Scope_Tooltip", resourceCulture);
             }
         }
         
