@@ -33,7 +33,49 @@ async function testDotNetProject(projectId, testPath, configuration) {
   
   // Restore dependencies
   core.info('Restoring test dependencies...');
-  execSync(`dotnet restore "${testProjectPath}"`, { stdio: 'inherit' });
+  
+  // Create a temporary NuGet.config for testing to avoid local path issues
+  const tempNugetConfig = path.join(testPath, 'temp-nuget.config');
+  const localSource = process.env.LOCAL_PACKAGE_SOURCE;
+  
+  let nugetConfigContent = `<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <packageSources>
+        <clear />
+        <add key="NuGet.org" value="https://api.nuget.org/v3/index.json" />
+        <add key="UiPath Official" value="https://pkgs.dev.azure.com/uipath/Public.Feeds/_packaging/UiPath-Official/nuget/v3/index.json" />
+        <add key="UiPath Marketplace" value="https://gallery.uipath.com/api/v3/index.json" />`;
+
+  if (localSource && fs.existsSync(localSource)) {
+    nugetConfigContent += `
+        <add key="LocalBuild" value="${localSource}" />`;
+  }
+
+  nugetConfigContent += `
+    </packageSources>
+</configuration>`;
+
+  fs.writeFileSync(tempNugetConfig, nugetConfigContent);
+  core.info(`Created temporary NuGet config: ${tempNugetConfig}`);
+  
+  try {
+    execSync(`dotnet restore "${testProjectPath}" --configfile "${tempNugetConfig}"`, { stdio: 'inherit' });
+    core.info('Restore completed successfully');
+  } catch (restoreError) {
+    core.warning('Restore with temp config failed, trying with --ignore-failed-sources...');
+    try {
+      execSync(`dotnet restore "${testProjectPath}" --configfile "${tempNugetConfig}" --ignore-failed-sources`, { stdio: 'inherit' });
+      core.info('Restore succeeded with --ignore-failed-sources');
+    } catch (fallbackError) {
+      core.error('Restore failed even with fallback options');
+      throw restoreError;
+    }
+  } finally {
+    // Clean up temp config
+    if (fs.existsSync(tempNugetConfig)) {
+      fs.unlinkSync(tempNugetConfig);
+    }
+  }
   
   // Build test project
   core.info('Building test project...');
