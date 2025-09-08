@@ -34,7 +34,7 @@ async function main() {
     // Validate authentication parameters
     const hasUsernamePassword = orchestratorUsername && orchestratorPassword;
     const hasTokenAuth = authToken && accountName;
-    const hasAppAuth = applicationId && applicationSecret && accountName;
+    const hasAppAuth = applicationId && applicationSecret;
     
     if (!hasUsernamePassword && !hasTokenAuth && !hasAppAuth) {
       throw new Error('Authentication required: provide either username/password, token/account, or application credentials');
@@ -56,7 +56,6 @@ async function main() {
       command.push('-t', `"${authToken}"`);
       command.push('-a', `"${accountName}"`);
     } else if (hasAppAuth) {
-      command.push('-A', `"${accountName}"`);
       command.push('-I', `"${applicationId}"`);
       command.push('-S', `"${applicationSecret}"`);
       if (applicationScope) {
