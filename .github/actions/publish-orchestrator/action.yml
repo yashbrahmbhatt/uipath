@@ -1,0 +1,66 @@
+name: 'Publish to UiPath Orchestrator'
+description: 'Publishes UiPath packages to Orchestrator'
+inputs:
+  package-path:
+    description: 'Path to the .nupkg file or folder containing packages to publish'
+    required: true
+  orchestrator-url:
+    description: 'The URL of the Orchestrator instance'
+    required: true
+  orchestrator-tenant:
+    description: 'The tenant of the Orchestrator instance'
+    required: true
+  orchestrator-folder:
+    description: 'The Orchestrator folder name'
+    required: false
+    default: ''
+  orchestrator-username:
+    description: 'The Orchestrator username used for authentication'
+    required: false
+  orchestrator-password:
+    description: 'The Orchestrator password used for authentication'
+    required: false
+  auth-token:
+    description: 'The Orchestrator refresh token used for authentication'
+    required: false
+  account-name:
+    description: 'The Orchestrator organization name'
+    required: false
+  application-id:
+    description: 'The external application id'
+    required: false
+  application-secret:
+    description: 'The external application secret'
+    required: false
+  application-scope:
+    description: 'The space-separated list of application scopes'
+    required: false
+    default: 'OR.Folders OR.BackgroundTasks OR.TestSets OR.TestSetExecutions OR.TestSetSchedules OR.Settings.Read OR.Robots.Read OR.Machines.Read OR.Execution OR.Assets OR.Users.Read OR.Jobs OR.Monitoring'
+  identity-url:
+    description: 'Url of your identity server (required for PaaS deployments)'
+    required: false
+  create-process:
+    description: 'When set to true, it will create a process in the respective folder'
+    required: false
+    default: 'true'
+  entry-points-path:
+    description: 'Define the specific entry points to create or update a process'
+    required: false
+    default: 'Main.xaml'
+  environments:
+    description: 'The comma-separated list of environments to deploy the package to'
+    required: false
+  ignore-library-deploy-conflict:
+    description: 'Ignore the conflict when deploying a library package with the same version as an existing one'
+    required: false
+    default: 'false'
+  process-name:
+    description: 'Optionally provide a custom name for the process to be updated/created'
+    required: false
+  trace-level:
+    description: 'Specifies what types of log messages to output'
+    required: false
+    default: 'Information'
+runs:
+  using: 'node20'
+  main: 'index.js'

@@ -133,12 +133,12 @@ describe('Build Matrix Functions', () => {
           "dependsOn": []
         },
         {
-          "id": "Finance.IngestTransactions",
-          "path": "uipath-processes/Finance.IngestTransactions",
+          "id": "Finance.Automations",
+          "path": "uipath-processes/Finance.Automations",
           "type": "uipath-process",
           "build": true,
           "test": false,
-          "testPath": "uipath-processes/Finance.IngestTransactions",
+          "testPath": "uipath-processes/Finance.Automations",
           "deploy": true,
           "deploySteps": ["orchestrator"],
           "dependsOn": []

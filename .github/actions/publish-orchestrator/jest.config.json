@@ -1,0 +1,6 @@
+{
+  "testEnvironment": "node",
+  "collectCoverage": false,
+  "testMatch": ["**/*.test.js"],
+  "setupFiles": ["<rootDir>/jest.setup.js"]
+}
