@@ -13,7 +13,6 @@ inputs:
   orchestrator-folder:
     description: 'The Orchestrator folder name'
     required: false
-    default: 'Shared'
   account-name:
     description: 'The Orchestrator organization name'
     required: true

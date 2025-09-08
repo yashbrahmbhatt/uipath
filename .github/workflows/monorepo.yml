@@ -177,12 +177,10 @@ jobs:
         with:
           package-path: ${{ steps.build.outputs.package-path }}
           orchestrator-url: ${{ vars.UIP_URL }}
-          orchestrator-tenant: ${{ vars.UIP_TENANT_NAME }}
           account-name: ${{ vars.UIP_ACCOUNT_NAME }}
           # Use existing UiPath secrets for application authentication
           application-id: ${{ vars.UIP_APPLICATION_ID }}
           application-secret: ${{ secrets.UIP_APPLICATION_SECRET }}
-          application-scope: "OR.Folders OR.BackgroundTasks OR.TestSets OR.TestSetExecutions OR.TestSetSchedules OR.Settings.Read OR.Robots.Read OR.Machines.Read OR.Execution OR.Assets OR.Users.Read OR.Jobs OR.Monitoring"
           
       
       - name: Publish to GitHub Packages
