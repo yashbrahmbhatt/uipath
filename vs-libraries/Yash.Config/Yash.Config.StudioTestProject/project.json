@@ -4,8 +4,8 @@
   "description": ".",
   "main": "Main.xaml",
   "dependencies": {
-    "UiPath.System.Activities": "[25.6.1]",
-    "Yash.Config": "[1.0.251-dev.83150]"
+    "UiPath.System.Activities": "[25.8.0]",
+    "Yash.Config": "[1.0.252-dev.70679]"
   },
   "webServices": [],
   "entitiesStores": [],

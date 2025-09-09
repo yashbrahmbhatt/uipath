@@ -11,6 +11,7 @@ using Yash.Config.Activities;
 using Yash.Config.Helpers;
 using Yash.Config.Models;
 using Yash.Orchestrator;
+using Yash.Utility.Helpers;
 
 namespace Yash.Config
 {
@@ -160,7 +161,7 @@ namespace Yash.Config
                     return JsonConvert.SerializeObject(table);
 
                 case "xlsx":
-                    var ds = ExcelHelpers.ReadExcelFile(filePath);
+                    var ds = Yash.Utility.Helpers.ExcelHelpers.ReadExcelFile(filePath);
                     Log($"Hydrated Excel file '{name}' with {ds.Tables.Count} tables.");
                     return JsonConvert.SerializeObject(ds);
 
@@ -174,7 +175,7 @@ namespace Yash.Config
         {
             void Log(string msg, TraceEventType level = TraceEventType.Information) => log?.Invoke(msg, level);
 
-            var dataset = ExcelHelpers.ReadExcelFile(filePath);
+            var dataset = Yash.Utility.Helpers.ExcelHelpers.ReadExcelFile(filePath);
             Log($"Found {dataset.Tables.Count} sheets in workbook.");
             var settingsSheet = dataset.Tables.Contains("Settings") ? dataset.Tables["Settings"] : null;
             var assetsSheet = dataset.Tables.Contains("Assets") ? dataset.Tables["Assets"] : null;

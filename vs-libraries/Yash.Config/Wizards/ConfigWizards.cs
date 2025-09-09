@@ -12,13 +12,12 @@ using Yash.Config.Helpers;
 using Yash.Config.Models;
 using Newtonsoft.Json;
 using UiPath.Studio.Activities.Api.BusyService;
-using ClosedXML.Excel;
 
 namespace Yash.Config.Wizards
 {
     public static class ConfigWizards
     {
-        public static IWorkflowDesignApi api;
+        public static IWorkflowDesignApi? api;
         public static void CreateWizard(IWorkflowDesignApi workflowDesignApi)
         {
             api = workflowDesignApi;

@@ -13,13 +13,13 @@ namespace Yash.Config.Tests.Activities
     [TestClass]
     public class LoadConfigTests
     {
-        private LoadConfig? _loadConfigActivity;
+        private LoadConfig<Models.Config> _loadConfigActivity;
         private string? _testConfigPath;
 
         [TestInitialize]
         public void Setup()
         {
-            _loadConfigActivity = new LoadConfig();
+            _loadConfigActivity = new LoadConfig<Models.Config>();
             _testConfigPath = Path.Combine(TestContext?.TestDeploymentDir ?? ".", "TestData", "TestConfig.xlsx");
             
             // Create test data directory if it doesn't exist
@@ -50,7 +50,7 @@ namespace Yash.Config.Tests.Activities
             
             // InArgument properties are auto-initialized by the UiPath framework
             // In unit tests, we can verify the property exists without null reference
-            var propertyInfo = typeof(LoadConfig).GetProperty("WorkbookPath");
+            var propertyInfo = typeof(LoadConfig<Models.Config>).GetProperty("WorkbookPath");
             propertyInfo.Should().NotBeNull();
             propertyInfo!.PropertyType.Name.Should().Contain("InArgument");
         }

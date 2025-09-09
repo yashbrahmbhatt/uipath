@@ -1,6 +1,4 @@
-﻿using DocumentFormat.OpenXml.InkML;
-using DocumentFormat.OpenXml.Vml;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Activities;
 using System.Activities.DesignViewModels;

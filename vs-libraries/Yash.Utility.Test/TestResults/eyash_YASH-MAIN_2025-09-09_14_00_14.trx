@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="27f92c00-d3b2-406c-bb9c-3d2d5ce58379" name="eyash@YASH-MAIN 2025-09-09 14:00:14" runUser="YASH-MAIN\eyash" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2025-09-09T14:00:14.6230259-04:00" queuing="2025-09-09T14:00:14.6230263-04:00" start="2025-09-09T14:00:13.3979903-04:00" finish="2025-09-09T14:00:23.9710293-04:00" />
+  <TestSettings name="default" id="6d06135b-cd16-4e4c-bd27-bc91af803c3b">
+    <Deployment runDeploymentRoot="eyash_YASH-MAIN_2025-09-09_14_00_14" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="097bee8f-32e9-44ac-a863-461befe0c81a" testId="7108ed85-d8b8-2bc4-3c7c-6def0fb6ae41" testName="GetFriendlyTypeName_CustomTypes_ShouldReturnClassName" computerName="YASH-MAIN" duration="00:00:00.0037750" startTime="2025-09-09T14:00:14.6623889-04:00" endTime="2025-09-09T14:00:14.6662192-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="097bee8f-32e9-44ac-a863-461befe0c81a" />
+    <UnitTestResult executionId="2fd17288-f8b9-4119-8c51-ec24eefad355" testId="febd1b36-52dd-57cb-ca7c-e72b754569a1" testName="GetFriendlyTypeName_GenericTypes_ShouldReturnGenericNotation" computerName="YASH-MAIN" duration="00:00:00.0038787" startTime="2025-09-09T14:00:14.6584340-04:00" endTime="2025-09-09T14:00:14.6623669-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2fd17288-f8b9-4119-8c51-ec24eefad355" />
+    <UnitTestResult executionId="b8471845-a317-4503-9ec3-054c218a50ee" testId="2e9d3c4f-d6d8-1180-06f3-127c554e1fb4" testName="ReadExcelFile_WithSpecialCharacters_ShouldHandleCorrectly" computerName="YASH-MAIN" duration="00:00:00.0209935" startTime="2025-09-09T14:00:14.3211775-04:00" endTime="2025-09-09T14:00:14.3422551-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b8471845-a317-4503-9ec3-054c218a50ee" />
+    <UnitTestResult executionId="c094f74e-aeec-421b-bb01-23a1fcc45383" testId="667a0540-e79b-325c-c09b-cfe7df2f9ff0" testName="CreateExcelFile_WithVariousDataTypes_ShouldPreserveTypes" computerName="YASH-MAIN" duration="00:00:00.0405322" startTime="2025-09-09T14:00:14.5240942-04:00" endTime="2025-09-09T14:00:14.5647401-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c094f74e-aeec-421b-bb01-23a1fcc45383" />
+    <UnitTestResult executionId="2b8e5988-43bd-4ce3-95fc-a5111f82cea6" testId="5d851786-2b00-2101-0e6e-0f564c7763fe" testName="ReadExcelFile_WithTemporaryLock_ShouldSucceedAfterRetry" computerName="YASH-MAIN" duration="00:00:01.6554523" startTime="2025-09-09T14:00:22.2762124-04:00" endTime="2025-09-09T14:00:23.9326165-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2b8e5988-43bd-4ce3-95fc-a5111f82cea6" />
+    <UnitTestResult executionId="e3cdd7f5-9bbd-4192-a395-3fb8a398a402" testId="6f690940-9116-afcf-600b-d0e8b308302e" testName="ReadExcelFile_FileNotFound_ShouldThrowFileNotFoundException" computerName="YASH-MAIN" duration="00:00:00.0121891" startTime="2025-09-09T14:00:14.3088009-04:00" endTime="2025-09-09T14:00:14.3211075-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e3cdd7f5-9bbd-4192-a395-3fb8a398a402" />
+    <UnitTestResult executionId="99f9ba5f-d9a3-4338-be94-16695b5c535c" testId="2b84d23c-7341-fdc5-67a2-169efb9890cf" testName="ReadExcelFile_DuplicateColumnNames_ShouldHandleCorrectly" computerName="YASH-MAIN" duration="00:00:00.0202170" startTime="2025-09-09T14:00:14.3626116-04:00" endTime="2025-09-09T14:00:14.3829414-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="99f9ba5f-d9a3-4338-be94-16695b5c535c" />
+    <UnitTestResult executionId="b568eb03-6303-46ad-b23e-60fcdfee6b56" testId="803836f9-6881-c509-4aa4-c4aff598c51c" testName="ReadExcelFile_WithFileShareNoneLock_ShouldHandleGracefully" computerName="YASH-MAIN" duration="00:00:07.5627905" startTime="2025-09-09T14:00:14.7129607-04:00" endTime="2025-09-09T14:00:22.2759596-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b568eb03-6303-46ad-b23e-60fcdfee6b56" />
+    <UnitTestResult executionId="9364c68f-a683-4968-b87b-8a8750144685" testId="e2c73b13-0673-395a-7268-2dd6ca68c46b" testName="GetFriendlyTypeName_BasicTypes_ShouldReturnFriendlyNames" computerName="YASH-MAIN" duration="00:00:00.0048513" startTime="2025-09-09T14:00:14.6492440-04:00" endTime="2025-09-09T14:00:14.6541775-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9364c68f-a683-4968-b87b-8a8750144685" />
+    <UnitTestResult executionId="46678d9e-33ea-45b4-bdca-26ba55b97666" testId="a07bcc41-8b59-d59d-bf37-68825c7b1536" testName="GenerateExcelTemplate_ValidInput_ShouldCreateTemplate" computerName="YASH-MAIN" duration="00:00:00.0606760" startTime="2025-09-09T14:00:14.5884083-04:00" endTime="2025-09-09T14:00:14.6492025-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="46678d9e-33ea-45b4-bdca-26ba55b97666" />
+    <UnitTestResult executionId="daf18068-fc26-4a0f-9a8d-3a701eb6a054" testId="52080b7b-01bf-a41a-4493-e1d7e8183138" testName="ReadExcelFile_WithFileAlreadyOpen_ShouldHandleLockedFile" computerName="YASH-MAIN" duration="00:00:00.0120160" startTime="2025-09-09T14:00:14.6852742-04:00" endTime="2025-09-09T14:00:14.6973732-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="daf18068-fc26-4a0f-9a8d-3a701eb6a054" />
+    <UnitTestResult executionId="30f3d5df-10d7-48a6-acc7-52ddcd9246ce" testId="534918eb-53f0-5098-4b22-f523146f47f4" testName="ReadExcelFile_WithStrictlyLockedFile_ShouldUseRetryMechanism" computerName="YASH-MAIN" duration="00:00:00.0153788" startTime="2025-09-09T14:00:14.6974080-04:00" endTime="2025-09-09T14:00:14.7128999-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="30f3d5df-10d7-48a6-acc7-52ddcd9246ce" />
+    <UnitTestResult executionId="b37f81e9-ffea-4fb2-bab6-49d07b729cad" testId="50f86c51-21a8-f9bc-5a8d-470f2cc3dd69" testName="GetFriendlyTypeName_ArrayTypes_ShouldReturnArrayNotation" computerName="YASH-MAIN" duration="00:00:00.0041351" startTime="2025-09-09T14:00:14.6542093-04:00" endTime="2025-09-09T14:00:14.6584095-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b37f81e9-ffea-4fb2-bab6-49d07b729cad" />
+    <UnitTestResult executionId="40e26214-7dae-48f3-93a5-407642fde55c" testId="d286b4f8-df1a-bc1d-6190-125b34fa71ef" testName="ReadExcelFile_ValidFile_ShouldReturnDataSet" computerName="YASH-MAIN" duration="00:00:00.3510843" startTime="2025-09-09T14:00:13.9396854-04:00" endTime="2025-09-09T14:00:14.3042421-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="40e26214-7dae-48f3-93a5-407642fde55c" />
+    <UnitTestResult executionId="cf1c74d1-d359-48fb-ae2c-e3e500b690b5" testId="f851cae2-5fd4-2a6c-c21a-573b4e74ece4" testName="CreateExcelFile_WithDataTable_ShouldCreateFileWithData" computerName="YASH-MAIN" duration="00:00:00.0952464" startTime="2025-09-09T14:00:14.3830138-04:00" endTime="2025-09-09T14:00:14.4783864-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cf1c74d1-d359-48fb-ae2c-e3e500b690b5" />
+    <UnitTestResult executionId="db128611-7902-4636-98b7-a77aa7899336" testId="12514a67-1ace-9f90-7df8-a307e4f67b9f" testName="CreateExcelFile_WithEmptyDataTable_ShouldCreateHeadersOnly" computerName="YASH-MAIN" duration="00:00:00.0219235" startTime="2025-09-09T14:00:14.5020028-04:00" endTime="2025-09-09T14:00:14.5240349-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="db128611-7902-4636-98b7-a77aa7899336" />
+    <UnitTestResult executionId="530dac12-4c2d-4062-bef1-aefb043aa031" testId="6e95dddf-0141-0d33-d445-68672f45e1a3" testName="ReadExcelFile_WithVariousDataTypes_ShouldPreserveTypes" computerName="YASH-MAIN" duration="00:00:00.0189161" startTime="2025-09-09T14:00:14.6662476-04:00" endTime="2025-09-09T14:00:14.6852354-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="530dac12-4c2d-4062-bef1-aefb043aa031" />
+    <UnitTestResult executionId="fa68c720-6b31-4d82-a057-6219dd57689a" testId="595ed10e-e923-20e4-0320-3c3e0a227a1d" testName="ReadExcelFile_EmptySheet_ShouldSkipEmptySheets" computerName="YASH-MAIN" duration="00:00:00.0201961" startTime="2025-09-09T14:00:14.3422937-04:00" endTime="2025-09-09T14:00:14.3625725-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fa68c720-6b31-4d82-a057-6219dd57689a" />
+    <UnitTestResult executionId="790d4083-8d2e-4ab4-8cd9-a3c67952c9a6" testId="421e575b-45c8-3f54-b8f4-2838654d1ebe" testName="CreateExcelFile_WithMultipleDataTables_ShouldCreateMultipleSheets" computerName="YASH-MAIN" duration="00:00:00.0234505" startTime="2025-09-09T14:00:14.4784262-04:00" endTime="2025-09-09T14:00:14.5019636-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="790d4083-8d2e-4ab4-8cd9-a3c67952c9a6" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GetFriendlyTypeName_CustomTypes_ShouldReturnClassName" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="7108ed85-d8b8-2bc4-3c7c-6def0fb6ae41">
+      <Execution id="097bee8f-32e9-44ac-a863-461befe0c81a" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="GetFriendlyTypeName_CustomTypes_ShouldReturnClassName" />
+    </UnitTest>
+    <UnitTest name="CreateExcelFile_WithVariousDataTypes_ShouldPreserveTypes" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="667a0540-e79b-325c-c09b-cfe7df2f9ff0">
+      <Execution id="c094f74e-aeec-421b-bb01-23a1fcc45383" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="CreateExcelFile_WithVariousDataTypes_ShouldPreserveTypes" />
+    </UnitTest>
+    <UnitTest name="ReadExcelFile_WithFileAlreadyOpen_ShouldHandleLockedFile" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="52080b7b-01bf-a41a-4493-e1d7e8183138">
+      <Execution id="daf18068-fc26-4a0f-9a8d-3a701eb6a054" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="ReadExcelFile_WithFileAlreadyOpen_ShouldHandleLockedFile" />
+    </UnitTest>
+    <UnitTest name="ReadExcelFile_WithStrictlyLockedFile_ShouldUseRetryMechanism" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="534918eb-53f0-5098-4b22-f523146f47f4">
+      <Execution id="30f3d5df-10d7-48a6-acc7-52ddcd9246ce" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="ReadExcelFile_WithStrictlyLockedFile_ShouldUseRetryMechanism" />
+    </UnitTest>
+    <UnitTest name="GetFriendlyTypeName_BasicTypes_ShouldReturnFriendlyNames" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="e2c73b13-0673-395a-7268-2dd6ca68c46b">
+      <Execution id="9364c68f-a683-4968-b87b-8a8750144685" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="GetFriendlyTypeName_BasicTypes_ShouldReturnFriendlyNames" />
+    </UnitTest>
+    <UnitTest name="ReadExcelFile_WithSpecialCharacters_ShouldHandleCorrectly" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="2e9d3c4f-d6d8-1180-06f3-127c554e1fb4">
+      <Execution id="b8471845-a317-4503-9ec3-054c218a50ee" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="ReadExcelFile_WithSpecialCharacters_ShouldHandleCorrectly" />
+    </UnitTest>
+    <UnitTest name="ReadExcelFile_WithVariousDataTypes_ShouldPreserveTypes" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="6e95dddf-0141-0d33-d445-68672f45e1a3">
+      <Execution id="530dac12-4c2d-4062-bef1-aefb043aa031" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="ReadExcelFile_WithVariousDataTypes_ShouldPreserveTypes" />
+    </UnitTest>
+    <UnitTest name="GetFriendlyTypeName_ArrayTypes_ShouldReturnArrayNotation" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="50f86c51-21a8-f9bc-5a8d-470f2cc3dd69">
+      <Execution id="b37f81e9-ffea-4fb2-bab6-49d07b729cad" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="GetFriendlyTypeName_ArrayTypes_ShouldReturnArrayNotation" />
+    </UnitTest>
+    <UnitTest name="ReadExcelFile_WithFileShareNoneLock_ShouldHandleGracefully" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="803836f9-6881-c509-4aa4-c4aff598c51c">
+      <Execution id="b568eb03-6303-46ad-b23e-60fcdfee6b56" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="ReadExcelFile_WithFileShareNoneLock_ShouldHandleGracefully" />
+    </UnitTest>
+    <UnitTest name="ReadExcelFile_WithTemporaryLock_ShouldSucceedAfterRetry" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="5d851786-2b00-2101-0e6e-0f564c7763fe">
+      <Execution id="2b8e5988-43bd-4ce3-95fc-a5111f82cea6" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="ReadExcelFile_WithTemporaryLock_ShouldSucceedAfterRetry" />
+    </UnitTest>
+    <UnitTest name="CreateExcelFile_WithMultipleDataTables_ShouldCreateMultipleSheets" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="421e575b-45c8-3f54-b8f4-2838654d1ebe">
+      <Execution id="790d4083-8d2e-4ab4-8cd9-a3c67952c9a6" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="CreateExcelFile_WithMultipleDataTables_ShouldCreateMultipleSheets" />
+    </UnitTest>
+    <UnitTest name="ReadExcelFile_FileNotFound_ShouldThrowFileNotFoundException" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="6f690940-9116-afcf-600b-d0e8b308302e">
+      <Execution id="e3cdd7f5-9bbd-4192-a395-3fb8a398a402" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="ReadExcelFile_FileNotFound_ShouldThrowFileNotFoundException" />
+    </UnitTest>
+    <UnitTest name="CreateExcelFile_WithDataTable_ShouldCreateFileWithData" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="f851cae2-5fd4-2a6c-c21a-573b4e74ece4">
+      <Execution id="cf1c74d1-d359-48fb-ae2c-e3e500b690b5" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="CreateExcelFile_WithDataTable_ShouldCreateFileWithData" />
+    </UnitTest>
+    <UnitTest name="GetFriendlyTypeName_GenericTypes_ShouldReturnGenericNotation" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="febd1b36-52dd-57cb-ca7c-e72b754569a1">
+      <Execution id="2fd17288-f8b9-4119-8c51-ec24eefad355" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="GetFriendlyTypeName_GenericTypes_ShouldReturnGenericNotation" />
+    </UnitTest>
+    <UnitTest name="CreateExcelFile_WithEmptyDataTable_ShouldCreateHeadersOnly" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="12514a67-1ace-9f90-7df8-a307e4f67b9f">
+      <Execution id="db128611-7902-4636-98b7-a77aa7899336" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="CreateExcelFile_WithEmptyDataTable_ShouldCreateHeadersOnly" />
+    </UnitTest>
+    <UnitTest name="GenerateExcelTemplate_ValidInput_ShouldCreateTemplate" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="a07bcc41-8b59-d59d-bf37-68825c7b1536">
+      <Execution id="46678d9e-33ea-45b4-bdca-26ba55b97666" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="GenerateExcelTemplate_ValidInput_ShouldCreateTemplate" />
+    </UnitTest>
+    <UnitTest name="ReadExcelFile_EmptySheet_ShouldSkipEmptySheets" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="595ed10e-e923-20e4-0320-3c3e0a227a1d">
+      <Execution id="fa68c720-6b31-4d82-a057-6219dd57689a" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="ReadExcelFile_EmptySheet_ShouldSkipEmptySheets" />
+    </UnitTest>
+    <UnitTest name="ReadExcelFile_ValidFile_ShouldReturnDataSet" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="d286b4f8-df1a-bc1d-6190-125b34fa71ef">
+      <Execution id="40e26214-7dae-48f3-93a5-407642fde55c" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="ReadExcelFile_ValidFile_ShouldReturnDataSet" />
+    </UnitTest>
+    <UnitTest name="ReadExcelFile_DuplicateColumnNames_ShouldHandleCorrectly" storage="c:\users\eyash\uipath\vs-libraries\yash.utility.test\bin\debug\net6.0-windows7.0\yash.utility.tests.dll" id="2b84d23c-7341-fdc5-67a2-169efb9890cf">
+      <Execution id="99f9ba5f-d9a3-4338-be94-16695b5c535c" />
+      <TestMethod codeBase="C:\Users\eyash\UiPath\vs-libraries\Yash.Utility.Test\bin\Debug\net6.0-windows7.0\Yash.Utility.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yash.Utility.Tests.ExcelHelperTests" name="ReadExcelFile_DuplicateColumnNames_ShouldHandleCorrectly" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="7108ed85-d8b8-2bc4-3c7c-6def0fb6ae41" executionId="097bee8f-32e9-44ac-a863-461befe0c81a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="febd1b36-52dd-57cb-ca7c-e72b754569a1" executionId="2fd17288-f8b9-4119-8c51-ec24eefad355" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2e9d3c4f-d6d8-1180-06f3-127c554e1fb4" executionId="b8471845-a317-4503-9ec3-054c218a50ee" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="667a0540-e79b-325c-c09b-cfe7df2f9ff0" executionId="c094f74e-aeec-421b-bb01-23a1fcc45383" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5d851786-2b00-2101-0e6e-0f564c7763fe" executionId="2b8e5988-43bd-4ce3-95fc-a5111f82cea6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6f690940-9116-afcf-600b-d0e8b308302e" executionId="e3cdd7f5-9bbd-4192-a395-3fb8a398a402" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2b84d23c-7341-fdc5-67a2-169efb9890cf" executionId="99f9ba5f-d9a3-4338-be94-16695b5c535c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="803836f9-6881-c509-4aa4-c4aff598c51c" executionId="b568eb03-6303-46ad-b23e-60fcdfee6b56" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e2c73b13-0673-395a-7268-2dd6ca68c46b" executionId="9364c68f-a683-4968-b87b-8a8750144685" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a07bcc41-8b59-d59d-bf37-68825c7b1536" executionId="46678d9e-33ea-45b4-bdca-26ba55b97666" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="52080b7b-01bf-a41a-4493-e1d7e8183138" executionId="daf18068-fc26-4a0f-9a8d-3a701eb6a054" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="534918eb-53f0-5098-4b22-f523146f47f4" executionId="30f3d5df-10d7-48a6-acc7-52ddcd9246ce" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="50f86c51-21a8-f9bc-5a8d-470f2cc3dd69" executionId="b37f81e9-ffea-4fb2-bab6-49d07b729cad" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d286b4f8-df1a-bc1d-6190-125b34fa71ef" executionId="40e26214-7dae-48f3-93a5-407642fde55c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f851cae2-5fd4-2a6c-c21a-573b4e74ece4" executionId="cf1c74d1-d359-48fb-ae2c-e3e500b690b5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="12514a67-1ace-9f90-7df8-a307e4f67b9f" executionId="db128611-7902-4636-98b7-a77aa7899336" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6e95dddf-0141-0d33-d445-68672f45e1a3" executionId="530dac12-4c2d-4062-bef1-aefb043aa031" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="595ed10e-e923-20e4-0320-3c3e0a227a1d" executionId="fa68c720-6b31-4d82-a057-6219dd57689a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="421e575b-45c8-3f54-b8f4-2838654d1ebe" executionId="790d4083-8d2e-4ab4-8cd9-a3c67952c9a6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="19" executed="19" passed="19" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

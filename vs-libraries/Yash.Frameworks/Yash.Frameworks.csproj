@@ -1,103 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Package-specific Properties -->
   <PropertyGroup>
-    <VersionBuild>$([System.DateTime]::UtcNow.DayOfYear.ToString("F0"))</VersionBuild>
-    <VersionRevision>$([System.DateTime]::UtcNow.TimeOfDay.TotalSeconds.ToString("F0"))</VersionRevision>
     <PackageId>Yash.Frameworks</PackageId>
     <PackageDescription>Several design frameworks for UiPath</PackageDescription>
     <PackageTags>Yash;Frameworks;Wizard</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/yashbrahmbhatt/uipath/tree/main/vs-libraries/Yash.Config</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/yashbrahmbhatt/Yash.Config</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <Authors>Yash Brahmbhatt</Authors>
-    <PackageReleaseNotes>Initial public release</PackageReleaseNotes>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-  </PropertyGroup>
-  <PropertyGroup>
-      <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-      <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-      <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-      <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
-      <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
-      <FileVersion>$(VersionPrefix)</FileVersion>
-     <UseWindowsForms>true</UseWindowsForms>
-
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-      <VersionPrefix>1.0.$(VersionBuild)-dev.$(VersionRevision)</VersionPrefix>
-      <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-      <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
-      <AssemblyVersion>1.0.0.0</AssemblyVersion>
-      <FileVersion>1.0.0.0</FileVersion>
-    
-  </PropertyGroup>
-   <PropertyGroup>
-      <PackageVersion>$(VersionPrefix)</PackageVersion>
-  </PropertyGroup>
-
-  <Target Name="CleanPackageFiles" BeforeTargets="Build">
-      <Message Text="Deleting packages ..." />
-      <ItemGroup>
-         <PackageFilesToDelete Include="$(PackageOutputPath)\$(PackageId)*.nupkg" />
-    </ItemGroup>
-      <Delete Files="@(PackageFilesToDelete)" ContinueOnError="WarnAndContinue" />
-    
-  </Target>
-
-
-
-
-  <PropertyGroup>
-    <TargetFramework>net6.0-windows7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <UseWindowsForms>false</UseWindowsForms>
     <UseWPF>false</UseWPF>
   </PropertyGroup>
 
-
-
-
+  <!-- Project-specific Excludes -->
   <ItemGroup>
-    <Compile Remove="Output\**" />
     <Compile Remove="Yash.Frameworks.StudioTestProject\**" />
-    <EmbeddedResource Remove="Output\**" />
     <EmbeddedResource Remove="Yash.Frameworks.StudioTestProject\**" />
-    <None Remove="Output\**" />
     <None Remove="Yash.Frameworks.StudioTestProject\**" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\Shared\UiPath.Activities.Presentation\ActivityDecoratorControl.cs">
-      <Link>Controls\ActivityDecoratorControl.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="..\Shared\UiPath.Activities.Presentation\Themes\Generic.xaml">
-      <Link>Themes\Generic.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-
-
+  <!-- Project-specific Resources -->
   <ItemGroup>
     <None Remove="Activities\ActivitiesMetadata.json" />
   </ItemGroup>
 
-
-
-
   <ItemGroup>
     <Page Remove="Yash.Frameworks.StudioTestProject\**.xaml" />
   </ItemGroup>
-
-
-
 
   <ItemGroup>
     <Compile Remove="Activities\LazyFrameworkV2.cs" />
@@ -105,37 +31,27 @@
     <Compile Remove="Activities\Widgets\ActivityEditor.xaml.cs" />
   </ItemGroup>
 
-
-
-
   <ItemGroup>
     <EmbeddedResource Include="Activities\Resources\ActivitiesMetadata.json" />
-    <None Include="icon.png" Pack="true" PackagePath="\" />
-    <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
+  <!-- Project-specific Package References -->
   <ItemGroup>
-    <PackageReference Include="ClosedXML" Version="0.105.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.5.0-2.22527.10" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0-2.22527.10" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.5.0-2.22527.10" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <!-- UiPath Packages -->
+    <PackageReference Include="System.Activities.Core.Presentation" PrivateAssets="All" />
+    <PackageReference Include="System.Activities.ViewModels" PrivateAssets="All" />
+    <PackageReference Include="UiPath.Activities.Api" PrivateAssets="All" />
+    <PackageReference Include="UiPath.Workflow" PrivateAssets="All" />
+    <PackageReference Include="UiPath.System.Activities" />
+    
+    <!-- Core Packages -->
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" />
+    
   </ItemGroup>
 
-
-
-  <ItemGroup>
-    <PackageReference Include="System.Activities.Core.Presentation" Version="6.0.0-20231204.1" PrivateAssets="All" />
-    <PackageReference Include="System.Activities.ViewModels" Version="1.0.0-20250625.2" PrivateAssets="All" />
-    <PackageReference Include="UiPath.Activities.Api" Version="24.10.1">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="UiPath.System.Activities" Version="25.8.0" />
-    <PackageReference Include="UiPath.Workflow" Version="6.0.0-20240401-07" PrivateAssets="All" />
-  </ItemGroup>
-
-
-
+  <!-- Resource Updates -->
   <ItemGroup>
     <Compile Update="Activities\Resources\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -149,8 +65,6 @@
     </Compile>
   </ItemGroup>
 
-
-
   <ItemGroup>
     <EmbeddedResource Update="Activities\Resources\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -162,8 +76,7 @@
     </EmbeddedResource>
   </ItemGroup>
 
-
-
+  <!-- Page Excludes -->
   <ItemGroup>
     <Page Remove="Activities\Themes\Generic.xaml" />
     <Page Remove="Activities\Widgets\ActivityEditor.xaml" />
@@ -171,13 +84,9 @@
     <Page Remove="Yash.Frameworks.StudioTestProject\~Sequence.xaml" />
   </ItemGroup>
 
-
-
   <ItemGroup>
     <None Include="Yash.Frameworks.StudioTestProject\Sequence.xaml" />
   </ItemGroup>
-
-
 
   <ItemGroup>
     <Folder Include="Activities\Themes\" />

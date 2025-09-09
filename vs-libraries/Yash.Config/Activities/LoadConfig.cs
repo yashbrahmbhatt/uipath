@@ -14,10 +14,11 @@ using Newtonsoft.Json;
 using UiPath.Activities.Api.Base;
 using UiPath.Studio.Activities.Api;
 using Newtonsoft.Json.Linq;
+using Yash.Orchestrator;
 using System.Net.Http.Headers;
 using System.ComponentModel;
-using Yash.Orchestrator;
 using System.Security;
+using CsvHelper;
 
 namespace Yash.Config.Activities
 {
@@ -31,7 +32,7 @@ namespace Yash.Config.Activities
         }
         public TraceEventType EventType { get; private set; } = TraceEventType.Error;
     }
-    public class LoadConfig : AsyncCodeActivity<Dictionary<string, object>>
+    public class LoadConfig<T> : AsyncCodeActivity<T>
     {
         public InArgument<string> WorkbookPath { get; set; }
         public InArgument<string> Scope { get; set; }
@@ -41,7 +42,6 @@ namespace Yash.Config.Activities
         public InArgument<SecureString> ClientSecret { get; set; }
 
         private IExecutorRuntime _runtime;
-        private OrchestratorService _orchestratorService;
 
         private string _path;
         private string _scope;
@@ -62,7 +62,6 @@ namespace Yash.Config.Activities
             _clientId = ClientId.Get(context);
             _clientSecret = ClientSecret.Get(context);
             Log($"_baseUrl='{_baseUrl}', _clientId='{_clientId}', _clientSecret is null={_clientSecret == null}");
-            _orchestratorService = new(_baseUrl, _clientId, new System.Net.NetworkCredential("", _clientSecret).Password, new string[] { "OR.Folders.Read", "OR.Assets.Read" }, Log);
 
             if (string.IsNullOrWhiteSpace(_path))
                 throw new LoadConfigException("Workbook path is required.");
@@ -73,16 +72,22 @@ namespace Yash.Config.Activities
             return TaskHelpers.BeginTask(task, callback, state);
         }
 
-        private async Task<Dictionary<string, object>> RunWorkflowAsync(AsyncCodeActivityContext context)
+        private async Task<T> RunWorkflowAsync(AsyncCodeActivityContext context)
         {
+ 
             var file = ConfigService.ReadConfigFile(_path, Log);
-            return await ConfigService.LoadConfigAsync(file, _scope, _baseUrl, _clientId, _clientSecret, Log);
+            var dict = await ConfigService.LoadConfigAsync(file, _scope, _baseUrl, _clientId, _clientSecret, Log);
+            var type = typeof(T);
+            if (type.IsAssignableFrom(typeof(Models.Config)) && type.HasParameterlessConstructor())
+                return (T)ConfigFactory.FromDictionary(type, dict, Log);
+            else
+                return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(dict));
         }
 
 
-        protected override Dictionary<string, object> EndExecute(AsyncCodeActivityContext context, IAsyncResult result)
+        protected override T EndExecute(AsyncCodeActivityContext context, IAsyncResult result)
         {
-            var output = TaskHelpers.EndTask<Dictionary<string, object>>(result);
+            var output = TaskHelpers.EndTask<T>(result);
             return output; // Safe, task is already awaited
         }
 

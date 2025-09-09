@@ -18,7 +18,7 @@ using Yash.Config.Models;
 
 namespace Yash.Config.Activities.ViewModels
 {
-    public class LoadConfigViewModel : DesignPropertiesViewModel
+    public class LoadConfigViewModel<T> : DesignPropertiesViewModel where T: Models.Config, new()
     {
         [Category("Input")]
         public DesignInArgument<string> WorkbookPath { get; set; }
@@ -34,16 +34,26 @@ namespace Yash.Config.Activities.ViewModels
 
 
         [Category("Output")]
-        public DesignOutArgument<Dictionary<string, object>> Result { get; set; }
+        public DesignOutArgument<T> Result { get; set; }
+
+        [NotMappedProperty]
+        public DesignProperty<Type> ConfigType { get; set; }
 
 
         private readonly BindingList<string> AvailableScopes = new();
+
+        public DesignProperty<string> Debug { get; set; }
+        private IWorkflowDesignApi? _workflowDesignApi;
+        private readonly IBusyService _busyService;
+        private IDesignerCustomTypesService _designerCustomTypesService;
+        private IDesignerStaticTypesService _morphingService;
+        private bool _typeWidgetAvailable;
+        private bool _jitServiceAvailable;
+
         public LoadConfigViewModel(IDesignServices services) : base(services)
         {
-            _api = services.GetService<IWorkflowDesignApi>();
+            _workflowDesignApi = services.GetService<IWorkflowDesignApi>();
         }
-        public DesignProperty<string> Debug { get; set; }
-        private IWorkflowDesignApi? _api;
         protected override void InitializeModel()
         {
             //Debugger.Break(); 
@@ -51,7 +61,7 @@ namespace Yash.Config.Activities.ViewModels
              * The base call will initialize the properties of the view model with the values from the xaml or with the default values from the activity
              */
             base.InitializeModel();
-
+            _morphingService = Services.GetService<IDesignerStaticTypesService>();
             //PersistValuesChangedDuringInit(); // just for heads-up here; it's a mandatory call only when you change the values of properties during initialization
 
             var orderIndex = 0;
@@ -106,19 +116,20 @@ namespace Yash.Config.Activities.ViewModels
             });
 
 
+
             BaseUrl.DisplayName = Resources.LoadConfig_BaseUrl_DisplayName;
             BaseUrl.Tooltip = Resources.LoadConfig_BaseUrl_Tooltip;
-            BaseUrl.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
+            BaseUrl.IsPrincipal = false; // specifies if it belongs to the main category (which cannot be collapsed)
             BaseUrl.OrderIndex = orderIndex++;
             BaseUrl.IsRequired = true; // this is an optional field
             ClientId.DisplayName = Resources.LoadConfig_ClientId_DisplayName;
             ClientId.Tooltip = Resources.LoadConfig_ClientId_Tooltip;
-            ClientId.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
+            ClientId.IsPrincipal = false; // specifies if it belongs to the main category (which cannot be collapsed)
             ClientId.OrderIndex = orderIndex++;
             ClientId.IsRequired = true; // this is an optional field
             ClientSecret.DisplayName = Resources.LoadConfig_ClientSecret_DisplayName;
             ClientSecret.Tooltip = Resources.LoadConfig_ClientSecret_Tooltip;
-            ClientSecret.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
+            ClientSecret.IsPrincipal = false; // specifies if it belongs to the main category (which cannot be collapsed)
             ClientSecret.OrderIndex = orderIndex++;
             ClientSecret.IsRequired = true; // this is an optional field
 
@@ -130,6 +141,8 @@ namespace Yash.Config.Activities.ViewModels
             Result.Tooltip = Resources.LoadConfig_Result_Tooltip;
             Result.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
             Result.OrderIndex = orderIndex++;
+
+            InitCustomTypeService();
         }
 
 
@@ -137,12 +150,30 @@ namespace Yash.Config.Activities.ViewModels
         {
             base.ManualRegisterDependencies();
             RegisterDependency(WorkbookPath, "Value", "OnWorkflowPathUpdated");
+            RegisterDependency(ConfigType, "Value", "OnConfigTypeUpdated");
         }
 
         protected override void InitializeRules()
         {
             base.InitializeRules();
             Rule("OnWorkflowPathUpdated", OnWorkflowPathUpdated);
+            Rule("OnConfigTypeUpdated", new Action(MorphActivityAsync), false);
+        }
+
+        private void InitCustomTypeService()
+        {
+            if (_busyService == null || _morphingService == null)
+                return;
+            _designerCustomTypesService = Services.GetService<IDesignerCustomTypesService>();
+            if (_designerCustomTypesService == null)
+                return;
+            _jitServiceAvailable = true;
+        }
+
+        private async void MorphActivityAsync()
+        {
+            if (!(ConfigType.HasValue && ConfigType.Value.IsAssignableFrom(typeof(Models.Config)))) return;
+            await _morphingService.UseTypeAsync(ConfigType.Value);
         }
         public void RefreshScopes()
         {
@@ -223,9 +254,9 @@ namespace Yash.Config.Activities.ViewModels
             if (valid) return;
             try
             {
-                _api.Settings.TryGetValue<string>(Settings.Keys.Setting_Generation_OutputDir_Key, out var outputDir);
-                _api.Settings.TryGetValue<string>(Settings.Keys.Setting_Generation_Namespace_Key, out var ns);
-                _api.Settings.TryGetValue<string>(Settings.Keys.Setting_Generation_Usings_Key, out var usings);
+                _workflowDesignApi.Settings.TryGetValue<string>(Settings.Keys.Setting_Generation_OutputDir_Key, out var outputDir);
+                _workflowDesignApi.Settings.TryGetValue<string>(Settings.Keys.Setting_Generation_Namespace_Key, out var ns);
+                _workflowDesignApi.Settings.TryGetValue<string>(Settings.Keys.Setting_Generation_Usings_Key, out var usings);
                 MessageBox.Show(ConfigService.GenerateClassFiles(path, outputDir, ns, usings), "Summary", MessageBoxButtons.OK);
             }
             catch (Exception ex)
@@ -243,7 +274,7 @@ namespace Yash.Config.Activities.ViewModels
             if (WorkbookPath.Value != null && WorkbookPath.Value.Expression.IsLiteral())
             {
                 path = WorkbookPath.Value.Expression.ToString() ?? "";
-                path = path.Contains(":") ? path : Path.Combine(_api?.ProjectPropertiesService.GetProjectDirectory() ?? "", path);
+                path = path.Contains(":") ? path : Path.Combine(_workflowDesignApi?.ProjectPropertiesService.GetProjectDirectory() ?? "", path);
                 var valid = (path.EndsWith(".xls") || path.EndsWith(".xlsx")) && File.Exists(path);
                 if (!valid)
                 {

@@ -1,120 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-   <PropertyGroup>
-    <VersionBuild>$([System.DateTime]::UtcNow.DayOfYear.ToString("F0"))</VersionBuild>
-    <VersionRevision>$([System.DateTime]::UtcNow.TimeOfDay.TotalSeconds.ToString("F0"))</VersionRevision>
+  <!-- Package-specific Properties -->
+  <PropertyGroup>
     <PackageId>Yash.Config</PackageId>
     <PackageDescription>Configuration management and wizard utilities for UiPath.</PackageDescription>
     <PackageTags>Yash;Config;Wizard</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/yashbrahmbhatt/uipath/tree/main/vs-libraries/Yash.Config</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/yashbrahmbhatt/Yash.Config</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <Authors>Yash Brahmbhatt</Authors>
-    <PackageReleaseNotes>Initial public release</PackageReleaseNotes>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-   <PropertyGroup>
-        <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-        <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
-  </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-         <VersionPrefix>29.9.0</VersionPrefix>
 
-         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
-        <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
-        <FileVersion>$(VersionPrefix)</FileVersion>
-      <UseWindowsForms>true</UseWindowsForms>
-
-  </PropertyGroup>
-
-   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <VersionPrefix>1.0.$(VersionBuild)-dev.$(VersionRevision)</VersionPrefix>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
-        <AssemblyVersion>1.0.0.0</AssemblyVersion>
-        <FileVersion>1.0.0.0</FileVersion>
-     
-  </PropertyGroup>
-    <PropertyGroup>
-        <PackageVersion>$(VersionPrefix)</PackageVersion>
-  </PropertyGroup>
-
-   <Target Name="CleanPackageFiles" BeforeTargets="Build">
-        <Message Text="Deleting packages ..." />
-        <ItemGroup>
-            <PackageFilesToDelete Include="$(PackageOutputPath)\$(PackageId)*.nupkg" /> 
-    </ItemGroup>
-        <Delete Files="@(PackageFilesToDelete)" ContinueOnError="WarnAndContinue" />
-     
-  </Target>
-
-
-
-
-  <PropertyGroup>
-    <TargetFramework>net6.0-windows7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
-
-  </PropertyGroup>
-
-
-
-
+  <!-- Project-specific Excludes -->
   <ItemGroup>
-    <Compile Remove="Output\**" />
     <Compile Remove="Yash.Config.StudioTestProject\**" />
-    <EmbeddedResource Remove="Output\**" />
     <EmbeddedResource Remove="Yash.Config.StudioTestProject\**" />
-    <None Remove="Output\**" />
     <None Remove="Yash.Config.StudioTestProject\**" />
-  </ItemGroup>
-
-
-
-
+  </ItemGroup>  
+  
+  <!-- Project-specific Resources -->
   <ItemGroup>
     <None Remove="Activities\ActivitiesMetadata.json" />
     <None Remove="ConfigTemplate.xlsx" />
   </ItemGroup>
 
-
-
-
   <ItemGroup>
     <EmbeddedResource Include="Activities\ActivitiesMetadata.json" />
     <EmbeddedResource Include="ConfigTemplate.xlsx" />
-    <None Include="icon.png" Pack="true" PackagePath="\" />
-    <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
+  <!-- Project-specific Package References -->
   <ItemGroup>
-    <PackageReference Include="ClosedXML" Version="0.105.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.5.0-2.22527.10" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0-2.22527.10" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.5.0-2.22527.10" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="RestSharp" Version="112.1.0" />
+    <PackageReference Include="Yash.Orchestrator" />
+    <PackageReference Include="Yash.Utility" />
   </ItemGroup>
 
-
-
-  <ItemGroup>
-    <PackageReference Include="System.Activities.Core.Presentation" Version="6.0.0-20231204.1" PrivateAssets="All" />
-    <PackageReference Include="System.Activities.Metadata" Version="6.0.0-20240517.13" PrivateAssets="All" />
-    <PackageReference Include="System.Activities.ViewModels" Version="1.0.0-20250625.2" PrivateAssets="All" />
-    <PackageReference Include="UiPath.Activities.Api" Version="24.10.1">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="UiPath.Workflow" Version="6.0.0-20240401-07" PrivateAssets="All" />
-    <PackageReference Include="Yash.Orchestrator" Version="*" />
-  </ItemGroup>
-
-
-
+  <!-- Resource Updates -->
   <ItemGroup>
     <Compile Update="Activities\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -127,8 +46,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-
-
 
   <ItemGroup>
     <EmbeddedResource Update="Activities\Resources.resx">

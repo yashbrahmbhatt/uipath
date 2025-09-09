@@ -7,11 +7,11 @@
     "UiPath.Excel.Activities": "[3.2.1]",
     "UiPath.GSuite.Activities": "[3.4.1-preview]",
     "UiPath.IntegrationService.Activities": "[1.17.0]",
-    "UiPath.System.Activities": "[25.6.1]",
+    "UiPath.System.Activities": "[25.8.0]",
     "UiPath.Testing.Activities": "[25.4.0]",
     "Yash.Config": "[25.9.2]",
     "Yash.RBC.Activities": "[25.7.1]",
-    "Yash.Utility.Activities": "[25.7.1]"
+    "Yash.Utility.Activities": "[25.7.10]"
   },
   "webServices": [],
   "entitiesStores": [],

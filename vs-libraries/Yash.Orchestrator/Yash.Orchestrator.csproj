@@ -1,108 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-   <PropertyGroup>
-        <VersionBuild>$([System.DateTime]::UtcNow.DayOfYear.ToString("F0"))</VersionBuild>
-        <VersionRevision>$([System.DateTime]::UtcNow.TimeOfDay.TotalSeconds.ToString("F0"))</VersionRevision>
-     <PackageId>Yash.Orchestrator</PackageId>
-     <PackageDescription>Reusable service for interacting with UiPath Orchestrator APIs (folders, assets, buckets, and more).</PackageDescription>
-     <PackageTags>Yash;Orchestrator;UiPath;Buckets;Assets</PackageTags>
-     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-     <PackageProjectUrl>https://github.com/yashbrahmbhatt/uipath/tree/main/vs-libraries/Yash.Orchestrator</PackageProjectUrl>
-     <RepositoryUrl>https://github.com/yashbrahmbhatt/uipath</RepositoryUrl>
-     <RepositoryType>git</RepositoryType>
-     <Authors>Yash Brahmbhatt</Authors>
-     <PackageReleaseNotes>Initial release with support for folders, assets, buckets, and file download.</PackageReleaseNotes>
-     <PackageIcon>icon.png</PackageIcon>
-     <PackageReadmeFile>README.md</PackageReadmeFile>
-  </PropertyGroup>
-   <PropertyGroup>
-        <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-        <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
-  </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-         <VersionPrefix>25.9.0</VersionPrefix>
-         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
-        <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
-        <FileVersion>$(VersionPrefix)</FileVersion>
-
-  </PropertyGroup>
-
-   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <VersionPrefix>1.0.$(VersionBuild)-dev.$(VersionRevision)</VersionPrefix>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
-        <AssemblyVersion>1.0.0.0</AssemblyVersion>
-        <FileVersion>1.0.0.0</FileVersion>
-     
-  </PropertyGroup>
-    <PropertyGroup>
-        <PackageVersion>$(VersionPrefix)</PackageVersion>
-  </PropertyGroup>
-
-   <Target Name="CleanPackageFiles" BeforeTargets="Build">
-        <Message Text="Deleting packages ..." />
-        <ItemGroup>
-            <PackageFilesToDelete Include="$(PackageOutputPath)\$(PackageId)*.nupkg" /> 
-    </ItemGroup>
-        <Delete Files="@(PackageFilesToDelete)" ContinueOnError="WarnAndContinue" />
-     
-  </Target>
-
-
-
-
+  <!-- Package-specific Properties -->
   <PropertyGroup>
-    <TargetFramework>net6.0-windows7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
-
+    <PackageId>Yash.Orchestrator</PackageId>
+    <PackageDescription>Reusable service for interacting with UiPath Orchestrator APIs (folders, assets, buckets, and more).</PackageDescription>
+    <PackageTags>Yash;Orchestrator;UiPath;Buckets;Assets</PackageTags>
+    <PackageProjectUrl>https://github.com/yashbrahmbhatt/uipath/tree/main/vs-libraries/Yash.Orchestrator</PackageProjectUrl>
+    <PackageReleaseNotes>Initial release with support for folders, assets, buckets, and file download.</PackageReleaseNotes>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-
-
-
-
+  
+  <!-- Project-specific Package References -->
   <ItemGroup>
-    <Compile Remove="Output\**" />
-    <EmbeddedResource Remove="Output\**" />
-    <None Remove="Output\**" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <None Include="icon.png" Pack="true" PackagePath="\" />
-    <None Include="README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
-
-
-
-
-
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.5.0-2.22527.10" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0-2.22527.10" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.5.0-2.22527.10" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="RestSharp" Version="112.1.0" />
-  </ItemGroup>
-
-
-
-  <ItemGroup>
-    <PackageReference Include="System.Activities.Core.Presentation" Version="6.0.0-20231204.1" PrivateAssets="All" />
-    <PackageReference Include="System.Activities.Metadata" Version="6.0.0-20240517.13" PrivateAssets="All" />
-    <PackageReference Include="System.Activities.ViewModels" Version="1.0.0-20250625.2" PrivateAssets="All" />
-    <PackageReference Include="UiPath.Activities.Api" Version="24.10.1">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="UiPath.Workflow" Version="6.0.0-20240401-07" PrivateAssets="All" />
-  </ItemGroup>
-
-
-
-  <ItemGroup>
-    <Folder Include="SetTransactionResult\" />
-    <Folder Include="StartTransaction\" />
-  </ItemGroup>
-</Project>
+    <PackageReference Include="RestSharp" />
+  </ItemGroup></Project>

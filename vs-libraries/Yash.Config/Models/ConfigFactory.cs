@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using DocumentFormat.OpenXml.Drawing.Charts;
 using Newtonsoft.Json;
 using TraceEventType = System.Diagnostics.TraceEventType;
 
@@ -26,7 +25,7 @@ namespace Yash.Config.Models
         ) where TDerived : Config, new()
         {
             TDerived instance = new();
-            Action<string, TraceEventType> Log = null;
+            Action<string, TraceEventType>? Log = null;
             var members = typeof(TDerived).GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                 .Where(m => m.MemberType == MemberTypes.Property || m.MemberType == MemberTypes.Field);
 
@@ -34,7 +33,7 @@ namespace Yash.Config.Models
             {
                 if (!dictionary.TryGetValue(member.Name, out var rawValue))
                 {
-                    Log?.Invoke($"[FromDictionary] Skipped '{member.Name}' – no matching key in dictionary.", TraceEventType.Verbose);
+                    Log?.Invoke($"[FromDictionary] Skipped '{member.Name}' ï¿½ no matching key in dictionary.", TraceEventType.Verbose);
                     continue;
                 }
 
@@ -84,6 +83,19 @@ namespace Yash.Config.Models
 
             Log?.Invoke($"[FromDictionary] Successfully created instance of '{typeof(TDerived).Name}'.", TraceEventType.Information);
             return instance;
+        }
+
+        public static object FromDictionary(
+            Type derivedType,
+            Dictionary<string, object> dictionary,
+            Action<string, TraceEventType>? Log = null
+        )
+        {
+            var method = typeof(ConfigFactory).GetMethod(nameof(FromDictionary), BindingFlags.Public | BindingFlags.Static);
+            if (method == null)
+                throw new InvalidOperationException("Could not find FromDictionary method.");
+            var genericMethod = method.MakeGenericMethod(derivedType);
+            return genericMethod.Invoke(null, new object[] { dictionary })!;
         }
     }
 }

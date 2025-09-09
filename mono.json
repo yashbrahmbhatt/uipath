@@ -23,6 +23,17 @@
       "dependsOn": ["Yash.Config", "Yash.RBC.Activities"]
     },
     {
+      "id": "Yash.Utility",
+      "path": "vs-libraries/Yash.Utility",
+      "type": "vs",
+      "build": true,
+      "test": true,
+      "testPath": "vs-libraries/Yash.Utility.Tests",
+      "deploy": true,
+      "deploySteps": ["nuget"],
+      "dependsOn": []
+    },
+    {
       "id": "Yash.Config",
       "path": "vs-libraries/Yash.Config",
       "type": "vs",
@@ -31,7 +42,7 @@
       "testPath": "vs-libraries/Yash.Config.Tests",
       "deploy": true,
       "deploySteps": ["nuget"],
-      "dependsOn": ["Yash.Orchestrator"]
+      "dependsOn": ["Yash.Orchestrator", "Yash.Utility"]
     },
     {
       "id": "Yash.Orchestrator",

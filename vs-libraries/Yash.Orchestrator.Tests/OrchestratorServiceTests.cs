@@ -9,7 +9,6 @@ using FluentAssertions;
 using RestSharp;
 using Newtonsoft.Json;
 using TraceEventType = System.Diagnostics.TraceEventType;
-using UiPath.Activities.Api.Base;
 using Yash.Orchestrator.GetFolders;
 using Yash.Orchestrator.GetAssets;
 using Yash.Orchestrator.GetBuckets;
