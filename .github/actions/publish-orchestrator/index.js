@@ -12,7 +12,6 @@ async function main() {
     const orchestratorTenant = core.getInput("orchestrator-tenant", {
       required: true,
     });
-    const orchestratorFolder = core.getInput("orchestrator-folder") || "Shared";
     const accountName = core.getInput("account-name");
     const applicationId = core.getInput("application-id");
     const applicationSecret = core.getInput("application-secret");
@@ -42,13 +41,6 @@ async function main() {
 
     // Configure authentication using the new CLI approach
     core.info("Configuring UiPath CLI authentication...");
-    
-    // Set auth type to credentials (external app)
-    execSync(`uipath config set --key auth.grantType --value client_credentials`, {
-      stdio: 'inherit',
-      env: publishEnv
-    });
-
     // Set application ID
     execSync(`uipath config set --key auth.clientId --value "${applicationId}"`, {
       stdio: 'inherit',
@@ -75,6 +67,7 @@ async function main() {
       "studio",
       "package", 
       "publish",
+      "--debug",
       "--source", `"${packagePath}"`,
       "--folder", `"${orchestratorFolder}"`,
       "--uri", `"${orchestratorUrl}"`,
