@@ -39,6 +39,7 @@ jobs:
     if: ${{ needs.detect-changes.outputs.matrix != '{"include":[]}' }}
     needs: detect-changes
     strategy:
+      fail-fast: false
       matrix: ${{ fromJson(needs.detect-changes.outputs.matrix) }}
       max-parallel: 1
     runs-on: [self-hosted, windows]
