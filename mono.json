@@ -20,7 +20,7 @@
       "testPath": "uipath-processes/Finance.Automations",
       "deploy": true,
       "deploySteps": ["orchestrator"],
-      "dependsOn": []
+      "dependsOn": ["Yash.Config", "Yash.RBC.Activities"]
     },
     {
       "id": "Yash.Config",

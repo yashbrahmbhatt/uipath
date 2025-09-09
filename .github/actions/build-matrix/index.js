@@ -124,47 +124,7 @@ function findChangedProjects(changedFiles, monoConfig) {
 
   core.info(`Found ${projectsToBuild.size} directly changed projects`);
 
-  // Add dependencies of changed projects (projects that changed projects depend on)
-  const projectsToCheck = Array.from(projectsToBuild.values());
-  for (const project of projectsToCheck) {
-    if (project.dependsOn && Array.isArray(project.dependsOn)) {
-      for (const depId of project.dependsOn) {
-        const depProject = monoConfig.projects.find(p => p.id === depId);
-        if (depProject && depProject.build && !projectsToBuild.has(depId)) {
-          core.info(`Adding dependency ${depId} required by ${project.id}`);
-          projectsToBuild.set(depId, depProject);
-        }
-      }
-    }
-  }
-
-  // Add transitive dependencies (projects that depend on changed projects)
-  let added = true;
-  let iteration = 0;
-  while (added && iteration < 10) {
-    // Safety limit
-    added = false;
-    iteration++;
-
-    for (const project of monoConfig.projects) {
-      if (projectsToBuild.has(project.id) || !project.build) continue;
-
-      if (project.dependsOn && Array.isArray(project.dependsOn)) {
-        for (const dep of project.dependsOn) {
-          if (projectsToBuild.has(dep)) {
-            core.info(`Adding ${project.id} due to dependency on ${dep}`);
-            projectsToBuild.set(project.id, project);
-            added = true;
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  if (iteration >= 10) {
-    core.warning("Dependency resolution hit iteration limit");
-  }
+  // Dependencies are only used for ordering in topological sort, not for adding projects to build
 
   const result = Array.from(projectsToBuild.values());
   core.info(`Total projects to build: ${result.length}`);
