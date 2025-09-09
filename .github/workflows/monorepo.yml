@@ -40,6 +40,7 @@ jobs:
     needs: detect-changes
     strategy:
       matrix: ${{ fromJson(needs.detect-changes.outputs.matrix) }}
+      max-parallel: 1
     runs-on: [self-hosted, windows]
     steps:
       - uses: actions/checkout@v3
