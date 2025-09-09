@@ -72,7 +72,7 @@ async function main() {
       "--folder", `"${orchestratorFolder}"`,
       "--uri", `"${orchestratorUrl}"`,
       "--organization", `"${accountName}"`,
-      "--tenant", `"${orchestratorTenant}"`
+      "--orchestrator-tenant", `"${orchestratorTenant}"`
     ];
 
     const deployCommand = publishCommand.join(" ");
