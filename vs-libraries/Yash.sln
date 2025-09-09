@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yash.Orchestrator", "Yash.O
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yash.Orchestrator.Tests", "Yash.Orchestrator.Tests\Yash.Orchestrator.Tests.csproj", "{D04FA15A-F44F-409E-880D-C912C0CA5A2F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yash.Utility", "Yash.Utility\Yash.Utility.csproj", "{2EC30A73-BDF5-4412-9213-091E771B26B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yash.Utility.Tests", "Yash.Utility.Test\Yash.Utility.Tests.csproj", "{987579B3-E74F-40FD-956A-797526D4F231}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{D04FA15A-F44F-409E-880D-C912C0CA5A2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D04FA15A-F44F-409E-880D-C912C0CA5A2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D04FA15A-F44F-409E-880D-C912C0CA5A2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EC30A73-BDF5-4412-9213-091E771B26B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EC30A73-BDF5-4412-9213-091E771B26B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EC30A73-BDF5-4412-9213-091E771B26B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EC30A73-BDF5-4412-9213-091E771B26B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{987579B3-E74F-40FD-956A-797526D4F231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{987579B3-E74F-40FD-956A-797526D4F231}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{987579B3-E74F-40FD-956A-797526D4F231}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{987579B3-E74F-40FD-956A-797526D4F231}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

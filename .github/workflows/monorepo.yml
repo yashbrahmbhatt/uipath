@@ -182,7 +182,7 @@ jobs:
           # Use existing UiPath secrets for application authentication
           application-id: ${{ vars.UIP_APPLICATION_ID }}
           application-secret: ${{ secrets.UIP_APPLICATION_SECRET }}
-          tenant-name: ${{ vars.UIP_TENANT_NAME }}
+          orchestrator-tenant: ${{ vars.UIP_TENANT_NAME }}
           
       
       - name: Publish to GitHub Packages
