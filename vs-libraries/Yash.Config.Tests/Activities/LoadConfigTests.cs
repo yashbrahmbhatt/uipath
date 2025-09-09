@@ -63,7 +63,7 @@ namespace Yash.Config.Tests.Activities
 
             // Assert
             exception.Should().NotBeNull();
-            exception.Message.Should().Contain("[LoadConfig]");
+            exception.Message.Should().Contain("[LoadConfigAsync]");
             exception.Message.Should().Contain("Test error message");
         }
 
@@ -78,7 +78,7 @@ namespace Yash.Config.Tests.Activities
 
             // Assert
             exception.Should().NotBeNull();
-            exception.Message.Should().Contain("[LoadConfig]");
+            exception.Message.Should().Contain("[LoadConfigAsync]");
             exception.InnerException.Should().Be(innerException);
         }
 

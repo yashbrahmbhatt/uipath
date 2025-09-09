@@ -1,6 +1,6 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" this:Main.in_str_Path="Data\\Config.xlsx" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:p="http://schemas.uipath.com/workflow/activities/intelligentocr" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:yca="clr-namespace:Yash.Config.Activities;assembly=Yash.Config" xmlns:ycsmc="clr-namespace:Yash.Config.StudioTestProject.Models.Configs;assembly=Yash.Config.StudioTestProject.Core">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" this:Main.in_str_Path="Data\\Config.xlsx" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ss="clr-namespace:System.Security;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:yca="clr-namespace:Yash.Config.Activities;assembly=Yash.Config" xmlns:ycsmc="clr-namespace:Yash.Config.StudioTestProject.Models.Configs;assembly=Yash.Config.StudioTestProject.Core">
   <x:Members>
-    <x:Property Name="in_str_Path" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="&quot;C:\Users\eyash\OneDrive\Documents\UiPath\Standard\Data\Config.xlsx&quot;" Name="in_str_Path" Type="InArgument(x:String)" />
   </x:Members>
   <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
@@ -28,11 +28,7 @@
       <x:String>Yash.Config.StudioTestProject</x:String>
       <x:String>Yash.Config</x:String>
       <x:String>UiPath.Activities.System.Jobs</x:String>
-      <x:String>UiPath.IntelligentOCR.StudioWeb.Activities.DocumentClassification</x:String>
-      <x:String>UiPath.DocumentProcessing.Contracts.Dom</x:String>
-      <x:String>UiPath.DocumentProcessing.Contracts.Classification</x:String>
-      <x:String>UiPath.IntelligentOCR.StudioWeb.Activities</x:String>
-      <x:String>UiPath.DocumentProcessing.Contracts</x:String>
+      <x:String>System.Security</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -90,12 +86,13 @@
       <AssemblyReference>Microsoft.Extensions.DependencyModel</AssemblyReference>
       <AssemblyReference>UiPath.Workflow</AssemblyReference>
       <AssemblyReference>UiPath.Platform</AssemblyReference>
-      <AssemblyReference>Yash.Config.StudioTestProject.Core</AssemblyReference>
       <AssemblyReference>UiPath.IntelligentOCR.StudioWeb.Activities</AssemblyReference>
       <AssemblyReference>UiPath.DocumentProcessing.Contracts</AssemblyReference>
+      <AssemblyReference>Yash.Config.StudioTestProject.Core</AssemblyReference>
+      <AssemblyReference>System.Runtime.InteropServices</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="1782,955.6566666666666" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="1170,690.6666666666666" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="dict_Config" />
       <Variable x:TypeArguments="ycsmc:SharedConfig" Name="testConfig" />
@@ -105,13 +102,24 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <p:ClassifyDocument ApiKey="{x:Null}" ClassificationResults="{x:Null}" ClassifierId="{x:Null}" ClassifierResult="{x:Null}" DocumentObjectModel="{x:Null}" DocumentPath="{x:Null}" DocumentText="{x:Null}" DocumentTypes="{x:Null}" Endpoint="{x:Null}" FileInput="{x:Null}" MinimumConfidence="{x:Null}" PersistenceId="{x:Null}" PredictionId="{x:Null}" ProjectId="{x:Null}" ProjectTag="{x:Null}" ProjectVersionNumber="{x:Null}" Prompt="{x:Null}" RuntimeAssetPath="{x:Null}" RuntimeTenantUrl="{x:Null}" DisplayName="Classify Document" sap:VirtualizedContainerService.HintSize="450,302.6666666666667" sap2010:WorkflowViewState.IdRef="ClassifyDocument_1" TimeoutInSeconds="3600">
-      <p:ClassifyDocument.GptPromptWithVariables>
-        <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-      </p:ClassifyDocument.GptPromptWithVariables>
-    </p:ClassifyDocument>
-    <yca:LoadConfig x:TypeArguments="x:Object" Result="{x:Null}" WorkbookPath="{x:Null}" DisplayName="Load config" sap:VirtualizedContainerService.HintSize="450,57.333333333333336" sap2010:WorkflowViewState.IdRef="LoadConfig`1_2" />
-    <ui:LogMessage DisplayName="New Method" sap:VirtualizedContainerService.HintSize="450,167.33333333333334" sap2010:WorkflowViewState.IdRef="LogMessage_2">
+    <yca:LoadConfig Scope="{x:Null}" DisplayName="Load Config" sap:VirtualizedContainerService.HintSize="416,500.6666666666667" sap2010:WorkflowViewState.IdRef="LoadConfig_1">
+      <yca:LoadConfig.BaseUrl>
+        <InArgument x:TypeArguments="x:String" />
+      </yca:LoadConfig.BaseUrl>
+      <yca:LoadConfig.ClientId>
+        <InArgument x:TypeArguments="x:String" />
+      </yca:LoadConfig.ClientId>
+      <yca:LoadConfig.ClientSecret>
+        <InArgument x:TypeArguments="ss:SecureString" />
+      </yca:LoadConfig.ClientSecret>
+      <yca:LoadConfig.Result>
+        <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" />
+      </yca:LoadConfig.Result>
+      <yca:LoadConfig.WorkbookPath>
+        <InArgument x:TypeArguments="x:String" />
+      </yca:LoadConfig.WorkbookPath>
+    </yca:LoadConfig>
+    <ui:LogMessage DisplayName="New Method" sap:VirtualizedContainerService.HintSize="416,167.33333333333334" sap2010:WorkflowViewState.IdRef="LogMessage_2">
       <ui:LogMessage.Message>
         <InArgument x:TypeArguments="x:Object">
           <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_29">testConfig.Key</CSharpValue>

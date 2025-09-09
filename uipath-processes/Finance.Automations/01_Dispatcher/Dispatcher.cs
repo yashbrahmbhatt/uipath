@@ -16,7 +16,7 @@ namespace Finance.Automations._01_Dispatcher
 {
     public class Dispatcher : CodedWorkflow
     {
-        public bool debug_SkipDownload = true;
+        public bool debug_SkipDownload = false;
         public string debug_SkipDownloadPath = @"C:\Users\eyash\Downloads\csv13541.csv";
         /// <summary>
         /// Executes the dispatcher workflow, processing queue observations based on configuration and dispatching them to the queue.
@@ -69,53 +69,17 @@ namespace Finance.Automations._01_Dispatcher
                      // Create hash from actual field values, timestamp, and row index
                     string rowValues = string.Join("|", row.ItemArray.Select(field => field?.ToString() ?? ""));
                     var index = table.Rows.IndexOf(row);
-                    string uniqueString = $"{rowValues}|{index}";
+                    string uniqueString = $"{rowValues}";
                     string reference = Hash(uniqueString);
                     row["Reference"] = reference;
                 }
                 
                 system.BulkAddQueueItems(table, config_Shared.QueueName, config_Shared.QueueFolder, BulkAddQueueItems.CommitTypeEnum.ProcessAllIndependently,default);
-                /*
-                var currentTimestamp = DateTime.Now.ToString("yyyy-MM-dd");
-                var transactions = table.Rows.Cast<DataRow>().Select((t, index) =>
-                {
-                    Dictionary<string, object> data = new();
-                    t = (DataRow)t;
-                    foreach (DataColumn col in table.Columns)
-                    {
-                        data[col.ColumnName] = t[col].ToString();
-                    }
-                    // Create hash from actual field values, timestamp, and row index
-                    string rowValues = string.Join("|", t.ItemArray.Select(field => field?.ToString() ?? ""));
-                    string uniqueString = $"{rowValues}|{currentTimestamp}|{index}";
-                    string reference = Hash(uniqueString);
-                    data["Reference"] = reference;
-                    return Tuple.Create<Dictionary<string, object>, string>(data, reference);
-                });
-                */
-                Log($"Found {table.Rows.Count} rows");
+
                 if (!debug_SkipDownload)
                     File.Delete(tempPath);
                 
-                
-                /*foreach (Tuple<Dictionary<string, object>, string> transaction in transactions)
-                {
-                    Log($"Processing row - {JsonConvert.SerializeObject(transaction.Item1, Formatting.Indented)}");
-                    var existingItems = system.GetQueueItems(config_Shared.QueueName, config_Shared.QueueFolder, default, default, default, QueueItemStates.New, default, ReferenceFilterStrategy.StartsWith, transaction.Item2, default, 100, default).ToList();
-                    if (existingItems.Count == 0)
-                    {
-                        Log("Found no existing item, adding");
-
-                        workflows.Retry(3, 5, action: () => system.AddQueueItem(config_Shared.QueueName, config_Shared.QueueFolder, default, transaction.Item1, default, default, transaction.Item2, 10000));
-                        added += 1;
-                    }
-                    else
-                    {
-                        Log("Found existing item skipping");
-                    }
-                }
-                */
-                Log($"Dispatched {added.ToString()} items");
+                Log($"Found {table.Rows.Count} rows");
             }
             catch (Exception ex)
             {

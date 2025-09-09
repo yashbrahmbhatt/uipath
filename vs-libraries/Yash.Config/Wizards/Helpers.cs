@@ -24,6 +24,7 @@ namespace Yash.Config.Wizards
             }
             else
             {
+                System.Windows.MessageBox.Show("Please select the configuration file for generating config classes.", "Select Config File", MessageBoxButton.OK, MessageBoxImage.Information);
                 inputFile = FileDialogHelpers.PromptForFile("Select your configuration file", "Excel Files (*.xlsx)|*.xlsx", projectDir);
                 if (string.IsNullOrWhiteSpace(inputFile)) return false;
                 api.Settings.TrySetValue(Settings.Keys.Setting_Generation_FilePath_Key, inputFile);
@@ -37,6 +38,7 @@ namespace Yash.Config.Wizards
             }
             else
             {
+                System.Windows.MessageBox.Show("Please select the output directory for the generated classes.", "Select Output Directory", MessageBoxButton.OK, MessageBoxImage.Information);
                 outputDirectory = FileDialogHelpers.PromptForDirectory("Select the output directory for generated classes", projectDir);
                 if (string.IsNullOrWhiteSpace(outputDirectory)) return false;
                 api.Settings.TrySetValue(Settings.Keys.Setting_Generation_OutputDir_Key, outputDirectory);

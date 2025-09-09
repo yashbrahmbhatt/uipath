@@ -77,11 +77,11 @@
       <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
       <AssemblyReference>System.Linq.Expressions</AssemblyReference>
       <AssemblyReference>Microsoft.Extensions.DependencyModel</AssemblyReference>
-      <AssemblyReference>Finance.Automations.Core</AssemblyReference>
       <AssemblyReference>System.Runtime.InteropServices</AssemblyReference>
+      <AssemblyReference>Finance.Automations.Core</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="LoadConfig" sap:VirtualizedContainerService.HintSize="1170,930.6666666666666" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="LoadConfig" sap:VirtualizedContainerService.HintSize="1170,1007.3333333333334" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="clientId" />
       <Variable x:TypeArguments="ss:SecureString" Name="clientSecret" />
@@ -111,7 +111,7 @@
         </OutArgument>
       </ui:GetRobotAsset.Value>
     </ui:GetRobotAsset>
-    <yca:LoadConfig DisplayName="Load Config" sap:VirtualizedContainerService.HintSize="416,387.3333333333333" sap2010:WorkflowViewState.IdRef="LoadConfig_1">
+    <yca:LoadConfig DisplayName="Load Config" sap:VirtualizedContainerService.HintSize="334,415.3333333333333" sap2010:WorkflowViewState.IdRef="LoadConfig_1">
       <yca:LoadConfig.BaseUrl>
         <InArgument x:TypeArguments="x:String">
           <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_8">baseUrl</CSharpValue>
@@ -134,7 +134,7 @@
       </yca:LoadConfig.Result>
       <yca:LoadConfig.Scope>
         <InArgument x:TypeArguments="x:String">
-          <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_2">in_str_Scope</CSharpValue>
+          <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_10">in_str_Scope</CSharpValue>
         </InArgument>
       </yca:LoadConfig.Scope>
       <yca:LoadConfig.WorkbookPath>

@@ -9,7 +9,7 @@
       "Name": "in_str_Path",
       "DisplayName": "in_str_Path",
       "Category": null,
-      "Tooltip": null,
+      "Tooltip": "\"C:\\Users\\eyash\\OneDrive\\Documents\\UiPath\\Standard\\Data\\Config.xlsx\"",
       "Placeholder": null,
       "Widget": null,
       "IsRequired": false,

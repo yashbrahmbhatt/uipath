@@ -70,7 +70,7 @@ namespace Yash.Config.Activities {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The url ending at .uipath.com.
         /// </summary>
         internal static string LoadConfig_BaseUrl_Tooltip {
             get {
@@ -169,7 +169,7 @@ namespace Yash.Config.Activities {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scope.
+        ///   Looks up a localized string similar to Scopes.
         /// </summary>
         internal static string LoadConfig_Scope_DisplayName {
             get {
@@ -178,7 +178,7 @@ namespace Yash.Config.Activities {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The scope to load from the config file.
+        ///   Looks up a localized string similar to The scopes to load from the config file.
         /// </summary>
         internal static string LoadConfig_Scope_Tooltip {
             get {

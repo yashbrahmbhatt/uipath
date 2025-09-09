@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Activities;
 using System.Activities.DesignViewModels;
+using System.Activities.ViewModels;
+using System.Activities.ViewModels.Interfaces;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using UiPath.Studio.Activities.Api;
+using UiPath.Studio.Activities.Api.BusyService;
 using Yash.Config.Helpers;
 using Yash.Config.Models;
 
@@ -17,19 +22,28 @@ namespace Yash.Config.Activities.ViewModels
     {
         [Category("Input")]
         public DesignInArgument<string> WorkbookPath { get; set; }
-        public DesignInArgument<string> BaseUrl { get; set; }
-        public DesignInArgument<string> ClientId { get; set; }
-        public DesignInArgument<SecureString> ClientSecret { get; set; }
+        [Category("Input")]
 
         public DesignInArgument<string> Scope { get; set; }
+        [Category("Authentication")]
+        public DesignInArgument<string> BaseUrl { get; set; }
+        [Category("Authentication")]
+        public DesignInArgument<string> ClientId { get; set; }
+        [Category("Authentication")]
+        public DesignInArgument<SecureString> ClientSecret { get; set; }
+
 
         [Category("Output")]
         public DesignOutArgument<Dictionary<string, object>> Result { get; set; }
 
-        
-        public LoadConfigViewModel(IDesignServices services) : base(services) { 
-        }
 
+        private readonly BindingList<string> AvailableScopes = new();
+        public LoadConfigViewModel(IDesignServices services) : base(services)
+        {
+            _api = services.GetService<IWorkflowDesignApi>();
+        }
+        public DesignProperty<string> Debug { get; set; }
+        private IWorkflowDesignApi? _api;
         protected override void InitializeModel()
         {
             //Debugger.Break(); 
@@ -38,35 +52,60 @@ namespace Yash.Config.Activities.ViewModels
              */
             base.InitializeModel();
 
-            PersistValuesChangedDuringInit(); // just for heads-up here; it's a mandatory call only when you change the values of properties during initialization
+            //PersistValuesChangedDuringInit(); // just for heads-up here; it's a mandatory call only when you change the values of properties during initialization
 
             var orderIndex = 0;
 
+            Debug.IsPrincipal = true;
+            Debug.OrderIndex = orderIndex++;
+            Debug.Value = "Debug";
+            Debug.Widget = new TextBlockWidget()
+            {
+                Center = false,
+                Level = "Info",
+                Multiline = true
+            };
+
             WorkbookPath.DisplayName = Resources.LoadConfig_WorkflowPath_DisplayName;
             WorkbookPath.Tooltip = Resources.LoadConfig_WorkflowPath_Tooltip;
-            /*
-             * Required fields will automatically raise validation errors when empty.
-             * Unless you do custom validation, required activity properties should be marked as such both in the view model and in the activity:
-             *   -> in the view model use the IsRequired property
-             *   -> in the activity use the [RequiredArgument] attribute.
-             */
             WorkbookPath.IsRequired = true;
 
             WorkbookPath.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
             WorkbookPath.OrderIndex = orderIndex++; // indicates the order in which the fields appear in the designer (i.e. the line number);
+            WorkbookPath.AddMenuAction(new MenuAction()
+            {
+                DisplayName = "Generate Classes",
+                IsMain = true,
+                IsEnabled = false,
+                IsVisible = true,
+                Handler = OnGenerateClassesMenuAction
+            });
+            WorkbookPath.AddMenuAction(new MenuAction()
+            {
+                DisplayName = "Open File",
+                IsMain = true,
+                IsEnabled = false,
+                IsVisible = true,
+                Handler = OpenFileMenuAction,
+            });
 
             Scope.DisplayName = Resources.LoadConfig_Scope_DisplayName;
             Scope.Tooltip = Resources.LoadConfig_Scope_Tooltip;
             Scope.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
             Scope.OrderIndex = orderIndex++; // indicates the order in which the fields appear in the designer (i.e. the line number);
             Scope.IsRequired = true; // this is an optional field
+            Scope.DataSource = DataSourceBuilder<string>.WithId((s) => s).WithLabel((s) => s).WithData(AvailableScopes).Build();
+            Scope.Widget = new DefaultWidget() { Type = "Dropdown" };
+            Scope.AddMenuAction(new MenuAction()
+            {
+                DisplayName = "Refresh Scopes",
+                IsMain = true,
+                IsEnabled = false,
+                IsVisible = true,
+                Handler = RefreshScopesMenuAction,
+            });
 
-            //ConfigType.DisplayName = Resources.LoadConfig_ConfigType_DisplayName;
-            //ConfigType.Tooltip = Resources.LoadConfig_ConfigType_Tooltip;
-            //ConfigType.IsRequired = true; // this is a required field, so it will raise validation errors when empty
-            //ConfigType.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
-            //ConfigType.OrderIndex = orderIndex++; // indicates the order in which the fields appear in the designer (i.e. the line number);
-            //ConfigType.PropertyChanged += ConfigType_PropertyChanged;
+
             BaseUrl.DisplayName = Resources.LoadConfig_BaseUrl_DisplayName;
             BaseUrl.Tooltip = Resources.LoadConfig_BaseUrl_Tooltip;
             BaseUrl.IsPrincipal = true; // specifies if it belongs to the main category (which cannot be collapsed)
@@ -93,5 +132,132 @@ namespace Yash.Config.Activities.ViewModels
             Result.OrderIndex = orderIndex++;
         }
 
+
+        protected override void ManualRegisterDependencies()
+        {
+            base.ManualRegisterDependencies();
+            RegisterDependency(WorkbookPath, "Value", "OnWorkflowPathUpdated");
+        }
+
+        protected override void InitializeRules()
+        {
+            base.InitializeRules();
+            Rule("OnWorkflowPathUpdated", OnWorkflowPathUpdated);
+        }
+        public void RefreshScopes()
+        {
+            var valid = TryGetValidPath(out var path);
+            if (!valid) return;
+            try
+            {
+                AvailableScopes.Clear();
+                var file = ConfigService.ReadConfigFile(path, null);
+                var fileScopes = file.Files.Select(f => f.Scope).Concat(file.Assets.Select(a => a.Scope)).Concat(file.Settings.Select(s => s.Scope)).Distinct().OrderBy(s => s);
+                foreach (var scope in fileScopes)
+                {
+                    AvailableScopes.Add(scope);
+                }
+
+                var fullSummary = new StringBuilder();
+                fullSummary.AppendLine($"Found {file.Settings.Count} settings, {file.Assets.Count} assets and {file.Files.Count} files in config.");
+                fullSummary.AppendLine($"Found scopes: " + string.Join(", ", AvailableScopes));
+                Debug.Value = fullSummary.ToString();
+                ((TextBlockWidget)Debug.Widget).Level = "Info";
+                Scope.Value = null;
+                Scope.DataSource = DataSourceBuilder<string>.WithId((s) => s).WithLabel((s) => s).WithData(AvailableScopes).Build();
+            }
+            catch (Exception ex)
+            {
+                Debug.Value = "Error reading config file: " + ex.Message;
+                ((TextBlockWidget)Debug.Widget).Level = "Error";
+            }
+        }
+        public void OnWorkflowPathUpdated()
+        {
+            var valid = TryGetValidPath(out var path);
+            var actions = WorkbookPath.GetMenuActions().Concat(Scope.GetMenuActions());
+            foreach (var action in actions)
+            {
+                action.IsEnabled = valid;
+            }
+            if (!valid) return;
+
+            RefreshScopes();
+        }
+
+        public async Task RefreshScopesMenuAction(MenuAction action)
+        {
+            var valid = TryGetValidPath(out var path);
+            if (!valid) return;
+            try
+            {
+                RefreshScopes();
+            }
+            catch (Exception ex)
+            {
+                Debug.Value = "Error refreshing scopes: " + ex.Message;
+                ((TextBlockWidget)Debug.Widget).Level = "Error";
+                return;
+            }
+        }
+
+
+        public async Task OpenFileMenuAction(MenuAction action)
+        {
+            var valid = TryGetValidPath(out var path);
+            if (!valid) return;
+            try
+            {
+                File.Open(path, FileMode.Open, FileAccess.ReadWrite);
+            }
+            catch (Exception ex)
+            {
+                Debug.Value = "Error opening file: " + ex.Message;
+                ((TextBlockWidget)Debug.Widget).Level = "Error";
+                return;
+            }
+        }
+        public async Task OnGenerateClassesMenuAction(MenuAction action)
+        {
+            var valid = TryGetValidPath(out var path);
+            if (valid) return;
+            try
+            {
+                _api.Settings.TryGetValue<string>(Settings.Keys.Setting_Generation_OutputDir_Key, out var outputDir);
+                _api.Settings.TryGetValue<string>(Settings.Keys.Setting_Generation_Namespace_Key, out var ns);
+                _api.Settings.TryGetValue<string>(Settings.Keys.Setting_Generation_Usings_Key, out var usings);
+                MessageBox.Show(ConfigService.GenerateClassFiles(path, outputDir, ns, usings), "Summary", MessageBoxButtons.OK);
+            }
+            catch (Exception ex)
+            {
+                Debug.Value = "Error generating classes: " + ex.Message.ToString();
+                ((TextBlockWidget)Debug.Widget).Level = "Error";
+                return;
+            }
+
+        }
+
+        public bool TryGetValidPath(out string path)
+        {
+            path = "";
+            if (WorkbookPath.Value != null && WorkbookPath.Value.Expression.IsLiteral())
+            {
+                path = WorkbookPath.Value.Expression.ToString() ?? "";
+                path = path.Contains(":") ? path : Path.Combine(_api?.ProjectPropertiesService.GetProjectDirectory() ?? "", path);
+                var valid = (path.EndsWith(".xls") || path.EndsWith(".xlsx")) && File.Exists(path);
+                if (!valid)
+                {
+                    Debug.Value = "Please use a valid Excel file path";
+                    ((TextBlockWidget)Debug.Widget).Level = "Error";
+                }
+                return valid;
+            }
+            else
+            {
+                Debug.Value = "Use a string literal path to get design time features for scope";
+                ((TextBlockWidget)Debug.Widget).Level = "Info";
+            }
+            return false;
+        }
     }
 }

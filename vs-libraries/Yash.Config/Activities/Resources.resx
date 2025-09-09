@@ -142,17 +142,17 @@
     <value>The parsed dictionary of configurations.</value>
   </data>
   <data name="LoadConfig_Scope_DisplayName" xml:space="preserve">
-    <value>Scope</value>
+    <value>Scopes</value>
     <comment>The scope to load from the config file</comment>
   </data>
   <data name="LoadConfig_Scope_Tooltip" xml:space="preserve">
-    <value>The scope to load from the config file</value>
+    <value>The scopes to load from the config file</value>
   </data>
   <data name="LoadConfig_BaseUrl_DisplayName" xml:space="preserve">
     <value>Base Url</value>
   </data>
   <data name="LoadConfig_BaseUrl_Tooltip" xml:space="preserve">
-    <value />
+    <value>The url ending at .uipath.com</value>
   </data>
   <data name="LoadConfig_ClientId_DisplayName" xml:space="preserve">
     <value>Client Id</value>
