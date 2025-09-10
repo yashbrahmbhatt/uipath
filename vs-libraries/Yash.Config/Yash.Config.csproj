@@ -23,14 +23,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Activities\ActivitiesMetadata.json" />
+    <EmbeddedResource Include="Activities\Resources\ActivitiesMetadata.json" />
     <EmbeddedResource Include="ConfigTemplate.xlsx" />
   </ItemGroup>
 
   <!-- Project-specific Package References -->
   <ItemGroup>
-    <PackageReference Include="Yash.Orchestrator" />
-    <PackageReference Include="Yash.Utility" />
+    <ProjectReference Include="..\Yash.Orchestrator\Yash.Orchestrator.csproj" />
+    <ProjectReference Include="..\Yash.Utility\Yash.Utility.csproj" />
   </ItemGroup>
 
   <!-- Resource Updates -->

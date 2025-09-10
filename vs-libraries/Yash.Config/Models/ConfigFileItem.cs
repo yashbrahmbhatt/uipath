@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -18,6 +19,7 @@ namespace Yash.Config.Models
         /// <summary>
         /// The local or remote path of the file. If local, this can be a relative or absolute path to the file. If remote, this is the absolute path in the storage bucket in Orchestrator.
         /// </summary>
+        [JsonProperty("Path")]
         public string Path = "";
 
         /// <summary>

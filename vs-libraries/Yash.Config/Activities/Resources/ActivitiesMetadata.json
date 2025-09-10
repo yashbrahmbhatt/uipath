@@ -1,0 +1,13 @@
+{
+  "resourceManagerName": "Yash.Config.Activities.Resources.Resources",
+  "activities": [
+    {
+      "fullName": "Yash.Config.Activities.LoadConfig`1",
+      "shortName": "LoadConfig",
+      "displayNameKey": "LoadConfig_DisplayName",
+      "descriptionKey": "LoadConfig_Description",
+      "categoryKey": "Config",
+      "viewModelType": "Yash.Config.Activities.ViewModels.LoadConfigViewModel`1"
+    }
+  ]
+}

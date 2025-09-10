@@ -64,9 +64,7 @@ namespace Yash.Config.Models
         /// <returns>A list of parsed values.</returns>
         private static List<T> ParseList<T>(string value)
         {
-            return string.IsNullOrWhiteSpace(value)
-                ? new List<T>()
-                : value.Split(',').Select(v => ParsePrimitive<T>(v)).ToList();
+            return ParseArray<T>(value)?.ToList() ?? new();
         }
 
         /// <summary>

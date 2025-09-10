@@ -4,8 +4,10 @@
   "description": ".",
   "main": "Main.xaml",
   "dependencies": {
+    "UiPath.Excel.Activities": "[3.2.1]",
+    "UiPath.MicrosoftOffice365.Activities": "[3.4.1-preview]",
     "UiPath.System.Activities": "[25.8.0]",
-    "Yash.Config": "[1.0.252-dev.70679]"
+    "Yash.Config": "[1.0.253-dev.34588]"
   },
   "webServices": [],
   "entitiesStores": [],

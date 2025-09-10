@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" this:Main.in_str_Path="Data\\Config.xlsx" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ss="clr-namespace:System.Security;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:yca="clr-namespace:Yash.Config.Activities;assembly=Yash.Config" xmlns:ycsmc="clr-namespace:Yash.Config.StudioTestProject.Models.Configs;assembly=Yash.Config.StudioTestProject.Core">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" this:Main.in_str_Path="Data\\Config.xlsx" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:yca="clr-namespace:Yash.Config.Activities;assembly=Yash.Config" xmlns:ycsmc="clr-namespace:Yash.Config.StudioTestProject.Models.Configs;assembly=Yash.Config.StudioTestProject.Core">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="&quot;C:\Users\eyash\OneDrive\Documents\UiPath\Standard\Data\Config.xlsx&quot;" Name="in_str_Path" Type="InArgument(x:String)" />
   </x:Members>
@@ -29,6 +29,29 @@
       <x:String>Yash.Config</x:String>
       <x:String>UiPath.Activities.System.Jobs</x:String>
       <x:String>System.Security</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>UiPath.Excel.Model</x:String>
+      <x:String>UiPath.Excel.Activities.Business</x:String>
+      <x:String>UiPath.Platform</x:String>
+      <x:String>UiPath.Shared.Activities.Utils</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Files.Enums</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Enums</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Enums</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities</x:String>
+      <x:String>UiPath.Shared.Activities</x:String>
+      <x:String>UiPath.Shared.Activities.ConnectionService.Contracts</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Mail</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Mail.Enums</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Models</x:String>
+      <x:String>UiPath.Shared.Services.Graph.Mail.Models</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Mail.Filters</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Contracts</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Mail.Enums</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Filters</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Mail.Models</x:String>
+      <x:String>UiPath.Shared.Activities.Business</x:String>
+      <x:String>System.IO</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -88,41 +111,56 @@
       <AssemblyReference>UiPath.Platform</AssemblyReference>
       <AssemblyReference>UiPath.IntelligentOCR.StudioWeb.Activities</AssemblyReference>
       <AssemblyReference>UiPath.DocumentProcessing.Contracts</AssemblyReference>
-      <AssemblyReference>Yash.Config.StudioTestProject.Core</AssemblyReference>
       <AssemblyReference>System.Runtime.InteropServices</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.CodedWorkflows</AssemblyReference>
+      <AssemblyReference>NPOI.Core</AssemblyReference>
+      <AssemblyReference>UiPath.MicrosoftOffice365.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.MicrosoftOffice365</AssemblyReference>
+      <AssemblyReference>System.IO.FileSystem.Watcher</AssemblyReference>
+      <AssemblyReference>System.IO.Packaging</AssemblyReference>
+      <AssemblyReference>System.IO.FileSystem.AccessControl</AssemblyReference>
+      <AssemblyReference>System.IO.FileSystem.DriveInfo</AssemblyReference>
+      <AssemblyReference>Yash.Config.StudioTestProject.Core</AssemblyReference>
+      <AssemblyReference>System.Memory.Data</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="1170,690.6666666666666" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="1170,736" sap2010:WorkflowViewState.IdRef="Sequence_2">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="dict_Config" />
       <Variable x:TypeArguments="ycsmc:SharedConfig" Name="testConfig" />
+      <Variable x:TypeArguments="ycsmc:SharedConfig" Name="config_Shared" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <yca:LoadConfig Scope="{x:Null}" DisplayName="Load Config" sap:VirtualizedContainerService.HintSize="416,500.6666666666667" sap2010:WorkflowViewState.IdRef="LoadConfig_1">
-      <yca:LoadConfig.BaseUrl>
-        <InArgument x:TypeArguments="x:String" />
-      </yca:LoadConfig.BaseUrl>
-      <yca:LoadConfig.ClientId>
-        <InArgument x:TypeArguments="x:String" />
-      </yca:LoadConfig.ClientId>
-      <yca:LoadConfig.ClientSecret>
-        <InArgument x:TypeArguments="ss:SecureString" />
-      </yca:LoadConfig.ClientSecret>
-      <yca:LoadConfig.Result>
-        <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" />
-      </yca:LoadConfig.Result>
-      <yca:LoadConfig.WorkbookPath>
-        <InArgument x:TypeArguments="x:String" />
-      </yca:LoadConfig.WorkbookPath>
-    </yca:LoadConfig>
-    <ui:LogMessage DisplayName="New Method" sap:VirtualizedContainerService.HintSize="416,167.33333333333334" sap2010:WorkflowViewState.IdRef="LogMessage_2">
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="416,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_4">
       <ui:LogMessage.Message>
         <InArgument x:TypeArguments="x:Object">
-          <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_29">testConfig.Key</CSharpValue>
+          <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_36">(typeof(Dictionary&lt;string, object&gt;)).FullName</CSharpValue>
+        </InArgument>
+      </ui:LogMessage.Message>
+    </ui:LogMessage>
+    <yca:LoadConfig x:TypeArguments="ycsmc:SharedConfig" DisplayName="Load Config" sap:VirtualizedContainerService.HintSize="416,369.3333333333333" sap2010:WorkflowViewState.IdRef="LoadConfig`1_8" Scope="ycsmc:SharedConfig">
+      <yca:LoadConfig.Result>
+        <OutArgument x:TypeArguments="ycsmc:SharedConfig">
+          <CSharpReference x:TypeArguments="ycsmc:SharedConfig" sap2010:WorkflowViewState.IdRef="CSharpReference`1_1">config_Shared</CSharpReference>
+        </OutArgument>
+      </yca:LoadConfig.Result>
+      <yca:LoadConfig.WorkbookPath>
+        <InArgument x:TypeArguments="x:String">
+          <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_37">in_str_Path</CSharpValue>
+        </InArgument>
+      </yca:LoadConfig.WorkbookPath>
+    </yca:LoadConfig>
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="416,167.33333333333334" sap2010:WorkflowViewState.IdRef="LogMessage_3">
+      <ui:LogMessage.Message>
+        <InArgument x:TypeArguments="x:Object">
+          <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_38">config_Shared.Key</CSharpValue>
         </InArgument>
       </ui:LogMessage.Message>
     </ui:LogMessage>

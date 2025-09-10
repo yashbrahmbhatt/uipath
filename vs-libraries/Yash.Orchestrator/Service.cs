@@ -22,11 +22,13 @@ namespace Yash.Orchestrator
     {
         private void Log(string message, TraceEventType eventType)
         {
-            LogAction?.Invoke(message, eventType);
+            if (eventType <= _minLogLevel)
+                LogAction?.Invoke(message, eventType);
         }
         public readonly Action<string, TraceEventType>? LogAction;
         private readonly RestClient _client = new RestClient();
-
+        private IAccessProvider? _accessProvider;
+        private TraceEventType _minLogLevel = TraceEventType.Information;
         public string? BaseURL { get; set; }
         public string Token { get; set; } = null;
         public string? ClientId { get; set; }
@@ -38,22 +40,28 @@ namespace Yash.Orchestrator
         public ObservableCollection<KeyValuePair<Folder, ObservableCollection<Bucket>>> Buckets { get; set; } = new();
         public ObservableCollection<KeyValuePair<Bucket, ObservableCollection<BucketFile>>> BucketFiles { get; set; } = new();
 
-        public OrchestratorService(Action<string, TraceEventType>? log = null) => LogAction = log;
+        private OrchestratorService(Action<string, TraceEventType>? log = null, TraceEventType minLogLevel = TraceEventType.Information) {
+            LogAction = log;
+            _minLogLevel = minLogLevel;
+        }
+        public OrchestratorService(IAccessProvider accessProvider, Action<string, TraceEventType>? log = null, TraceEventType minLogLevel = TraceEventType.Information) : this(log,minLogLevel)
+        {
+            if (accessProvider == null) throw new ArgumentNullException(nameof(accessProvider));
+            _accessProvider = accessProvider;
+        }
 
-
-        public OrchestratorService(string baseUrl, string clientId, string clientSecret, string[] scopes, Action<string, TraceEventType>? log = null) : this(log)
+        public OrchestratorService(string baseUrl, string clientId, string clientSecret, string[] scopes, Action<string, TraceEventType>? log = null, TraceEventType minLogLevel = TraceEventType.Information) : this(log, minLogLevel)
         {
             BaseURL = baseUrl;
             ClientId = clientId;
             ClientSecret = clientSecret;
             Scopes = scopes;
-            LogAction = log;
         }
 
         public async Task InitializeAsync()
         {
             Log("Initializing OrchestratorService...", TraceEventType.Information);
-            Log($"BaseURL resolved to {BaseURL}", TraceEventType.Information);
+            Log($"BaseURL resolved to {BaseURL}", TraceEventType.Verbose);
 
             await UpdateTokenAsync();
             await RefreshFoldersAsync();
@@ -68,31 +76,41 @@ namespace Yash.Orchestrator
         {
 
             Log("Updating access token...", TraceEventType.Information);
-
-
-            Log("Using client credentials to request token.", TraceEventType.Information);
-            if (string.IsNullOrWhiteSpace(ClientId) || string.IsNullOrWhiteSpace(ClientSecret) || Scopes.Length == 0)
+            if (BaseURL != null && ClientId != null && ClientSecret != null)
             {
-                throw new Exception("ClientId and ClientSecret and Scopes must be provided for client credentials flow.");
-            }
-            var url = "https://cloud.uipath.com/identity_/connect/token";
-            var request = new RestRequest(url, Method.Post)
-                .AddParameter("client_id", ClientId)
-                .AddParameter("client_secret", ClientSecret)
-                .AddParameter("grant_type", "client_credentials")
-                .AddParameter("scope", string.Join(" ", Scopes));
+                Log("Using client credentials to request token.", TraceEventType.Verbose);
+                if (string.IsNullOrWhiteSpace(ClientId) || string.IsNullOrWhiteSpace(ClientSecret) || Scopes.Length == 0)
+                {
+                    throw new Exception("ClientId and ClientSecret and Scopes must be provided for client credentials flow.");
+                }
+                var url = "https://cloud.uipath.com/identity_/connect/token";
+                var request = new RestRequest(url, Method.Post)
+                    .AddParameter("client_id", ClientId)
+                    .AddParameter("client_secret", ClientSecret)
+                    .AddParameter("grant_type", "client_credentials")
+                    .AddParameter("scope", string.Join(" ", Scopes));
 
-            var response = await _client.ExecuteAsync(request);
-            if (!response.IsSuccessful)
+                var response = await _client.ExecuteAsync(request);
+                if (!response.IsSuccessful)
+                {
+                    Log($"Failed to get token: {response.ErrorMessage}", TraceEventType.Error);
+                    throw new Exception("Failed to get token: " + JsonConvert.SerializeObject(response));
+                }
+
+                var token = JsonConvert.DeserializeObject<GetTokenResponse>(response.Content!)!;
+                Token = token.AccessToken ?? throw new Exception("Token not found in response");
+            }
+            else
             {
-                Log($"Failed to get token: {response.ErrorMessage}", TraceEventType.Error);
-                throw new Exception("Failed to get token: " + JsonConvert.SerializeObject(response));
+                Log("Using IAccessProvider to request token.", TraceEventType.Verbose);
+                var token = await _accessProvider.GetAccessToken(string.Join(" ", Scopes), false);
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    Log("Token not found from IAccessProvider", TraceEventType.Error);
+                    throw new Exception("Token not found from IAccessProvider");
+                }
+                Token = token;
             }
-
-            var token = JsonConvert.DeserializeObject<GetTokenResponse>(response.Content!)!;
-            Token = token.AccessToken ?? throw new Exception("Token not found in response");
-
-
 
             Log("Token updated successfully.", TraceEventType.Information);
         }
@@ -113,7 +131,7 @@ namespace Yash.Orchestrator
                 var response = await _client.ExecuteAsync(request);
                 if (response.IsSuccessful)
                 {
-                    Log($"Assets retrieved for folder {folder.DisplayName}", TraceEventType.Information);
+                    Log($"Assets retrieved for folder {folder.DisplayName}", TraceEventType.Verbose);
                     var assets = JsonConvert.DeserializeObject<GetAssetsResponse>(response.Content!)!;
                     var assetCollection = new ObservableCollection<Asset>(assets.Assets ?? new());
                     Assets.Add(new KeyValuePair<Folder, ObservableCollection<Asset>>(folder, assetCollection));
@@ -142,7 +160,7 @@ namespace Yash.Orchestrator
                 foreach (var folder in folders.Folders ?? new())
                 {
                     Folders.Add(folder);
-                    Log($"Folder added: {folder.DisplayName}", TraceEventType.Information);
+                    Log($"Folder added: {folder.DisplayName}", TraceEventType.Verbose);
                 }
             }
             else
@@ -168,7 +186,7 @@ namespace Yash.Orchestrator
                 var response = await _client.ExecuteAsync(request);
                 if (response.IsSuccessful)
                 {
-                    Log($"Buckets retrieved for folder {folder.DisplayName}", TraceEventType.Information);
+                    Log($"Buckets retrieved for folder {folder.DisplayName}", TraceEventType.Verbose);
                     var buckets = JsonConvert.DeserializeObject<GetBucketsResponse>(response.Content!)!;
                     var bucketCollection = new ObservableCollection<Bucket>(buckets.Buckets ?? new());
                     Buckets.Add(new KeyValuePair<Folder, ObservableCollection<Bucket>>(folder, bucketCollection));

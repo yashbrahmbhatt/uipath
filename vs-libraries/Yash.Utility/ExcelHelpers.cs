@@ -1,5 +1,6 @@
 ﻿using OfficeOpenXml;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace Yash.Utility.Helpers
             {
                 // Use FileInfo to create a copy that can be read even if the original is open
                 var fileInfo = new FileInfo(filePath);
-                
+
                 using (var package = new ExcelPackage(fileInfo))
                 {
                     foreach (var worksheet in package.Workbook.Worksheets)
@@ -47,11 +48,11 @@ namespace Yash.Utility.Helpers
                         Log?.Invoke($"[ExcelHelpers] Processing sheet: {worksheet.Name}", TraceEventType.Verbose);
 
                         var dataTable = new DataTable(worksheet.Name);
-                        
+
                         // Get the used range of the worksheet
                         var start = worksheet.Dimension?.Start;
                         var end = worksheet.Dimension?.End;
-                        
+
                         if (start == null || end == null)
                         {
                             Log?.Invoke($"[ExcelHelpers] Sheet '{worksheet.Name}' is empty, skipping.", TraceEventType.Warning);
@@ -66,7 +67,7 @@ namespace Yash.Utility.Helpers
                             {
                                 headerValue = $"Column{col}"; // Default name for empty headers
                             }
-                            
+
                             // Handle duplicate column names
                             var originalName = headerValue;
                             int suffix = 1;
@@ -75,7 +76,7 @@ namespace Yash.Utility.Helpers
                                 headerValue = $"{originalName}_{suffix}";
                                 suffix++;
                             }
-                            
+
                             dataTable.Columns.Add(headerValue, typeof(object));
                         }
 
@@ -91,7 +92,7 @@ namespace Yash.Utility.Helpers
                             {
                                 var cellValue = worksheet.Cells[row, col].Value;
                                 var columnIndex = col - start.Column;
-                                
+
                                 if (cellValue != null)
                                 {
                                     // Convert Excel data types appropriately
@@ -135,7 +136,7 @@ namespace Yash.Utility.Helpers
             catch (IOException ioEx)
             {
                 Log?.Invoke($"[ExcelHelpers] IO Error reading file {filePath}: {ioEx.Message}. Attempting to read with retry strategy.", TraceEventType.Warning);
-                
+
                 // Try reading the file with a different approach for locked files
                 return ReadExcelFileWithRetry(filePath, Log);
             }
@@ -158,13 +159,13 @@ namespace Yash.Utility.Helpers
             const int maxRetries = 5;
             const int baseDelayMs = 500;
             string tempFilePath = "";
-            
+
             for (int attempt = 0; attempt < maxRetries; attempt++)
             {
                 try
                 {
                     Log?.Invoke($"[ExcelHelpers] Retry attempt {attempt + 1} of {maxRetries}", TraceEventType.Information);
-                    
+
                     // Wait before retry (exponential backoff)
                     if (attempt > 0)
                     {
@@ -172,25 +173,25 @@ namespace Yash.Utility.Helpers
                         Log?.Invoke($"[ExcelHelpers] Waiting {delay}ms before retry", TraceEventType.Verbose);
                         Thread.Sleep(delay);
                     }
-                    
+
                     // Generate a unique temp file path for each attempt
                     tempFilePath = Path.Combine(Path.GetTempPath(), $"temp_excel_{Guid.NewGuid()}.xlsx");
-                    
+
                     Log?.Invoke($"[ExcelHelpers] Copying locked file to temporary location: {tempFilePath}", TraceEventType.Information);
-                    
+
                     // Try to copy the file to temp location to avoid lock issues
                     File.Copy(filePath, tempFilePath, true);
-                    
+
                     // Read from the temp file
                     var result = ReadExcelFile(tempFilePath, Log);
-                    
+
                     Log?.Invoke($"[ExcelHelpers] Successfully read Excel file from temporary copy", TraceEventType.Information);
                     return result;
                 }
                 catch (IOException ioEx) when (attempt < maxRetries - 1)
                 {
                     Log?.Invoke($"[ExcelHelpers] Retry {attempt + 1} failed: {ioEx.Message}", TraceEventType.Warning);
-                    
+
                     // Clean up temp file if it was created
                     if (!string.IsNullOrEmpty(tempFilePath) && File.Exists(tempFilePath))
                     {
@@ -209,7 +210,7 @@ namespace Yash.Utility.Helpers
                 {
                     // Final attempt failed - provide detailed error message
                     Log?.Invoke($"[ExcelHelpers] All retry attempts failed. File may be exclusively locked.", TraceEventType.Error);
-                    
+
                     // Clean up temp file if it was created
                     if (!string.IsNullOrEmpty(tempFilePath) && File.Exists(tempFilePath))
                     {
@@ -222,14 +223,14 @@ namespace Yash.Utility.Helpers
                             // Ignore cleanup errors
                         }
                     }
-                    
+
                     throw new InvalidOperationException(
                         $"Unable to access Excel file '{filePath}' after {maxRetries} attempts. " +
                         "The file may be exclusively locked by another process (such as Excel). " +
                         "Please close the file in other applications and try again.", ioEx);
                 }
             }
-            
+
             // This should never be reached due to the exception handling above
             throw new InvalidOperationException("Unexpected end of retry loop");
         }
@@ -249,13 +250,13 @@ namespace Yash.Utility.Helpers
                 foreach (var sheet in sheets)
                 {
                     var worksheet = package.Workbook.Worksheets.Add(sheet.Key);
-                    
+
                     // Add headers
                     for (int i = 0; i < sheet.Value.Length; i++)
                     {
                         worksheet.Cells[1, i + 1].Value = sheet.Value[i];
                     }
-                    
+
                     worksheet.Cells.AutoFitColumns();
                     Log?.Invoke($"[ExcelHelpers] Created sheet '{sheet.Key}' with {sheet.Value.Length} columns.", TraceEventType.Verbose);
                 }
@@ -282,18 +283,18 @@ namespace Yash.Utility.Helpers
                 {
                     var sheetName = dataTable.TableName;
                     var worksheet = package.Workbook.Worksheets.Add(sheetName);
-                    
+
                     Log?.Invoke($"[ExcelHelpers] Processing sheet '{sheetName}' with {dataTable.Rows.Count} rows and {dataTable.Columns.Count} columns.", TraceEventType.Verbose);
-                    
+
                     // Add column headers
                     for (int col = 0; col < dataTable.Columns.Count; col++)
                     {
                         worksheet.Cells[1, col + 1].Value = dataTable.Columns[col].ColumnName;
-                        
+
                         // Optional: Add some formatting to headers
                         worksheet.Cells[1, col + 1].Style.Font.Bold = true;
                     }
-                    
+
                     // Add data rows
                     for (int row = 0; row < dataTable.Rows.Count; row++)
                     {
@@ -302,7 +303,7 @@ namespace Yash.Utility.Helpers
                             var cellValue = dataTable.Rows[row][col];
                             var excelRow = row + 2; // +2 because Excel is 1-indexed and we skip header row
                             var excelCol = col + 1;  // +1 because Excel is 1-indexed
-                            
+
                             // Handle different data types appropriately
                             if (cellValue == null || cellValue == DBNull.Value)
                             {
@@ -337,10 +338,10 @@ namespace Yash.Utility.Helpers
                             }
                         }
                     }
-                    
+
                     // Auto-fit columns for better readability
                     worksheet.Cells.AutoFitColumns();
-                    
+
                     Log?.Invoke($"[ExcelHelpers] Completed sheet '{sheetName}' with {dataTable.Rows.Count} data rows.", TraceEventType.Verbose);
                 }
 
@@ -361,10 +362,10 @@ namespace Yash.Utility.Helpers
         {
             var actualSheetName = sheetName ?? dataTable.TableName ?? "Sheet1";
             dataTable.TableName = actualSheetName;
-            
+
             var dataSet = new DataSet();
             dataSet.Tables.Add(dataTable.Copy());
-            
+
             CreateExcelFile(outputPath, dataSet, Log);
         }
 
@@ -464,6 +465,6 @@ namespace Yash.Utility.Helpers
                 _ when type == typeof(TimeSpan) => "TimeSpan",
                 _ => type.Name
             };
-        }
+        }        
     }
 }

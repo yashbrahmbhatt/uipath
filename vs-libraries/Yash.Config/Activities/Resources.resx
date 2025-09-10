@@ -133,37 +133,20 @@
     <value>Load Config</value>
   </data>
   <data name="LoadConfig_WorkflowPath_DisplayName" xml:space="preserve">
-    <value>Config Path</value>
+    <value>Run Time Path</value>
   </data>
   <data name="LoadConfig_WorkflowPath_Tooltip" xml:space="preserve">
-    <value>The path to the config file to read.</value>
+    <value>The path to the config file to read during execution.</value>
   </data>
   <data name="LoadConfig_Result_Tooltip" xml:space="preserve">
     <value>The parsed dictionary of configurations.</value>
   </data>
   <data name="LoadConfig_Scope_DisplayName" xml:space="preserve">
-    <value>Scopes</value>
+    <value>Scope</value>
     <comment>The scope to load from the config file</comment>
   </data>
   <data name="LoadConfig_Scope_Tooltip" xml:space="preserve">
-    <value>The scopes to load from the config file</value>
+    <value>The scope to load from the config file</value>
   </data>
-  <data name="LoadConfig_BaseUrl_DisplayName" xml:space="preserve">
-    <value>Base Url</value>
-  </data>
-  <data name="LoadConfig_BaseUrl_Tooltip" xml:space="preserve">
-    <value>The url ending at .uipath.com</value>
-  </data>
-  <data name="LoadConfig_ClientId_DisplayName" xml:space="preserve">
-    <value>Client Id</value>
-  </data>
-  <data name="LoadConfig_ClientId_Tooltip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="LoadConfig_ClientSecret_Tooltip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="LoadConfig_ClientSecret_DisplayName" xml:space="preserve">
-    <value>ClientSecret</value>
-  </data>
+ 
 </root>
