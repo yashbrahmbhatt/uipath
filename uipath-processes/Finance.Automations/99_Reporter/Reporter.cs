@@ -20,13 +20,14 @@ using UiPath.Testing.Activities.TestData;
 using UiPath.Testing.Activities.TestDataQueues.Enums;
 using UiPath.Testing.Enums;
 using Yash.Config.Models;
+using Finance.Automations.CodedWorkflows;
 
 namespace Finance.Automations._99_Reporter
 {
     /// <summary>
     /// A workflow class that handles reporting tasks, including filtering data, combining multiple data sources, and generating reports.
     /// </summary>
-    public class Reporter : CodedWorkflow
+    public class Reporter : BaseCodedWorkflow
     {
         
         /// <summary>
@@ -168,10 +169,8 @@ namespace Finance.Automations._99_Reporter
             string TestId = ""
         )
         {
-            Dictionary<string, object> dict_Shared = workflows.LoadConfig(ConfigPath, "Shared");
-            Dictionary<string, object> dict_Reporter = workflows.LoadConfig(ConfigPath, "Reporter");
-            var confic_Shared = ConfigFactory.FromDictionary<SharedConfig>(dict_Shared);
-            var c_Config = ConfigFactory.FromDictionary<ReporterConfig>(dict_Reporter);
+            (var confic_Shared, _, _, var c_Config) = LoadConfig(ConfigPath, new [] {"Shared", "Reporter"});
+            
 
             try
             {

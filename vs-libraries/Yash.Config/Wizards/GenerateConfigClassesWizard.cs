@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using UiPath.Studio.Activities.Api;
 using Yash.Config.Helpers;
+using Yash.Config.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Yash.Orchestrator;
 
 namespace Yash.Config.Wizards
 {
@@ -19,10 +22,19 @@ namespace Yash.Config.Wizards
                 if (!Helpers.EnsureOrPromptSettings(api, forcePrompt: false, out var inputFile, out var outputDir, out var ns, out var usings))
                     return null;
 
-                var finalSummary = ConfigService.GenerateClassFiles(inputFile, outputDir, ns, usings, null);
+                // Create a simple service provider for the wizard
+                var serviceCollection = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
+                if (api.AccessProvider != null)
+                {
+                    serviceCollection.AddSingleton<IOrchestratorService>(provider => new OrchestratorService(api.AccessProvider));
+                }
+                var serviceProvider = serviceCollection.BuildServiceProvider();
+                
+                var service = new ConfigService(inputFile, serviceProvider);
+                var finalSummary = service.GenerateClassFiles(outputDir, ns, usings);
 
 
-                System.Windows.MessageBox.Show(finalSummary, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show(finalSummary, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {

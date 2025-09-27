@@ -26,13 +26,13 @@ namespace Yash.Config.Wizards
                 Wizard = new WizardBase()
                 {
                 },
-                DisplayName = "Config",
+                DisplayName = "Configuration",
                 IconUri = "Icons/RecordIcon",
                 Tooltip = "A set of wizards to help with managing configurations in UiPath",
             };
             wizardDefinition.ChildrenDefinitions.Add(new WizardDefinition()
             {
-                DisplayName = "Generate Config Classes",
+                DisplayName = "Generate Configuration Classes",
                 Shortcut = new KeyGesture(Key.F9, ModifierKeys.Control | ModifierKeys.Shift),
                 Tooltip = "Generates hardly typed classes for your configuration given the input config file and output directory.",
                 Wizard = new WizardBase()

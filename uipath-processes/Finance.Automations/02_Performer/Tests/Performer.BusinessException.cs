@@ -37,9 +37,7 @@ namespace Finance.Automations._02_Performer.Tests
                 }
             }
             
-            var dict_Config = workflows.LoadConfig(ConfigPath,"Shared");
-            var config = ConfigFactory.FromDictionary<SharedConfig>(dict_Config);
-            
+            (var config, _, _, _) = LoadConfig(ConfigPath, new [] {"Shared"});
             system.AddQueueItem(config.QueueName, config.QueueFolder, default, default, default, default, Id, default);
             
             Exception actualException = null;

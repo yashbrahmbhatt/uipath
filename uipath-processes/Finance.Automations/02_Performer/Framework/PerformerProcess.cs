@@ -1,4 +1,5 @@
 using System.Linq;
+using Finance.Automations.CodedWorkflows;
 using Finance.Automations.Configs;
 using Finance.Automations.Prompts;
 using Newtonsoft.Json;
@@ -8,7 +9,7 @@ using UiPath.Core;
 
 namespace Finance.Automations._02_Performer.Framework
 {
-    public class PerformerProcess : CodedWorkflow
+    public class PerformerProcess : BaseCodedWorkflow
     {
         [Workflow]
         public string Execute(

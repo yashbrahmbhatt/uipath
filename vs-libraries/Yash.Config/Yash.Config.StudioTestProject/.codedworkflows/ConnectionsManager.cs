@@ -6,9 +6,7 @@ namespace Yash.Config.StudioTestProject
     public class ConnectionsManager
     {
         public ExcelFactory Excel { get; set; }
-
         public O365MailFactory O365Mail { get; set; }
-
         public OneDriveFactory OneDrive { get; set; }
 
         public ConnectionsManager(ICodedWorkflowsServiceContainer resolver)

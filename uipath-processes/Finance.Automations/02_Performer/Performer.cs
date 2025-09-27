@@ -2,16 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Finance.Automations.CodedWorkflows;
 using Finance.Automations.Configs;
+using UiPath.Activities.Api.Base;
 using UiPath.CodedWorkflows;
 using UiPath.Core;
 using UiPath.Core.Activities;
+using Yash.Config;
 using Yash.Config.Models;
+using Yash.Orchestrator;
 using LogLevel = UiPath.CodedWorkflows.LogLevel;
 
 namespace Finance.Automations._02_Performer
 {
-    public class Performer : CodedWorkflow
+    public class Performer : BaseCodedWorkflow
     {
         // State machine variables
         private Stack<Action> _stateStack;
@@ -39,12 +43,9 @@ namespace Finance.Automations._02_Performer
             _isMaintenanceTime = false;
             _frameworkException = null;
 
-
             // Load configuration
-            Dictionary<string, object> dict_Shared = workflows.LoadConfig(ConfigPath, "Shared");
-            Dictionary<string, object> dict_Performr = workflows.LoadConfig(ConfigPath, "Performer");
-            _config_Shared = ConfigFactory.FromDictionary<SharedConfig>(dict_Shared);
-            _config_Performer = ConfigFactory.FromDictionary<PerformerConfig>(dict_Performr);
+            (_config_Shared, _config_Performer, _, _) = LoadConfig(ConfigPath, new [] {"Shared","Performer"});
+            
 
             Log("Starting Performer workflow", LogLevel.Info);
 

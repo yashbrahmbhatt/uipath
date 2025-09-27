@@ -37,18 +37,10 @@
 
   <!-- Project-specific Package References -->
   <ItemGroup>
-    <!-- UiPath Packages -->
-    <PackageReference Include="System.Activities.Core.Presentation" PrivateAssets="All" />
-    <PackageReference Include="System.Activities.ViewModels" PrivateAssets="All" />
-    <PackageReference Include="UiPath.Activities.Api" PrivateAssets="All" />
-    <PackageReference Include="UiPath.Workflow" PrivateAssets="All" />
-    <PackageReference Include="UiPath.System.Activities" />
-    
     <!-- Core Packages -->
     <PackageReference Include="Microsoft.CodeAnalysis.Common" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" />
-    
   </ItemGroup>
 
   <!-- Resource Updates -->

@@ -4,7 +4,7 @@
     <PackageId>Yash.Utility</PackageId>
     <PackageDescription>Generally reusable utilities.</PackageDescription>
     <PackageTags>Yash;Utility</PackageTags>
-    <PackageProjectUrl>https://github.com/yashbrahmbhatt/uipath/tree/main/vs-libraries/Yash.Orchestrator</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/yashbrahmbhatt/uipath/tree/main/vs-libraries/Yash.Utility</PackageProjectUrl>
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
@@ -12,25 +12,14 @@
   <!-- Project-specific Package References -->
   <ItemGroup>
     <PackageReference Include="EPPlus" />
+    <PackageReference Include="RestSharp" />
+
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Activities\Email\" />
   </ItemGroup>
 
   <!-- Activity Files -->
-  <ItemGroup>
-    <EmbeddedResource Include="Activities\ActivitiesMetadata.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Activities\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Activities\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
 
   <!-- Resource Updates -->
 </Project>

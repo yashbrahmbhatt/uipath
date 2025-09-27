@@ -5,7 +5,7 @@ namespace Yash.Config.Settings
 {
     public static class Keys
     {
-        public const string CategoryKey = "Yash.Config";
+        public const string CategoryKey = "Yash.Configuration";
         public const string Section_Generation_Key = $"{CategoryKey}.AutoGeneration";
 
         public const string Setting_Generation_FilePath_Key = $"{Section_Generation_Key}.FilePath";
@@ -32,8 +32,8 @@ namespace Yash.Config.Settings
             var category = new SettingsCategory()
             {
                 Key = Keys.CategoryKey,
-                Header = "Config",
-                Description = "Settings for Config activities and wizards"
+                Header = "Configuration",
+                Description = "Settings for Configuration activities and wizards"
             };
             api?.Settings.AddCategory(category);
             return category;
@@ -44,7 +44,7 @@ namespace Yash.Config.Settings
             var section = new SettingsSection()
             {
                 Key = Keys.Section_Generation_Key,
-                Title = "Config Class Generation",
+                Title = "Configuration Class Generation",
                 Description = "Settings related to generation of config classes"
             };
             if (category != null) api?.Settings.AddSection(category, section);
@@ -56,13 +56,13 @@ namespace Yash.Config.Settings
             var setting = new SingleValueEditorDescription<string>
             {
                 Key = Keys.Setting_Generation_FilePath_Key,
-                Label = "Config File Path",
+                Label = "Configuration File Path",
                 Description = "The Excel file path used to generate config classes.",
                 DefaultValue = "",
                 GetDisplayValue = v => string.IsNullOrWhiteSpace(v) ? "Not Set" : v,
                 IsDesignTime = true,
                 Validate = v => string.IsNullOrWhiteSpace(v)
-                    ? "Config file path is required."
+                    ? "Configuration file path is required."
                     : !System.IO.File.Exists(v)
                         ? "File does not exist."
                         : null

@@ -24,7 +24,7 @@ namespace Yash.Config.Wizards
             }
             else
             {
-                System.Windows.MessageBox.Show("Please select the configuration file for generating config classes.", "Select Config File", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show("Please select the configuration file for generating config classes.", "Select Configuration File", MessageBoxButton.OK, MessageBoxImage.Information);
                 inputFile = FileDialogHelpers.PromptForFile("Select your configuration file", "Excel Files (*.xlsx)|*.xlsx", projectDir);
                 if (string.IsNullOrWhiteSpace(inputFile)) return false;
                 api.Settings.TrySetValue(Settings.Keys.Setting_Generation_FilePath_Key, inputFile);
@@ -103,10 +103,10 @@ namespace Yash.Config.Wizards
             }
             else
             {
-                var savePath = FileDialogHelpers.PromptForSaveFile("Create new configuration file", "Excel Files (*.xlsx)|*.xlsx", "Config.xlsx");
+                var savePath = FileDialogHelpers.PromptForSaveFile("Create new configuration file", "Excel Files (*.xlsx)|*.xlsx", "Configuration.xlsx");
                 if (!string.IsNullOrWhiteSpace(savePath))
                 {
-                    var resourceName = "Yash.Config.ConfigTemplate.xlsx"; // Use the correct namespace + file path
+                    var resourceName = "Yash.Configuration.ConfigTemplate.xlsx"; // Use the correct namespace + file path
                     using var resourceStream = typeof(ConfigWizards).Assembly
                         .GetManifestResourceStream(resourceName);
 

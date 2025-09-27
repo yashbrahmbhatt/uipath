@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Yash.Config.StudioTestProject.Models.Configs
 {
-	public class SharedConfig : Yash.Config.Models.Config
+	public class SharedConfig : Yash.Config.Models.Config.Configuration
 	{
 		#region Settings
 

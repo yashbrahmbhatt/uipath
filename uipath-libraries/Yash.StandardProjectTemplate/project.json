@@ -1,0 +1,178 @@
+{
+  "name": "Yash.StandardProject",
+  "projectId": "4ceedf15-3005-4557-a93e-698d03b58da6",
+  "description": "The standard Yash project.",
+  "main": "01_Dispatcher\\Dispatcher.cs",
+  "dependencies": {
+    "UiPath.CodedWorkflows": "[24.10.1]",
+    "UiPath.Excel.Activities": "[3.2.1]",
+    "UiPath.GSuite.Activities": "[3.3.10]",
+    "UiPath.Mail.Activities": "[2.3.10]",
+    "UiPath.System.Activities": "[25.8.0]",
+    "UiPath.Testing.Activities": "[25.4.1]",
+    "Yash.Config": "[1.0.254.4155]",
+    "Yash.Orchestrator": "[1.0.255.23850]",
+    "Yash.Utility": "[1.0.254.4233]"
+  },
+  "webServices": [],
+  "entitiesStores": [],
+  "schemaVersion": "4.0",
+  "studioVersion": "24.10.16.0",
+  "projectVersion": "25.9.0",
+  "runtimeOptions": {
+    "autoDispose": false,
+    "netFrameworkLazyLoading": false,
+    "isPausable": true,
+    "isAttended": false,
+    "requiresUserInteraction": true,
+    "supportsPersistence": false,
+    "workflowSerialization": "DataContract",
+    "excludedLoggedData": [
+      "Private:*",
+      "*password*"
+    ],
+    "executionType": "Workflow",
+    "readyForPiP": false,
+    "startsInPiP": false,
+    "mustRestoreAllDependencies": true,
+    "pipType": "ChildSession"
+  },
+  "designOptions": {
+    "projectProfile": "Developement",
+    "outputType": "Process",
+    "libraryOptions": {
+      "includeOriginalXaml": false,
+      "privateWorkflows": []
+    },
+    "processOptions": {
+      "ignoredFiles": []
+    },
+    "fileInfoCollection": [
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "3deaae32-5fd6-4d38-a5ce-081baf313dc3",
+        "testCaseType": "TestCase",
+        "fileName": "01_Dispatcher\\Tests\\BaseDispatcherTest.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "26118e07-f261-4cf7-9a49-18f88c667290",
+        "testCaseType": "TestCase",
+        "fileName": "01_Dispatcher\\Tests\\Dispatcher.Success.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "1aff97b9-2f20-4fc6-9f36-a4c340af0c04",
+        "testCaseType": "TestCase",
+        "fileName": "01_Dispatcher\\Tests\\Dispatcher.Failure.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "4f258be2-fc5a-4225-9859-b136eee2daf3",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\BasePerformerTest.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "a3b3d908-33f4-4aaf-83a7-3ea9ca226c74",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\Performer.BusinessException.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "3875a0c1-3c93-4ff0-ad4e-0a33cce30232",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\Performer.InitializationError.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "957cdd1c-6eec-441f-8853-4af81ec8b241",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\Performer.MaintenanceTime.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "4c0a647a-cd73-44a0-89b8-9874cc2a6dc4",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\Performer.Success.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "168a0dd1-0ad2-4915-b670-3ebe1bb97b72",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\Performer.SystemException.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "507ec6cf-df4d-48b7-8dde-7e88c491a0bf",
+        "testCaseType": "TestCase",
+        "fileName": "02_Performer\\Tests\\Performer.NoData.cs"
+      }
+    ],
+    "saveToCloud": false
+  },
+  "expressionLanguage": "CSharp",
+  "entryPoints": [
+    {
+      "filePath": "00_Shared\\SendEmail.cs",
+      "uniqueId": "5e7c42fe-29c1-4e68-ad61-97a5a7c965fc",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "02_Performer\\Performer.cs",
+      "uniqueId": "b0a0c8f1-0e36-4367-9936-c1cef58b9170",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "02_Performer\\Framework\\PerformerInitializeApplications.cs",
+      "uniqueId": "89499cb1-c86b-47c9-b063-41580b06f457",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "02_Performer\\Framework\\PerformerCloseApplications.cs",
+      "uniqueId": "fba4c56c-dbdc-444e-b398-a61a5c565d1a",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "02_Performer\\Framework\\PerformerProcess.cs",
+      "uniqueId": "a183b880-0bfe-4e68-949e-289f2648934b",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "01_Dispatcher\\Dispatcher.cs",
+      "uniqueId": "042a6fea-9fb1-44da-ac5c-cd099744ac5f",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "99_Reporter\\Tests\\BaseReporterTest.cs",
+      "uniqueId": "7779b98d-58b8-4e8c-abfc-e6560d1c2a0b",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "00_Shared\\DeleteEmails.cs",
+      "uniqueId": "49260b2f-0e75-4c92-8088-896f7946ce20",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "00_Shared\\MarkEmailsAsRead.cs",
+      "uniqueId": "44a8f18b-963d-4392-81c9-a1bef79aca61",
+      "input": [],
+      "output": []
+    }
+  ],
+  "isTemplate": true,
+  "templateProjectData": {
+    "defaultProjectDescription": "The standard Yash project.",
+    "defaultProjectName": "Yash.StandardProject"
+  },
+  "publishData": {},
+  "targetFramework": "Windows"
+}

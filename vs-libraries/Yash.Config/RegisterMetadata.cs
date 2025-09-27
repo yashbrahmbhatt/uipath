@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Presentation;
 using System.Activities.Presentation.Metadata;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using UiPath.Studio.Activities.Api;
 using Yash.Config.Activities;
+using Yash.Config.Activities.ViewModels;
 using Yash.Config.Settings;
 using Yash.Config.Wizards;
 
@@ -41,6 +43,7 @@ namespace Yash.Config
                 {
                     ConfigWizards.CreateWizard(api);
                 }
+                
             }
             catch (Exception ex)
             {

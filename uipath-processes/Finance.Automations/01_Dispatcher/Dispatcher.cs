@@ -1,23 +1,57 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Finance.Automations.CodedWorkflows;
 using Finance.Automations.Configs;
 using Newtonsoft.Json;
+using UiPath.Activities.Api.Base;
 using UiPath.CodedWorkflows;
 using UiPath.Core;
 using UiPath.Core.Activities;
+using Yash.Config;
 using Yash.Config.Models;
+using Yash.Orchestrator;
 using Yash.RBC.Activities;
+using Yash.Utility.Helpers;
 using LogLevel = UiPath.CodedWorkflows.LogLevel;
 
 namespace Finance.Automations._01_Dispatcher
 {
-    public class Dispatcher : CodedWorkflow
+    public class Dispatcher : BaseCodedWorkflow
     {
         public bool debug_SkipDownload = false;
         public string debug_SkipDownloadPath = @"C:\Users\eyash\Downloads\csv13541.csv";
+        public Dispatcher()
+        {
+
+        }
+        public LogLevel ConvertTraceEventToLogLevel(TraceEventType type)
+        {
+            switch (type)
+            {
+
+                case TraceEventType.Verbose:
+                    return LogLevel.Trace;
+                case TraceEventType.Start:
+                case TraceEventType.Stop:
+                case TraceEventType.Suspend:
+                case TraceEventType.Resume:
+                case TraceEventType.Information:
+                    return LogLevel.Info;
+                case TraceEventType.Warning:
+                    return LogLevel.Warn;
+                case TraceEventType.Critical:
+                case TraceEventType.Error:
+                    return LogLevel.Error;
+                default:
+                    throw new Exception("Could not convert TraceEvent to LogLevel: " + TraceEventType.GetName(type));
+
+            }
+        }
+
         /// <summary>
         /// Executes the dispatcher workflow, processing queue observations based on configuration and dispatching them to the queue.
         /// </summary>
@@ -31,10 +65,11 @@ namespace Finance.Automations._01_Dispatcher
             string TestId = ""
             )
         {
-            Dictionary<string, object> dict_Shared = workflows.LoadConfig(ConfigPath, "Shared");
-            Dictionary<string, object> dict_Dispatcher = workflows.LoadConfig(ConfigPath, "Dispatcher");
-            var config_Shared = ConfigFactory.FromDictionary<SharedConfig>(dict_Shared);
-            var config_Dispatcher = ConfigFactory.FromDictionary<DispatcherConfig>(dict_Dispatcher);
+            (var config_Shared, _, var config_Dispatcher, _) = LoadConfig(ConfigPath, new[]{"Shared", "Dispatcher"});
+            // Dictionary<string, object> dict_Shared = workflows.LoadConfig(ConfigPath, "Shared");
+            // Dictionary<string, object> dict_Dispatcher = workflows.LoadConfig(ConfigPath, "Dispatcher");
+            // var config_Shared = ConfigFactory.FromDictionary<SharedConfig>(dict_Shared);
+            // var config_Dispatcher = ConfigFactory.FromDictionary<DispatcherConfig>(dict_Dispatcher);
 
             try
             {
@@ -63,22 +98,23 @@ namespace Finance.Automations._01_Dispatcher
                 {
                     tempPath = debug_SkipDownloadPath;
                 }
-                var table = workflows.ReadCSVProxy(tempPath);
+                var table = (DataTable)ConfigService.ParseConfigFileItemAsync(tempPath, "csv", "Transactions", LogConfigApi).Result;
                 table.Columns.Add(new DataColumn("Reference"));
-                foreach(DataRow row in table.Rows){
-                     // Create hash from actual field values, timestamp, and row index
+                foreach (DataRow row in table.Rows)
+                {
+                    // Create hash from actual field values, timestamp, and row index
                     string rowValues = string.Join("|", row.ItemArray.Select(field => field?.ToString() ?? ""));
                     var index = table.Rows.IndexOf(row);
                     string uniqueString = $"{rowValues}";
                     string reference = Hash(uniqueString);
                     row["Reference"] = reference;
                 }
-                
-                system.BulkAddQueueItems(table, config_Shared.QueueName, config_Shared.QueueFolder, BulkAddQueueItems.CommitTypeEnum.ProcessAllIndependently,default);
+
+                system.BulkAddQueueItems(table, config_Shared.QueueName, config_Shared.QueueFolder, BulkAddQueueItems.CommitTypeEnum.ProcessAllIndependently, default);
 
                 if (!debug_SkipDownload)
                     File.Delete(tempPath);
-                
+
                 Log($"Found {table.Rows.Count} rows");
             }
             catch (Exception ex)
@@ -89,6 +125,10 @@ namespace Finance.Automations._01_Dispatcher
                 throw;
             }
 
+        }
+        
+        private void LogConfigApi(string message, TraceEventType type){
+            Log(message, ConvertTraceEventToLogLevel(type));
         }
 
         private string Hash(string input)

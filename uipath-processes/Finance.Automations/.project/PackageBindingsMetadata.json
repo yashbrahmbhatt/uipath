@@ -8822,46 +8822,6 @@
         "FromInstanceProperty": "BindingsJson",
         "DefaultValueSource": "Property"
       }
-    ],
-    "Yash_Utility_Activities.Reporting.SendEmail": [
-      {
-        "Type": "Connection",
-        "PublishNullValues": false,
-        "Key": {
-          "Value": "Send_Email_ResourceKey",
-          "ValueSource": "Property"
-        },
-        "Values": {
-          "ConnectionId": {
-            "Value": "Send_Email",
-            "ValueSource": "Property"
-          }
-        },
-        "Arguments": {
-          "BindingsVersion": {
-            "Value": "2.2",
-            "ValueSource": "Constant"
-          },
-          "Connector": {
-            "Value": "uipath-google-gmail",
-            "ValueSource": "Constant"
-          },
-          "UseConnectionService": {
-            "Value": "True",
-            "ValueSource": "Constant"
-          },
-          "CompilerActivityId": {
-            "Value": "SendEmailConnections_1",
-            "ValueSource": "Constant"
-          },
-          "CompilerActivityDisplayName": {
-            "Value": "Send Email",
-            "ValueSource": "Constant"
-          }
-        },
-        "SubBindings": [],
-        "DefaultValueSource": "Property"
-      }
     ]
   }
 }

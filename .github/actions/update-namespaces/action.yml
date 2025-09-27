@@ -1,0 +1,29 @@
+name: 'Update C# Namespaces'
+description: 'Synchronizes C# namespaces with directory structure in UiPath CodedWorkflows'
+inputs:
+  project-path:
+    description: 'Path to the project folder containing project.json'
+    required: false
+    default: '.'
+  dry-run:
+    description: 'Show what would be changed without making changes'
+    required: false
+    default: 'false'
+  verbose:
+    description: 'Show detailed processing information'
+    required: false
+    default: 'false'
+  create-backup:
+    description: 'Create backup files before making changes'
+    required: false
+    default: 'false'
+outputs:
+  files-processed:
+    description: 'Number of C# files processed'
+  files-updated:
+    description: 'Number of C# files updated'
+  root-namespace:
+    description: 'The root namespace extracted from project.json'
+runs:
+  using: 'node20'
+  main: 'index.js'

@@ -40,7 +40,7 @@
 
   <!-- Debug Configuration -->
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <VersionPrefix>1.0.$(VersionBuild)-dev.$(VersionRevision)</VersionPrefix>
+    <VersionPrefix>1.0.$(VersionBuild).$(VersionRevision)</VersionPrefix>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageOutputPath>$(SolutionDir)Output\</PackageOutputPath>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>

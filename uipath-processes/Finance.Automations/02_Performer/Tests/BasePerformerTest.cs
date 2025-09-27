@@ -1,4 +1,5 @@
 using System;
+using Finance.Automations.CodedWorkflows;
 using UiPath.CodedWorkflows;
 using UiPath.Testing;
 
@@ -8,7 +9,7 @@ namespace Finance.Automations._02_Performer.Tests
     /// Base class for Performer test cases.
     /// Defines abstract properties that concrete test implementations must provide.
     /// </summary>
-    public class BasePerformerTest : CodedWorkflow
+    public class BasePerformerTest : BaseCodedWorkflow
     {
         /// <summary>
         /// Unique identifier for the test case.

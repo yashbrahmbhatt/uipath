@@ -9,9 +9,10 @@
     "UiPath.IntegrationService.Activities": "[1.17.0]",
     "UiPath.System.Activities": "[25.8.0]",
     "UiPath.Testing.Activities": "[25.4.0]",
-    "Yash.Config": "[25.9.2]",
+    "Yash.Config": "[1.0.253.70292]",
+    "Yash.Orchestrator": "[1.0.253.70334]",
     "Yash.RBC.Activities": "[25.7.1]",
-    "Yash.Utility.Activities": "[25.7.10]"
+    "Yash.Utility": "[1.0.253.82194]"
   },
   "webServices": [],
   "entitiesStores": [],
@@ -142,6 +143,12 @@
     {
       "filePath": "99_Reporter\\Reporter.cs",
       "uniqueId": "68bcb7a9-77b1-4c35-be52-d5bc4f04fe2b",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "Workflow.cs",
+      "uniqueId": "c500da03-4f93-4c86-86a6-f2ec33658c7e",
       "input": [],
       "output": []
     }

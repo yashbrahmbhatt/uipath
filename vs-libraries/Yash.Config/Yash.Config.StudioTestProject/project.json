@@ -2,18 +2,20 @@
   "name": "Yash.Config.StudioTestProject",
   "projectId": "8eb9040b-d854-4d95-ab8e-71eead973d0c",
   "description": ".",
-  "main": "Main.xaml",
+  "main": "Workflow.xaml",
   "dependencies": {
     "UiPath.Excel.Activities": "[3.2.1]",
     "UiPath.MicrosoftOffice365.Activities": "[3.4.1-preview]",
     "UiPath.System.Activities": "[25.8.0]",
-    "Yash.Config": "[1.0.253-dev.34588]"
+    "Yash.Config": "[1.0.262.6009]",
+    "Yash.Orchestrator": "[1.0.262.5727]",
+    "Yash.Utility": "[1.0.262.5335]"
   },
   "webServices": [],
   "entitiesStores": [],
   "schemaVersion": "4.0",
   "studioVersion": "25.0.167.0",
-  "projectVersion": "1.0.0",
+  "projectVersion": "1.0.2",
   "runtimeOptions": {
     "autoDispose": false,
     "netFrameworkLazyLoading": false,
@@ -48,14 +50,14 @@
   "expressionLanguage": "CSharp",
   "entryPoints": [
     {
-      "filePath": "Main.xaml",
-      "uniqueId": "2f94a6e6-7509-4efe-8927-40a64693007c",
+      "filePath": "Workflow.cs",
+      "uniqueId": "3aceaf34-3d02-4181-a855-3be1e11b35d6",
       "input": [],
       "output": []
     },
     {
-      "filePath": "Workflow.cs",
-      "uniqueId": "3aceaf34-3d02-4181-a855-3be1e11b35d6",
+      "filePath": "Workflow.xaml",
+      "uniqueId": "d4654a5a-66fa-4a20-816b-4df2dd1a3e6e",
       "input": [],
       "output": []
     }

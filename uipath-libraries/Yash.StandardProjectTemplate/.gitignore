@@ -1,0 +1,63 @@
+# UiPath specific
+.local/
+.screenshots/
+.settings/
+.objects/
+.entities/
+.tmh/
+.analytics/
+.validation/
+project.local.json
+
+# Build and publish outputs
+bin/
+obj/
+output/
+publish/
+
+# Temporary and cache files
+Data/Temp/
+*.tmp
+*.temp
+*.cache
+PackageCache.json
+nuget.cache
+
+# Exception screenshots and logs
+Data/Exception Screenshots/
+*.log
+*.logs
+
+# OS specific files
+Thumbs.db
+.DS_Store
+*.swp
+*.swo
+*~
+
+# IDE specific files
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Dependencies and packages
+packages/
+node_modules/
+*.nupkg
+*.snupkg
+
+# Test results
+TestResults/
+[Dd]ebug/
+[Rr]elease/
+[Oo]utput/
+
+# Sensitive configuration files
+appsettings.local.json
+*.pfx
+*.p12
+credentials.json
+config.local.*

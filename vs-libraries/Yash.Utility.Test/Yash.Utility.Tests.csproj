@@ -4,8 +4,19 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
+  <!-- Additional Test-Specific Package References -->
+  <ItemGroup>
+  </ItemGroup>
+
   <!-- Project References -->
   <ItemGroup>
     <ProjectReference Include="..\Yash.Utility\Yash.Utility.csproj" />
+  </ItemGroup>
+
+  <!-- Test Data Files -->
+  <ItemGroup>
+    <None Update="TestData\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
